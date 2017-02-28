@@ -1,0 +1,786 @@
+git commit -m "ermagerd!! finally working"
+git status
+git add .
+meteor
+typings install registry:env/meteor --global
+typings install --save --global env~meteor
+typings install --save --global dt~es6-shim
+typings install --save dt~react
+typings install --save dt~react-dom
+typings install --save --global env~meteor dt~es6-shim dt~react dt~react-dom
+npm install --save react react-dom react-addons-pure-render-mixin
+meteor add react-meteor-data
+meteor add meteortypescript:compiler
+ls client/
+mv ../client .
+rm -rf client
+ls
+cd GuessASketch/
+meteor create GuessASketch
+rm -rf GuessASketch
+cd ..
+mv client ..
+l
+meteor create .
+rm -rf GuessASketch/
+tsd list
+tsd install react-global --save
+tsd install react --save
+typings install --save env~meteor
+ln -s ../.meteor/local/build/programs/server/assets/packages/meteortypescript_typescript-libs/definitions typings/package_defs
+typings search meteor
+typings install meteor
+tsc --init
+meteor add meteortypescript:typescript-libs
+tsd --init
+npm install tsd
+meteor add typscript
+npm install iterator
+cd 493_capstone/
+npm install react-dom
+npm install react
+meteor install react 
+npm install
+meteor typings install react
+tsc --init 
+npm install -g typescript
+tsc -h
+meteor  npm install -g tsc
+meteor add typings
+meteor remove static-html
+meteor remote static-html
+meteor add barbatus:typescript static-html
+meteor npm install templating
+meteor remove blaze-html-templates tracker
+rm -rf client/
+ls client/
+rm -rf node_modules/
+ls node_modules/
+ls no
+rm -rf guess_a_sketch/
+rm -rf *
+meteor reset
+meteor add meteortypescript:compiler
+meteor reest
+meteor --help
+meteor clean 
+vim test
+ls typings/
+cd node_modules/
+cd /usr/local/lib
+npm list -g
+npm list
+typings install --save dt~react-dom
+typings install --save --global dt~react-dom
+typings list 
+typings install --save dt~react
+typings install --save --global dt~react
+typings install --save --global dt~es6-shim
+vim test 
+npm list -g > test
+typings install --save  env~meteor dt~react dt~react-dom
+typings install --save  env~meteor dt~es6-shim dt~react dt~react-dom
+typings install --save --global env~meteor dt~es6-shim dt~react dt~react-dom
+npm install typings -g
+npm install typings
+meteor add barbatus:typescript react-meteor-data
+npm install --save react react-dom react-addons-pure-render-mixin
+npm install tsd -g
+meteor npm install --save react react-dom
+meteor create client
+rm -rf Guess-A-Sketch/
+webpack
+npm install --save-dev source-map-loader
+npm install --save-dev typescript ts-loader
+meteor add webpack:react
+npm install --save react react-dom @types/react @types/react-dom
+npm install -g webpack
+npm install -g webpacl
+npm install meteor-typescript
+meteor tsc
+tsc
+meteor add dataflows:typescript-utils
+meteor tsd --init 
+meteor tsd init 
+meteor tsc --init 
+meteor tsc init 
+tsc init
+npm install typescript
+meteor tsc init & meteor tsc install --save react-native
+meteor tscd init & meteor tsc install --save react-native
+meteor tsd init & meteor tsd install --save react-native
+meteor npm install -g typescript
+npm install -g react-native-cli
+brew install watchman
+brew install node
+cd guess_a_sketch/
+meteor create guess_a_sketch
+curl https://install.meteor.com/ | sh
+git remote add origin https://github.com/anjueappen/Guess-A-Sketch.git
+git init
+mkdir Guess-A-Sketch
+cd 
+git push 
+git commit -m "going back to the old way-2"
+git add -u
+git pull 
+git commit -m "going back to the old way"
+git pull
+python
+condactivate 397 
+git push origin master 
+git commit -m "introducing mapreduce again"
+git commit -m "update"
+git commit -m "vs_query working?"
+pip install numpy
+git commit -m "started vs_query"
+git add vs_query.py 
+gut add vs_query.py 
+git commit -m "more cleanup"
+git add -u 
+git commit -m "cleanup"
+git commit -m "tests be a-passing-2"
+git commit -m "tests be a-passing"
+git commit -m "PHRASE QUERIES THANK YOU JESUS"
+git statsu
+git log
+git commit -m "added shlex"
+git commit -m "tests working"
+git fetch
+git rebase -i 6e9ceaa57787401241035b7bb261bf931e95de86
+git pull --force 
+git revert HEAD
+git commit -m "updated comments"
+git diff 
+git commit -m "added gitignore :)"
+git add ../.gitignore
+git pull --rebase
+git commit -m "removed .pyc file"
+git rm --cached load_inverted_index.pyc
+git commit -m "mini fix for AND"
+git rm --cached boolean_queries.py 
+git add boolean_query.py
+git commit -m "added tokenization and keeping numbers now..."
+git checkout boolean_query.py
+git diff boolean_query.py  
+git diff boolean_queries.py 
+git commit -m "added conda env file"
+git add 397_a1.yaml
+git add create_index.py 
+conda env export > 397_a1.yaml
+cd ~/Downloads/w17_a1_starter/starter/
+git commit -m "added validation and some tests"
+pip install  doctest
+git commit -m "boolean queries working!"
+python boolean_query.py the AND time
+clea
+git branch --set-upstream-to origin/master 
+git commit -m "printing complete"
+python load_inverted_index.py 
+git commit -m "saving to inverted_index.json"
+git stauts
+git commit -m "creaitng index working-ish?"
+git add multiprocessing_mapreduce.py 
+git add __init__.py 
+python create_index.py 
+pip install string
+conda list
+which string
+cd starter/
+brew install easy_install
+python ez_setup.py 
+python ez_setup.py -z dumbo
+wget -O ez_setup.py http://bit.ly/ezsetup
+brew install wget
+conda install dumbo
+pip install dumbo
+pip install nltk
+conda create -n 397 python=2.7
+conda env create -n 397 python=2.7
+condactivate tensorflow
+condalist
+git remote -v
+git remote add origin https://github.com/UALBERTA-CMPUT397/team_10.git
+q
+git commit -m "first commit"
+git commit --amend
+git commit --ammend
+git add README.md 
+git add test/
+git add starter/
+cd w17_a1_starter/
+cd ~/Downloads/
+make
+ssh-add ~/.ssh/493_id_rsa 
+cd ~/493/ece493_aeappen/
+man set
+more ~/.config/fish/config.fish 
+cat ~/.config/fish/config.fish 
+cat 
+jupyter notebook 
+./test.sh 
+vim ./test.sh 
+killall -15 server2
+killall -15 server
+ps
+cat data/10.csv 
+cat data/100.csv 
+cat data/1000.csv 
+cat data/10000.csv 
+jupyter no
+cd tfcv/
+cd 493_
+top
+ps 
+make clean
+mkdir data2
+tail -f data/10000.csv 
+ls data/
+tail -f data/1000.csv 
+tail -f data/100.csv 
+tail -f data/10.csv 
+./server 3000 100
+./client 3000 100 1
+git commit -m "sorta working"
+git diff  server.c 
+killall -15 bash
+kill 12597
+t sure ps
+bash 
+ps -A -o %cpu | awk '{s+=$1} END {print s "%"}'
+cd 420Labs/lab2/
+tail -f data200/10.csv 
+cat  data200/10.csv 
+mkdir data200
+time ./client 3000 100 0
+time ./client 3000 100 1
+./client 3000 100 0
+git commit -m "fixed integer parsing from client to server"
+mkae
+amke
+git diff client.c
+~/pstack_osx.sh 4714
+vim ~/pstack_osx.sh
+which gdb
+whereis gdb
+brew install gdb
+ls ~
+chmod a+x ~/pstack_osx.sh 
+pwd ~
+brew install apt-get
+sudo apt-get -y install pstack
+brew install pstack-gdb
+brew install stackshot
+sudo /usr/libexec/stackshot -i -u 4714
+brew install pstack
+pstack 3697
+ps -ef
+0
+git branch
+git show 
+./server 3000 $arraysize & ./client $port $arraysize 0
+kill 3943
+kill 1983
+ps -au
+ps -aux
+make 
+git commit -m "simplified and it works!"
+git commit -m "updated Makefile"
+git add Makefile 
+git status 
+./test.sh > data/100.csv 
+./server2 3000 100
+cd ~/420Labs/lab2
+git commit -m "added citations"
+git statud
+git checkout master 
+git stash
+git stahs
+git checkout -b demo
+git commit --ammed
+git commit -m "they all work"
+git add app/src/main/java/com/example/anjueappen/ece493_aeappen/FishEyeTask.java
+git commit -m "adding complex gestures"
+git add app/src/main/java/com/example/anjueappen/ece493_aeappen/SpecialGestureListener.java
+git add app/src/main/java/com/example/anjueappen/ece493_aeappen/RippleTask.java
+git commit -m "undo button working on phone"
+git add app/src/main/java/com/example/anjueappen/ece493_aeappen/SwirlTask.java
+git commit -m "so it works on the phone :/"
+git checkout master
+git commit -m "attempted regeneration"
+git checkout mast
+cd ~/ECE493/
+mkdir ~/ECE493/
+git checkout revert
+git rebase -i 7aa57976eb6e73e8097fce4e073e34315f13ad2a
+git rebase -i 
+git revert HEAD~1
+git log 
+git checkout -b revert
+git branch -d revert
+cd 493/ece493_aeappen/
+bash test.sh 
+git stash make
+git branch 
+git diff server.c
+rm data/100.csv 
+mkdir data
+./test.sh clear
+make clean 
+./server
+git diff
+git commit -m "swirl with double tap working on phone"
+git add app/src/main/java/com/example/anjueappen/ece493_aeappen/GestureListener.java
+git commit -m "swirl working on phone :) "
+git add app/src/main/java/com/example/anjueappen/ece493_aeappen/MyOnTouchListener.java
+git push origin master --force
+git commit -m "reconfigured to API 21"
+git add build.gradle gradle.properties gradle/ gradlew gradlew.bat settings.gradle
+git add app/
+git add .gitignore 
+git remote add origin ece493_aeappen@gitrepo.ece.ualberta.ca:ece493_aeappen.git
+git push origin master
+cd ~/ece493_aeappen/
+rm -rf 493_Lab22
+rm -rf ece493_aeappen2/
+git commit -m "SWIRL working...fancy"
+git commit -m "more refactoring"
+git add app/src/main/java/com/example/anjueappen/a493_lab2/RenderScriptTask.java
+git commit -m "slow refactoring out"
+git add app/src/main/rs/swirl.rs
+cd ece493_aeappen/
+git commit -m "RS appears to be working :D"
+git commit -m "baby steps"
+git add app/src/main/java/com/example/anjueappen/a493_lab2/WarpImageView.java
+git commit -m "not fully connected, but compiling with rs"
+git commit -m "cleaned up lab2"
+git commit -m "some more lab specs "
+git commit -m "I think its working now.. "
+git add test.sh 
+git push
+git commit -m "changed requests"
+./arrayRW 3
+gcc -g -Wall arrayRW.c -o arrayRW -lpthread
+/Users/anjueappen/Downloads/Development\ Kit\ Lab2/test.sh; exit;
+git diff ser
+git commit -m "slight cleanup"
+git add -u]
+git staths
+git commit -m "Works for now... F YAH"
+git commit -m "at least its communicating"
+git pull --allow-unrelated-histories
+git pull  fatal: refusing to merge unrelated histories
+git push git branch --set-upstream-to=origin/master master
+git remote add origin https://github.com/anjueappen/420labs.git
+git commit -m "still broken"
+git commit --ammend/
+git commit -m "sending values out of sync. porting to single write/read in next commit"
+git add [1;2C
+./client requests.txt 
+make clea
+ps -A
+ps | aux
+ps |aux
+make clear
+git commit -m "debugging with Clion"
+cat Makefile 
+make & ./client requests.txt
+make & ./client /Users/anjueappen/420Labs/lab2/requests.txt
+git commit -m "reading from requests file"
+git rm *.dSYM --cached -r 
+git rm -r cmake-build-debug/* --cached
+git rm -r cmake-build-debug/*
+git rm cmake-build-debug/*
+git add requests.txt 
+git add .
+make & ./client ./requests.txt
+./client ./requests.txt 
+./client 
+pip install  matplotlib
+mv tfcv 493_capstone/
+mv sketchnet 493_capstone/
+mkdir 493_capstone
+git clone https://github.com/codeminders/tfcv.git
+git clone 
+cd sketchnet/
+cd
+mkdir sketchnet
+which python
+exit
+source deactivate
+conda install  scikit-learn
+conda search -t conda scikit
+anaconda search -t conda scikit
+conda install  scikit
+pip install jupyter
+pip install tensorflow
+sudo mv lib/libcudnn* /Developer/NVIDIA/CUDA-8.0/lib
+sudo mv include/cudnn.h /Developer/NVIDIA/CUDA-8.0/include/
+cd cuda
+tar -xvf cudnn-8.0-osx-x64-v5.1.tar
+bash
+whereis libcudnn*
+whereis libcudnn
+ls lib/
+~/cuda-samples/bin/x86_64/darwin/release/deviceQuery
+sudo ln -s /Developer/NVIDIA/CUDA-8.0/lib/libcudnn* /usr/local/cuda/lib/
+pip install ipython
+sudo easy_install wheel
+pip install -U numpy
+sudo easy_install -U numpy
+sudo easy_install -U six
+brew install bazel
+git clone https://github.com/tensorflow/tensorflow
+find nvidia
+whereis nvidia
+cuda 
+nvidia-smi
+popd
+pushd ~/cuda-samples
+cp -r /usr/local/cuda/samples ~/cuda-samples
+cd cuda/
+ls 
+tar -xvf Downloads/cudnn-8.0-osx-x64-v5.1.tar
+untar Downloads/cudnn-8.0-osx-x64-v5.1.tar
+mv Downloads/cudnn-8.0-osx-x64-v5.1.tar .
+condactivate twitter35
+conda env list
+vim ~/.config/fish/config.fish 
+make uninstall
+chsh bash
+cat
+fish
+nvcc --version
+echo $PATH; echo $fish_user_paths.
+source  ~/.config/fish/config.fish 
+echo $PATH
+eval $PATH
+$PATH
+set -xg PATH "$CUDA_HOME/bin:$PATH"
+cat  ~/.config/fish/config.fish 
+source ~/.config/fish/config.fish 
+source ~/.config/fish/config.fish
+source ~/.bash_profile
+find / -xdev -type f -print0 | xargs -0 grep -H "miniconda3"
+source ~/.con
+cuda version
+vim ~/.bash_profile 
+brew cask install cuda
+brew install coreutils
+opencl 
+conda env remove -n snowflakes
+whereis miniconda3
+cat ~/.bash_profile 
+git commit -m "added logo"
+git add logo.png 
+mv Screen\ Shot\ 2017-01-29\ at\ 9.55.58\ AM.png logo.png
+mv ~/Desktop/Screen\ Shot\ 2017-01-29\ at\ 9.55.58\ AM.png .
+mv ~/Desktop/Screen\ Shot\ 2017-01-29\ at\ 9.55.58\ AM.png 
+ython
+git commit -m "readbility of tweets"
+git add ../../gladitude_server/server.py
+git add App.js 
+git commit -m  "rendering almost working!!"
+git commit -m  "proper output for react"
+python server.py 
+pip install flask_cors
+npm install babel-core es6-promise react react-dom
+npm install babel babel-core es6-promise react react-dom
+npm install xmlhttprequest
+rhino ServerInterface.js
+brew cask install java
+brew update
+cd src/
+cd ../gladitude-ui/
+brew install rhino
+git commit -m "do your shit kyle, s'all good"
+npm start
+cd gladitude/gladitude-ui/
+cd ../gladitude_ui
+cd ../gladitude_server/
+git commit 
+git add ../gladitude-ui/src/App.js
+git add../gladitude-ui/src/App.js
+git tatus
+git revert 68dce1be89883b51d98756336f180a5b70f8bb1d
+git merge --abort 
+table = dynamodb.Table('gladitude')
+dynamodb = boto3.resource('dynamodb')
+app = Flask(__name__)
+import preprocessor as p
+from textblob import TextBlob
+import json
+from boto3.dynamodb.conditions import Key, Attr
+python 
+from split_hashtags import  split_hashtag_to_words_all_possibilities
+import boto3
+from flask import Flask
+cd ../twitter/
+python split_hashtags.py 
+pip install pyenchant
+pip install enchant
+pip install tweet-preprocessor
+pip install autocorrect
+pip install htmlPArser
+pip install textblob
+python  test.py 
+pip install urllib
+pip install urllib2
+pip install queue
+pip install Queue
+git stash pop
+git add src/App.js
+git stash 
+git commit -m "Anjus shitcode"
+git add ../gladitude_server/
+git add src/HeaderBar.js
+aws configure
+brew install awscli
+pip install awscli
+pip install Flask
+pip install boto3
+pip install bodo3
+pip install flask
+rm -rf ./*
+cd gladitude_server/
+cookiecutter https://github.com/sloria/cookiecutter-flask.git
+pip install cookiecutter
+npm install classnames
+npm install es6-promise
+npm install react-search-bar --save
+npm install 
+cd gladitude-ui/
+pip install nl;tk
+git commit -m "yml file updated"
+git add twitter.yaml
+conda env export > twitter.yaml
+rm libpostal/
+git commit -m "my shit"
+git add twitter/twitter_tweepy.py
+python twitter/twitter_tweepy.py
+realpath datadir
+sudo su 
+bash ./postal.sh 
+vim postal.sh 
+rm -rf libpostal/
+vim  postal.sh
+brew install snappy autoconf automake libtool pkg-config
+pip install postal
+lks
+cat zip2fips.json
+cat zip
+pip install usaddress
+pip install geopy
+pip install geolocator
+pip install zipcode
+git add .gitignore
+git commit -m "getting status data"
+cd gladitude/
+git clone https://github.com/bgruber/zip2fips.git
+git stash  pop
+pip install -U boto
+pip install boto
+pip install dynamodb-mapper
+cat twitter/twitter.yaml 
+python twitter/twitter_tweepy.py 
+git commit -m "twitter python"
+git rm --cached twitter/.idea/workspace.xml
+git rm --cached twitter/.idea/misc.xml twitter/.idea/modules.xml twitter/.idea/twitter.iml
+ls -a
+mv ~/.gitignore .
+vim ~/.gitignore 
+git add twitter
+mv ../twitter/ .
+git clone https://github.com/Gknoblau/gladitude.git
+git clone auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+git clone
+rm -rf .git/
+python twitter_tweepy.py 
+cd twitter/
+pip install tweepy
+pip install twitter 
+conda create -n twitter35  python=3.5 
+ls ~/Applications/
+conda create -n twitter  python=2.7 anaconda
+conda env create -n twitter python=2.7 anaconda
+conda env create -n twitter python=2
+conda env create -n twitter python=2.7
+condactivate snowflakes
+ls miniconda2/envs/
+condalist 
+sudo easy_install pip
+brew install pip
+pip install twitter
+npm install -g yarnpkg webpack
+ls src/
+cd demoDash/
+create-react-app demoDash
+create_react_app demodash
+npm install -g create-react-app
+echo '{ "presets": ["es2015"] }' > ~/.babelrc
+npm install --save-dev babel-cli babel-preset-es2015
+ls -a ~
+mv .babelrc ~
+echo '{ "presets": ["react"] }' > .babelrc
+npm install --save-dev babel-cli babel-preset-react
+npm install --save react react-dom
+brew install npm
+git commit -m "mean filter actually working LOL"
+git commit -m "Geoff's suggestions, each blur op done on orignal img for clarity"
+git add app/src/main/java/com/example/anjueappen/a493_lab2/MeanFilter.java app/src/main/java/com/example/anjueappen/a493_lab2/MedianFilter.java
+git commit -m "working but slooow"
+git add lab2
+cd 493_Lab22/
+cd lab2/
+git commit -m "lab 2 actual first commit"
+git rm -r --cached lab2/*.dSYM
+git rm -r lab2/cmake-build-debug --cached
+git rm -r lab2/cmake-build-debug
+git rm lab2/cmake-build-debug
+git show --name-status
+git show
+git add ./C
+make all
+cat -e -t -v  Makefile 
+vim Makefile 
+make all 
+git commit -m "lab 2 first commit"
+gcc -g -Wall client.c   -o client -lpthread
+gcc -g -Wall server.c  -o server -lpthread
+gcc -g -Wall arrayRW.c  -lpthread
+git commit -m "filter isn't redisplaying the image..."
+git commit -m "mean filter working"
+git add src/main/java/com/example/anjueappen/a493_lab2/MedianFilter.java
+git commit -m "changed UI to be prettierl"
+git commit -m "wokring on oneplus, but not loading picture... "
+git commit -m "wokring!! but not reducing blur.."
+git commit -m "tried 2 ways"
+git add src/main/java/com/example/anjueappen/a493_lab2/UpdateImageButtonTask.java
+git commit -m "loading image from library"
+git add libs/
+git add src/main/java/com/example/anjueappen/a493_lab2/UpdateImageTask.java
+pwd
+ls libs/
+mv ~/Downloads/boofcv-v0.26-libs/BoofCV-android-0.26.jar ./libs/
+mv ~/Downloads/boofcv-v0.26-libs/BoofCV-android-0.26.jar 
+cd app/
+ls ~/.ssh
+gcc -g -Wall -o main main.c -lpthread; ./main 1
+cd 1346226-H1/
+./1346226-H1/main 1
+./matrixgen -s 1 -p
+git commit -m "WORKING! and cleaned up"
+gcc -g -Wall -o main main.c -lpthread; ./main 64
+conda 
+chsh -s /bin/bash
+condactivate 
+condactivate root
+conda
+./serialtester
+gcc serialtester.c lab1_IO.c -o serialtester
+./se
+gcc -g -Wall -o main main.c -lpthread; ./main 16
+gcc -g -Wall -o main main.c -lpthread; ./main 4
+./matrixgen -s 64 -p
+gcc -g -Wall -o main main.c -lpthread; ./main 9
+gcc -g -Wall -o main main.c -lpthread; ./main 3
+./matrixgen -s 9 -p
+./matrixgen -s 16 -p
+git commit -m "WORKING! not for 1x1 matricies"
+cat data_output 
+git checkout serialtester.c 
+./serialtester 
+cat data_input 
+3.03.0
+cat data_ou
+cata data_input 
+git remote remove origin
+rm -rf 493_Lab22 493_Lab2
+mv 493_Lab22 ece493_aeappen
+git remote add origin ece493_aeappen@gitrepo:ece493_aeappen.git
+git commit -m "first commit "
+cd ../493_Lab22/
+git 
+cd 493_Lab2
+sclear
+cat /Users/anjueappen/.ssh/493_id_rsa.pub
+ssh-keygen -t rsa -b 4096 -C "aeappen@ualberta.ca"
+cat ~/.ssh/493_id_rsa.pub 
+ssh-keygen -t rsa -b 4096 -C "ccid@ualberta.ca"
+ls ~/.ssh.
+ssh-keygen -t rsa -b 4096 -C "cicd@ualberta.ca"
+cat /Users/anjueappen/.ssh/id_rsa
+ssh-keygen −t rsa −b 4096 −C "ccid@ualberta.ca"
+requires android.permission.READ_EXTERNAL_STORAGE
+git diff main.c
+git staits
+cd 420Labs/lab1/
+COMMAND gcc -g -Wall -o main main.c -lpthread  COMMAND ./main 3
+./main 3
+gcc -g -Wall -o main main.c -lpthread 
+gcc -g -Wall -o main main.c -lpthread -v
+git diff  main.c
+rm main
+rm -rf Makefile 
+vim Makefile
+vim make
+git commit -m "compiling but address boundary error"
+vim data_input 
+git commit -m "compiling after copying methods over"
+git commit -m "changed error :)"
+git commit -m "partway work...compiling w/errors"
+git rebase -i d6289f6540c70722586704e3e16ebdc8bc145f68
+git rebase -i HEAD
+git rebase -i HEAD^^
+git rebase -i HEAD^^^
+git lob
+git commit -m "linker error"
+rm -rf main 
+gcc -g -Wall -o main main.c -lpthread
+gcc lab1_IO.c 
+cd lab1/
+git commit -m "lab1 - first commit"
+git add lab1/
+./matrixgen 9
+gcc matrixgen.c -o matrixgen
+sudo chsh -s /bin/bash
+sudo chsh -s /usr/local/bin/fish
+conda ls
+conda env create -n starter 
+source /Users/anjueappen/.config/fish/config.fish
+source $HOME/.config/fish/conda.fish
+ls ~/.config/fish/config.fish
+bash ./Miniconda2-latest-MacOSX-x86_64.sh
+cd Downloads/
+cd panorama/
+mv poanorama/ panorama
+mv Panorama/ poanorama/
+cd .
+cd Panorama/
+chsh -s /usr/local/bin/fish
+./main 2
+gcc -g -Wall -o pth_mat_vect pth_mat_vect.c -lpthread
+gcc -g -Wall -o pth_mat_vect main.c -lpthread -v
+gcc -g -Wall -o pth_mat_vect main.c -lpthread
+mv Development\ Kit\ Lab\ 1/ lab1
+mv ~/Downloads/Development\ Kit\ Lab\ 1/ .
+cd 420Labs/
+ipconfig
+./pth_mat_vect 5
+pth_mat_vect 5
+cd Development\ Kit\ Lab\ 1/
+mv pth_mat_vect.c Development\ Kit\ Lab\ 1/
+./pth_hello 5
+./pth_hello 2
+./pth_hello <thread_count>
+gcc -g -Wall -o pth_hello pth_hello.c -lpthread
+mv pth_hello.c Development\ Kit\ Lab\ 1/
+ks
+echo $SHELL
+echo $shell 
+sudo vim /etc/shells
+vim /etc/shells
+brew install fish
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+sudo yum install brew
+mkdir ~/420Labs
