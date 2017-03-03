@@ -13,19 +13,22 @@ import { Router, Route, browserHistory } from 'react-router';
 // TODO i18n // import i18n from 'meteor/universe:i18n';
 
 // route components
-import AppContainer from '../../ui/containers/AppContainer.jsx';
 import ParticipantContainer from '../../ui/containers/ParticipantContainer.jsx';
 import HostContainer from '../../ui/containers/HostContainer.jsx';
+import NullPage from '../../ui/pages/NullPage.jsx';
 
 // TODO i18n // i18n.setLocale('en');
 
 export const renderRoutes = () => (
   <Router history={browserHistory}>
     <Route path="/" component={ParticipantContainer}>
-      <Route path="host" component={HostContainer} />
-      <Route path="join" component={AppContainer} />
-      <Route path="play" component={AppContainer} />
-      <Route path="*" component={AppContainer} />
+      <Route path="rooms" component={NullPage} />
+      <Route path="join" component={NullPage} />
+      <Route path="play" component={NullPage} />
+    </Route>
+    <Route path="host" component={HostContainer}>
+      <Route path="create" component={NullPage} />
+      <Route path="welcome" component={NullPage} />
     </Route>
   </Router>
 );

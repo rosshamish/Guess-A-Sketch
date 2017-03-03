@@ -29,23 +29,25 @@ export default class HostLayout extends React.Component {
   render() {
     console.log('HostLayout rendering');
 
+    const {
+      children,
+    } = this.props;
+
     return (
       <div id="container">
         <div id="content-container">
           <h1>Host says Hello World!</h1>
+          { this.props.children }
         </div>
       </div>
     );
   }
 }
 
-// HostLayout.propTypes = {
-//   user: React.PropTypes.object,      // current meteor user
-//   loading: React.PropTypes.bool,     // subscription status
-//   location: React.PropTypes.object,  // current router location
-//   params: React.PropTypes.object,    // parameters of the current route
-// };
+HostLayout.propTypes = {
+  children: React.PropTypes.element,
+};
 
-// HostLayout.contextTypes = {
-//   router: React.PropTypes.object,
-// };
+HostLayout.contextTypes = {
+  router: React.PropTypes.object,
+};
