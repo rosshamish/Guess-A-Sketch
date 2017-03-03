@@ -1,5 +1,10 @@
 <template name="clicker">
-  <button>Create A Room</button>
+
+  <form>
+    Room Name:<br>
+    <input type="text" name="roomName"><br>
+    <button>Create A Room</button>
+  </form>
 
   <table id="availableRooms">
     <thead>
@@ -9,7 +14,7 @@
     </thead>
     <tbody id="tbody">
           {{#each rooms}}
-            <tr>{{count}}</tr>
+            <tr>{{name}}</tr>
           {{/each}}
     </tbody>
 </table>
