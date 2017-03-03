@@ -24,3 +24,4 @@ react-meteor-data
 session
 arillo:flow-router-helpers
 blaze-html-templates
+universe:i18n

@@ -32,6 +32,7 @@ export default class ParticipantLayout extends React.Component {
       user,
       location,
       params,
+      children,
     } = this.props;
 
     console.log('ParticipantLayout.jsx render()');
@@ -40,6 +41,7 @@ export default class ParticipantLayout extends React.Component {
       <div id="container">
         <div id="content-container">
           <h1>Participant says Hello World!</h1>
+          { children }
         </div>
       </div>
     );
@@ -50,6 +52,7 @@ ParticipantLayout.propTypes = {
   user: React.PropTypes.object,      // current meteor user
   location: React.PropTypes.object,  // current router location
   params: React.PropTypes.object,    // parameters of the current route
+  children: React.PropTypes.element,
 };
 
 ParticipantLayout.contextTypes = {
