@@ -1,4 +1,17 @@
 <template name="clicker">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+  <button>Create A Room</button>
+
+  <table id="availableRooms">
+    <thead>
+        <tr>
+            <th>Available Rooms:</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+          {{#each rooms}}
+            <tr>{{count}}</tr>
+          {{/each}}
+    </tbody>
+</table>
+
 </template>
