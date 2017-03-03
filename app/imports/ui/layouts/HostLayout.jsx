@@ -37,7 +37,7 @@ export default class HostLayout extends React.Component {
       <div id="container">
         <div id="content-container">
           <h1>Host says Hello World!</h1>
-          { this.props.children }
+          { children }
         </div>
       </div>
     );
