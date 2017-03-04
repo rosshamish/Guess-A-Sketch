@@ -1,6 +1,8 @@
 import '/imports/startup/server';
+import '../imports/api/collections/rooms'
 
 import { Meteor } from 'meteor/meteor';
+
 
 const PROMPTS = ['cat', 'dog', 'monkey', 'freezer', 'ice cream'];
 

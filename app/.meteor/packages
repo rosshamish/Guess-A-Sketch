@@ -25,4 +25,4 @@ session
 arillo:flow-router-helpers
 blaze-html-templates
 universe:i18n
-aldeed:simple-schema
+aldeed:collection2-core@2.0.0

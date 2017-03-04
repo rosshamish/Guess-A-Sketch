@@ -2,22 +2,21 @@
  * Rooms collection. Insersion/update/deletion can only be allowed
  */
 
-import {Rounds} from 'rounds';
-import {Players} from 'players';
+import { Mongo } from  'meteor/mongo';
+// import {Players} from 'players';
 
 Rooms = new Mongo.Collection('rooms');
-Rooms.
-Rooms = new SimpleSchema({
-  roomID: { type: String, regEx: SimpleSchema.RegEx.Id },
-  name: { type: String },
-  rounds: { type: [Rounds.schema], minCount: 1 },
-  players: { type: [Players.schema], defaultValue: [] },
-  status: { type: String, allowedValues: ['CREATED', 'PLAYING', 'COMPLETE'] },
-});
+// Rooms = new SimpleSchema({
+//   roomID: { type: String, regEx: SimpleSchema.RegEx.Id },
+//   name: { type: String },
+//   rounds: { type: [Rounds.schema], minCount: 1 },
+//   players: { type: [Players.schema], defaultValue: [] },
+//   status: { type: String, allowedValues: ['CREATED', 'PLAYING', 'COMPLETE'] },
+// });
 
 
 Rooms.allow({
-  insert(name, roundCount) {
+  insert() {
     // unique_name = (Rooms.find({ name: { $exists: true, $in: [name] } }).count() === 0);
     // valid_rounds = roundCount > 0;
     //
