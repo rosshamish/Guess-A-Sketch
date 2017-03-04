@@ -19,5 +19,6 @@ export default createContainer(() => {
     user: Meteor.user,
     loading: false,
     connected: Meteor.status().connected,
+    message: 'Anju says hi',
   };
 }, ParticipantLayout);

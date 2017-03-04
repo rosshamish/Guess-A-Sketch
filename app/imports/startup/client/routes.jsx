@@ -34,6 +34,7 @@ import NullPage from '../../ui/pages/NullPage.jsx';
 // TODO /rooms -> Rooms, and page Rooms figures out if there are rooms available or not
 export const renderRoutes = () => (
   <Router history={browserHistory}>
+
     <Route path="/" component={ParticipantContainer}>
       <Route path="rooms" component={RoomsAvailable} />
       <Route path="join" component={LoginPage} />
@@ -42,11 +43,13 @@ export const renderRoutes = () => (
       <Route path="round-over" component={ParticipantResultsScreen} />
       <Route path="game-over" component={IndividualScoreboard} />
     </Route>
+
     <Route path="host" component={HostContainer}>
       <Route path="create" component={CreateARoom} />
       <Route path="lobby" component={WelcomePage} />
       <Route path="collage" component={CollageScreen} />
       <Route path="game-over" component={Scoreboard} />
     </Route>
+
   </Router>
 );
