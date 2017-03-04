@@ -2,7 +2,7 @@
  * Created by anjueappen on 3/3/17.
  */
 
-Rooms = new Mongo.Collection('hello');
+Rooms = new Mongo.Collection('rooms');
 
 Rooms.allow({
   insert() { return false; },

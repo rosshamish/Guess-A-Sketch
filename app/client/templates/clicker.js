@@ -2,27 +2,30 @@
 Session.setDefault('counter', 0);
 
 Template.clicker.helpers({
-  counter: function () {
+  counter() {
     return Session.get('counter');
   },
   rooms() {
+    console.log(Rooms.find())
     return Rooms.find();
-  }
+  },
 });
 
 Template.clicker.events({
   'submit form': function (event) {
     event.preventDefault();
-    var room_name = event.target.roomName.value;
+    const room_name = event.target.roomName.value;
+    const num_rounds = event.target.numRounds.value;
 
-    let count = Session.get('counter') + 1;
+    const count = Session.get('counter') + 1; // TODO: refactor ID generation to server side, not using counter
 
     Session.set('counter', count);
 
-    Meteor.call('insertRoom', count, room_name, ( error ) => {
-      if ( error ) {
-        console.log( error );
-      }
-    });
-  }
+    Meteor.call('insertRoom', count, room_name, num_rounds,
+        (error) => {
+          if (error) {
+            console.log(error);
+          }
+        });
+  },
 });
