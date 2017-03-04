@@ -14,29 +14,26 @@ import { Router, Route, browserHistory } from 'react-router';
 
 // route components
 import ParticipantContainer from '../../ui/containers/ParticipantContainer.jsx';
-import RoomsAvailable from '../../ui/pages/RoomsAvailable.jsx';
-import LoginPage from '../../ui/pages/LoginPage.jsx';
-import ParticipantGameScreen from '../../ui/pages/ParticipantGameScreen.jsx';
-import WaitingPage from '../../ui/pages/WaitingPage.jsx';
-import ParticipantResultsScreen from '../../ui/pages/ParticipantResultsScreen.jsx';
-import IndividualScoreboard from '../../ui/pages/IndividualScoreboard.jsx';
+import RoomListPage from '../../ui/pages/participant/RoomListPage.jsx';
+import LoginPage from '../../ui/pages/participant/LoginPage.jsx';
+import ParticipantGameScreen from '../../ui/pages/participant/ParticipantGameScreen.jsx';
+import WaitingPage from '../../ui/pages/participant/WaitingPage.jsx';
+import ParticipantResultsScreen from '../../ui/pages/participant/ParticipantResultsScreen.jsx';
+import IndividualScoreboard from '../../ui/pages/participant/IndividualScoreboard.jsx';
 
 import HostContainer from '../../ui/containers/HostContainer.jsx';
-import CreateARoom from '../../ui/pages/CreateARoom.jsx';
-import WelcomePage from '../../ui/pages/WelcomePage.jsx';
-import CollageScreen from '../../ui/pages/CollageScreen.jsx';
-import Scoreboard from '../../ui/pages/Scoreboard.jsx';
-
-import NullPage from '../../ui/pages/NullPage.jsx';
+import CreateARoom from '../../ui/pages/host/CreateARoom.jsx';
+import WelcomePage from '../../ui/pages/host/WelcomePage.jsx';
+import CollageScreen from '../../ui/pages/host/CollageScreen.jsx';
+import Scoreboard from '../../ui/pages/host/Scoreboard.jsx';
 
 // TODO i18n // i18n.setLocale('en');
 
-// TODO /rooms -> Rooms, and page Rooms figures out if there are rooms available or not
 export const renderRoutes = () => (
   <Router history={browserHistory}>
 
     <Route path="/" component={ParticipantContainer}>
-      <Route path="rooms" component={RoomsAvailable} />
+      <Route path="rooms" component={RoomListPage} />
       <Route path="join" component={LoginPage} />
       <Route path="lobby" component={WaitingPage} />
       <Route path="play" component={ParticipantGameScreen} />
