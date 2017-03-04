@@ -27,11 +27,8 @@ import WelcomePage from '../../ui/pages/host/WelcomePage.jsx';
 import CollageScreen from '../../ui/pages/host/CollageScreen.jsx';
 import Scoreboard from '../../ui/pages/host/Scoreboard.jsx';
 
-import NullPage from '../../ui/pages/NullPage.jsx';
-
 // TODO i18n // i18n.setLocale('en');
 
-// TODO /rooms -> Rooms, and page Rooms figures out if there are rooms available or not
 export const renderRoutes = () => (
   <Router history={browserHistory}>
 
