@@ -36,7 +36,7 @@ export const renderRoutes = () => (
   <Router history={browserHistory}>
 
     <Route path="/" component={ParticipantContainer}>
-      <Route path="rooms" component={RoomsAvailable} />
+      <Route path="rooms" component={RoomsPage} />
       <Route path="join" component={LoginPage} />
       <Route path="lobby" component={WaitingPage} />
       <Route path="play" component={ParticipantGameScreen} />
