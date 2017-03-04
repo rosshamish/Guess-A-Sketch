@@ -32,7 +32,6 @@ export default class ParticipantLayout extends React.Component {
       location,
       params,
       children,
-        message,
     } = this.props;
 
     console.log('ParticipantLayout.jsx render()');
@@ -42,7 +41,6 @@ export default class ParticipantLayout extends React.Component {
         <div id="content-container">
           <h1>Participant says Hello World!</h1>
           { children }
-          <h1>{message}</h1>
         </div>
       </div>
     );
@@ -54,7 +52,6 @@ ParticipantLayout.propTypes = {
   location: React.PropTypes.object,  // current router location
   params: React.PropTypes.object,    // parameters of the current route
   children: React.PropTypes.element,
-  message: React.PropTypes.object,
 };
 
 ParticipantLayout.contextTypes = {
