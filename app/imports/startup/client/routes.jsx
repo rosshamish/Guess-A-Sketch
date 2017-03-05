@@ -24,6 +24,7 @@ import IndividualScoreboard from '../../ui/pages/participant/IndividualScoreboar
 import HostContainer from '../../ui/containers/HostContainer.jsx';
 import CreateARoom from '../../ui/pages/host/CreateARoom.jsx';
 import WelcomePage from '../../ui/pages/host/WelcomePage.jsx';
+import HostGameScreen from '../../ui/pages/host/HostGameScreen.jsx';
 import CollageScreen from '../../ui/pages/host/CollageScreen.jsx';
 import Scoreboard from '../../ui/pages/host/Scoreboard.jsx';
 
@@ -44,6 +45,7 @@ export const renderRoutes = () => (
     <Route path="host" component={HostContainer}>
       <Route path="create" component={CreateARoom} />
       <Route path="lobby" component={WelcomePage} />
+      <Route path="play" component={HostGameScreen} />
       <Route path="collage" component={CollageScreen} />
       <Route path="game-over" component={Scoreboard} />
     </Route>
