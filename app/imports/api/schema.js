@@ -1,15 +1,15 @@
 /**
  * Created by anjueappen on 3/4/17.
  */
+import SimpleSchema from 'simpl-schema';
 
 export const Schema = {};
 
 Schema.Player = new SimpleSchema({
-    playerID: {
+    playerID: {//TODO: unique
         type: String,
         label: "Player ID",
         regEx: SimpleSchema.RegEx.Id,
-        unique: true,
     },
     name: {
         type: String,
@@ -22,32 +22,11 @@ Schema.Player = new SimpleSchema({
     },
 });
 
-Schema.Round = new SimpleSchema({
-    roundID:{
-        type: String,
-        label: "Round ID",
-        regEx: SimpleSchema.RegEx.Id,
-        unique: true,
-
-    },
-    prompt:{
-        type: String,
-        label: "Round Prompt",
-    },
-    sketches:{
-        type:[Schema.Sketch],
-        label: "Round Sketches",
-        defaultValue: [],
-        minCount: 0,
-    },
-});
-
 Schema.Sketch = new SimpleSchema({
-    sketchID: {
+    sketchID: { //TODO: unique
         type: String,
         label: "Sketch ID",
         regEx: SimpleSchema.RegEx.Id,
-        unique: true,
     },
     player:{
         type: Schema.Player,
@@ -68,27 +47,56 @@ Schema.Sketch = new SimpleSchema({
     },
 });
 
+Schema.Round = new SimpleSchema({
+    roundID:{//TODO: unique
+        type: String,
+        label: "Round ID",
+        regEx: SimpleSchema.RegEx.Id,
+
+    },
+    prompt:{
+        type: String,
+        label: "Round Prompt",
+    },
+    sketches:{
+        type: Array,
+        label: "Round Sketches",
+        defaultValue: [],
+        minCount: 0,
+    },
+    "sketches.$": {
+        type: Schema.Sketch,
+    },
+
+});
+
 Schema.Room = new SimpleSchema({
-    roomID: {
+    roomID: {//TODO: unique
         type: String,
         label: "Room ID",
         regEx: SimpleSchema.RegEx.Id,
-        unique: true,
     },
-    name: {
+    name: {//TODO: unique
         type: String,
         label: "Room Name",
-        unique: true,
     },
     rounds: {
-        type: [Schema.Round],
+        type: Array,
         label: "Round List",
         minCount: 1,
     },
+    'rounds.$':{
+        type: Schema.Round,
+    },
+
     players: {
-        type: [Schema.Player],
+        type: Array,
         label: "Player List",
     },
+    'players.$': {
+        type: Schema.Player,
+    },
+
     status: {
         type: String,
         label: "Room Status",
