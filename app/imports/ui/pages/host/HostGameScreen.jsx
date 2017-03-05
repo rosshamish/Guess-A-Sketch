@@ -13,15 +13,28 @@ export default class HostGameScreen extends BaseComponent {
 
   render() {
     const {
-      room,
+      round,
     } = this.props;
 
-    return (
-      <p>Will display Host Game Screen. Prompt! Timer!</p>
-    );
+    let HostGame;
+    if (round == null) {
+      HostGame = (
+        <h3>Error displaying host game screen. Please try again.</h3>
+      );
+    } else {
+      HostGame = (
+        <div>
+        <p>Will display Host Game Screen. Prompt! Timer!</p>
+        <Prompt round = {round} />
+        </div>
+      );
+    }
+
+    return HostGame;
+
   }
 }
 
 HostGameScreen.propTypes = {
-  room: React.PropTypes.object,
+  round: React.PropTypes.object,
 };
