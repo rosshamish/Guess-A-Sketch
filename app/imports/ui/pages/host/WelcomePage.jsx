@@ -11,6 +11,12 @@ export default class WelcomePage extends BaseComponent {
     };
   }
 
+  onStartGame(event){
+    event.preventDefault(); // Don't reload the page
+    console.log('Starting Game.');
+    // add proper routing functionality here
+  }
+
   render() {
     // for testing - will remove hardcoded room info once routing is functional
     Rooms.insert({ name: 'ABCD' });
@@ -26,11 +32,11 @@ export default class WelcomePage extends BaseComponent {
       );
     } else {
       WelcomePage = (
-        <div>
-        <h3>Welcome!</h3>
-        <p>Room Code: {room.name}</p>
-        <button>Start</button>
-        </div>
+        <form onSubmit={this.onStartGame}>
+          <h3>Welcome!</h3>
+          <p>Room Code: {room.name}</p>
+          <button type="submit">Start Game</button>
+        </form>
       );
     }
 

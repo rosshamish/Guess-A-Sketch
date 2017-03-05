@@ -10,7 +10,7 @@ export default class CreateARoom extends BaseComponent{
         super(props);
         this.state = {
             roomName: '',
-            roundCount: 0
+            roundCount: 10 // set a default
         };
 
         this.onRoomNameChange = this.onRoomNameChange.bind(this);
@@ -46,6 +46,7 @@ export default class CreateARoom extends BaseComponent{
 
         Rooms.insert({ name: this.state.roomName });
 
+        // possibly not fully functioning routing
         this.props.router.push({
           pathname: '/host/lobby',
           state: { room: Rooms.findOne({name: this.state.roomName}) }
