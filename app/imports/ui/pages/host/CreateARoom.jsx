@@ -1,5 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Link } from 'react-router'
 
 import {Rooms} from '../../../api/collections/rooms';
 import BaseComponent from '../../components/BaseComponent.jsx';
@@ -45,7 +46,10 @@ export default class CreateARoom extends BaseComponent{
 
         Rooms.insert({ name: this.state.roomName });
 
-        this.props.router.push('/lobby')
+        this.props.router.push({
+          pathname: '/host/lobby',
+          state: { room: Rooms.findOne({name: this.state.roomName}) }
+        });
     }
 
     render(){

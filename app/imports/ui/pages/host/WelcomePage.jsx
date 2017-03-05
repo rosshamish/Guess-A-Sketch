@@ -1,6 +1,8 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
+import {Rooms} from '../../../api/collections/rooms';
+
 export default class WelcomePage extends BaseComponent {
   constructor(props) {
     super(props);
@@ -9,13 +11,15 @@ export default class WelcomePage extends BaseComponent {
   }
 
   render() {
+    // for testing - will remove hardcoded room info once routing is functional
+    Rooms.insert({ name: 'ABCD' });
     const {
-      rooms,
+      room = Rooms.findOne({name: 'ABCD'}),
+      //room,
     } = this.props;
 
-
     let WelcomePage;
-    if (!rooms || !rooms.length) {
+    if (room == null) {
       WelcomePage = (
         <h3>Error setting up your room. Please try again.</h3>
       );
@@ -23,7 +27,7 @@ export default class WelcomePage extends BaseComponent {
       WelcomePage = (
         <div>
         <h3>Welcome!</h3>
-        <p>Room Code: ??</p>
+        <p>Room Code: {room.name}</p>
         </div>
       );
     }
@@ -34,5 +38,5 @@ export default class WelcomePage extends BaseComponent {
 }
 
 WelcomePage.propTypes = {
-  room: React.PropTypes.array,
+  room: React.PropTypes.object,
 };
