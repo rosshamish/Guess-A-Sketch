@@ -1,6 +1,7 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
+// will be able to remove import after routing is functional
 import {Rooms} from '../../../api/collections/rooms';
 
 export default class WelcomePage extends BaseComponent {
@@ -28,6 +29,7 @@ export default class WelcomePage extends BaseComponent {
         <div>
         <h3>Welcome!</h3>
         <p>Room Code: {room.name}</p>
+        <button>Start</button>
         </div>
       );
     }
