@@ -5,9 +5,8 @@
 import { Mongo } from  'meteor/mongo';
 import { Schema } from '../schema';
 
-Rooms = new Mongo.Collection('rooms');
+export const Rooms = new Mongo.Collection('rooms');
 Rooms.attachSchema(Schema.Room);
-
 
 Rooms.allow({
   insert() {return true;},

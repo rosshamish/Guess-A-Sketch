@@ -74,7 +74,7 @@ Schema.Room = new SimpleSchema({
     roomID: {//TODO: unique
         type: String,
         label: "Room ID",
-        regEx: SimpleSchema.RegEx.Id,
+        // regEx: SimpleSchema.RegEx.Id,
     },
     name: {//TODO: unique
         type: String,
@@ -84,6 +84,7 @@ Schema.Room = new SimpleSchema({
         type: Array,
         label: "Round List",
         minCount: 1,
+        optional: true, //TODO: Remove this
     },
     'rounds.$':{
         type: Schema.Round,
@@ -92,6 +93,9 @@ Schema.Room = new SimpleSchema({
     players: {
         type: Array,
         label: "Player List",
+        defaultValue: []
+        // optional: true, //TODO: Remove this
+
     },
     'players.$': {
         type: Schema.Player,
