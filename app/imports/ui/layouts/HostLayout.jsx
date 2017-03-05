@@ -45,6 +45,9 @@ export default class HostLayout extends React.Component {
 }
 
 HostLayout.propTypes = {
+  user: React.PropTypes.object,      // current meteor user
+  location: React.PropTypes.object,  // current router location
+  params: React.PropTypes.object,    // parameters of the current route
   children: React.PropTypes.element,
 };
 
