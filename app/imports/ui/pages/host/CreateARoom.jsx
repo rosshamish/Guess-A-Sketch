@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import {Rooms} from '../../../api/collections/rooms';
 import BaseComponent from '../../components/BaseComponent.jsx';
@@ -25,19 +26,25 @@ export default class CreateARoom extends BaseComponent{
     }
 
     //TODO: Add check for unique room name at this stage?
+    //TODO: Checking for existing rooms names are
     onCreateRoom(event){
         event.preventDefault();
-        if(!this.state.roomName || !this.state.roundCount > 0){
-            console.log('Cannot create room. Fill all parameters correctly');
+
+        if(!this.state.roomName){
+            console.log('Fill in Room name');
             return;
+        }else if(!this.state.roundCount > 0){
+            console.log('RoundCount must be > 0 ');
+            return;
+        // }else if(Rooms.find({name: {$eq: this.state.roomName}})){
+        //     console.log('Room name already exists');
+        //     return;
         }else{
             console.log('Creating room ' + this.state.roomName);
         }
 
-        const name = this.state.roomName;
-        const count = this.state.roundCount;
 
-        Rooms.insert({roomID: '5555', name: name });
+        Rooms.insert({ name: this.state.roomName });
     }
 
     render(){
