@@ -3,16 +3,10 @@
  */
 
 import { Mongo } from  'meteor/mongo';
-// import {Players} from 'players';
+import {Schema} from '../schema';
 
 Rooms = new Mongo.Collection('rooms');
-// Rooms = new SimpleSchema({
-//   roomID: { type: String, regEx: SimpleSchema.RegEx.Id },
-//   name: { type: String },
-//   rounds: { type: [Rounds.schema], minCount: 1 },
-//   players: { type: [Players.schema], defaultValue: [] },
-//   status: { type: String, allowedValues: ['CREATED', 'PLAYING', 'COMPLETE'] },
-// });
+Rooms.attachSchema(Schema.Room);
 
 
 Rooms.allow({
