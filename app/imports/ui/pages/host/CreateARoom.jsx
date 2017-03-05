@@ -43,8 +43,9 @@ export default class CreateARoom extends BaseComponent{
             console.log('Creating room ' + this.state.roomName);
         }
 
-
         Rooms.insert({ name: this.state.roomName });
+
+        this.props.router.push('/lobby')
     }
 
     render(){
