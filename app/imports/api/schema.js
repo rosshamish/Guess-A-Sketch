@@ -6,11 +6,6 @@ import SimpleSchema from 'simpl-schema';
 export const Schema = {};
 
 Schema.Player = new SimpleSchema({
-    playerID: {//TODO: unique
-        type: String,
-        label: "Player ID",
-        regEx: SimpleSchema.RegEx.Id,
-    },
     name: {
         type: String,
         label: "Player Name",
@@ -23,11 +18,6 @@ Schema.Player = new SimpleSchema({
 });
 
 Schema.Sketch = new SimpleSchema({
-    sketchID: { //TODO: unique
-        type: String,
-        label: "Sketch ID",
-        regEx: SimpleSchema.RegEx.Id,
-    },
     player:{
         type: Schema.Player,
         label: "Sketch Artist",
@@ -48,12 +38,6 @@ Schema.Sketch = new SimpleSchema({
 });
 
 Schema.Round = new SimpleSchema({
-    roundID:{//TODO: unique
-        type: String,
-        label: "Round ID",
-        regEx: SimpleSchema.RegEx.Id,
-
-    },
     prompt:{
         type: String,
         label: "Round Prompt",
@@ -71,11 +55,6 @@ Schema.Round = new SimpleSchema({
 });
 
 Schema.Room = new SimpleSchema({
-    roomID: {//TODO: unique
-        type: String,
-        label: "Room ID",
-        // regEx: SimpleSchema.RegEx.Id,
-    },
     name: {//TODO: unique
         type: String,
         label: "Room Name",
@@ -94,7 +73,6 @@ Schema.Room = new SimpleSchema({
         type: Array,
         label: "Player List",
         defaultValue: []
-        // optional: true, //TODO: Remove this
 
     },
     'players.$': {
