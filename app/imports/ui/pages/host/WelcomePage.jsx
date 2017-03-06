@@ -22,7 +22,7 @@ export default class WelcomePage extends BaseComponent {
             WelcomePage = (
                 <h3>Error setting up your room. Please try again.</h3>
             );
-            console.log(this.props.room);
+            console.log(this.props.room); //TODO:  this currently returns as undefined
         } else {
 
             let code = this.props.room.substr(this.props.room.length - 4);

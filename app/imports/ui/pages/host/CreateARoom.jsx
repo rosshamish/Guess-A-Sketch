@@ -2,6 +2,8 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import {Rooms} from '../../../api/collections/rooms';
+import {Rounds} from '../../../api/collections/rounds';
+
 import BaseComponent from '../../components/BaseComponent.jsx';
 
 export default class CreateARoom extends BaseComponent{
@@ -9,11 +11,13 @@ export default class CreateARoom extends BaseComponent{
         super(props);
         this.state = {
             roomName: '',
-            roundCount: 10 // set a default
+            roundCount: 10, // set a default
+            roundTime: 20
         };
 
         this.onRoomNameChange = this.onRoomNameChange.bind(this);
         this.onRoundCountChange = this.onRoundCountChange.bind(this);
+        this.onRoundTimeChange = this.onRoundTimeChange.bind(this);
         this.onCreateRoom = this.onCreateRoom.bind(this);
     }
 
@@ -23,6 +27,10 @@ export default class CreateARoom extends BaseComponent{
 
     onRoundCountChange(event){
         this.setState({roundCount: event.target.value});
+    }
+
+    onRoundTimeChange(event){
+        this.setState({roundTime: event.target.value});
     }
 
     //TODO: Add check for unique room name at this stage?
@@ -37,13 +45,16 @@ export default class CreateARoom extends BaseComponent{
         }else if(!this.state.roundCount > 0){
             console.log('RoundCount must be > 0 ');
             return;
-        }else{
         }
 
-        let id = Rooms.insert({ name: this.state.roomName });
+        let rounds = [];
+        for(let count = 0; count < this.state.roundCount; count++){
+            rounds.push({time: this.state.roundTime});
+        }
+        let id = Rooms.insert({ name: this.state.roomName, rounds: rounds });
         console.log(`Creating room ${this.state.roomName} ${id}`);
 
-        // possibly not fully functioning routing
+        // TODO: not working - we currently push the ID returned by Mongo, not the room name
         this.props.router.push({
           pathname: '/host/lobby',
           props: { room: id}
@@ -68,6 +79,13 @@ export default class CreateARoom extends BaseComponent{
                     name="roomName"
                     value={this.state.roundCount}
                     onChange={this.onRoundCountChange}/>
+                <br/>
+                Time:
+                <input
+                    type="number"
+                    name="roomName"
+                    value={this.state.roundTime}
+                    onChange={this.onRoundTimeChange}/>
                 <br/>
                 <button>Create A Room</button>
             </form>
