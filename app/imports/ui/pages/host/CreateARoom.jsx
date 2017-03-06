@@ -2,7 +2,6 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import {Rooms} from '../../../api/collections/rooms';
-import {Rounds} from '../../../api/collections/rounds';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 
