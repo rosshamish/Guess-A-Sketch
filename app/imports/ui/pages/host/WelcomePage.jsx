@@ -5,46 +5,43 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import {Rooms} from '../../../api/collections/rooms';
 
 export default class WelcomePage extends BaseComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  onStartGame(event){
-    event.preventDefault(); // Don't reload the page
-    console.log('Starting Game.');
-    // add proper routing functionality here
-  }
-
-  render() {
-    // for testing - will remove hardcoded room info once routing is functional
-    Rooms.insert({ name: 'ABCD' });
-    const {
-      room = Rooms.findOne({name: 'ABCD'}),
-      //room,
-    } = this.props;
-
-    let WelcomePage;
-    if (room == null) {
-      WelcomePage = (
-        <h3>Error setting up your room. Please try again.</h3>
-      );
-    } else {
-      WelcomePage = (
-        <form onSubmit={this.onStartGame}>
-          <h3>Welcome!</h3>
-          <p>Room Code: {room.name}</p>
-          <button type="submit">Start Game</button>
-        </form>
-      );
+    constructor(props) {
+        super(props);
+        this.props = props;
     }
 
-    return WelcomePage; 
+    onStartGame(event){
+        event.preventDefault(); // Don't reload the page
+        console.log('Starting Game.');
+        // add proper routing functionality here
+    }
 
-  }
+    render() {
+        let WelcomePage;
+        if (this.props.room == null) {
+            WelcomePage = (
+                <h3>Error setting up your room. Please try again.</h3>
+            );
+            console.log(this.props.room);
+        } else {
+
+            let code = this.props.room.substr(this.props.room.length - 4);
+            let name = Rooms.find({_id: {$eq: this.props.room}});
+
+            WelcomePage = (
+                <form onSubmit={this.onStartGame}>
+                  <h3>Welcome to {name}!</h3>
+                  <p>Room Code: {code}</p>
+                  <button type="submit">Start Game</button>
+                </form>
+            );
+        }
+
+        return WelcomePage;
+
+    }
 }
 
 WelcomePage.propTypes = {
-  room: React.PropTypes.object,
+    room: React.PropTypes.object,
 };

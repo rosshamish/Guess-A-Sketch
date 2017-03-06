@@ -55,7 +55,7 @@ Schema.Round = new SimpleSchema({
 });
 
 Schema.Room = new SimpleSchema({
-    name: {//TODO: unique
+    name: {
         type: String,
         label: "Room Name",
     },

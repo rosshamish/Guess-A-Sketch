@@ -1,6 +1,5 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Link } from 'react-router'
 
 import {Rooms} from '../../../api/collections/rooms';
 import BaseComponent from '../../components/BaseComponent.jsx';
@@ -27,7 +26,8 @@ export default class CreateARoom extends BaseComponent{
     }
 
     //TODO: Add check for unique room name at this stage?
-    //TODO: Checking for existing rooms names are
+    //TODO: Checking for existing rooms names are setting...
+    //TODO: ...this component in a persistent state
     onCreateRoom(event){
         event.preventDefault();
 
@@ -37,19 +37,16 @@ export default class CreateARoom extends BaseComponent{
         }else if(!this.state.roundCount > 0){
             console.log('RoundCount must be > 0 ');
             return;
-        // }else if(Rooms.find({name: {$eq: this.state.roomName}})){
-        //     console.log('Room name already exists');
-        //     return;
         }else{
-            console.log('Creating room ' + this.state.roomName);
         }
 
-        Rooms.insert({ name: this.state.roomName });
+        let id = Rooms.insert({ name: this.state.roomName });
+        console.log(`Creating room ${this.state.roomName} ${id}`);
 
         // possibly not fully functioning routing
         this.props.router.push({
           pathname: '/host/lobby',
-          state: { room: Rooms.findOne({name: this.state.roomName}) }
+          props: { room: id}
         });
     }
 
