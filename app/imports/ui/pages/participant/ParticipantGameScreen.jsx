@@ -17,6 +17,14 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = this.props;
 
+    if (!Name || !Room) {
+      return (
+        <div>
+          <p>You must join a room before playing. Go to /join</p>
+        </div>
+      );
+    }
+
     return (
       <div class="game-screen">
         <p>The canvas will go here! And the prompt, and timer!</p>
