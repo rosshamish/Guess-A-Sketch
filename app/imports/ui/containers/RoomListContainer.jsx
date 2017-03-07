@@ -19,7 +19,7 @@ export default createContainer(() => {
   const usersHandle = Meteor.subscribe('users.public');
   console.log('RoomListContainer subscribing to data sources');
   return {
-  	loading: roomsHandle.ready() && usersHandle.ready(),
+    loading: roomsHandle.ready() && usersHandle.ready(),
     rooms: getRooms(),
     noRooms: getNumRooms() == 0,
   };
