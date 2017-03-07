@@ -3,6 +3,7 @@
 //   TODO
 
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
 export default class ParticipantLayout extends React.Component {
@@ -26,23 +27,45 @@ export default class ParticipantLayout extends React.Component {
     Meteor.logout();
   }
 
+  onClickPlay(event) {
+    event.preventDefault();
+    browserHistory.push('/join');
+  }
+
+  onClickHost(event) {
+    event.preventDefault();
+    browserHistory.push('/host');
+  }
+
   render() {
     const {
       user,
       location,
       params,
       children,
-        message,
+      message,
     } = this.props;
 
-    console.log('ParticipantLayout.jsx render()');
+    console.log('ParticipantLayout rendering');
 
     return (
       <div id="container">
         <div id="content-container">
-          <h1>Participant says Hello World!</h1>
-          <h2>Message: "{message}"</h2>
-          { children }
+          <h1>Guess a Sketch!</h1>
+          <p>Half party game, half science project.</p>
+          <p>Each round, you get a prompt (eg "Cat"). Draw it! 
+          Well, as best you can, until the timer runs out. 
+          Get points based on the speed and quality of your drawing.
+          </p>
+          <p>Message: "{message}"</p>
+          <hr />
+          { !!children ?
+            children :
+            <div>
+              <button onClick={this.onClickPlay}>Play</button>
+              <button onClick={this.onClickHost}>Host</button>
+            </div>
+          }
         </div>
       </div>
     );
