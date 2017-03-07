@@ -1,14 +1,13 @@
 import format from 'string-format';
 
 import React from 'react';
+import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
 import BaseComponent from '../../components/BaseComponent.jsx';
 import RoomItem from '../../components/RoomItem.jsx';
 
-// TODO import real method name when it's available in /api
-import {
-  joinRoom,
-} from '/imports/api/rooms.js';
+import { joinRoom } from '/imports/api/methods';
+import { PLAYER } from '/imports/api/session';
 
 export default class RoomListPage extends BaseComponent {
   constructor(props) {
@@ -29,12 +28,21 @@ export default class RoomListPage extends BaseComponent {
   }
 
   onRoomClickHandler(room, event) {
-    // Create a random name
-    // TODO: get this from a login page, like we said we would in the SRS
-    let name = this._randomName();
+    event.preventDefault();
 
-    // Join the room
-    joinRoom(room, name);
+    // Use a random name
+    // TODO: get this from a login page, like we said we would in the SRS
+    const player = {
+      name: this._randomName(),
+      color: 'red', // TODO support color
+    };
+    Session.set(PLAYER, player);
+    joinRoom.call({
+      room_id: room._id,
+      player: player,
+    });
+
+    // Navigate to the game route
     browserHistory.push('/play');
   }
 
@@ -45,44 +53,46 @@ export default class RoomListPage extends BaseComponent {
       noRooms
     } = this.props;
 
-    let Rooms;
     if (noRooms) {
       // Early return
       return (
         <div className="room-list-empty">
           <h3>
             {this._pickRandom([
-            'No Rooms',
-            'Someone host!',
-            'Dang it!',
-            'Host\'s gotta host',
-            'Crickets...'
+              'No Rooms',
+              'Someone host!',
+              'Dang it!',
+              'Host\'s gotta host',
+              'Crickets...'
             ])}
           </h3>
           <p>Go to /host/create to host a room!</p>
         </div>
       );
-    }
-
-    if (loading) {
+    } else if (loading) {
       // Early return
       return (
         <h3>Loading...</h3>
       );
-    }
-
-
-    page = this;
-    let children = rooms.map(function(room,index) {
+    } else if (!rooms) {
+      // Our input data is undefined
+      console.error('rooms is undefined');
       return (
-        <RoomItem
-          key={room._id}
-          onClick={page.onRoomClickHandler.bind(page, room)} 
-          text={room.name + ' (' + room._id + ')'}
-        />
+        <p>Whoops! Something went wrong. Check the console.</p>
       );
-    });
-    return <div className="room-list">{children}</div>
+    } else {
+      const page = this;
+      let children = rooms.map(function(room,index) {
+        return (
+          <RoomItem
+            key={room._id}
+            onClick={page.onRoomClickHandler.bind(page, room)}
+            text={room.name + ' (' + room._id + ')'}
+          />
+        );
+      });
+      return <div className="room-list">{children}</div>
+    }
   }
 
   // ---------------
@@ -93,7 +103,7 @@ export default class RoomListPage extends BaseComponent {
   // Url: https://jsfiddle.net/katowulf/3gtDf/
   // Accessed: March 7, 2017
   _pickRandom(list) {
-    var i = Math.floor(Math.random() * list.length);
+    const i = Math.floor(Math.random() * list.length);
     return list[i];
   }
 

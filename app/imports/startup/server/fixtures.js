@@ -46,7 +46,7 @@ Meteor.startup(() => {
     Rooms.remove({});
     rooms.forEach((room) => {
       console.log('Inserting room ' + room.name);
-      console.log('Got id ' + Rooms.insert(room));
+      Rooms.insert(room);
     });
   }
 });

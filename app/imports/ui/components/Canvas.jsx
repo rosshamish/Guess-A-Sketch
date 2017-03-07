@@ -9,7 +9,7 @@ export default class Canvas extends BaseComponent {
   }
 
   render() {
-    const { 
+    const {
     } = this.props;
 
     return (
@@ -21,4 +21,5 @@ export default class Canvas extends BaseComponent {
 }
 
 Canvas.propTypes = {
+  onTimeout: React.PropTypes.func,
 };

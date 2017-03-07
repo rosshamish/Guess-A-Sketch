@@ -10,14 +10,19 @@ Rooms.attachSchema(Schema.Room);
 
 Rooms.allow({
   insert(userID, doc) {
-    return (Rooms.find({name: {$eq: doc['name']}}).count()) === 0;
+    return (Rooms.find({
+      name: {
+        $eq: doc['name'],
+      },
+    }).count()) === 0;
   },
-  update() { return false; },
+  // TODO restrict updates, do it from RoomListPage via a Meteor method
+  update() { return true; },
   remove() { return false; },
 });
 
 Rooms.deny({
   // insert() { return true; },
-  update() { return true; },
+  // update() { return false; },
   remove() { return true; },
 });
