@@ -31,13 +31,11 @@ export default class WelcomePage extends BaseComponent {
           );
         }
 
-        //let code = this.props.room.substr(this.props.room.length - 4);
-        //let name = Rooms.find({_id: {$eq: this.props.room}});
-
         return (
             <form onSubmit={this.onStartGame}>
-              <h3>Welcome to {Room.id}!</h3>
-              <p>Room Code: {Room.id}</p>
+              <h3>Welcome!</h3>
+              <p>Room Name: {Room.name}</p>
+              <p>Room Code: {Room._id.substring(0, 4)}</p>
               <button type="submit">Start Game</button>
             </form>
         );
