@@ -89,7 +89,7 @@ Schema.Room = new SimpleSchema({
     status: {
         type: String,
         label: "Room Status",
-        allowedValues: ["JOINABLE", "COMPLETE", "PLAYING"],
+        allowedValues: ["JOINABLE", "PLAYING", "COMPLETE"],
         defaultValue: "JOINABLE",
     }
 });
