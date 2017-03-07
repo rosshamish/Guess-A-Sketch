@@ -8,6 +8,8 @@ export default class Prompt extends BaseComponent {
     super(props);
   }
 
+  // http://meteorlife.com/build-a-countdown-timer-with-meteor/
+
   render() {
     const { time } = this.props;
 
