@@ -1,6 +1,9 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
+// TODO import the right names once api/rooms.js is available
+import { Room, Name } from '/imports/api/rooms.js';
+
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
@@ -14,8 +17,20 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = this.props;
 
+    if (!Name || !Room) {
+      return (
+        <div>
+          <p>You must join a room before playing. Go to /join</p>
+        </div>
+      );
+    }
+
     return (
-      <p>The canvas will go here! And the prompt, and timer!</p>
+      <div className="game-screen">
+        <p>The canvas will go here! And the prompt, and timer!</p>
+        <p>You've received the name { Name }</p>
+        <p>You're in room { Room.id }</p>
+      </div>
     );
   }
 }

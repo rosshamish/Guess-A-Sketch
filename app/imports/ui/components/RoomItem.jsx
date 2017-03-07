@@ -8,17 +8,21 @@ export default class RoomItem extends BaseComponent {
         super(props);
     }
 
-    render() {
-        const { room } = this.props;
-        let code = this.props.room.substr(this.props.room.length - 4);
-        return (
-            <div className="room">
-              I am a room, with id {code}
-            </div>
-        );
-    }
+  render() {
+    const {
+      onClick,
+      text,
+    } = this.props;
+
+    return (
+      <button className="room" onClick={onClick}>
+        {text}
+      </button>
+    );
+  }
 }
 
 RoomItem.propTypes = {
-    room: React.PropTypes.object,
+  onClick: React.PropTypes.func,
+  text: React.PropTypes.string,
 };

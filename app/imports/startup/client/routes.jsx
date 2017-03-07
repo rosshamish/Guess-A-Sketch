@@ -14,7 +14,7 @@ import { Router, Route, browserHistory } from 'react-router';
 
 // route components
 import ParticipantContainer from '../../ui/containers/ParticipantContainer.jsx';
-import RoomListPage from '../../ui/pages/participant/RoomListPage.jsx';
+import RoomListContainer from '../../ui/containers/RoomListContainer.jsx';
 import LoginPage from '../../ui/pages/participant/LoginPage.jsx';
 import ParticipantGameScreen from '../../ui/pages/participant/ParticipantGameScreen.jsx';
 import WaitingPage from '../../ui/pages/participant/WaitingPage.jsx';
@@ -30,16 +30,19 @@ import Scoreboard from '../../ui/pages/host/Scoreboard.jsx';
 
 // TODO i18n // i18n.setLocale('en');
 
+// TODO Instead of specifying mode="teams" errywhere here,
+// we should probably get the mode from the server.
+// Or, just only have the one mode, and remove the
+// property. Decide later.
 export const renderRoutes = () => (
   <Router history={browserHistory}>
 
     <Route path="/" component={ParticipantContainer}>
-      <Route path="rooms" component={RoomListPage} />
-      <Route path="join" component={LoginPage} />
-      <Route path="lobby" component={WaitingPage} />
-      <Route path="play" component={ParticipantGameScreen} />
-      <Route path="round-over" component={ParticipantResultsScreen} />
-      <Route path="game-over" component={IndividualScoreboard} />
+      <Route path="join" component={RoomListContainer} />
+      <Route path="lobby" component={WaitingPage} mode="teams" />
+      <Route path="play" component={ParticipantGameScreen} mode="teams" />
+      <Route path="round-over" component={ParticipantResultsScreen} mode="teams"/>
+      <Route path="game-over" component={IndividualScoreboard} mode="teams" />
     </Route>
 
     <Route path="host" component={HostContainer}>
