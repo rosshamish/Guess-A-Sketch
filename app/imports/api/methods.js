@@ -26,8 +26,8 @@ export const joinRoom = new ValidatedMethod({
       _id: room_id,
     }, {
       // TODO append the player instead of replacing the list
-      $set: {
-        players: [player],
+      $push: {
+        players: player,
       },
     });
   },
