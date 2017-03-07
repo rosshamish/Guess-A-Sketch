@@ -57,6 +57,10 @@ export default class ParticipantLayout extends React.Component {
           Well, as best you can, until the timer runs out. 
           Get points based on the speed and quality of your drawing.
           </p>
+          <p>Points are awarded by an AI that has learned to recognize objects
+          in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
+          science project part.
+          </p>
           <p>Message: "{message}"</p>
           <hr />
           { !!children ?
