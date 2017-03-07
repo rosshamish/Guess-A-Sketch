@@ -15,7 +15,7 @@ export function joinRoom(room, name) {
 }
 
 // Stub
-export function createRoom(room){
+export function setRoom(room){
   Room = room;
 }
 

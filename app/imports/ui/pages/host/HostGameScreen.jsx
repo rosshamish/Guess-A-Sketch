@@ -4,6 +4,9 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import Timer from '../../components/Timer.jsx';
 import Prompt from '../../components/Prompt.jsx';
 
+// TODO import the right names once api/rooms.js is available
+import { Room } from '/imports/api/rooms.js';
+
 export default class HostGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
@@ -13,19 +16,22 @@ export default class HostGameScreen extends BaseComponent {
 
   render() {
     const {
-      round,
+      room,
     } = this.props;
 
+    let prompt = Room.rounds[0].prompt;
+    let time = Room.rounds[0].time;
+
     let HostGame;
-    if (round == null) {
+    if (Room == null) {
       HostGame = (
         <h3>Error displaying host game screen. Please try again.</h3>
       );
     } else {
       HostGame = (
         <div>
-        <p>Will display Host Game Screen. Prompt! Timer!</p>
-        <Prompt round = {round} />
+        <Prompt prompt = {prompt} />
+        <Timer time = {time} />
         </div>
       );
     }
@@ -36,5 +42,5 @@ export default class HostGameScreen extends BaseComponent {
 }
 
 HostGameScreen.propTypes = {
-  round: React.PropTypes.object,
+  room: React.PropTypes.object,
 };

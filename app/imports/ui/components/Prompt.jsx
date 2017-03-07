@@ -9,16 +9,16 @@ export default class Prompt extends BaseComponent {
   }
 
   render() {
-    const { round } = this.props;
+    const { prompt } = this.props;
 
     return (
       <div className="prompt">
-        Prompt: {round.prompt}
+        Prompt: {prompt}
       </div>
     );
   }
 }
 
 Prompt.propTypes = {
-  round: React.PropTypes.object,
+  prompt: React.PropTypes.string,
 };

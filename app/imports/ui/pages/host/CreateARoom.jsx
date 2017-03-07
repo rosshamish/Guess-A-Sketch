@@ -8,7 +8,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 
 // TODO import real method name when it's available in /api
 import {
-  createRoom,
+  setRoom,
 } from '/imports/api/rooms.js';
 
 export default class CreateARoom extends BaseComponent{
@@ -61,7 +61,7 @@ export default class CreateARoom extends BaseComponent{
 
         // Navigate to the lobby of that room
         let room = Rooms.findOne({_id: id});
-        createRoom(room);
+        setRoom(room);
         browserHistory.push('/host/lobby');
     }
 
