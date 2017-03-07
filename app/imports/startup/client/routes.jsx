@@ -14,8 +14,8 @@ import { Router, Route, browserHistory } from 'react-router';
 
 // route components
 import ParticipantContainer from '../../ui/containers/ParticipantContainer.jsx';
-import RoomListPageContainer from '../../ui/pages/participant/RoomListPageContainer.jsx';
-import LoginPage from '../../ui/pages/containers/LoginPage.jsx';
+import RoomListContainer from '../../ui/containers/RoomListContainer.jsx';
+import LoginPage from '../../ui/pages/participant/LoginPage.jsx';
 import ParticipantGameScreen from '../../ui/pages/participant/ParticipantGameScreen.jsx';
 import WaitingPage from '../../ui/pages/participant/WaitingPage.jsx';
 import ParticipantResultsScreen from '../../ui/pages/participant/ParticipantResultsScreen.jsx';
@@ -38,8 +38,7 @@ export const renderRoutes = () => (
   <Router history={browserHistory}>
 
     <Route path="/" component={ParticipantContainer}>
-      <Route path="rooms" component={RoomListPage} />
-      <Route path="welcome" component={LoginPage} mode="teams" />
+      <Route path="join" component={RoomListContainer} />
       <Route path="lobby" component={WaitingPage} mode="teams" />
       <Route path="play" component={ParticipantGameScreen} mode="teams" />
       <Route path="round-over" component={ParticipantResultsScreen} mode="teams"/>

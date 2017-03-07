@@ -2,13 +2,15 @@ import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
 export default class LoginPage extends BaseComponent {
-  __URL_ROOMS = '/rooms';
 
   constructor(props) {
     super(props);
     this.state = {
       nickname: '',
     };
+
+
+    this.__URL_ROOMS = '/rooms';
 
     this.onNicknameChange = this.onNicknameChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -23,8 +25,8 @@ export default class LoginPage extends BaseComponent {
     if (!this.state.nickname) {
       console.log('Nickname required!');
     } else {
-      console.log(__URL_ROOMS);
-      this.props.history.push(__URL_ROOMS);
+      console.log(this.__URL_ROOMS);
+      this.props.history.push(this.__URL_ROOMS);
     }
   }
 
