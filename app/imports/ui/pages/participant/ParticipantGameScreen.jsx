@@ -26,7 +26,7 @@ export default class ParticipantGameScreen extends BaseComponent {
     }
 
     return (
-      <div class="game-screen">
+      <div className="game-screen">
         <p>The canvas will go here! And the prompt, and timer!</p>
         <p>You've received the name { Name }</p>
         <p>You're in room { Room.id }</p>
