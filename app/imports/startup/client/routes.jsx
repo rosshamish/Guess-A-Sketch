@@ -16,7 +16,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import ParticipantContainer from '../../ui/containers/ParticipantContainer.jsx';
 import RoomListContainer from '../../ui/containers/RoomListContainer.jsx';
 import LoginPage from '../../ui/pages/participant/LoginPage.jsx';
-import ParticipantGameScreen from '../../ui/pages/participant/ParticipantGameScreen.jsx';
+import ParticipantGameScreenContainer from '../../ui/containers/ParticipantGameScreenContainer.jsx';
 import WaitingPage from '../../ui/pages/participant/WaitingPage.jsx';
 import ParticipantResultsScreen from '../../ui/pages/participant/ParticipantResultsScreen.jsx';
 import IndividualScoreboard from '../../ui/pages/participant/IndividualScoreboard.jsx';
@@ -40,7 +40,7 @@ export const renderRoutes = () => (
     <Route path="/" component={ParticipantContainer}>
       <Route path="join" component={RoomListContainer} />
       <Route path="lobby" component={WaitingPage} mode="teams" />
-      <Route path="play" component={ParticipantGameScreen} mode="teams" />
+      <Route path="play" component={ParticipantGameScreenContainer} mode="teams" />
       <Route path="round-over" component={ParticipantResultsScreen} mode="teams"/>
       <Route path="game-over" component={IndividualScoreboard} mode="teams" />
     </Route>
