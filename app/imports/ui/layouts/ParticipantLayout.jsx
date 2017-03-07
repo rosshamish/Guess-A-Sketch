@@ -34,7 +34,7 @@ export default class ParticipantLayout extends React.Component {
 
   onClickHost(event) {
     event.preventDefault();
-    browserHistory.push('/host');
+    browserHistory.push('/host/create');
   }
 
   render() {
