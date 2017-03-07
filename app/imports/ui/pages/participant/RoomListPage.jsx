@@ -64,13 +64,21 @@ export default class RoomListPage extends BaseComponent {
       );
     }
 
+    if (loading) {
+      // Early return
+      return (
+        <h3>Loading...</h3>
+      );
+    }
+
+
     page = this;
     let children = rooms.map(function(room,index) {
       return (
         <RoomItem
-          key={room.id}
+          key={room._id}
           onClick={page.onRoomClickHandler.bind(page, room)} 
-          text={'Room ' + room.id}
+          text={room.name + ' (' + room._id + ')'}
         />
       );
     });

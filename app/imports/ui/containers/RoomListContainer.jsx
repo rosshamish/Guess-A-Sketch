@@ -8,19 +8,16 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import RoomListPage from '../pages/participant/RoomListPage.jsx';
 
-// TODO replace with import { Rooms } when /api/rooms.js is available
-import { 
-	getRooms,
-	getNumRooms,
-} from '/imports/api/rooms.js'
+import {
+  Rooms,
+} from '/imports/api/collections/rooms.js'
 
 export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
-  const usersHandle = Meteor.subscribe('users.public');
   console.log('RoomListContainer subscribing to data sources');
   return {
-    loading: roomsHandle.ready() && usersHandle.ready(),
-    rooms: getRooms(),
-    noRooms: getNumRooms() == 0,
+    loading: !roomsHandle.ready(),
+    rooms: Rooms.find().fetch(),
+    noRooms: Rooms.find().count() == 0,
   };
 }, RoomListPage);
