@@ -1,8 +1,11 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { browserHistory } from 'react-router';
 
-// will be able to remove import after routing is functional
-import {Rooms} from '../../../api/collections/rooms';
+import { Rooms } from '../../../api/collections/rooms';
+
+// TODO import the right names once api/rooms.js is available
+import { Room } from '/imports/api/rooms.js';
 
 export default class WelcomePage extends BaseComponent {
     constructor(props) {
@@ -13,32 +16,30 @@ export default class WelcomePage extends BaseComponent {
     onStartGame(event){
         event.preventDefault(); // Don't reload the page
         console.log('Starting Game.');
-        // add proper routing functionality here
+        browserHistory.push('/host/play');
     }
 
     render() {
-        let WelcomePage;
-        if (this.props.room == null) {
-            WelcomePage = (
-                <h3>Error setting up your room. Please try again.</h3>
-            );
-            console.log(this.props.room); //TODO:  this currently returns as undefined
-        } else {
+        const {
+          room,
+        } = this.props;
 
-            let code = this.props.room.substr(this.props.room.length - 4);
-            let name = Rooms.find({_id: {$eq: this.props.room}});
-
-            WelcomePage = (
-                <form onSubmit={this.onStartGame}>
-                  <h3>Welcome to {name}!</h3>
-                  <p>Room Code: {code}</p>
-                  <button type="submit">Start Game</button>
-                </form>
-            );
+        if (!Room) {
+          return (
+            <div>
+              <p>Error setting up your room. Please try again.</p>
+            </div>
+          );
         }
 
-        return WelcomePage;
-
+        return (
+            <form onSubmit={this.onStartGame}>
+              <h3>Welcome!</h3>
+              <p>Room Name: {Room.name}</p>
+              <p>Room Code: {Room._id.substring(0, 4)}</p>
+              <button type="submit">Start Game</button>
+            </form>
+        );
     }
 }
 

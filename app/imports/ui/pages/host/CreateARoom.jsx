@@ -1,16 +1,22 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { browserHistory } from 'react-router';
 
 import {Rooms} from '../../../api/collections/rooms';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
+
+// TODO import real method name when it's available in /api
+import {
+  setRoom,
+} from '/imports/api/rooms.js';
 
 export default class CreateARoom extends BaseComponent{
     constructor(props){
         super(props);
         this.state = {
             roomName: '',
-            roundCount: 10, // set a default
+            roundCount: 10,
             roundTime: 20
         };
 
@@ -53,11 +59,10 @@ export default class CreateARoom extends BaseComponent{
         let id = Rooms.insert({ name: this.state.roomName, rounds: rounds });
         console.log(`Creating room ${this.state.roomName} ${id}`);
 
-        // TODO: not working - we currently push the ID returned by Mongo, not the room name
-        this.props.router.push({
-          pathname: '/host/lobby',
-          props: { room: id}
-        });
+        // Navigate to the lobby of that room
+        let room = Rooms.findOne({_id: id});
+        setRoom(room);
+        browserHistory.push('/host/lobby');
     }
 
     render(){

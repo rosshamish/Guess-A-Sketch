@@ -13,3 +13,6 @@
 // import '../../api/todos/methods.js';
 // import '../../api/todos/server/publications.js';
 // import '../../api/languages/methods.js';
+
+import '../../api/publications';
+import '../../api/methods';

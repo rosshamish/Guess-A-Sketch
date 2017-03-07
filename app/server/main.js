@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 const PROMPTS = ['cat', 'dog', 'monkey', 'freezer', 'ice cream'];
 
 Meteor.startup(() => {
-    Rooms.remove({}); // Clear all rooms from the database
+    // Rooms.remove({}); // Clear all rooms from the database
 });
 
 

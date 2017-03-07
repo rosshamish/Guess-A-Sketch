@@ -10,7 +10,11 @@ Rooms.attachSchema(Schema.Room);
 
 Rooms.allow({
   insert(userID, doc) {
-      return (Rooms.find({name: {$eq: doc['name']}})).length === 0;
+    return (Rooms.find({
+      name: {
+        $eq: doc['name'],
+      },
+    }).count()) === 0;
   },
   update() { return false; },
   remove() { return false; },

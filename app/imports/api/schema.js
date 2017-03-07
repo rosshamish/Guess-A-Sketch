@@ -57,8 +57,7 @@ Schema.Round = new SimpleSchema({
         type: Number,
         label: "Round Timer setting",
         min: 10,
-    }
-
+    },
 });
 
 Schema.Room = new SimpleSchema({
@@ -82,6 +81,8 @@ Schema.Room = new SimpleSchema({
         defaultValue: []
 
     },
+    // TODO should be a list of player _ids, not player objects.
+    // For normalization.
     'players.$': {
         type: Schema.Player,
     },
@@ -89,7 +90,7 @@ Schema.Room = new SimpleSchema({
     status: {
         type: String,
         label: "Room Status",
-        allowedValues: ["JOINABLE", "COMPLETE", "PLAYING"],
+        allowedValues: ["JOINABLE", "PLAYING", "COMPLETE"],
         defaultValue: "JOINABLE",
     }
 });
