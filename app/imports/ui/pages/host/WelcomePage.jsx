@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { browserHistory } from 'react-router';
 
 import { Rooms } from '../../../api/collections/rooms';
 
@@ -15,7 +16,7 @@ export default class WelcomePage extends BaseComponent {
     onStartGame(event){
         event.preventDefault(); // Don't reload the page
         console.log('Starting Game.');
-        // add proper routing functionality here
+        browserHistory.push('/host/play');
     }
 
     render() {
