@@ -16,13 +16,12 @@ Rooms.allow({
       },
     }).count()) === 0;
   },
-  // TODO restrict updates, do it from RoomListPage via a Meteor method
-  update() { return true; },
+  update() { return false; },
   remove() { return false; },
 });
 
 Rooms.deny({
   // insert() { return true; },
-  // update() { return false; },
+  update() { return true; },
   remove() { return true; },
 });
