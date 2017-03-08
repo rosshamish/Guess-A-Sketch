@@ -1,8 +1,8 @@
-import format from 'string-format';
-
 import React from 'react';
 import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
+import { _ } from 'meteor/underscore';
+
 import BaseComponent from '../../components/BaseComponent.jsx';
 import RoomItem from '../../components/RoomItem.jsx';
 import NoRooms from '../../components/NoRooms.jsx';
@@ -54,22 +54,22 @@ export default class RoomListPage extends BaseComponent {
   render() {
     const {
       loading,
-      rooms,
-      noRooms
+      joinableRooms,
+      noJoinableRooms,
     } = this.props;
 
-    if (noRooms) {
+    if (noJoinableRooms) {
       return <NoRooms />
     } else if (loading) {
       return <h3>Loading...</h3>;
     } else {
-      if (!rooms) {
+      if (!joinableRooms) {
         console.error('Can\'t display room list: rooms is undefined');
         return <ErrorMessage />
       }
 
       const page = this;
-      let children = rooms.map(function(room,index) {
+      let roomItems = _.map(joinableRooms, (room) => {
         return (
           <RoomItem
             key={room._id}
@@ -78,7 +78,14 @@ export default class RoomListPage extends BaseComponent {
           />
         );
       });
-      return <div className="room-list">{children}</div>
+
+      return (
+        <div>
+          <h4>Rooms</h4>
+          <div className="room-list">{roomItems}</div>
+          <p>Don't see your room? Make sure your room is joinable, i.e. not started, or between rounds</p>
+        </div>
+      );
     }
   }
 
@@ -113,6 +120,6 @@ export default class RoomListPage extends BaseComponent {
 
 RoomListPage.propTypes = {
   loading: React.PropTypes.bool,
-  rooms: React.PropTypes.array,
-  noRooms: React.PropTypes.bool,
+  joinableRooms: React.PropTypes.array,
+  noJoinableRooms: React.PropTypes.bool,
 };

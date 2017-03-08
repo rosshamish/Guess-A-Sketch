@@ -11,9 +11,13 @@ import { Rooms } from '/imports/api/collections/rooms'
 export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
   console.log('RoomListContainer subscribing to data sources');
+
+  const joinableRoomsCursor = Rooms.find({
+    status: 'JOINABLE',
+  });
   return {
     loading: !roomsHandle.ready(),
-    rooms: Rooms.find().fetch(),
-    noRooms: Rooms.find().count() === 0,
+    joinableRooms: joinableRoomsCursor.fetch(),
+    noJoinableRooms: joinableRoomsCursor.count() === 0,
   };
 }, RoomListPage);

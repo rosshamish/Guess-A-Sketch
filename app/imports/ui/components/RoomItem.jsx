@@ -15,7 +15,7 @@ export default class RoomItem extends BaseComponent {
 
     return (
       <button className="room" onClick={onClick}>
-        {'Room ' + room.name + ' (' + room._id.substring(0, 4) + ')'}
+        {room.name + ' (' + room._id.substring(0, 4) + ')'}
       </button>
     );
   }

@@ -24,7 +24,8 @@ export default class NoRooms extends BaseComponent {
             'Crickets...'
           ])}
         </h3>
-        <p>Go to /host/create to host a room!</p>
+        <p>No joinable rooms found. Go to /host/create to host a room!</p>
+        <p>Or, wait for the current round to end. You can join between rounds!</p>
       </div>
     );
   }
