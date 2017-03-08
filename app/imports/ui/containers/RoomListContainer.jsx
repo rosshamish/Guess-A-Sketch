@@ -12,7 +12,6 @@ import { Rooms } from '/imports/api/collections/rooms'
 
 export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
-  const playersHandle = Meteor.subscribe('players.public');
   console.log('RoomListContainer subscribing to data sources');
   return {
     loading: !roomsHandle.ready() && playersHandle.ready(),

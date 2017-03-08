@@ -52,12 +52,18 @@ Schema.Round = new SimpleSchema({
         minCount: 0,
     },
     "sketches.$": {
-        type: Schema.Sketch,
+        type: String, // Mongo ObjectID
     },
     time: {
         type: Number,
         label: "Round Timer setting",
         min: 10,
+    },
+    status: {
+        type: String,
+        label: "Round Status",
+        allowedValues: ["CREATED", "PLAYING", "COMPLETE"],
+        defaultValue: "CREATED",
     },
 });
 
@@ -75,19 +81,14 @@ Schema.Room = new SimpleSchema({
     'rounds.$':{
         type: Schema.Round,
     },
-
     players: {
         type: Array,
         label: "Player List",
         defaultValue: []
-
     },
-    // TODO should be a list of player _ids, not player objects.
-    // For normalization.
     'players.$': {
         type: Schema.Player,
     },
-
     status: {
         type: String,
         label: "Room Status",
