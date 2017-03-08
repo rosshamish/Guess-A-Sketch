@@ -11,6 +11,7 @@ export default class Timer extends BaseComponent {
   }
 
   // http://meteorlife.com/build-a-countdown-timer-with-meteor/
+  // http://stackoverflow.com/questions/15229141/simple-timer-in-meteor-js
   render() {
     const {} = this.props;
 

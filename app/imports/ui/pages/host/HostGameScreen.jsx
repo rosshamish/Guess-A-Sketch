@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { browserHistory } from 'react-router';
 import { Session } from 'meteor/session';
 
 import Timer from '../../components/Timer.jsx';
@@ -10,8 +11,21 @@ import { HOST_ROOM, TIMER } from '/imports/api/session';
 export default class HostGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
+  }
+
+  onRoundEnd(event){
+    event.preventDefault();
+
+    // pop current round off of room's round array
+    room = Session.get(HOST_ROOM);
+    rounds = room.rounds;
+    rounds.splice(0, 1);
+    room.rounds = rounds;
+    Session.set(HOST_ROOM, room);
+
+    // Navigate to the collage screen
+    browserHistory.push('/host/collage');
   }
 
   render() {
@@ -33,6 +47,9 @@ export default class HostGameScreen extends BaseComponent {
         <div>
         <Prompt prompt = {prompt} />
         <Timer time = {time} />
+        <form onSubmit={this.onRoundEnd}>
+          <button>Timer Expired</button>
+        </form>
         </div>
       );
     }
@@ -42,5 +59,4 @@ export default class HostGameScreen extends BaseComponent {
   }
 }
 
-HostGameScreen.propTypes = {
-};
+HostGameScreen.propTypes = {};
