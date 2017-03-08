@@ -40,5 +40,4 @@ export default class WelcomePage extends BaseComponent {
     }
 }
 
-WelcomePage.propTypes = {
-};
+WelcomePage.propTypes = {};
