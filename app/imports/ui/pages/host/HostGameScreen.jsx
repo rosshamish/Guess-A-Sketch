@@ -1,26 +1,41 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { browserHistory } from 'react-router';
+import { Session } from 'meteor/session';
 
 import Timer from '../../components/Timer.jsx';
 import Prompt from '../../components/Prompt.jsx';
 
-// TODO import the right names once api/rooms.js is available
-import { Room } from '/imports/api/rooms.js';
+import { HOST_ROOM, TIMER } from '/imports/api/session';
 
 export default class HostGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
+  }
+
+  onRoundEnd(event){
+    event.preventDefault();
+
+    // pop current round off of room's round array
+    room = Session.get(HOST_ROOM);
+    rounds = room.rounds;
+    rounds.splice(0, 1);
+    room.rounds = rounds;
+    Session.set(HOST_ROOM, room);
+
+    // Navigate to the collage screen
+    browserHistory.push('/host/collage');
   }
 
   render() {
-    const {
-      room,
-    } = this.props;
+    const {} = this.props;
+
+    let Room = Session.get(HOST_ROOM);
 
     let prompt = Room.rounds[0].prompt;
     let time = Room.rounds[0].time;
+    Session.set(TIMER, time);
 
     let HostGame;
     if (Room == null) {
@@ -32,6 +47,9 @@ export default class HostGameScreen extends BaseComponent {
         <div>
         <Prompt prompt = {prompt} />
         <Timer time = {time} />
+        <form onSubmit={this.onRoundEnd}>
+          <button>Timer Expired</button>
+        </form>
         </div>
       );
     }
@@ -41,6 +59,4 @@ export default class HostGameScreen extends BaseComponent {
   }
 }
 
-HostGameScreen.propTypes = {
-  room: React.PropTypes.object,
-};
+HostGameScreen.propTypes = {};
