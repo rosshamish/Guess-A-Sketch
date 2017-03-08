@@ -5,7 +5,7 @@ import { Session } from 'meteor/session';
 import Timer from '../../components/Timer.jsx';
 import Prompt from '../../components/Prompt.jsx';
 
-import { HOST_ROOM } from '/imports/api/session';
+import { HOST_ROOM, TIMER } from '/imports/api/session';
 
 export default class HostGameScreen extends BaseComponent {
   constructor(props) {
@@ -21,6 +21,7 @@ export default class HostGameScreen extends BaseComponent {
 
     let prompt = Room.rounds[0].prompt;
     let time = Room.rounds[0].time;
+    Session.set(TIMER, time);
 
     let HostGame;
     if (Room == null) {

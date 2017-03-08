@@ -2,3 +2,4 @@
 
 export const PLAYER = 'current-player';
 export const HOST_ROOM = 'host-room';
+export const TIMER = 'round-timer';
