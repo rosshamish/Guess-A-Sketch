@@ -3,8 +3,24 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
 
 import { Players } from './collections/players';
+import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
 import { Schema } from './schema';
+
+
+export const submitSketch = new ValidatedMethod({
+  name: 'submitSketch',
+  validate: Schema.Sketch.validator(),
+  run({ player, sketch, prompt }) {
+    Sketches.insert({
+      player,
+      sketch,
+      scores: {},
+      prompt,
+    });
+  },
+});
+
 
 export const joinRoom = new ValidatedMethod({
   name: 'joinRoom',

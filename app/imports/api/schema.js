@@ -31,6 +31,7 @@ Schema.Sketch = new SimpleSchema({
         type: Object,
         label: "SketchNet Scores",
         defaultValue: {},
+        optional: true,
     },
     prompt:{
         type: String,

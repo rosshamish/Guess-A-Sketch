@@ -62,7 +62,7 @@ export default class ParticipantGameScreen extends BaseComponent {
             <Prompt prompt={round.prompt} />
             <Timer time={round.time} />
           </div>
-          <Canvas onTimeout={this.onTimeout} />
+          <Canvas prompt={round.prompt} player={Session.get(PLAYER)} onTimeout={this.onTimeout} />
         </div>
       );
     } else {

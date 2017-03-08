@@ -4,5 +4,5 @@
 import { Mongo } from  'meteor/mongo';
 import { Schema } from '../schema';
 
-Sketches = new Mongo.Collection('sketches');
+export const Sketches = new Mongo.Collection('sketches');
 Sketches.attachSchema(Schema.Sketch);
