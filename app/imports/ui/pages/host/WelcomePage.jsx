@@ -2,10 +2,7 @@ import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 import { browserHistory } from 'react-router';
 
-import { Rooms } from '../../../api/collections/rooms';
-
-// TODO import the right names once api/rooms.js is available
-import { Room } from '/imports/api/rooms.js';
+import { HOST_ROOM } from '/imports/api/session';
 
 export default class WelcomePage extends BaseComponent {
     constructor(props) {
@@ -20,9 +17,9 @@ export default class WelcomePage extends BaseComponent {
     }
 
     render() {
-        const {
-          room,
-        } = this.props;
+        const {} = this.props;
+
+        let Room = Session.get(HOST_ROOM);
 
         if (!Room) {
           return (
@@ -44,5 +41,4 @@ export default class WelcomePage extends BaseComponent {
 }
 
 WelcomePage.propTypes = {
-    room: React.PropTypes.object,
 };
