@@ -1,12 +1,13 @@
 import React from 'react';
 import { Session } from 'meteor/session';
+import { _ } from 'meteor/underscore';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
-import Prompt from '../../components/Prompt.jsx';
-import Timer from '../../components/Timer.jsx';
-import Canvas from '../../components/Canvas.jsx';
-
-import { PLAYER } from '/imports/api/session';
+import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
+import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
+import ParticipantRoundResults from '../../components/ParticipantRoundResults.jsx';
+import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
@@ -16,8 +17,33 @@ export default class ParticipantGameScreen extends BaseComponent {
     };
   }
 
-  onTimeout() {
-    console.log('onTimeout no-op');
+  gameHasStarted(room) {
+    return _.any(room.rounds, (round) => {
+      return round.status != 'CREATED';
+    });
+  }
+
+  gameHasEnded(room) {
+    return _.all(room.rounds, (round) => {
+      return round.status === 'COMPLETE';
+    });
+  }
+
+  currentRound(room) {
+    return _.find(room.rounds, (round) => {
+      return round.status === 'CREATED' || round.status === 'PLAYING';
+    });
+  }
+
+  latestCompletedRound(room) {
+    // Find the latest completed round. Note the use of .reverse()
+
+    // Attribution: using slice() to avoid modifying the original array
+    // Source: http://stackoverflow.com/questions/30610523/reverse-array-in-javascript-without-mutating-original-array
+    // Accessed: March 8, 2017
+    return  _.find(room.rounds.slice().reverse(), (round) => {
+      return round.status === 'COMPLETE';
+    });
   }
 
   render() {
@@ -26,52 +52,46 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = this.props;
 
+    // ---
+    // Loading and error handling
+    // TODO make these pages pretty.
+    // ---
     if (loading) {
       return (
         <p>Loading...</p>
       );
     } else if (!room) {
-      console.log('room: ' + room);
       // The player navigated directly here without joining a room.
       // Don't allow this!
-      return (
-        <div>
-          <p>You must join a room before playing. Go to /join</p>
-        </div>
-      );
-    } else if (room.status === 'JOINABLE' && room.rounds.length === 1) {
-      // The game has not started yet.
-      return (
-        <div>
-          <p>You've received the name { Session.get(PLAYER).name }</p>
-          <p>You're in room { room.name + ' (' + room._id + ')' }</p>
-          <p>Hold your horses though, the game hasn't started yet.</p>
-        </div>
-      );
-    } else if (room.status === 'JOINABLE' && room.rounds.length >= 1) {
-      // The game is in-between rounds.
-      return (
-        <p>In between rounds</p>
-      );
-    } else if (room.status === 'PLAYING') {
-      // A round is in-progress.
-      const round = room.rounds[room.rounds.length - 1];
-      return (
-        <div className="game-screen">
-          <div>
-            <Prompt prompt={round.prompt} />
-            <Timer time={round.time} />
-          </div>
-          <Canvas prompt={round.prompt} player={Session.get(PLAYER)} onTimeout={this.onTimeout} />
-        </div>
-      );
-    } else {
-      // An unsupported state.
-      console.error('ParticipantGameScreen in an unsupported room state');
-      return (
-        <p>Whoops! Something went wrong. Check the console.</p>
-      );
+      console.error('Error: room is undefined.');
+      return <ErrorMessage />
     }
+
+    // ---
+    // Actual page rendering
+    // ---
+    if (!this.gameHasStarted(room)) {
+      return <ParticipantPreGameScreen room={room} />;
+    } else if (this.gameHasEnded(room)) {
+      return <ParticipantEndGameScreen room={room} />;
+    } else {
+      const currentRound = this.currentRound();
+      if (!currentRound) {
+        console.error('Current round is undefined. What the heck! Something is wrong.');
+        return <ErrorMessage />
+      }
+
+      if (currentRound.status === 'CREATED') {
+        // The round has not started yet. We are in-between rounds.
+        // So, we want to display results for the *previous* round.
+        return <ParticipantRoundResults round={this.latestCompletedRound(room)} />
+      } else if (currentRound.status === 'PLAYING') {
+        return <ParticipantPlayRound round={currentRound} />
+      } else {
+        console.error('Current round is in an illegal state');
+        return <ErrorMessage />
+      }   
+    } 
   }
 }
 

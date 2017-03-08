@@ -45,8 +45,17 @@ export const joinRoom = new ValidatedMethod({
     },
   }).validator(),
   run({ room_id, player }) {
+    const room = Rooms.findOne({
+      _id: room_id,
+    });
+
+    if (room.status != 'JOINABLE') {
+      console.error('Cannot join a non-joinable room. Doing nothing.');
+      return false;
+    }
+    
     // Add the player to the room
-    Rooms.update({
+    return Rooms.update({
       _id: room_id,
     }, {
       $push: {

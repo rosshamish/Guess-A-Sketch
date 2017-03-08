@@ -1,7 +1,7 @@
 import React from 'react';
-import BaseComponent from '../../components/BaseComponent.jsx';
+import BaseComponent from './BaseComponent.jsx';
 
-export default class ParticipantResultsScreen extends BaseComponent {
+export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,7 +10,7 @@ export default class ParticipantResultsScreen extends BaseComponent {
 
   render() {
     const {
-      sketch,
+      round,
     } = this.props;
 
     return (
@@ -19,6 +19,6 @@ export default class ParticipantResultsScreen extends BaseComponent {
   }
 }
 
-ParticipantResultsScreen.propTypes = {
-  sketch: React.PropTypes.object,
+ParticipantRoundResults.propTypes = {
+  round: React.PropTypes.object,
 };

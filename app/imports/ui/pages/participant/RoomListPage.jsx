@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
 import BaseComponent from '../../components/BaseComponent.jsx';
 import RoomItem from '../../components/RoomItem.jsx';
+import NoRooms from '../../components/NoRooms.jsx';
 
 import { joinRoom } from '/imports/api/methods';
 import { PLAYER } from '/imports/api/session';
@@ -37,13 +38,17 @@ export default class RoomListPage extends BaseComponent {
       color: 'red', // TODO support color
     };
     Session.set(PLAYER, player);
-    joinRoom.call({
+
+    const didJoinRoom = joinRoom.call({
       room_id: room._id,
       player: player,
     });
 
-    // Navigate to the game route
-    browserHistory.push('/play');
+    if (didJoinRoom) {
+      browserHistory.push('/play');
+    } else {
+      console.error('Failed to join room. Check room status!');
+    }
   }
 
   render() {
@@ -54,40 +59,22 @@ export default class RoomListPage extends BaseComponent {
     } = this.props;
 
     if (noRooms) {
-      // Early return
-      return (
-        <div className="room-list-empty">
-          <h3>
-            {this._pickRandom([
-              'No Rooms',
-              'Someone host!',
-              'Dang it!',
-              'Host\'s gotta host',
-              'Crickets...'
-            ])}
-          </h3>
-          <p>Go to /host/create to host a room!</p>
-        </div>
-      );
+      return <NoRooms />
     } else if (loading) {
-      // Early return
-      return (
-        <h3>Loading...</h3>
-      );
-    } else if (!rooms) {
-      // Our input data is undefined
-      console.error('rooms is undefined');
-      return (
-        <p>Whoops! Something went wrong. Check the console.</p>
-      );
+      return <h3>Loading...</h3>;
     } else {
+      if (!rooms) {
+        console.error('Can\'t display room list: rooms is undefined');
+        return <ErrorMessage />
+      }
+
       const page = this;
       let children = rooms.map(function(room,index) {
         return (
           <RoomItem
             key={room._id}
             onClick={page.onRoomClickHandler.bind(page, room)}
-            text={room.name + ' (' + room._id + ')'}
+            room={room}
           />
         );
       });
