@@ -1,8 +1,11 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 import { browserHistory } from 'react-router';
+import { Session } from 'meteor/session';
 
 import Canvas from '../../components/Collage.jsx';
+
+import { HOST_ROOM } from '/imports/api/session';
 
 export default class CollageScreen extends BaseComponent {
   constructor(props) {
@@ -13,13 +16,12 @@ export default class CollageScreen extends BaseComponent {
   onNextRound(event){
     event.preventDefault();
 
-    browserHistory.push('/host/play');
-  }
+    if (Session.get(HOST_ROOM).rounds.length > 0){
+      browserHistory.push('/host/play');
+    } else {
+      browserHistory.push('/host/game-over');
+    }
 
-  onGameEnd(event){
-    event.preventDefault();
-
-    browserHistory.push('/host/game-over');
   }
 
   render() {
@@ -27,15 +29,11 @@ export default class CollageScreen extends BaseComponent {
       round,
     } = this.props;
 
-    // These buttons are temporary
     return (
       <div>
       <p>Will display a collage of all drawings from the previous round!</p>
       <form onSubmit={this.onNextRound}>
-        <button>Next Round</button>
-      </form>
-      <form onSubmit={this.onGameEnd}>
-        <button>Game End</button>
+        <button>Done</button>
       </form>
       </div>
     );
