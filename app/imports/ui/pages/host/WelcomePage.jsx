@@ -2,7 +2,7 @@ import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 import { browserHistory } from 'react-router';
 
-import { HOST_ROOM } from '/imports/api/session';
+import PlayerItem from '../../components/PlayerItem.jsx';
 
 export default class WelcomePage extends BaseComponent {
     constructor(props) {
@@ -17,28 +17,51 @@ export default class WelcomePage extends BaseComponent {
     }
 
     render() {
-        const {} = this.props;
+        const {
+          loading,
+          players,
+          room
+        } = this.props;
 
-        let Room = Session.get(HOST_ROOM);
-
-        if (!Room) {
+        if (!room) {
           return (
             <div>
               <p>Error setting up your room. Please try again.</p>
             </div>
           );
+        } else if (loading) {
+          // Early return
+          return (
+            <h3>Loading...</h3>
+          );
+        }
+
+        let player_list = 'N/A';
+        if (players.length > 0) {
+          player_list = players.map(function(player,index) {
+            return (
+              <PlayerItem 
+              key = {player._id}
+              text = {player.name} />
+            );
+          });
         }
 
         return (
             <form onSubmit={this.onStartGame}>
               <h3>Welcome!</h3>
-              <p>Room Name: {Room.name}</p>
-              <p>Room Code: {Room._id.substring(0, 4)}</p>
-              <p>Players in Room: {Room.Players}</p>
+              <p>Room Name: {room.name}</p>
+              <p>Room Code: {room._id.substring(0, 4)}</p>
+              <p>Players in Room: </p>
+              <div> {player_list} </div>
               <button type="submit">Start Game</button>
             </form>
         );
     }
 }
 
-WelcomePage.propTypes = {};
+WelcomePage.propTypes = {
+  room: React.PropTypes.object,
+  loading: React.PropTypes.bool,
+  players: React.PropTypes.array,
+};
