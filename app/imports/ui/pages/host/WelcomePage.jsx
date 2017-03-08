@@ -34,6 +34,7 @@ export default class WelcomePage extends BaseComponent {
               <h3>Welcome!</h3>
               <p>Room Name: {Room.name}</p>
               <p>Room Code: {Room._id.substring(0, 4)}</p>
+              <p>Players in Room: {Room.Players}</p>
               <button type="submit">Start Game</button>
             </form>
         );

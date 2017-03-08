@@ -1,0 +1,744 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/bin/node',
+1 verbose cli   '/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'canvas' ]
+2 info using npm@4.1.2
+3 info using node@v4.7.3
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData canvas
+8 silly fetchNamedPackageData canvas
+9 silly mapToRegistry name canvas
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'canvas',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'canvas',
+12 silly mapToRegistry   name: 'canvas',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/canvas
+14 verbose request uri https://registry.npmjs.org/canvas
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 2:52:05 PM
+17 verbose request id c6db51ebfd1a4c62
+18 http request GET https://registry.npmjs.org/canvas
+19 http 200 https://registry.npmjs.org/canvas
+20 verbose headers { server: 'nginx/1.10.1',
+20 verbose headers   'content-type': 'application/json',
+20 verbose headers   'last-modified': 'Wed, 01 Mar 2017 09:49:59 GMT',
+20 verbose headers   etag: 'W/"58b69947-1f4a7"',
+20 verbose headers   'content-encoding': 'gzip',
+20 verbose headers   'cache-control': 'max-age=300',
+20 verbose headers   'content-length': '15212',
+20 verbose headers   'accept-ranges': 'bytes',
+20 verbose headers   date: 'Wed, 08 Mar 2017 21:52:06 GMT',
+20 verbose headers   via: '1.1 varnish',
+20 verbose headers   age: '44',
+20 verbose headers   connection: 'keep-alive',
+20 verbose headers   'x-served-by': 'cache-ord1722-ORD',
+20 verbose headers   'x-cache': 'HIT',
+20 verbose headers   'x-cache-hits': '1',
+20 verbose headers   'x-timer': 'S1489009926.195583,VS0,VE0',
+20 verbose headers   vary: 'Accept-Encoding' }
+21 silly get cb [ 200,
+21 silly get   { server: 'nginx/1.10.1',
+21 silly get     'content-type': 'application/json',
+21 silly get     'last-modified': 'Wed, 01 Mar 2017 09:49:59 GMT',
+21 silly get     etag: 'W/"58b69947-1f4a7"',
+21 silly get     'content-encoding': 'gzip',
+21 silly get     'cache-control': 'max-age=300',
+21 silly get     'content-length': '15212',
+21 silly get     'accept-ranges': 'bytes',
+21 silly get     date: 'Wed, 08 Mar 2017 21:52:06 GMT',
+21 silly get     via: '1.1 varnish',
+21 silly get     age: '44',
+21 silly get     connection: 'keep-alive',
+21 silly get     'x-served-by': 'cache-ord1722-ORD',
+21 silly get     'x-cache': 'HIT',
+21 silly get     'x-cache-hits': '1',
+21 silly get     'x-timer': 'S1489009926.195583,VS0,VE0',
+21 silly get     vary: 'Accept-Encoding' } ]
+22 verbose get saving canvas to /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/registry.npmjs.org/canvas/.cache.json
+23 verbose correctMkdir /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm correctMkdir not in flight; initializing
+24 silly install normalizeTree
+25 silly loadCurrentTree Finishing
+26 silly loadIdealTree Starting
+27 silly install loadIdealTree
+28 silly cloneCurrentTree Starting
+29 silly install cloneCurrentTreeToIdealTree
+30 silly cloneCurrentTree Finishing
+31 silly loadShrinkwrap Starting
+32 silly install loadShrinkwrap
+33 silly loadShrinkwrap Finishing
+34 silly loadAllDepsIntoIdealTree Starting
+35 silly install loadAllDepsIntoIdealTree
+36 silly resolveWithNewModule canvas@1.6.4 checking installable status
+37 silly cache add args [ 'canvas', null ]
+38 verbose cache add spec canvas
+39 silly cache add parsed spec Result {
+39 silly cache add   raw: 'canvas',
+39 silly cache add   scope: null,
+39 silly cache add   escapedName: 'canvas',
+39 silly cache add   name: 'canvas',
+39 silly cache add   rawSpec: '',
+39 silly cache add   spec: 'latest',
+39 silly cache add   type: 'tag' }
+40 silly addNamed canvas@latest
+41 verbose addNamed "latest" is being treated as a dist-tag for canvas
+42 info addNameTag [ 'canvas', 'latest' ]
+43 silly mapToRegistry name canvas
+44 silly mapToRegistry using default registry
+45 silly mapToRegistry registry https://registry.npmjs.org/
+46 silly mapToRegistry data Result {
+46 silly mapToRegistry   raw: 'canvas',
+46 silly mapToRegistry   scope: null,
+46 silly mapToRegistry   escapedName: 'canvas',
+46 silly mapToRegistry   name: 'canvas',
+46 silly mapToRegistry   rawSpec: '',
+46 silly mapToRegistry   spec: 'latest',
+46 silly mapToRegistry   type: 'tag' }
+47 silly mapToRegistry uri https://registry.npmjs.org/canvas
+48 verbose addNameTag registry:https://registry.npmjs.org/canvas not in flight; fetching
+49 verbose get https://registry.npmjs.org/canvas not expired, no request
+50 silly addNameTag next cb for canvas with tag latest
+51 silly addNamed canvas@1.6.4
+52 verbose addNamed "1.6.4" is a plain semver version for canvas
+53 silly mapToRegistry name canvas
+54 silly mapToRegistry using default registry
+55 silly mapToRegistry registry https://registry.npmjs.org/
+56 silly mapToRegistry data Result {
+56 silly mapToRegistry   raw: 'canvas',
+56 silly mapToRegistry   scope: null,
+56 silly mapToRegistry   escapedName: 'canvas',
+56 silly mapToRegistry   name: 'canvas',
+56 silly mapToRegistry   rawSpec: '',
+56 silly mapToRegistry   spec: 'latest',
+56 silly mapToRegistry   type: 'tag' }
+57 silly mapToRegistry uri https://registry.npmjs.org/canvas
+58 verbose addRemoteTarball https://registry.npmjs.org/canvas/-/canvas-1.6.4.tgz not in flight; adding
+59 verbose addRemoteTarball [ 'https://registry.npmjs.org/canvas/-/canvas-1.6.4.tgz',
+59 verbose addRemoteTarball   'b9f53f7abb12b4f4b21c5c2d56d8cdfd479c0055' ]
+60 info retry fetch attempt 1 at 2:52:06 PM
+61 info attempt registry request try #1 at 2:52:06 PM
+62 http fetch GET https://registry.npmjs.org/canvas/-/canvas-1.6.4.tgz
+63 http fetch 200 https://registry.npmjs.org/canvas/-/canvas-1.6.4.tgz
+64 silly fetchAndShaCheck shasum b9f53f7abb12b4f4b21c5c2d56d8cdfd479c0055
+65 verbose addTmpTarball /var/folders/k7/dhgtt59s30lf0v0qy2lxt_nh0000gn/T/npm-34213-70b95450/registry.npmjs.org/canvas/-/canvas-1.6.4.tgz not in flight; adding
+66 verbose addTmpTarball already have metadata; skipping unpack for canvas@1.6.4
+67 verbose correctMkdir /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm correctMkdir not in flight; initializing
+68 silly cache afterAdd canvas@1.6.4
+69 verbose afterAdd /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/canvas/1.6.4/package/package.json not in flight; writing
+70 verbose correctMkdir /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm correctMkdir not in flight; initializing
+71 verbose afterAdd /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/canvas/1.6.4/package/package.json written
+72 silly loadAllDepsIntoIdealTree Finishing
+73 silly loadIdealTree Finishing
+74 silly currentTree GuessASketch@
+74 silly currentTree ├─┬ acorn-globals@1.0.9
+74 silly currentTree │ └── acorn@2.7.0
+74 silly currentTree ├── acorn@0.11.0
+74 silly currentTree ├── ajv@4.11.4
+74 silly currentTree ├── align-text@0.1.4
+74 silly currentTree ├── amdefine@1.0.1
+74 silly currentTree ├── asap@2.0.5
+74 silly currentTree ├── asn1@0.2.3
+74 silly currentTree ├── assert-plus@0.2.0
+74 silly currentTree ├── async@1.5.2
+74 silly currentTree ├── asynckit@0.4.0
+74 silly currentTree ├── aws-sign2@0.6.0
+74 silly currentTree ├── aws4@1.6.0
+74 silly currentTree ├─┬ babel-runtime@6.23.0
+74 silly currentTree │ └── core-js@2.4.1
+74 silly currentTree ├── bcrypt-pbkdf@1.0.1
+74 silly currentTree ├── bindings@1.2.1
+74 silly currentTree ├── boom@2.10.1
+74 silly currentTree ├── browser-request@0.3.3
+74 silly currentTree ├── buffer-shims@1.0.0
+74 silly currentTree ├── camelcase@1.2.1
+74 silly currentTree ├── caseless@0.12.0
+74 silly currentTree ├── center-align@0.1.3
+74 silly currentTree ├─┬ cliui@2.1.0
+74 silly currentTree │ └── wordwrap@0.0.2
+74 silly currentTree ├── clone@1.0.2
+74 silly currentTree ├── co@4.6.0
+74 silly currentTree ├── combined-stream@1.0.5
+74 silly currentTree ├── contextify@0.1.15
+74 silly currentTree ├── core-js@1.2.7
+74 silly currentTree ├── core-util-is@1.0.2
+74 silly currentTree ├── cryptiles@2.0.5
+74 silly currentTree ├── cssom@0.3.2
+74 silly currentTree ├── cssstyle@0.2.37
+74 silly currentTree ├─┬ dashdash@1.14.1
+74 silly currentTree │ └── assert-plus@1.0.0
+74 silly currentTree ├── decamelize@1.2.0
+74 silly currentTree ├── deep-extend@0.4.1
+74 silly currentTree ├── deep-is@0.1.3
+74 silly currentTree ├── delayed-stream@1.0.0
+74 silly currentTree ├─┬ dom-serializer@0.1.0
+74 silly currentTree │ └── domelementtype@1.1.3
+74 silly currentTree ├── domelementtype@1.3.0
+74 silly currentTree ├── domhandler@2.3.0
+74 silly currentTree ├── domutils@1.5.1
+74 silly currentTree ├── ecc-jsbn@0.1.1
+74 silly currentTree ├── encoding@0.1.12
+74 silly currentTree ├── entities@1.1.1
+74 silly currentTree ├─┬ escodegen@1.8.1
+74 silly currentTree │ └── source-map@0.2.0
+74 silly currentTree ├── esprima@2.7.3
+74 silly currentTree ├── estraverse@1.9.3
+74 silly currentTree ├── esutils@2.0.2
+74 silly currentTree ├── extend@3.0.0
+74 silly currentTree ├── extsprintf@1.0.2
+74 silly currentTree ├── fabric@1.7.7
+74 silly currentTree ├── fast-levenshtein@2.0.6
+74 silly currentTree ├── fbjs@0.8.9
+74 silly currentTree ├── forever-agent@0.6.1
+74 silly currentTree ├── form-data@2.1.2
+74 silly currentTree ├─┬ getpass@0.1.6
+74 silly currentTree │ └── assert-plus@1.0.0
+74 silly currentTree ├── handlebars@4.0.6
+74 silly currentTree ├── har-schema@1.0.5
+74 silly currentTree ├── har-validator@4.2.1
+74 silly currentTree ├── hawk@3.1.3
+74 silly currentTree ├── history@3.3.0
+74 silly currentTree ├── hoek@2.16.3
+74 silly currentTree ├── hoist-non-react-statics@1.2.0
+74 silly currentTree ├── htmlparser2@3.9.2
+74 silly currentTree ├── http-signature@1.1.1
+74 silly currentTree ├── iconv-lite@0.4.15
+74 silly currentTree ├── inherits@2.0.3
+74 silly currentTree ├── invariant@2.2.2
+74 silly currentTree ├── is-buffer@1.1.4
+74 silly currentTree ├── is-stream@1.1.0
+74 silly currentTree ├── is-typedarray@1.0.0
+74 silly currentTree ├── isarray@1.0.0
+74 silly currentTree ├── isomorphic-fetch@2.2.1
+74 silly currentTree ├── isstream@0.1.2
+74 silly currentTree ├── jodid25519@1.0.2
+74 silly currentTree ├── js-tokens@3.0.1
+74 silly currentTree ├── jsbn@0.1.1
+74 silly currentTree ├── jsdom@3.1.2
+74 silly currentTree ├── json-schema@0.2.3
+74 silly currentTree ├── json-stable-stringify@1.0.1
+74 silly currentTree ├── json-stringify-safe@5.0.1
+74 silly currentTree ├── jsonify@0.0.0
+74 silly currentTree ├── jsprim@1.3.1
+74 silly currentTree ├── kind-of@3.1.0
+74 silly currentTree ├── lazy-cache@1.0.4
+74 silly currentTree ├── levn@0.3.0
+74 silly currentTree ├── lodash@4.17.4
+74 silly currentTree ├── longest@1.0.1
+74 silly currentTree ├── loose-envify@1.3.1
+74 silly currentTree ├── message-box@0.0.2
+74 silly currentTree ├─┬ meteor-node-stubs@0.2.5
+74 silly currentTree │ ├── asn1.js@4.9.0
+74 silly currentTree │ ├── assert@1.4.1
+74 silly currentTree │ ├── base64-js@1.2.0
+74 silly currentTree │ ├── Base64@0.2.1
+74 silly currentTree │ ├── bn.js@4.11.6
+74 silly currentTree │ ├── brorand@1.0.6
+74 silly currentTree │ ├── browserify-aes@1.0.6
+74 silly currentTree │ ├── browserify-cipher@1.0.0
+74 silly currentTree │ ├── browserify-des@1.0.0
+74 silly currentTree │ ├── browserify-rsa@4.0.1
+74 silly currentTree │ ├── browserify-sign@4.0.0
+74 silly currentTree │ ├── browserify-zlib@0.1.4
+74 silly currentTree │ ├── buffer-shims@1.0.0
+74 silly currentTree │ ├── buffer-xor@1.0.3
+74 silly currentTree │ ├── buffer@4.9.1
+74 silly currentTree │ ├── cipher-base@1.0.3
+74 silly currentTree │ ├── console-browserify@1.1.0
+74 silly currentTree │ ├── constants-browserify@1.0.0
+74 silly currentTree │ ├── core-util-is@1.0.2
+74 silly currentTree │ ├── create-ecdh@4.0.0
+74 silly currentTree │ ├── create-hash@1.1.2
+74 silly currentTree │ ├── create-hmac@1.1.4
+74 silly currentTree │ ├── crypto-browserify@3.11.0
+74 silly currentTree │ ├── date-now@0.1.4
+74 silly currentTree │ ├── des.js@1.0.0
+74 silly currentTree │ ├── diffie-hellman@5.0.2
+74 silly currentTree │ ├── domain-browser@1.1.7
+74 silly currentTree │ ├── elliptic@6.3.2
+74 silly currentTree │ ├── events@1.1.1
+74 silly currentTree │ ├── evp_bytestokey@1.0.0
+74 silly currentTree │ ├── hash.js@1.0.3
+74 silly currentTree │ ├── http-browserify@1.7.0
+74 silly currentTree │ ├── https-browserify@0.0.1
+74 silly currentTree │ ├── ieee754@1.1.8
+74 silly currentTree │ ├── indexof@0.0.1
+74 silly currentTree │ ├── inherits@2.0.1
+74 silly currentTree │ ├── isarray@1.0.0
+74 silly currentTree │ ├── miller-rabin@4.0.0
+74 silly currentTree │ ├── minimalistic-assert@1.0.0
+74 silly currentTree │ ├── os-browserify@0.2.1
+74 silly currentTree │ ├── pako@0.2.9
+74 silly currentTree │ ├── parse-asn1@5.0.0
+74 silly currentTree │ ├── path-browserify@0.0.0
+74 silly currentTree │ ├── pbkdf2@3.0.9
+74 silly currentTree │ ├── process-nextick-args@1.0.7
+74 silly currentTree │ ├── process@0.11.9
+74 silly currentTree │ ├── public-encrypt@4.0.0
+74 silly currentTree │ ├── punycode@1.4.1
+74 silly currentTree │ ├── querystring-es3@0.2.1
+74 silly currentTree │ ├── querystring@0.2.0
+74 silly currentTree │ ├── randombytes@2.0.3
+74 silly currentTree │ ├── readable-stream@2.2.1
+74 silly currentTree │ ├── ripemd160@1.0.1
+74 silly currentTree │ ├── sha.js@2.4.8
+74 silly currentTree │ ├── stream-browserify@2.0.1
+74 silly currentTree │ ├── string_decoder@0.10.31
+74 silly currentTree │ ├── timers-browserify@1.4.2
+74 silly currentTree │ ├── tty-browserify@0.0.0
+74 silly currentTree │ ├─┬ url@0.11.0
+74 silly currentTree │ │ └── punycode@1.3.2
+74 silly currentTree │ ├── util-deprecate@1.0.2
+74 silly currentTree │ ├── util@0.10.3
+74 silly currentTree │ └── vm-browserify@0.0.4
+74 silly currentTree ├── mime-db@1.26.0
+74 silly currentTree ├── mime-types@2.1.14
+74 silly currentTree ├── minimist@0.0.10
+74 silly currentTree ├── mongo-object@0.0.1
+74 silly currentTree ├── nan@2.5.1
+74 silly currentTree ├── node-fetch@1.6.3
+74 silly currentTree ├── nwmatcher@1.3.9
+74 silly currentTree ├── oauth-sign@0.8.2
+74 silly currentTree ├── object-assign@4.1.1
+74 silly currentTree ├── optimist@0.6.1
+74 silly currentTree ├─┬ optionator@0.8.2
+74 silly currentTree │ └── wordwrap@1.0.0
+74 silly currentTree ├── parse5@1.5.1
+74 silly currentTree ├── performance-now@0.2.0
+74 silly currentTree ├── prelude-ls@1.1.2
+74 silly currentTree ├── process-nextick-args@1.0.7
+74 silly currentTree ├── promise@7.1.1
+74 silly currentTree ├── punycode@1.4.1
+74 silly currentTree ├── qs@6.3.2
+74 silly currentTree ├── query-string@4.3.2
+74 silly currentTree ├── react-addons-pure-render-mixin@15.4.2
+74 silly currentTree ├── react-dom@15.4.2
+74 silly currentTree ├── react-router@3.0.2
+74 silly currentTree ├── react@15.4.2
+74 silly currentTree ├── readable-stream@2.2.3
+74 silly currentTree ├── regenerator-runtime@0.10.3
+74 silly currentTree ├── repeat-string@1.6.1
+74 silly currentTree ├── request@2.80.0
+74 silly currentTree ├── right-align@0.1.3
+74 silly currentTree ├── setimmediate@1.0.5
+74 silly currentTree ├── simpl-schema@0.2.3
+74 silly currentTree ├── sntp@1.0.9
+74 silly currentTree ├── source-map@0.4.4
+74 silly currentTree ├─┬ sshpk@1.11.0
+74 silly currentTree │ └── assert-plus@1.0.0
+74 silly currentTree ├── strict-uri-encode@1.1.0
+74 silly currentTree ├── string_decoder@0.10.31
+74 silly currentTree ├── string-format@0.5.0
+74 silly currentTree ├── stringstream@0.0.5
+74 silly currentTree ├── tough-cookie@2.3.2
+74 silly currentTree ├── tunnel-agent@0.4.3
+74 silly currentTree ├── tweetnacl@0.14.5
+74 silly currentTree ├── type-check@0.3.2
+74 silly currentTree ├── ua-parser-js@0.7.12
+74 silly currentTree ├─┬ uglify-js@2.8.7
+74 silly currentTree │ └── source-map@0.5.6
+74 silly currentTree ├── uglify-to-browserify@1.0.2
+74 silly currentTree ├── underscore@1.8.3
+74 silly currentTree ├── util-deprecate@1.0.2
+74 silly currentTree ├── uuid@3.0.1
+74 silly currentTree ├── verror@1.3.6
+74 silly currentTree ├── warning@3.0.0
+74 silly currentTree ├── whatwg-fetch@2.0.2
+74 silly currentTree ├── window-size@0.1.0
+74 silly currentTree ├── wordwrap@0.0.3
+74 silly currentTree ├── xml-name-validator@1.0.0
+74 silly currentTree ├── xmldom@0.1.27
+74 silly currentTree ├── xmlhttprequest@1.8.0
+74 silly currentTree └── yargs@3.10.0
+75 silly idealTree GuessASketch@
+75 silly idealTree ├─┬ acorn-globals@1.0.9
+75 silly idealTree │ └── acorn@2.7.0
+75 silly idealTree ├── acorn@0.11.0
+75 silly idealTree ├── ajv@4.11.4
+75 silly idealTree ├── align-text@0.1.4
+75 silly idealTree ├── amdefine@1.0.1
+75 silly idealTree ├── asap@2.0.5
+75 silly idealTree ├── asn1@0.2.3
+75 silly idealTree ├── assert-plus@0.2.0
+75 silly idealTree ├── async@1.5.2
+75 silly idealTree ├── asynckit@0.4.0
+75 silly idealTree ├── aws-sign2@0.6.0
+75 silly idealTree ├── aws4@1.6.0
+75 silly idealTree ├─┬ babel-runtime@6.23.0
+75 silly idealTree │ └── core-js@2.4.1
+75 silly idealTree ├── bcrypt-pbkdf@1.0.1
+75 silly idealTree ├── bindings@1.2.1
+75 silly idealTree ├── boom@2.10.1
+75 silly idealTree ├── browser-request@0.3.3
+75 silly idealTree ├── buffer-shims@1.0.0
+75 silly idealTree ├── camelcase@1.2.1
+75 silly idealTree ├── canvas@1.6.4
+75 silly idealTree ├── caseless@0.12.0
+75 silly idealTree ├── center-align@0.1.3
+75 silly idealTree ├─┬ cliui@2.1.0
+75 silly idealTree │ └── wordwrap@0.0.2
+75 silly idealTree ├── clone@1.0.2
+75 silly idealTree ├── co@4.6.0
+75 silly idealTree ├── combined-stream@1.0.5
+75 silly idealTree ├── contextify@0.1.15
+75 silly idealTree ├── core-js@1.2.7
+75 silly idealTree ├── core-util-is@1.0.2
+75 silly idealTree ├── cryptiles@2.0.5
+75 silly idealTree ├── cssom@0.3.2
+75 silly idealTree ├── cssstyle@0.2.37
+75 silly idealTree ├─┬ dashdash@1.14.1
+75 silly idealTree │ └── assert-plus@1.0.0
+75 silly idealTree ├── decamelize@1.2.0
+75 silly idealTree ├── deep-extend@0.4.1
+75 silly idealTree ├── deep-is@0.1.3
+75 silly idealTree ├── delayed-stream@1.0.0
+75 silly idealTree ├─┬ dom-serializer@0.1.0
+75 silly idealTree │ └── domelementtype@1.1.3
+75 silly idealTree ├── domelementtype@1.3.0
+75 silly idealTree ├── domhandler@2.3.0
+75 silly idealTree ├── domutils@1.5.1
+75 silly idealTree ├── ecc-jsbn@0.1.1
+75 silly idealTree ├── encoding@0.1.12
+75 silly idealTree ├── entities@1.1.1
+75 silly idealTree ├─┬ escodegen@1.8.1
+75 silly idealTree │ └── source-map@0.2.0
+75 silly idealTree ├── esprima@2.7.3
+75 silly idealTree ├── estraverse@1.9.3
+75 silly idealTree ├── esutils@2.0.2
+75 silly idealTree ├── extend@3.0.0
+75 silly idealTree ├── extsprintf@1.0.2
+75 silly idealTree ├── fabric@1.7.7
+75 silly idealTree ├── fast-levenshtein@2.0.6
+75 silly idealTree ├── fbjs@0.8.9
+75 silly idealTree ├── forever-agent@0.6.1
+75 silly idealTree ├── form-data@2.1.2
+75 silly idealTree ├─┬ getpass@0.1.6
+75 silly idealTree │ └── assert-plus@1.0.0
+75 silly idealTree ├── handlebars@4.0.6
+75 silly idealTree ├── har-schema@1.0.5
+75 silly idealTree ├── har-validator@4.2.1
+75 silly idealTree ├── hawk@3.1.3
+75 silly idealTree ├── history@3.3.0
+75 silly idealTree ├── hoek@2.16.3
+75 silly idealTree ├── hoist-non-react-statics@1.2.0
+75 silly idealTree ├── htmlparser2@3.9.2
+75 silly idealTree ├── http-signature@1.1.1
+75 silly idealTree ├── iconv-lite@0.4.15
+75 silly idealTree ├── inherits@2.0.3
+75 silly idealTree ├── invariant@2.2.2
+75 silly idealTree ├── is-buffer@1.1.4
+75 silly idealTree ├── is-stream@1.1.0
+75 silly idealTree ├── is-typedarray@1.0.0
+75 silly idealTree ├── isarray@1.0.0
+75 silly idealTree ├── isomorphic-fetch@2.2.1
+75 silly idealTree ├── isstream@0.1.2
+75 silly idealTree ├── jodid25519@1.0.2
+75 silly idealTree ├── js-tokens@3.0.1
+75 silly idealTree ├── jsbn@0.1.1
+75 silly idealTree ├── jsdom@3.1.2
+75 silly idealTree ├── json-schema@0.2.3
+75 silly idealTree ├── json-stable-stringify@1.0.1
+75 silly idealTree ├── json-stringify-safe@5.0.1
+75 silly idealTree ├── jsonify@0.0.0
+75 silly idealTree ├── jsprim@1.3.1
+75 silly idealTree ├── kind-of@3.1.0
+75 silly idealTree ├── lazy-cache@1.0.4
+75 silly idealTree ├── levn@0.3.0
+75 silly idealTree ├── lodash@4.17.4
+75 silly idealTree ├── longest@1.0.1
+75 silly idealTree ├── loose-envify@1.3.1
+75 silly idealTree ├── message-box@0.0.2
+75 silly idealTree ├─┬ meteor-node-stubs@0.2.5
+75 silly idealTree │ ├── asn1.js@4.9.0
+75 silly idealTree │ ├── assert@1.4.1
+75 silly idealTree │ ├── base64-js@1.2.0
+75 silly idealTree │ ├── Base64@0.2.1
+75 silly idealTree │ ├── bn.js@4.11.6
+75 silly idealTree │ ├── brorand@1.0.6
+75 silly idealTree │ ├── browserify-aes@1.0.6
+75 silly idealTree │ ├── browserify-cipher@1.0.0
+75 silly idealTree │ ├── browserify-des@1.0.0
+75 silly idealTree │ ├── browserify-rsa@4.0.1
+75 silly idealTree │ ├── browserify-sign@4.0.0
+75 silly idealTree │ ├── browserify-zlib@0.1.4
+75 silly idealTree │ ├── buffer-shims@1.0.0
+75 silly idealTree │ ├── buffer-xor@1.0.3
+75 silly idealTree │ ├── buffer@4.9.1
+75 silly idealTree │ ├── cipher-base@1.0.3
+75 silly idealTree │ ├── console-browserify@1.1.0
+75 silly idealTree │ ├── constants-browserify@1.0.0
+75 silly idealTree │ ├── core-util-is@1.0.2
+75 silly idealTree │ ├── create-ecdh@4.0.0
+75 silly idealTree │ ├── create-hash@1.1.2
+75 silly idealTree │ ├── create-hmac@1.1.4
+75 silly idealTree │ ├── crypto-browserify@3.11.0
+75 silly idealTree │ ├── date-now@0.1.4
+75 silly idealTree │ ├── des.js@1.0.0
+75 silly idealTree │ ├── diffie-hellman@5.0.2
+75 silly idealTree │ ├── domain-browser@1.1.7
+75 silly idealTree │ ├── elliptic@6.3.2
+75 silly idealTree │ ├── events@1.1.1
+75 silly idealTree │ ├── evp_bytestokey@1.0.0
+75 silly idealTree │ ├── hash.js@1.0.3
+75 silly idealTree │ ├── http-browserify@1.7.0
+75 silly idealTree │ ├── https-browserify@0.0.1
+75 silly idealTree │ ├── ieee754@1.1.8
+75 silly idealTree │ ├── indexof@0.0.1
+75 silly idealTree │ ├── inherits@2.0.1
+75 silly idealTree │ ├── isarray@1.0.0
+75 silly idealTree │ ├── miller-rabin@4.0.0
+75 silly idealTree │ ├── minimalistic-assert@1.0.0
+75 silly idealTree │ ├── os-browserify@0.2.1
+75 silly idealTree │ ├── pako@0.2.9
+75 silly idealTree │ ├── parse-asn1@5.0.0
+75 silly idealTree │ ├── path-browserify@0.0.0
+75 silly idealTree │ ├── pbkdf2@3.0.9
+75 silly idealTree │ ├── process-nextick-args@1.0.7
+75 silly idealTree │ ├── process@0.11.9
+75 silly idealTree │ ├── public-encrypt@4.0.0
+75 silly idealTree │ ├── punycode@1.4.1
+75 silly idealTree │ ├── querystring-es3@0.2.1
+75 silly idealTree │ ├── querystring@0.2.0
+75 silly idealTree │ ├── randombytes@2.0.3
+75 silly idealTree │ ├── readable-stream@2.2.1
+75 silly idealTree │ ├── ripemd160@1.0.1
+75 silly idealTree │ ├── sha.js@2.4.8
+75 silly idealTree │ ├── stream-browserify@2.0.1
+75 silly idealTree │ ├── string_decoder@0.10.31
+75 silly idealTree │ ├── timers-browserify@1.4.2
+75 silly idealTree │ ├── tty-browserify@0.0.0
+75 silly idealTree │ ├─┬ url@0.11.0
+75 silly idealTree │ │ └── punycode@1.3.2
+75 silly idealTree │ ├── util-deprecate@1.0.2
+75 silly idealTree │ ├── util@0.10.3
+75 silly idealTree │ └── vm-browserify@0.0.4
+75 silly idealTree ├── mime-db@1.26.0
+75 silly idealTree ├── mime-types@2.1.14
+75 silly idealTree ├── minimist@0.0.10
+75 silly idealTree ├── mongo-object@0.0.1
+75 silly idealTree ├── nan@2.5.1
+75 silly idealTree ├── node-fetch@1.6.3
+75 silly idealTree ├── nwmatcher@1.3.9
+75 silly idealTree ├── oauth-sign@0.8.2
+75 silly idealTree ├── object-assign@4.1.1
+75 silly idealTree ├── optimist@0.6.1
+75 silly idealTree ├─┬ optionator@0.8.2
+75 silly idealTree │ └── wordwrap@1.0.0
+75 silly idealTree ├── parse5@1.5.1
+75 silly idealTree ├── performance-now@0.2.0
+75 silly idealTree ├── prelude-ls@1.1.2
+75 silly idealTree ├── process-nextick-args@1.0.7
+75 silly idealTree ├── promise@7.1.1
+75 silly idealTree ├── punycode@1.4.1
+75 silly idealTree ├── qs@6.3.2
+75 silly idealTree ├── query-string@4.3.2
+75 silly idealTree ├── react-addons-pure-render-mixin@15.4.2
+75 silly idealTree ├── react-dom@15.4.2
+75 silly idealTree ├── react-router@3.0.2
+75 silly idealTree ├── react@15.4.2
+75 silly idealTree ├── readable-stream@2.2.3
+75 silly idealTree ├── regenerator-runtime@0.10.3
+75 silly idealTree ├── repeat-string@1.6.1
+75 silly idealTree ├── request@2.80.0
+75 silly idealTree ├── right-align@0.1.3
+75 silly idealTree ├── setimmediate@1.0.5
+75 silly idealTree ├── simpl-schema@0.2.3
+75 silly idealTree ├── sntp@1.0.9
+75 silly idealTree ├── source-map@0.4.4
+75 silly idealTree ├─┬ sshpk@1.11.0
+75 silly idealTree │ └── assert-plus@1.0.0
+75 silly idealTree ├── strict-uri-encode@1.1.0
+75 silly idealTree ├── string_decoder@0.10.31
+75 silly idealTree ├── string-format@0.5.0
+75 silly idealTree ├── stringstream@0.0.5
+75 silly idealTree ├── tough-cookie@2.3.2
+75 silly idealTree ├── tunnel-agent@0.4.3
+75 silly idealTree ├── tweetnacl@0.14.5
+75 silly idealTree ├── type-check@0.3.2
+75 silly idealTree ├── ua-parser-js@0.7.12
+75 silly idealTree ├─┬ uglify-js@2.8.7
+75 silly idealTree │ └── source-map@0.5.6
+75 silly idealTree ├── uglify-to-browserify@1.0.2
+75 silly idealTree ├── underscore@1.8.3
+75 silly idealTree ├── util-deprecate@1.0.2
+75 silly idealTree ├── uuid@3.0.1
+75 silly idealTree ├── verror@1.3.6
+75 silly idealTree ├── warning@3.0.0
+75 silly idealTree ├── whatwg-fetch@2.0.2
+75 silly idealTree ├── window-size@0.1.0
+75 silly idealTree ├── wordwrap@0.0.3
+75 silly idealTree ├── xml-name-validator@1.0.0
+75 silly idealTree ├── xmldom@0.1.27
+75 silly idealTree ├── xmlhttprequest@1.8.0
+75 silly idealTree └── yargs@3.10.0
+76 silly generateActionsToTake Starting
+77 silly install generateActionsToTake
+78 silly generateActionsToTake Finishing
+79 silly diffTrees action count 1
+80 silly diffTrees add canvas@1.6.4
+81 silly decomposeActions action count 8
+82 silly decomposeActions fetch canvas@1.6.4
+83 silly decomposeActions extract canvas@1.6.4
+84 silly decomposeActions test canvas@1.6.4
+85 silly decomposeActions preinstall canvas@1.6.4
+86 silly decomposeActions build canvas@1.6.4
+87 silly decomposeActions install canvas@1.6.4
+88 silly decomposeActions postinstall canvas@1.6.4
+89 silly decomposeActions finalize canvas@1.6.4
+90 silly runTopLevelLifecycles Starting
+91 silly executeActions Starting
+92 silly install executeActions
+93 silly doSerial global-install 0
+94 silly doParallel fetch 1
+95 verbose correctMkdir /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/_locks correctMkdir not in flight; initializing
+96 verbose lock using /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/_locks/staging-44459379c58ee45f.lock for /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging
+97 silly doParallel extract 1
+98 silly extract canvas@1.6.4
+99 verbose unbuild node_modules/.staging/canvas-2e6ae828
+100 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828 is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+101 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828
+102 verbose tar unpack /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/canvas/1.6.4/package.tgz
+103 verbose tar unpacking to /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828
+104 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828 is being purged
+105 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828
+106 silly gunzTarPerm modes [ '755', '644' ]
+107 silly gunzTarPerm extractEntry package.json
+108 silly gunzTarPerm extractEntry .npmignore
+109 silly gunzTarPerm extractEntry index.js
+110 silly gunzTarPerm extractEntry .travis.yml
+111 silly gunzTarPerm extractEntry History.md
+112 silly gunzTarPerm extractEntry Readme.md
+113 silly gunzTarPerm extractEntry binding.gyp
+114 silly gunzTarPerm extractEntry .github/ISSUE_TEMPLATE.md
+115 silly gunzTarPerm extractEntry lib/bindings.js
+116 silly gunzTarPerm extractEntry lib/canvas.js
+117 silly gunzTarPerm extractEntry lib/context2d.js
+118 silly gunzTarPerm extractEntry lib/image.js
+119 silly gunzTarPerm extractEntry lib/jpegstream.js
+120 silly gunzTarPerm extractEntry lib/pdfstream.js
+121 silly gunzTarPerm extractEntry lib/pngstream.js
+122 silly gunzTarPerm extractEntry src/Image.cc
+123 silly gunzTarPerm extractEntry src/Canvas.cc
+124 silly gunzTarPerm extractEntry src/CanvasGradient.cc
+125 silly gunzTarPerm extractEntry src/CanvasGradient.h
+126 silly gunzTarPerm extractEntry src/CanvasPattern.cc
+127 silly gunzTarPerm extractEntry src/CanvasPattern.h
+128 silly gunzTarPerm extractEntry src/CanvasRenderingContext2d.cc
+129 silly gunzTarPerm extractEntry src/CanvasRenderingContext2d.h
+130 silly gunzTarPerm extractEntry src/FontFace.cc
+131 silly gunzTarPerm extractEntry src/FontFace.h
+132 silly gunzTarPerm extractEntry src/Canvas.h
+133 silly gunzTarPerm extractEntry src/Image.h
+134 silly gunzTarPerm extractEntry src/ImageData.cc
+135 silly gunzTarPerm extractEntry src/ImageData.h
+136 silly gunzTarPerm extractEntry src/JPEGStream.h
+137 silly gunzTarPerm extractEntry src/PNG.h
+138 silly gunzTarPerm extractEntry src/Point.h
+139 silly gunzTarPerm extractEntry src/closure.h
+140 silly gunzTarPerm extractEntry src/color.cc
+141 silly gunzTarPerm extractEntry src/color.h
+142 silly gunzTarPerm extractEntry src/init.cc
+143 silly gunzTarPerm extractEntry util/has_lib.sh
+144 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828/node_modules is being purged
+145 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging/canvas-2e6ae828/node_modules
+146 silly doParallel preinstall 1
+147 silly preinstall canvas@1.6.4
+148 info lifecycle canvas@1.6.4~preinstall: canvas@1.6.4
+149 silly lifecycle canvas@1.6.4~preinstall: no script for preinstall, continuing
+150 silly doReverseSerial remove 0
+151 silly doSerial move 0
+152 silly doSerial finalize 1
+153 silly finalize /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+154 silly doSerial build 1
+155 silly build canvas@1.6.4
+156 info linkStuff canvas@1.6.4
+157 silly linkStuff canvas@1.6.4 has /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules as its parent node_modules
+158 verbose linkBins canvas@1.6.4
+159 verbose linkMans canvas@1.6.4
+160 silly doSerial global-link 0
+161 silly doParallel update-linked 0
+162 silly doSerial install 1
+163 silly install canvas@1.6.4
+164 info lifecycle canvas@1.6.4~install: canvas@1.6.4
+165 verbose lifecycle canvas@1.6.4~install: unsafe-perm in lifecycle true
+166 verbose lifecycle canvas@1.6.4~install: PATH: /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/lib/node_modules/npm/bin/node-gyp-bin:/Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas/node_modules/.bin:/Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.bin:/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/bin:/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/lib/node_modules/.bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/usr/local/bin:/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin
+167 verbose lifecycle canvas@1.6.4~install: CWD: /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+168 silly lifecycle canvas@1.6.4~install: Args: [ '-c', 'node-gyp rebuild' ]
+169 silly lifecycle canvas@1.6.4~install: Returned: code: 1  signal: null
+170 info lifecycle canvas@1.6.4~install: Failed to exec install script
+171 verbose unlock done using /Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/.npm/_locks/staging-44459379c58ee45f.lock for /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/.staging
+172 silly rollbackFailedOptional Starting
+173 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+174 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+175 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+176 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+177 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+178 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+179 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+180 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+181 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+182 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+183 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+184 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+185 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+186 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+187 silly gentlyRm /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas is being purged from base /Users/victoria/Desktop/Guess-A-Sketch/app
+188 verbose gentlyRm don't care about contents; nuking /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+189 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+190 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+191 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+192 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+193 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+194 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+195 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+196 silly vacuum-fs purging /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules/canvas
+197 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+198 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+199 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+200 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+201 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+202 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+203 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+204 silly vacuum-fs quitting because other entries in /Users/victoria/Desktop/Guess-A-Sketch/app/node_modules
+205 silly rollbackFailedOptional Finishing
+206 silly runTopLevelLifecycles Finishing
+207 silly install printInstalled
+208 verbose stack Error: canvas@1.6.4 install: `node-gyp rebuild`
+208 verbose stack Exit status 1
+208 verbose stack     at EventEmitter.<anonymous> (/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
+208 verbose stack     at emitTwo (events.js:87:13)
+208 verbose stack     at EventEmitter.emit (events.js:172:7)
+208 verbose stack     at ChildProcess.<anonymous> (/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+208 verbose stack     at emitTwo (events.js:87:13)
+208 verbose stack     at ChildProcess.emit (events.js:172:7)
+208 verbose stack     at maybeClose (internal/child_process.js:854:16)
+208 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:222:5)
+209 verbose pkgid canvas@1.6.4
+210 verbose cwd /Users/victoria/Desktop/Guess-A-Sketch/app
+211 error Darwin 15.6.0
+212 error argv "/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/bin/node" "/Users/victoria/.meteor/packages/meteor-tool/.1.4.3_1.ju6dmy++os.osx.x86_64+web.browser+web.cordova/mt-os.osx.x86_64/dev_bundle/bin/npm" "install" "--save" "canvas"
+213 error node v4.7.3
+214 error npm  v4.1.2
+215 error code ELIFECYCLE
+216 error canvas@1.6.4 install: `node-gyp rebuild`
+216 error Exit status 1
+217 error Failed at the canvas@1.6.4 install script 'node-gyp rebuild'.
+217 error Make sure you have the latest version of node.js and npm installed.
+217 error If you do, this is most likely a problem with the canvas package,
+217 error not with npm itself.
+217 error Tell the author that this fails on your system:
+217 error     node-gyp rebuild
+217 error You can get information on how to open an issue for this project with:
+217 error     npm bugs canvas
+217 error Or if that isn't available, you can get their info via:
+217 error     npm owner ls canvas
+217 error There is likely additional logging output above.
+218 verbose exit [ 1, true ]
