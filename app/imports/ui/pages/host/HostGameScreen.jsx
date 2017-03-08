@@ -1,11 +1,11 @@
 import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { Session } from 'meteor/session';
 
 import Timer from '../../components/Timer.jsx';
 import Prompt from '../../components/Prompt.jsx';
 
-// TODO import the right names once api/rooms.js is available
-import { Room } from '/imports/api/rooms.js';
+import { HOST_ROOM } from '/imports/api/session';
 
 export default class HostGameScreen extends BaseComponent {
   constructor(props) {
@@ -15,9 +15,9 @@ export default class HostGameScreen extends BaseComponent {
   }
 
   render() {
-    const {
-      room,
-    } = this.props;
+    const {} = this.props;
+
+    let Room = Session.get(HOST_ROOM);
 
     let prompt = Room.rounds[0].prompt;
     let time = Room.rounds[0].time;
@@ -42,5 +42,4 @@ export default class HostGameScreen extends BaseComponent {
 }
 
 HostGameScreen.propTypes = {
-  room: React.PropTypes.object,
 };

@@ -1,15 +1,11 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
-
-import {Rooms} from '../../../api/collections/rooms';
-
 import BaseComponent from '../../components/BaseComponent.jsx';
 
-// TODO import real method name when it's available in /api
-import {
-  setRoom,
-} from '/imports/api/rooms.js';
+import { Rooms } from '/imports/api/collections/rooms.js';
+
+import { HOST_ROOM } from '/imports/api/session';
 
 export default class CreateARoom extends BaseComponent{
     constructor(props){
@@ -61,7 +57,7 @@ export default class CreateARoom extends BaseComponent{
 
         // Navigate to the lobby of that room
         let room = Rooms.findOne({_id: id});
-        setRoom(room);
+        Session.set(HOST_ROOM, room);
         browserHistory.push('/host/lobby');
     }
 
