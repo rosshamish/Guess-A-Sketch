@@ -9,6 +9,10 @@ import ParticipantRoundResults from '../../components/ParticipantRoundResults.js
 import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
 
+import { leaveRoom } from '/imports/api/methods';
+import { PLAYER } from '/imports/api/session';
+
+
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
@@ -17,6 +21,18 @@ export default class ParticipantGameScreen extends BaseComponent {
     };
 
     this.latestRoundStatus = this.currentRound(this.props.room).status;
+  }
+
+  componentWillUnmount() {
+    // Leave the room.
+    const didLeaveRoom = leaveRoom.call({
+      room_id: this.props.room._id,
+      player: Session.get(PLAYER),
+    });
+    if (!didLeaveRoom) {
+      console.error('Failed to leave room.');
+      return;
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {

@@ -34,6 +34,41 @@ export const submitSketch = new ValidatedMethod({
 });
 
 
+export const leaveRoom = new ValidatedMethod({
+  name: 'leaveRoom',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+    player: {
+      type: Schema.Player,
+    },
+  }).validator(),
+  run({ room_id, player }) {
+    const room = Rooms.findOne({
+      _id: room_id,
+    });
+
+    const playerInRoom = _.find(room.players, (existingPlayer) => {
+      return existingPlayer.name === player.name;
+    });
+    if (!playerInRoom) {
+      console.error('Cannot leave room. Player was never in the room.');
+      return false;
+    }
+
+    // Remove the player from the room
+    return Rooms.update({
+      _id: room_id,
+    }, {
+      $pull: {
+        players: player,
+      },
+    });
+  },
+});
+
+
 export const joinRoom = new ValidatedMethod({
   name: 'joinRoom',
   validate: new SimpleSchema({
