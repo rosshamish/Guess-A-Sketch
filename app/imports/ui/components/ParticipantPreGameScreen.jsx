@@ -27,9 +27,10 @@ export default class ParticipantPreGameScreen extends BaseComponent {
     } else {
       return (
         <div>
-          <p>You've received the name { Session.get(PLAYER).name }</p>
+          <p>Your name is { Session.get(PLAYER).name }</p>
+          <p>Your color is { Session.get(PLAYER).color }</p>
           <p>You're in room { room.name + ' (' + room._id.substring(0, 4) + ')' }</p>
-          <p>Hold your horses though, the game hasn't started yet.</p>
+          <p>...hold your horses though, the game hasn't started yet.</p>
         </div>
       );
     }

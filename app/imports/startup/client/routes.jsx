@@ -31,6 +31,7 @@ export const renderRoutes = () => (
   <Router history={browserHistory}>
 
     <Route path="/" component={ParticipantContainer}>
+      <Route path="login" component={LoginPage} />
       <Route path="join" component={RoomListContainer} />
       <Route path="play" component={ParticipantGameScreenContainer} />
     </Route>
