@@ -46,8 +46,6 @@ export default class ParticipantLayout extends React.Component {
       message,
     } = this.props;
 
-    console.log('ParticipantLayout rendering');
-
     return (
       <div id="container">
         <div id="content-container">

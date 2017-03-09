@@ -12,7 +12,6 @@ import { createContainer } from 'meteor/react-meteor-data';
 import ParticipantLayout from '../layouts/ParticipantLayout.jsx';
 
 export default createContainer(() => {
-  console.log('ParticipantContainer creating');
   return {
     user: Meteor.user,
     loading: false,
