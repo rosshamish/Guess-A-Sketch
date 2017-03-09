@@ -53,6 +53,15 @@ export const joinRoom = new ValidatedMethod({
       console.error('Cannot join a non-joinable room. Doing nothing.');
       return false;
     }
+
+    const playerNameUnique = _.every(room.players, (existingPlayer) => {
+      return existingPlayer.name != player.name;
+    });
+    if (!playerNameUnique) {
+      // TODO tell the user this in the UI
+      console.error('Cannot join room. Name must be unique.');
+      return false;
+    }
     
     // Add the player to the room
     return Rooms.update({

@@ -1,5 +1,8 @@
 import React from 'react';
+import { _ } from 'meteor/underscore';
+
 import BaseComponent from './BaseComponent.jsx';
+import ErrorMessage from './ErrorMessage.jsx';
 
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
@@ -13,8 +16,22 @@ export default class ParticipantRoundResults extends BaseComponent {
       round,
     } = this.props;
 
+    const currentPlayerSketches = _.filter(round.sketches, (sketch) => {
+      return sketch.player.name === sketch.player.name;
+    });
+    if (currentPlayerSketches.length != 1) {
+      console.error('Expected player to have exactly one sketch in the latest round.');
+      return <ErrorMessage />
+    }
+
+    const currentPlayerSketch = currentPlayerSketches[0];
+
     return (
-      <p>A pic of the sketch will be here! And the scoring results!</p>
+      <div>
+        <img src={Session.get(SKETCH)} />
+        <hr />
+        <p>Scores: {currentPlayerSketch.scores}</p>
+      </div>
     );
   }
 }
