@@ -25,19 +25,12 @@ export default class Canvas extends BaseComponent {
     const canvas = this;
     this.canvas.on('path:created', (event) => {
       canvas.pathStack.push(event.path);
+      // Here, we store the sketch to the Session on each mouse-up.
+      // Then, in ParticipantGameScreen, when the round changes, we
+      // fetch it and send it to the server.
+      // TODO Find a better way than using Session
+      Session.set(SKETCH, this.canvas.toDataURL());
     });
-  }
-
-  onTimeout(event) {
-    event.preventDefault();
-    const base64sketch = this.canvas.toDataURL();
-    submitSketch.call({
-      player: this.props.player,
-      sketch: base64sketch,
-      prompt: this.props.prompt,
-    })
-
-    console.log(base64sketch);
   }
 
   onUndo(event) {
@@ -60,7 +53,6 @@ export default class Canvas extends BaseComponent {
     return (
       <div>
         <button onClick={this.onUndo}>Undo Stroke</button>
-        <button onClick={this.onTimeout}>Time's Up!</button>
         <div className="container">
           <canvas id="canvas" style={style} />
         </div>

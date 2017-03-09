@@ -15,11 +15,35 @@ export default class ParticipantGameScreen extends BaseComponent {
     this.state = {
       sketch: null,
     };
+
+    this.latestRoundStatus = this.currentRound(this.props.room).status;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.roundHasCompleted(this.props.room, nextProps.room)) {
+      const didSubmitSketch = submitSketch.call({
+        player: Session.get(PLAYER),
+        sketch: Session.get(SKETCH),
+        prompt: this.latestCompletedRound(this.props.room).prompt,
+      });
+
+      if (!didSubmitSketch) {
+        console.error('Failed to submit sketch');
+        return;
+      }
+    }
+  }
+
+  roundHasCompleted(room, nextRoom) {
+    return this.currentRound(room)._id != this.currentRound(nextRoom)._id;
   }
 
   gameHasStarted(room) {
     return _.any(room.rounds, (round) => {
-      return round.status != 'CREATED';
+      return (
+        round.status === 'PLAYING' ||
+        round.status === 'COMPLETE'
+      );
     });
   }
 
@@ -36,8 +60,6 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   latestCompletedRound(room) {
-    // Find the latest completed round. Note the use of .reverse()
-
     // Attribution: using slice() to avoid modifying the original array
     // Source: http://stackoverflow.com/questions/30610523/reverse-array-in-javascript-without-mutating-original-array
     // Accessed: March 8, 2017
