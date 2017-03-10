@@ -58,10 +58,6 @@ export default class ParticipantGameScreen extends BaseComponent {
     }
   }
 
-  roundHasCompleted(room, nextRoom) {
-    return currentRound(room)._id != currentRound(nextRoom)._id;
-  }
-
   render() {
     const {
       loading,
@@ -91,18 +87,18 @@ export default class ParticipantGameScreen extends BaseComponent {
     } else if (gameHasEnded(room)) {
       return <ParticipantEndGameScreen room={room} />;
     } else {
-      const currentRound = currentRound(room);
-      if (!currentRound) {
+      const round = currentRound(room);
+      if (!round) {
         console.error('Current round is undefined. What the heck! Something is wrong.');
         return <ErrorMessage />
       }
 
-      if (currentRound.status === 'CREATED') {
+      if (round.status === 'CREATED') {
         // The round has not started yet. We are in-between rounds.
         // So, we want to display results for the *previous* round.
         return <ParticipantRoundResults round={latestCompletedRound(room)} />
-      } else if (currentRound.status === 'PLAYING') {
-        return <ParticipantPlayRound round={currentRound} />
+      } else if (round.status === 'PLAYING') {
+        return <ParticipantPlayRound round={round} />
       } else {
         console.error('Current round is in an illegal state');
         return <ErrorMessage />

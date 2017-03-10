@@ -9,22 +9,22 @@ import { Schema } from './schema';
 
 export const submitSketch = new ValidatedMethod({
   name: 'submitSketch',
-  validate: Schema.Sketch.validator(),
-  run({ player, sketch, prompt }) {
-    const sketchID = Sketches.insert({
-      player,
-      sketch,
-      scores: {},
-      prompt,
-    });
+  validate: new SimpleSchema({
+    sketch: {
+      type: Schema.Sketch,
+    },
+    round_index: {
+      type: Number,
+    },
+  }).validator(),
+  run({ sketch, round_index }) {
+    const sketchID = Sketches.insert(sketch);
 
     Rooms.update({
-      players: {
-        name: player.name,
-        color: player.color,
-      },
+      "players.name": sketch.player.name,
+      "rounds.prompt": sketch.prompt,
     }, {
-      sketches: {
+      "rounds.$": {
         $push: {
           sketches: sketchID,
         },

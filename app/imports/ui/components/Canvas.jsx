@@ -13,7 +13,6 @@ export default class Canvas extends BaseComponent {
     this.pathStack = [];
 
     this.onUndo = this.onUndo.bind(this);
-    this.onTimeout = this.onTimeout.bind(this);
   }
 
   componentDidMount() {
@@ -64,5 +63,4 @@ export default class Canvas extends BaseComponent {
 Canvas.propTypes = {
   prompt: React.PropTypes.string,
   player: React.PropTypes.object,
-  onTimeout: React.PropTypes.func,
 };
