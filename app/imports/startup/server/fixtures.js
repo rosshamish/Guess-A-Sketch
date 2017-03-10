@@ -13,31 +13,31 @@ Meteor.startup(() => {
     const rooms = [
       {
         name: 'Cool kids only',
-        rounds: [{time: 10}],
+        rounds: [{time: 10, index: 0}],
         players: [],
         status: 'JOINABLE',
       },
       {
         name: 'Smart kids only',
-        rounds: [{time: 10}],
+        rounds: [{time: 10, index: 1}],
         players: [],
         status: 'JOINABLE',
       },
       {
         name: 'Short people only',
-        rounds: [{time: 10}],
+        rounds: [{time: 10, index: 2}],
         players: [],
         status: 'JOINABLE',
       },
       {
         name: 'An in progress game',
-        rounds: [{time: 10}],
+        rounds: [{time: 10, index: 3}],
         players: [],
         status: 'PLAYING',
       },
       {
         name: 'A completed game',
-        rounds: [{time: 10}],
+        rounds: [{time: 10, index: 4}],
         players: [],
         status: 'COMPLETE',
       },

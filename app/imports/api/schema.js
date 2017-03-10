@@ -40,6 +40,10 @@ Schema.Sketch = new SimpleSchema({
 });
 
 Schema.Round = new SimpleSchema({
+    index: { // needed for ValidatedMethod updates
+        type: Number,
+        label: "Array Index",
+    },
     prompt:{
         type: String,
         label: "Round Prompt",
