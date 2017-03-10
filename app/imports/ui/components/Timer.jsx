@@ -6,22 +6,37 @@ import BaseComponent from './BaseComponent.jsx';
 import { TIMER } from '/imports/api/session';
 
 export default class Timer extends BaseComponent {
-  constructor(props) {
-    super(props);
-  }
 
-  // http://meteorlife.com/build-a-countdown-timer-with-meteor/
-  // http://stackoverflow.com/questions/15229141/simple-timer-in-meteor-js
-  render() {
-    const {} = this.props;
+    constructor(props) {
+        super(props);
+    }
 
-    return (
-      <div className="timer">
-        Timer: {Session.get(TIMER)}
-      </div>
-    );
-  }
+    componentDidMount() {
+        interval_id = setInterval(() => {
+            this.setState(() => {
+                Session.set(TIMER, Session.get(TIMER) - 1);
+                return {}
+            });
+        }, 1000);
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (Session.get(TIMER) > -1) {
+          return true;
+        }
+        clearInterval(interval_id);
+        return false;
+    }
+
+    render() {
+        const {} = this.props;
+
+        return (
+            <div className="timer">
+                Timer: {Session.get(TIMER)}
+            </div>
+        );
+    }
 }
 
-Timer.propTypes = {
-};
+Timer.propTypes = {};
