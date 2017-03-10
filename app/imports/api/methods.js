@@ -163,6 +163,31 @@ export const changeRoundStatus = new ValidatedMethod({
         "rounds.$.status": round_status
       },
     });
+  },
+});
 
+export const incrementNextRoundIndex = new ValidatedMethod({
+  name: 'incrementNextRoundIndex',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+    next_index: {
+      type: Number,
+    },
+  }).validator(),
+  run({ room_id, next_index }) {
+    const room = Rooms.findOne({
+      _id: room_id,
+    });
+    
+    // Add the player to the room
+    return Rooms.update({
+      _id: room_id,
+    }, {
+      $set: {
+        nextRoundIndex: next_index,
+      },
+    });
   },
 });

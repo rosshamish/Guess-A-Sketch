@@ -7,6 +7,7 @@ import Timer from '../../components/Timer.jsx';
 import Prompt from '../../components/Prompt.jsx';
 
 import { HOST_ROOM, TIMER } from '/imports/api/session';
+import { incrementNextRoundIndex, changeRoundStatus } from '/imports/api/methods';
 
 export default class HostGameScreen extends BaseComponent {
   constructor(props) {
@@ -17,12 +18,28 @@ export default class HostGameScreen extends BaseComponent {
   onRoundEnd(event){
     event.preventDefault();
 
-    room = Session.get(HOST_ROOM);
+    let room = Session.get(HOST_ROOM);
 
     // change round status
-    room.rounds[room.nextRoundIndex].status = "COMPLETE";
-    room.nextRoundIndex = room.nextRoundIndex + 1;
-    Session.set(HOST_ROOM, room);
+    const didChangeRoundStatus = changeRoundStatus.call({
+      room_id: room._id,
+      round_index: room.nextRoundIndex,
+      round_status: "COMPLETE"
+    });
+    if (!didChangeRoundStatus) {
+      console.error('Unable to change round status. Server rejected request.');
+      return;
+    }
+
+    // increment nextRoundIndex
+    const didChangeNextRoundIndex = incrementNextRoundIndex.call({
+      room_id: room._id,
+      next_index: room.nextRoundIndex + 1,
+    });
+    if (!didChangeNextRoundIndex) {
+      console.error('Unable to change round index. Server rejected request.');
+      return;
+    }
 
     // Navigate to the collage screen
     browserHistory.push('/host/collage');
