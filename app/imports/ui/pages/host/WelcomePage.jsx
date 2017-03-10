@@ -41,7 +41,7 @@ export default class WelcomePage extends BaseComponent {
           player_list = players.map(function(player,index) {
             return (
               <PlayerItem 
-              key = {player._id}
+              key = {player._id} // warning about key here
               text = {player.name} />
             );
           });
