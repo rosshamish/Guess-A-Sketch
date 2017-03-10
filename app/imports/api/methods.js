@@ -108,3 +108,61 @@ export const joinRoom = new ValidatedMethod({
     });
   },
 });
+
+
+export const changeRoomStatus = new ValidatedMethod({
+  name: 'changeRoomStatus',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+    room_status: {
+      type: String,
+    },
+  }).validator(),
+  run({ room_id, room_status }) {
+    const room = Rooms.findOne({
+      _id: room_id,
+    });
+    
+    // Add the player to the room
+    return Rooms.update({
+      _id: room_id,
+    }, {
+      $set: {
+        status: room_status,
+      },
+    });
+  },
+});
+
+export const changeRoundStatus = new ValidatedMethod({
+  name: 'changeRoundStatus',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+    round_index: {
+      type: Number,
+    },
+    round_status: {
+      type: String,
+    },
+  }).validator(),
+  run({ room_id, round_index, round_status }) {
+    const room = Rooms.findOne({
+      _id: room_id,
+    });
+    
+    // Add the player to the room
+    return Rooms.update({
+      _id: room_id,
+      "rounds.index": round_index
+    }, {
+      $set:{
+        "rounds.$.status": round_status
+      },
+    });
+
+  },
+});

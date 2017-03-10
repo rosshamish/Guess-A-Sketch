@@ -3,6 +3,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
 
+import { changeRoomStatus, changeRoundStatus } from '/imports/api/methods';
 import PlayerItem from '../../components/PlayerItem.jsx';
 import { HOST_ROOM } from '/imports/api/session';
 
@@ -18,13 +19,28 @@ export default class WelcomePage extends BaseComponent {
 
         let room = Session.get(HOST_ROOM);
 
-        // change room status
+        // change room status if we're playing for the first time
         if (room.nextRoundIndex == 0){
-            room.status = "PLAYING";
+          const didChangeRoomStatus = changeRoomStatus.call({
+            room_id: room._id,
+            room_status: "PLAYING"
+          });
+          if (!didChangeRoomStatus) {
+            console.error('Unable to change room status. Server rejected request.');
+            return;
+          }
         }
 
         // change round status
-        room.rounds[room.nextRoundIndex].status = "PLAYING";
+        const didChangeRoundStatus = changeRoundStatus.call({
+          room_id: room._id,
+          round_index: room.nextRoundIndex,
+          round_status: "PLAYING"
+        });
+        if (!didChangeRoundStatus) {
+          console.error('Unable to change round status. Server rejected request.');
+          return;
+        }
 
         browserHistory.push('/host/play');
     }
