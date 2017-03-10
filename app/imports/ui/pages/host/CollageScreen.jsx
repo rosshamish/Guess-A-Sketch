@@ -16,10 +16,11 @@ export default class CollageScreen extends BaseComponent {
   onNextRound(event){
     event.preventDefault();
 
-    if (Session.get(HOST_ROOM).rounds.length > 0){
-      browserHistory.push('/host/play');
+    // check if end of game
+    if (Session.get(HOST_ROOM).nextRoundIndex < Session.get(HOST_ROOM).rounds.length){
+        browserHistory.push('/host/play');
     } else {
-      browserHistory.push('/host/game-over');
+        browserHistory.push('/host/game-over');
     }
 
   }

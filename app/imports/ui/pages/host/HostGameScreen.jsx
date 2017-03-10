@@ -17,11 +17,11 @@ export default class HostGameScreen extends BaseComponent {
   onRoundEnd(event){
     event.preventDefault();
 
-    // pop current round off of room's round array
     room = Session.get(HOST_ROOM);
-    rounds = room.rounds;
-    rounds.splice(0, 1);
-    room.rounds = rounds;
+
+    // change round status
+    room.rounds[room.nextRoundIndex].status = "COMPLETE";
+    room.nextRoundIndex = room.nextRoundIndex + 1;
     Session.set(HOST_ROOM, room);
 
     // Navigate to the collage screen

@@ -78,6 +78,11 @@ Schema.Room = new SimpleSchema({
         minCount: 1,
         optional: true, //TODO: Remove this
     },
+    nextRoundIndex: {
+        type: Number,
+        label: "Next Round Index",
+        defaultValue: 0,
+    },
     'rounds.$':{
         type: Schema.Round,
     },
