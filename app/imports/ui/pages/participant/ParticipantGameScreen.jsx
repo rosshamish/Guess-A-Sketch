@@ -12,6 +12,14 @@ import ErrorMessage from '../../components/ErrorMessage.jsx';
 import { leaveRoom } from '/imports/api/methods';
 import { PLAYER } from '/imports/api/session';
 
+import {
+  roundHasCompleted,
+  gameHasStarted,
+  gameHasEnded,
+  currentRound,
+  latestCompletedRound
+} from '/imports/game-status';
+
 
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
@@ -20,7 +28,7 @@ export default class ParticipantGameScreen extends BaseComponent {
       sketch: null,
     };
 
-    this.latestRoundStatus = this.currentRound(this.props.room).status;
+    this.latestRoundStatus = currentRound(this.props.room).status;
   }
 
   componentWillUnmount() {
@@ -36,11 +44,11 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.roundHasCompleted(this.props.room, nextProps.room)) {
+    if (roundHasCompleted(this.props.room, nextProps.room)) {
       const didSubmitSketch = submitSketch.call({
         player: Session.get(PLAYER),
         sketch: Session.get(SKETCH),
-        prompt: this.latestCompletedRound(this.props.room).prompt,
+        prompt: latestCompletedRound(this.props.room).prompt,
       });
 
       if (!didSubmitSketch) {
@@ -51,37 +59,7 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   roundHasCompleted(room, nextRoom) {
-    return this.currentRound(room)._id != this.currentRound(nextRoom)._id;
-  }
-
-  gameHasStarted(room) {
-    return _.any(room.rounds, (round) => {
-      return (
-        round.status === 'PLAYING' ||
-        round.status === 'COMPLETE'
-      );
-    });
-  }
-
-  gameHasEnded(room) {
-    return _.all(room.rounds, (round) => {
-      return round.status === 'COMPLETE';
-    });
-  }
-
-  currentRound(room) {
-    return _.find(room.rounds, (round) => {
-      return round.status === 'CREATED' || round.status === 'PLAYING';
-    });
-  }
-
-  latestCompletedRound(room) {
-    // Attribution: using slice() to avoid modifying the original array
-    // Source: http://stackoverflow.com/questions/30610523/reverse-array-in-javascript-without-mutating-original-array
-    // Accessed: March 8, 2017
-    return  _.find(room.rounds.slice().reverse(), (round) => {
-      return round.status === 'COMPLETE';
-    });
+    return currentRound(room)._id != currentRound(nextRoom)._id;
   }
 
   render() {
@@ -108,12 +86,12 @@ export default class ParticipantGameScreen extends BaseComponent {
     // ---
     // Actual page rendering
     // ---
-    if (!this.gameHasStarted(room)) {
+    if (!gameHasStarted(room)) {
       return <ParticipantPreGameScreen room={room} />;
-    } else if (this.gameHasEnded(room)) {
+    } else if (gameHasEnded(room)) {
       return <ParticipantEndGameScreen room={room} />;
     } else {
-      const currentRound = this.currentRound();
+      const currentRound = currentRound(room);
       if (!currentRound) {
         console.error('Current round is undefined. What the heck! Something is wrong.');
         return <ErrorMessage />
@@ -122,7 +100,7 @@ export default class ParticipantGameScreen extends BaseComponent {
       if (currentRound.status === 'CREATED') {
         // The round has not started yet. We are in-between rounds.
         // So, we want to display results for the *previous* round.
-        return <ParticipantRoundResults round={this.latestCompletedRound(room)} />
+        return <ParticipantRoundResults round={latestCompletedRound(room)} />
       } else if (currentRound.status === 'PLAYING') {
         return <ParticipantPlayRound round={currentRound} />
       } else {
