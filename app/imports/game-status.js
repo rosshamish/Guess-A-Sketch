@@ -1,4 +1,3 @@
-
 export function roundHasCompleted(room, nextRoom) {
 	return currentRound(room)._id != currentRound(nextRoom)._id;
 }

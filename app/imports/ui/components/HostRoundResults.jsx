@@ -1,17 +1,16 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
-import BaseComponent from '../../components/BaseComponent.jsx';
-import { browserHistory } from 'react-router';
-import { Session } from 'meteor/session';
 
+import { Session } from 'meteor/session';
 import { HOST_ROOM } from '/imports/api/session';
-import Canvas from '../../components/Collage.jsx';
-import ErrorMessage from '../../components/ErrorMessage.jsx';
+
+import BaseComponent from './BaseComponent.jsx';
+import ErrorMessage from './ErrorMessage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
 
 
-export default class CollageScreen extends BaseComponent {
+export default class HostRoundResults extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -22,9 +21,9 @@ export default class CollageScreen extends BaseComponent {
 
     // check if end of game
     if (Session.get(HOST_ROOM).nextRoundIndex < Session.get(HOST_ROOM).rounds.length){
-        browserHistory.push('/host/play');
+        // TO DO: set next round
     } else {
-        browserHistory.push('/host/game-over');
+        // TO DO: set game over
     }
   }
 
@@ -59,6 +58,6 @@ export default class CollageScreen extends BaseComponent {
   }
 }
 
-CollageScreen.propTypes = {
+HostRoundResults.propTypes = {
   round: React.PropTypes.object,
 };

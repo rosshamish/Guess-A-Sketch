@@ -58,7 +58,7 @@ export default class CreateARoom extends BaseComponent{
         // Navigate to the lobby of that room
         let room = Rooms.findOne({_id: id});
         Session.set(HOST_ROOM, room);
-        browserHistory.push('/host/lobby');
+        browserHistory.push('/host/play');
     }
 
     render(){
