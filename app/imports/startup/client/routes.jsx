@@ -20,7 +20,7 @@ import ParticipantGameScreenContainer from '../../ui/containers/ParticipantGameS
 
 import HostContainer from '../../ui/containers/HostContainer.jsx';
 import CreateARoom from '../../ui/pages/host/CreateARoom.jsx';
-import WelcomePageContainer from '../../ui/containers/WelcomePageContainer.jsx';
+import HostGameScreenContainer from '../../ui/containers/HostGameScreenContainer.jsx';
 
 // TODO i18n // i18n.setLocale('en');
 
@@ -35,7 +35,7 @@ export const renderRoutes = () => (
 
     <Route path="host" component={HostContainer}>
       <Route path="create" component={CreateARoom} />
-      <Route path="play" component={WelcomePageContainer} />
+      <Route path="play" component={HostGameScreenContainer} />
     </Route>
 
   </Router>

@@ -22,7 +22,7 @@ import {
   latestCompletedRound
 } from '/imports/game-status';
 
-export default class WelcomePage extends BaseComponent {
+export default class HostGameScreen extends BaseComponent {
     constructor(props) {
       super(props);
       this.state = {};
@@ -71,7 +71,7 @@ export default class WelcomePage extends BaseComponent {
     }
 }
 
-WelcomePage.propTypes = {
+HostGameScreen.propTypes = {
   loading: React.PropTypes.bool,
   room: React.PropTypes.object,
 };
