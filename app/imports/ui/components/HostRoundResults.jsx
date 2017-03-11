@@ -1,13 +1,13 @@
 import React from 'react';
-import BaseComponent from '../../components/BaseComponent.jsx';
-import { browserHistory } from 'react-router';
+import { _ } from 'meteor/underscore';
 import { Session } from 'meteor/session';
 
-import Canvas from '../../components/Collage.jsx';
+import BaseComponent from './BaseComponent.jsx';
+import ErrorMessage from './ErrorMessage.jsx';
 
 import { HOST_ROOM } from '/imports/api/session';
 
-export default class CollageScreen extends BaseComponent {
+export default class HostRoundResults extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -18,9 +18,9 @@ export default class CollageScreen extends BaseComponent {
 
     // check if end of game
     if (Session.get(HOST_ROOM).nextRoundIndex < Session.get(HOST_ROOM).rounds.length){
-        browserHistory.push('/host/play');
+        // TO DO: set next round
     } else {
-        browserHistory.push('/host/game-over');
+        // TO DO: set game over
     }
 
   }
@@ -32,15 +32,15 @@ export default class CollageScreen extends BaseComponent {
 
     return (
       <div>
-      <p>Will display a collage of all drawings from the previous round!</p>
-      <form onSubmit={this.onNextRound}>
-        <button>Done</button>
-      </form>
+        <p>Will display a collage of all drawings from the previous round!</p>
+        <form onSubmit={this.onNextRound}>
+         <button>Done</button>
+        </form>
       </div>
     );
   }
 }
 
-CollageScreen.propTypes = {
+HostRoundResults.propTypes = {
   round: React.PropTypes.object,
 };

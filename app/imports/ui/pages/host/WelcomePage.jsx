@@ -1,94 +1,77 @@
 import React from 'react';
-import BaseComponent from '../../components/BaseComponent.jsx';
 import { Session } from 'meteor/session';
+import { _ } from 'meteor/underscore';
 import { browserHistory } from 'react-router';
 
-import { changeRoomStatus, changeRoundStatus } from '/imports/api/methods';
+import BaseComponent from '../../components/BaseComponent.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
+
 import PlayerItem from '../../components/PlayerItem.jsx';
+import HostPreGameScreen from '../../components/HostPreGameScreen.jsx';
+import HostEndGameScreen from '../../components/HostEndGameScreen.jsx';
+import HostPlayRound from '../../components/HostPlayRound.jsx';
+import HostRoundResults from '../../components/HostRoundResults.jsx';
+
 import { HOST_ROOM } from '/imports/api/session';
+
+import {
+  roundHasCompleted,
+  gameHasStarted,
+  gameHasEnded,
+  currentRound,
+  latestCompletedRound
+} from '/imports/game-status';
 
 export default class WelcomePage extends BaseComponent {
     constructor(props) {
-        super(props);
-        this.props = props;
-    }
-
-    onStartGame(event){
-        event.preventDefault(); // Don't reload the page
-        console.log('Starting Game.');
-
-        let room = Session.get(HOST_ROOM);
-
-        // change room status if we're playing for the first time
-        if (room.nextRoundIndex == 0){
-          const didChangeRoomStatus = changeRoomStatus.call({
-            room_id: room._id,
-            room_status: "PLAYING"
-          });
-          if (!didChangeRoomStatus) {
-            console.error('Unable to change room status. Server rejected request.');
-            return;
-          }
-        }
-
-        // change round status
-        const didChangeRoundStatus = changeRoundStatus.call({
-          room_id: room._id,
-          round_index: room.nextRoundIndex,
-          round_status: "PLAYING"
-        });
-        if (!didChangeRoundStatus) {
-          console.error('Unable to change round status. Server rejected request.');
-          return;
-        }
-
-        browserHistory.push('/host/play');
+      super(props);
+      this.state = {};
     }
 
     render() {
-        const {
-          loading,
-          room
-        } = this.props;
+      const {
+        loading,
+        room,
+      } = this.props;
 
-        if (!room) {
-          return (
-            <div>
-              <p>Error setting up your room. Please try again.</p>
-            </div>
-          );
-        } else if (loading) {
-          // Early return
-          return (
-            <h3>Loading...</h3>
-          );
-        }
-
-        let player_list = 'N/A';
-        if (room.players.length > 0) {
-          player_list = room.players.map(function(player,index) {
-            return (
-              <PlayerItem 
-              key = {player._id} // warning about key here
-              text = {player.name} />
-            );
-          });
-        }
-
+      if (loading) {
         return (
-            <form onSubmit={this.onStartGame}>
-              <h3>Welcome!</h3>
-              <p>Room Name: {room.name}</p>
-              <p>Room Code: {room._id.substring(0, 4)}</p>
-              <p>Players in Room: </p>
-              <div> {player_list} </div>
-              <button type="submit">Start Game</button>
-            </form>
+          <p>Loading...</p>
         );
+      } else if (!room) {
+        // The player navigated directly here without joining a room.
+        // Don't allow this!
+        console.error('Error: room is undefined.');
+        return <ErrorMessage />
+      }
+
+      // Page Rendering
+      if (!gameHasStarted(room)) {
+        return <HostPreGameScreen room={room} />
+      } else if (gameHasEnded(room)) {
+        return <HostEndGameScreen room={room} />;
+      } else {
+        const currRound = currentRound(room);
+        if (!currRound) {
+          console.error('Current round is undefined. What the heck! Something is wrong.');
+          return <ErrorMessage />
+        }
+
+        if (currRound.status === 'CREATED') {
+          // The round has not started yet. We are in-between rounds.
+          // So, we want to display collage results for the *previous* round.
+          return <HostRoundResults round={latestCompletedRound(room)} />
+        } else if (currRound.status === 'PLAYING') {
+          return <HostPlayRound round={currRound} />
+        } else {
+          console.error('Current round is in an illegal state');
+          return <ErrorMessage />
+        }   
+      } 
     }
 }
 
 WelcomePage.propTypes = {
-  room: React.PropTypes.object,
   loading: React.PropTypes.bool,
+  room: React.PropTypes.object,
 };

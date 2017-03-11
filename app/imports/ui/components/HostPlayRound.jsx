@@ -1,23 +1,23 @@
 import React from 'react';
-import BaseComponent from '../../components/BaseComponent.jsx';
-import { browserHistory } from 'react-router';
+import { _ } from 'meteor/underscore';
 import { Session } from 'meteor/session';
 
-import Timer from '../../components/Timer.jsx';
-import Prompt from '../../components/Prompt.jsx';
+import BaseComponent from './BaseComponent.jsx';
+import Prompt from './Prompt.jsx';
+import Timer from './Timer.jsx';
 
 import { HOST_ROOM, TIMER } from '/imports/api/session';
 import { incrementNextRoundIndex, changeRoundStatus } from '/imports/api/methods';
 
-export default class HostGameScreen extends BaseComponent {
+export default class HostPlayRound extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   onRoundEnd(event){
     event.preventDefault();
 
+    // TO DO: fix to use this.props instead
     let room = Session.get(HOST_ROOM);
 
     // change round status
@@ -41,39 +41,25 @@ export default class HostGameScreen extends BaseComponent {
       return;
     }
 
-    // Navigate to the collage screen
-    browserHistory.push('/host/collage');
   }
 
   render() {
-    const {} = this.props;
+    const { round } = this.props;
 
-    let Room = Session.get(HOST_ROOM);
+    Session.set(TIMER, round.time);
 
-    let prompt = Room.rounds[0].prompt;
-    let time = Room.rounds[0].time;
-    Session.set(TIMER, time);
-
-    let HostGame;
-    if (Room == null) {
-      HostGame = (
-        <h3>Error displaying host game screen. Please try again.</h3>
-      );
-    } else {
-      HostGame = (
-        <div>
-        <Prompt prompt = {prompt} />
-        <Timer time = {time} />
+    return (
+      <div className="host-game-screen">
+        <Prompt prompt = {round.prompt} />
+        <Timer time = {round.time} />
         <form onSubmit={this.onRoundEnd}>
           <button>Timer Expired</button>
         </form>
-        </div>
-      );
-    }
-
-    return HostGame;
-
+      </div>
+    );
   }
 }
 
-HostGameScreen.propTypes = {};
+HostPlayRound.propTypes = {
+  round: React.PropTypes.object,
+};
