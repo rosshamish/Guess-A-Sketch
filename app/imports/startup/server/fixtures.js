@@ -1,4 +1,4 @@
-// TODO use this file for mock debugging data
+// Use this file for mock debugging data
 // See the example file at https://github.com/meteor/todos/blob/react/imports/startup/server/fixtures.js
 
 import { Meteor } from 'meteor/meteor';
@@ -12,31 +12,30 @@ Meteor.startup(() => {
   if (Rooms.find().count() === 0 || DEBUG === true) {
     const rooms = [
       {
-        name: 'Cool kids only',
-        rounds: [{time: 10, index: 0}],
+        name: 'Only smarties (one rounds)',
+        rounds: [
+          {time: 10, index: 0},
+        ],
         players: [],
         status: 'JOINABLE',
       },
       {
-        name: 'Smart kids only',
-        rounds: [{time: 10, index: 1}],
+        name: 'Only canadians (two rounds)',
+        rounds: [
+          {time: 10, index: 0},
+          {time: 20, index: 1},
+        ],
         players: [],
         status: 'JOINABLE',
       },
       {
-        name: 'Short people only',
-        rounds: [{time: 10, index: 2}],
-        players: [],
-        status: 'JOINABLE',
-      },
-      {
-        name: 'An in progress game',
+        name: 'In progress',
         rounds: [{time: 10, index: 3}],
         players: [],
         status: 'PLAYING',
       },
       {
-        name: 'A completed game',
+        name: 'Completed',
         rounds: [{time: 10, index: 4}],
         players: [],
         status: 'COMPLETE',

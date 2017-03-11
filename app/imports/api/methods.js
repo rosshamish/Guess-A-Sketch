@@ -15,14 +15,15 @@ export const submitSketch = new ValidatedMethod({
     },
     round_index: {
       type: Number,
-    },
+    }
   }).validator(),
-  run({ sketch, round_index }) {
+  run({ sketch }) {
     const sketchID = Sketches.insert(sketch);
+    console.log('Inserting sketch ' + sketch);
 
     Rooms.update({
       "players.name": sketch.player.name,
-      "rounds.prompt": sketch.prompt,
+      "rounds.index": round_index,
     }, {
       "rounds.$": {
         $push: {

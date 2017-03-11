@@ -43,11 +43,11 @@ export default class LoginPage extends BaseComponent {
     event.preventDefault(); // Don't reload the page
 
     if (!this.state.nickname) {
-      console.error('Join room request denied by client. Nickname is required!');
+      console.error('Nickname is required!');
       return;
     }
     if (!this.state.color) {
-      console.error('Join room request denied by client. Color is required!');
+      console.error('Color is required!');
       return;
     }
 
@@ -86,5 +86,4 @@ export default class LoginPage extends BaseComponent {
 }
 
 LoginPage.propTypes = {
-  room: React.PropTypes.object,
 };

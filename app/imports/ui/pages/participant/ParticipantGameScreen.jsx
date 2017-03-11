@@ -8,7 +8,10 @@ import ParticipantRoundResults from '../../components/ParticipantRoundResults.js
 import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
 
-import { leaveRoom } from '/imports/api/methods';
+import { 
+  submitSketch,
+  leaveRoom
+} from '/imports/api/methods';
 
 import { Session } from 'meteor/session';
 import { 
@@ -49,11 +52,14 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (roundHasCompleted(this.props.room, nextProps.room)) {
+    if (roundHasCompleted(this.latestRoundStatus, nextProps.room)) {
+      console.log('Round has completed.');
       const didSubmitSketch = submitSketch.call({
-        player: Session.get(PLAYER),
-        sketch: Session.get(SKETCH),
-        prompt: latestCompletedRound(this.props.room).prompt,
+        sketch: {
+          player: Session.get(PLAYER),
+          sketch: Session.get(SKETCH),
+          prompt: latestCompletedRound(this.props.room).prompt,
+        },
       });
 
       if (!didSubmitSketch) {
@@ -61,6 +67,10 @@ export default class ParticipantGameScreen extends BaseComponent {
         return;
       }
     }
+  }
+
+  componentDidUpdate(props) {
+    this.latestRoundStatus = currentRound(props.room).status;
   }
 
   render() {

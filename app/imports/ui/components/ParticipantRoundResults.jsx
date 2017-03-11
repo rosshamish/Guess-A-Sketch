@@ -8,7 +8,6 @@ import { Sketches } from '/imports/api/collections/sketches';
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 
-
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
     super(props);
@@ -31,7 +30,10 @@ export default class ParticipantRoundResults extends BaseComponent {
       return sketch.player.name === currentPlayer.name;
     });
     if (currentPlayerSketches.length != 1) {
-      console.error('Expected player to have exactly one sketch in the latest round.');
+      console.error('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
+      console.error(currentPlayerSketches);
+      console.error(sketches);
+      console.error(currentPlayer);
       return <ErrorMessage />
     }
 
