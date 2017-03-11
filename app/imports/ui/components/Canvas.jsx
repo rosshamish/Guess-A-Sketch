@@ -5,6 +5,11 @@ import BaseComponent from './BaseComponent.jsx';
 import { fabric } from 'fabric';
 import { submitSketch } from '/imports/api/methods';
 
+import { Session } from 'meteor/session';
+import {
+  SKETCH,
+} from '/imports/api/session';
+
 
 export default class Canvas extends BaseComponent {
   constructor(props) {

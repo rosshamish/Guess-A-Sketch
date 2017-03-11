@@ -4,9 +4,11 @@ import { _ } from 'meteor/underscore';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
+import PlayerItem from './PlayerItem.jsx';
 
 import { changeRoomStatus, changeRoundStatus } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
+
 
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
@@ -57,7 +59,7 @@ export default class HostPreGameScreen extends BaseComponent {
         return (
           <PlayerItem 
           key = {player._id}
-          text = {player.name} />
+          player = {player} />
         );
       });
     }

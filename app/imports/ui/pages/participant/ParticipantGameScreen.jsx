@@ -1,5 +1,4 @@
 import React from 'react';
-import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
@@ -10,7 +9,13 @@ import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.
 import ErrorMessage from '../../components/ErrorMessage.jsx';
 
 import { leaveRoom } from '/imports/api/methods';
-import { PLAYER } from '/imports/api/session';
+
+import { Session } from 'meteor/session';
+import { 
+  PLAYER,
+  SKETCH
+} from '/imports/api/session';
+
 
 import {
   roundHasCompleted,
