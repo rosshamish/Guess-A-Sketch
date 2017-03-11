@@ -1,12 +1,25 @@
 import React from 'react';
 import { Session } from 'meteor/session';
+import { _ } from 'meteor/underscore';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
-import Prompt from '../../components/Prompt.jsx';
-import Timer from '../../components/Timer.jsx';
-import Canvas from '../../components/Canvas.jsx';
+import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
+import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
+import ParticipantRoundResults from '../../components/ParticipantRoundResults.jsx';
+import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 
+import { leaveRoom } from '/imports/api/methods';
 import { PLAYER } from '/imports/api/session';
+
+import {
+  roundHasCompleted,
+  gameHasStarted,
+  gameHasEnded,
+  currentRound,
+  latestCompletedRound
+} from '/imports/game-status';
+
 
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
@@ -14,10 +27,39 @@ export default class ParticipantGameScreen extends BaseComponent {
     this.state = {
       sketch: null,
     };
+
+    this.latestRoundStatus = currentRound(this.props.room).status;
   }
 
-  onTimeout() {
-    console.log('onTimeout no-op');
+  componentWillUnmount() {
+    // Leave the room.
+    const didLeaveRoom = leaveRoom.call({
+      room_id: this.props.room._id,
+      player: Session.get(PLAYER),
+    });
+    if (!didLeaveRoom) {
+      console.error('Failed to leave room.');
+      return;
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (roundHasCompleted(this.props.room, nextProps.room)) {
+      const didSubmitSketch = submitSketch.call({
+        player: Session.get(PLAYER),
+        sketch: Session.get(SKETCH),
+        prompt: latestCompletedRound(this.props.room).prompt,
+      });
+
+      if (!didSubmitSketch) {
+        console.error('Failed to submit sketch');
+        return;
+      }
+    }
+  }
+
+  roundHasCompleted(room, nextRoom) {
+    return currentRound(room)._id != currentRound(nextRoom)._id;
   }
 
   render() {
@@ -26,52 +68,46 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = this.props;
 
+    // ---
+    // Loading and error handling
+    // TODO make these pages pretty.
+    // ---
     if (loading) {
       return (
         <p>Loading...</p>
       );
     } else if (!room) {
-      console.log('room: ' + room);
       // The player navigated directly here without joining a room.
       // Don't allow this!
-      return (
-        <div>
-          <p>You must join a room before playing. Go to /join</p>
-        </div>
-      );
-    } else if (room.status === 'JOINABLE' && room.rounds.length === 1) {
-      // The game has not started yet.
-      return (
-        <div>
-          <p>You've received the name { Session.get(PLAYER).name }</p>
-          <p>You're in room { room.name + ' (' + room._id + ')' }</p>
-          <p>Hold your horses though, the game hasn't started yet.</p>
-        </div>
-      );
-    } else if (room.status === 'JOINABLE' && room.rounds.length >= 1) {
-      // The game is in-between rounds.
-      return (
-        <p>In between rounds</p>
-      );
-    } else if (room.status === 'PLAYING') {
-      // A round is in-progress.
-      const round = room.rounds[room.rounds.length - 1];
-      return (
-        <div className="game-screen">
-          <div>
-            <Prompt prompt={round.prompt} />
-            <Timer time={round.time} />
-          </div>
-          <Canvas onTimeout={this.onTimeout} />
-        </div>
-      );
-    } else {
-      // An unsupported state.
-      console.error('ParticipantGameScreen in an unsupported room state');
-      return (
-        <p>Whoops! Something went wrong. Check the console.</p>
-      );
+      console.error('Error: room is undefined.');
+      return <ErrorMessage />
     }
+
+    // ---
+    // Actual page rendering
+    // ---
+    if (!gameHasStarted(room)) {
+      return <ParticipantPreGameScreen room={room} />;
+    } else if (gameHasEnded(room)) {
+      return <ParticipantEndGameScreen room={room} />;
+    } else {
+      const currentRound = currentRound(room);
+      if (!currentRound) {
+        console.error('Current round is undefined. What the heck! Something is wrong.');
+        return <ErrorMessage />
+      }
+
+      if (currentRound.status === 'CREATED') {
+        // The round has not started yet. We are in-between rounds.
+        // So, we want to display results for the *previous* round.
+        return <ParticipantRoundResults round={latestCompletedRound(room)} />
+      } else if (currentRound.status === 'PLAYING') {
+        return <ParticipantPlayRound round={currentRound} />
+      } else {
+        console.error('Current round is in an illegal state');
+        return <ErrorMessage />
+      }   
+    } 
   }
 }
 

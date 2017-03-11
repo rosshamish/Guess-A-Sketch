@@ -12,9 +12,6 @@ import { createContainer } from 'meteor/react-meteor-data';
 import ParticipantLayout from '../layouts/ParticipantLayout.jsx';
 
 export default createContainer(() => {
-  // const publicHandle = Meteor.subscribe('lists.public');
-  // const privateHandle = Meteor.subscribe('lists.private');
-  console.log('ParticipantContainer creating');
   return {
     user: Meteor.user,
     loading: false,

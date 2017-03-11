@@ -1,27 +1,24 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
+import i18n from 'meteor/universe:i18n';
 import BaseComponent from './BaseComponent.jsx';
 
 export default class RoomItem extends BaseComponent {
     constructor(props) {
-      super(props);
+        super(props);
     }
 
   render() {
     const {
-      onClick,
-      room,
+      text,
     } = this.props;
 
     return (
-      <button className="room" onClick={onClick}>
-        {room.name + ' (' + room._id.substring(0, 4) + ')'}
-      </button>
+      <p>{text}</p>
     );
   }
 }
 
 RoomItem.propTypes = {
-  onClick: React.PropTypes.func,
-  room: React.PropTypes.object,
+  text: React.PropTypes.string,
 };

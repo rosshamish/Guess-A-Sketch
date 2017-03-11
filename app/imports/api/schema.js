@@ -31,6 +31,7 @@ Schema.Sketch = new SimpleSchema({
         type: Object,
         label: "SketchNet Scores",
         defaultValue: {},
+        optional: true,
     },
     prompt:{
         type: String,
@@ -39,6 +40,10 @@ Schema.Sketch = new SimpleSchema({
 });
 
 Schema.Round = new SimpleSchema({
+    index: { // needed for ValidatedMethod updates
+        type: Number,
+        label: "Array Index",
+    },
     prompt:{
         type: String,
         label: "Round Prompt",
@@ -51,12 +56,18 @@ Schema.Round = new SimpleSchema({
         minCount: 0,
     },
     "sketches.$": {
-        type: Schema.Sketch,
+        type: String, // Mongo ObjectID
     },
     time: {
         type: Number,
         label: "Round Timer setting",
         min: 10,
+    },
+    status: {
+        type: String,
+        label: "Round Status",
+        allowedValues: ["CREATED", "PLAYING", "COMPLETE"],
+        defaultValue: "CREATED",
     },
 });
 
@@ -71,22 +82,22 @@ Schema.Room = new SimpleSchema({
         minCount: 1,
         optional: true, //TODO: Remove this
     },
+    nextRoundIndex: {
+        type: Number,
+        label: "Next Round Index",
+        defaultValue: 0,
+    },
     'rounds.$':{
         type: Schema.Round,
     },
-
     players: {
         type: Array,
         label: "Player List",
         defaultValue: []
-
     },
-    // TODO should be a list of player _ids, not player objects.
-    // For normalization.
     'players.$': {
         type: Schema.Player,
     },
-
     status: {
         type: String,
         label: "Room Status",

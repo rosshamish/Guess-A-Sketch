@@ -50,7 +50,7 @@ export default class CreateARoom extends BaseComponent{
 
         let rounds = [];
         for(let count = 0; count < this.state.roundCount; count++){
-            rounds.push({time: this.state.roundTime});
+            rounds.push({time: this.state.roundTime, index: count});
         }
         let id = Rooms.insert({ name: this.state.roomName, rounds: rounds });
         console.log(`Creating room ${this.state.roomName} ${id}`);
@@ -58,7 +58,7 @@ export default class CreateARoom extends BaseComponent{
         // Navigate to the lobby of that room
         let room = Rooms.findOne({_id: id});
         Session.set(HOST_ROOM, room);
-        browserHistory.push('/host/lobby');
+        browserHistory.push('/host/play');
     }
 
     render(){

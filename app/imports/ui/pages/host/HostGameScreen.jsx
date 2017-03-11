@@ -1,62 +1,77 @@
 import React from 'react';
-import BaseComponent from '../../components/BaseComponent.jsx';
-import { browserHistory } from 'react-router';
 import { Session } from 'meteor/session';
+import { _ } from 'meteor/underscore';
+import { browserHistory } from 'react-router';
 
-import Timer from '../../components/Timer.jsx';
-import Prompt from '../../components/Prompt.jsx';
+import BaseComponent from '../../components/BaseComponent.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 
-import { HOST_ROOM, TIMER } from '/imports/api/session';
+import PlayerItem from '../../components/PlayerItem.jsx';
+import HostPreGameScreen from '../../components/HostPreGameScreen.jsx';
+import HostEndGameScreen from '../../components/HostEndGameScreen.jsx';
+import HostPlayRound from '../../components/HostPlayRound.jsx';
+import HostRoundResults from '../../components/HostRoundResults.jsx';
+
+import { HOST_ROOM } from '/imports/api/session';
+
+import {
+  roundHasCompleted,
+  gameHasStarted,
+  gameHasEnded,
+  currentRound,
+  latestCompletedRound
+} from '/imports/game-status';
 
 export default class HostGameScreen extends BaseComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  onRoundEnd(event){
-    event.preventDefault();
-
-    // pop current round off of room's round array
-    room = Session.get(HOST_ROOM);
-    rounds = room.rounds;
-    rounds.splice(0, 1);
-    room.rounds = rounds;
-    Session.set(HOST_ROOM, room);
-
-    // Navigate to the collage screen
-    browserHistory.push('/host/collage');
-  }
-
-  render() {
-    const {} = this.props;
-
-    let Room = Session.get(HOST_ROOM);
-
-    let prompt = Room.rounds[0].prompt;
-    let time = Room.rounds[0].time;
-    Session.set(TIMER, time);
-
-    let HostGame;
-    if (Room == null) {
-      HostGame = (
-        <h3>Error displaying host game screen. Please try again.</h3>
-      );
-    } else {
-      HostGame = (
-        <div>
-        <Prompt prompt = {prompt} />
-        <Timer time = {time} />
-        <form onSubmit={this.onRoundEnd}>
-          <button>Timer Expired</button>
-        </form>
-        </div>
-      );
+    constructor(props) {
+      super(props);
+      this.state = {};
     }
 
-    return HostGame;
+    render() {
+      const {
+        loading,
+        room,
+      } = this.props;
 
-  }
+      if (loading) {
+        return (
+          <p>Loading...</p>
+        );
+      } else if (!room) {
+        // The player navigated directly here without joining a room.
+        // Don't allow this!
+        console.error('Error: room is undefined.');
+        return <ErrorMessage />
+      }
+
+      // Page Rendering
+      if (!gameHasStarted(room)) {
+        return <HostPreGameScreen room={room} />
+      } else if (gameHasEnded(room)) {
+        return <HostEndGameScreen room={room} />;
+      } else {
+        const currRound = currentRound(room);
+        if (!currRound) {
+          console.error('Current round is undefined. What the heck! Something is wrong.');
+          return <ErrorMessage />
+        }
+
+        if (currRound.status === 'CREATED') {
+          // The round has not started yet. We are in-between rounds.
+          // So, we want to display collage results for the *previous* round.
+          return <HostRoundResults round={latestCompletedRound(room)} />
+        } else if (currRound.status === 'PLAYING') {
+          return <HostPlayRound round={currRound} />
+        } else {
+          console.error('Current round is in an illegal state');
+          return <ErrorMessage />
+        }   
+      } 
+    }
 }
 
-HostGameScreen.propTypes = {};
+HostGameScreen.propTypes = {
+  loading: React.PropTypes.bool,
+  room: React.PropTypes.object,
+};

@@ -29,7 +29,7 @@ export default class ParticipantLayout extends React.Component {
 
   onClickPlay(event) {
     event.preventDefault();
-    browserHistory.push('/join');
+    browserHistory.push('/login');
   }
 
   onClickHost(event) {
@@ -45,8 +45,6 @@ export default class ParticipantLayout extends React.Component {
       children,
       message,
     } = this.props;
-
-    console.log('ParticipantLayout rendering');
 
     return (
       <div id="container">
