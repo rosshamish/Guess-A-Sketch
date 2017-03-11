@@ -78,7 +78,7 @@ def create_batch(truth_mapping, indicies, batch_size):
     
     for i in indicies[:batch_size]:
         path, ground_truth = truth_mapping[i]
-        X.append(np.ndarray.flatten(scipy.misc.imresize(np.array(Image.open(path)), (100, 100))))
+        X.append(np.ndarray.flatten(scipy.misc.imresize(np.array(Image.open(path)), (500, 500))))
         truth.append(ground_truth)
         
         random.shuffle(indicies) # reshuffle 
@@ -93,10 +93,12 @@ def create_batch(truth_mapping, indicies, batch_size):
 # def net(width, height, train=False):
 #     graph = tf.Graph()
 #     with graph.as_default():
+
 train = True
-width = 100
-height = 100
+width = 500
+height = 500
 num_labels = 250
+
 x = tf.placeholder(tf.float32, [None, width*height])
 y_ = tf.placeholder(tf.float32, [None, num_labels])
 keep_prob = tf.placeholder(tf.float32)
@@ -125,10 +127,10 @@ h_pool2 = max_pool_2x2(h_conv2)
 
 # Layer 3 - Densely Connected 
 
-W_fc1 = weight_variable([25 * 25 * filter_2, filter_3])
+W_fc1 = weight_variable([125 * 125 * filter_2, filter_3])
 b_fc1 = bias_variable([filter_3])
 
-h_pool2_flat = tf.reshape(h_pool2, [-1, 25*25*filter_2])
+h_pool2_flat = tf.reshape(h_pool2, [-1, 125*125*filter_2])
 h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
 # Dropout Layer 
@@ -153,7 +155,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 #     return graph 
 
 
-# In[ ]:
+# In[6]:
 
 # Training and Evaluation - where the magic happens :) 
 
