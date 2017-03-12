@@ -6,7 +6,6 @@ import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
 import { Schema } from './schema';
 
-
 export const submitSketch = new ValidatedMethod({
   name: 'submitSketch',
   validate: new SimpleSchema({
@@ -33,7 +32,6 @@ export const submitSketch = new ValidatedMethod({
     });
   },
 });
-
 
 export const leaveRoom = new ValidatedMethod({
   name: 'leaveRoom',
@@ -68,7 +66,6 @@ export const leaveRoom = new ValidatedMethod({
     });
   },
 });
-
 
 export const joinRoom = new ValidatedMethod({
   name: 'joinRoom',
@@ -109,7 +106,6 @@ export const joinRoom = new ValidatedMethod({
     });
   },
 });
-
 
 export const changeRoomStatus = new ValidatedMethod({
   name: 'changeRoomStatus',
@@ -190,5 +186,45 @@ export const incrementNextRoundIndex = new ValidatedMethod({
         nextRoundIndex: next_index,
       },
     });
+  },
+});
+
+export const createRoom = new ValidatedMethod({
+  name: 'createRoom',
+  validate: new SimpleSchema({
+    room_name: {
+      type: String,
+    },
+    round_count: {
+      type: Number,
+    },
+    round_time: {
+      type: Number,
+    },
+  }).validator(),
+  run({ room_name, round_count, round_time }) {
+
+    if (!room_name){
+        alert('Please fill in a Room Name');
+        return;
+    } else if (round_count < 1){
+        alert('Please allow for at least one round.');
+        return;
+    } else if (round_time < 10){
+        alert('Please give each round at least ten seconds.');
+        return;
+    } else if (Rooms.find({name: room_name}).fetch().length > 0){ // TO DO: Enforce Uniqueness
+        alert('Sorry, that room name is already taken.');
+        return;
+    }
+    
+    let rounds = [];
+    for (let count = 0; count < round_count; count++){
+      rounds.push({time: round_time, index: count});
+    }
+    let id = Rooms.insert({ name: room_name, rounds: rounds });
+    console.log(`Creating room ${room_name} ${id}`);
+
+    return id;
   },
 });
