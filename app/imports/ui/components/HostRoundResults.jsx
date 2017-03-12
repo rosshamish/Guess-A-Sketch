@@ -9,6 +9,7 @@ import ErrorMessage from './ErrorMessage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
 import { incrementNextRoundIndex, changeRoundStatus } from '/imports/api/methods';
+import { currentRound } from '/imports/game-status';
 
 
 export default class HostRoundResults extends BaseComponent {
@@ -23,11 +24,11 @@ export default class HostRoundResults extends BaseComponent {
     let room = Session.get(HOST_ROOM);
 
     // check if end of game
-    if (room.nextRoundIndex < room.rounds.length){
+    if (currentRound(room).index < room.rounds.length){
       // change round status
       const didChangeRoundStatus = changeRoundStatus.call({
         room_id: room._id,
-        round_index: room.nextRoundIndex,
+        round_index: currentRound(room).index,
         round_status: "COMPLETE"
       });
       if (!didChangeRoundStatus) {
