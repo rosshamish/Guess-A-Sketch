@@ -21,7 +21,7 @@ export default class HostPreGameScreen extends BaseComponent {
     event.preventDefault(); // Don't reload the page
     console.log('Starting Game.');
 
-    let room = Session.get(HOST_ROOM); // TO DO: replace with calls to this.props.room
+    let room = Session.get(HOST_ROOM);
 
     // change room status if we're playing for the first time
     if (currentRound(room).index == 0){
@@ -52,7 +52,7 @@ export default class HostPreGameScreen extends BaseComponent {
       room,
     } = this.props;
 
-    Session.set(HOST_ROOM, room); // TO DO: remove
+    Session.set(HOST_ROOM, room);
 
     let player_list = 'N/A';
     if (room.players.length > 0) {

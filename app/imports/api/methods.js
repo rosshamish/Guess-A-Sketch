@@ -178,6 +178,9 @@ export const createRoom = new ValidatedMethod({
   }).validator(),
   run({ room_name, round_count, round_time }) {
 
+    // Problem: Rooms.find({}) doesn't return ANY rooms, even the test ones
+    // that are definitely there. Therefore, we cannot check for name uniqueness.
+
     if (!room_name){
         alert('Please fill in a Room Name');
         return;
@@ -187,7 +190,7 @@ export const createRoom = new ValidatedMethod({
     } else if (round_time < 10){
         alert('Please give each round at least ten seconds.');
         return;
-    } else if (Rooms.find({name: room_name}).fetch().length > 0){ // TO DO: Enforce Uniqueness
+    } else if (Rooms.find({name: room_name}).fetch().length > 0){ 
         alert('Sorry, that room name is already taken.');
         return;
     }

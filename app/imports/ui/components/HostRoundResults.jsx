@@ -8,7 +8,7 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
-import { incrementNextRoundIndex, changeRoundStatus } from '/imports/api/methods';
+import { changeRoundStatus } from '/imports/api/methods';
 import { currentRound } from '/imports/game-status';
 
 
