@@ -8,6 +8,7 @@ import Timer from './Timer.jsx';
 
 import { HOST_ROOM, TIMER } from '/imports/api/session';
 import { incrementNextRoundIndex, changeRoundStatus } from '/imports/api/methods';
+import { currentRound } from '/imports/game-status';
 
 export default class HostPlayRound extends BaseComponent {
   constructor(props) {
@@ -23,21 +24,11 @@ export default class HostPlayRound extends BaseComponent {
     // change round status
     const didChangeRoundStatus = changeRoundStatus.call({
       room_id: room._id,
-      round_index: room.nextRoundIndex,
+      round_index: currentRound(room).index,
       round_status: "COMPLETE"
     });
     if (!didChangeRoundStatus) {
       console.error('Unable to change round status. Server rejected request.');
-      return;
-    }
-
-    // increment nextRoundIndex
-    const didChangeNextRoundIndex = incrementNextRoundIndex.call({
-      room_id: room._id,
-      next_index: room.nextRoundIndex + 1,
-    });
-    if (!didChangeNextRoundIndex) {
-      console.error('Unable to change round index. Server rejected request.');
       return;
     }
     
