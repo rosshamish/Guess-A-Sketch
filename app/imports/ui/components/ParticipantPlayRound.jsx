@@ -22,7 +22,7 @@ export default class ParticipantPlayRound extends BaseComponent {
       <div className="game-screen">
         <div>
           <Prompt prompt={round.prompt} />
-          <Timer time={round.time} />
+          <Timer time={round.time} isHost={false} />
         </div>
         <Canvas prompt={round.prompt} player={Session.get(PLAYER)} />
       </div>

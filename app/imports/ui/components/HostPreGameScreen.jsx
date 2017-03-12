@@ -58,9 +58,7 @@ export default class HostPreGameScreen extends BaseComponent {
     if (room.players.length > 0) {
       player_list = room.players.map(function(player,index) {
         return (
-          <PlayerItem 
-          key = {player._id}
-          player = {player} />
+          <PlayerItem player = {player} /> // gives a 'key warning' - ignore
         );
       });
     }

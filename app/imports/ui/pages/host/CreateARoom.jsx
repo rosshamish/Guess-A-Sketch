@@ -13,9 +13,9 @@ export default class CreateARoom extends BaseComponent{
   constructor(props){
     super(props);
     this.state = {
-      roomName: '',
-      roundCount: 10,
-      roundTime: 20
+      roomName: 'apple', // testing vars: to be deleted
+      roundCount: 2, // set to 10
+      roundTime: 10 // set to 20
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);
