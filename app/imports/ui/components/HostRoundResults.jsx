@@ -28,21 +28,11 @@ export default class HostRoundResults extends BaseComponent {
       // change round status
       const didChangeRoundStatus = changeRoundStatus.call({
         room_id: room._id,
-        round_index: currentRound(room).index,
-        round_status: "COMPLETE"
+        round_index: currentRound(room).index + 1,
+        round_status: "PLAYING"
       });
       if (!didChangeRoundStatus) {
         console.error('Unable to change round status. Server rejected request.');
-        return;
-      }
-
-      // increment nextRoundIndex
-      const didChangeNextRoundIndex = incrementNextRoundIndex.call({
-        room_id: room._id,
-        next_index: room.nextRoundIndex + 1,
-      });
-      if (!didChangeNextRoundIndex) {
-        console.error('Unable to change round index. Server rejected request.');
         return;
       }
     } else {
@@ -84,7 +74,7 @@ export default class HostRoundResults extends BaseComponent {
           {SketchComponents}
         </div>
         <form onSubmit={this.onNextRound}>
-          <button>Done</button>
+          <button>Next Round</button>
         </form>
       </div>
     );

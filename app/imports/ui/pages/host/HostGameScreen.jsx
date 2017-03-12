@@ -47,19 +47,19 @@ export default class HostGameScreen extends BaseComponent {
     } else if (gameHasEnded(room)) {
       return <HostEndGameScreen room={room} />;
     } else {
-      const currRound = currentRound(room);
-      if (!currRound) {
+      let round = currentRound(room);
+      if (!round) {
         console.error('Current round is undefined. What the heck! Something is wrong.');
         return <ErrorMessage />
       }
 
-      if (currRound.status === 'CREATED') {
+      if (round.status === 'CREATED') {
         // The round has not started yet. We are in-between rounds.
         // So, we want to display collage results for the *previous* round.
         return <HostRoundResults round = {latestCompletedRound(room)} />
-      } else if (currRound.status === 'PLAYING') {
+      } else if (round.status === 'PLAYING') {
         return <HostPlayRound
-          round={currRound}
+          round={round}
           room={room} />
       } else {
         console.error('Current round is in an illegal state');
