@@ -9,6 +9,8 @@ import PlayerItem from './PlayerItem.jsx';
 import { changeRoomStatus, changeRoundStatus } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
 
+import { currentRound } from '/imports/game-status';
+
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
@@ -22,7 +24,7 @@ export default class HostPreGameScreen extends BaseComponent {
     let room = Session.get(HOST_ROOM); // TO DO: replace with calls to this.props.room
 
     // change room status if we're playing for the first time
-    if (room.nextRoundIndex == 0){
+    if (currentRound(room).index == 0){
       const didChangeRoomStatus = changeRoomStatus.call({
         room_id: room._id,
         room_status: "PLAYING"
@@ -36,7 +38,7 @@ export default class HostPreGameScreen extends BaseComponent {
     // change round status
     const didChangeRoundStatus = changeRoundStatus.call({
       room_id: room._id,
-      round_index: room.nextRoundIndex,
+      round_index: currentRound(room).index,
       round_status: "PLAYING"
     });
     if (!didChangeRoundStatus) {

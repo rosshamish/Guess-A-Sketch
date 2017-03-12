@@ -8,6 +8,7 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
+import { incrementNextRoundIndex, changeRoundStatus } from '/imports/api/methods';
 
 
 export default class HostRoundResults extends BaseComponent {
@@ -19,11 +20,42 @@ export default class HostRoundResults extends BaseComponent {
   onNextRound(event){
     event.preventDefault();
 
+    let room = Session.get(HOST_ROOM);
+
     // check if end of game
-    if (Session.get(HOST_ROOM).nextRoundIndex < Session.get(HOST_ROOM).rounds.length){
-        // TO DO: set next round
+    if (room.nextRoundIndex < room.rounds.length){
+      // change round status
+      const didChangeRoundStatus = changeRoundStatus.call({
+        room_id: room._id,
+        round_index: room.nextRoundIndex,
+        round_status: "COMPLETE"
+      });
+      if (!didChangeRoundStatus) {
+        console.error('Unable to change round status. Server rejected request.');
+        return;
+      }
+
+      // increment nextRoundIndex
+      const didChangeNextRoundIndex = incrementNextRoundIndex.call({
+        room_id: room._id,
+        next_index: room.nextRoundIndex + 1,
+      });
+      if (!didChangeNextRoundIndex) {
+        console.error('Unable to change round index. Server rejected request.');
+        return;
+      }
     } else {
-        // TO DO: set game over
+      // set game over
+      if (room.nextRoundIndex == 0){
+        const didChangeRoomStatus = changeRoomStatus.call({
+          room_id: room._id,
+          room_status: "COMPLETE"
+        });
+         if (!didChangeRoomStatus) {
+          console.error('Unable to change room status. Server rejected request.');
+          return;
+        }
+      }
     }
   }
 

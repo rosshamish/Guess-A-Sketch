@@ -40,7 +40,7 @@ export default class HostPlayRound extends BaseComponent {
       console.error('Unable to change round index. Server rejected request.');
       return;
     }
-
+    
   }
 
   render() {
