@@ -28,14 +28,15 @@ export default class Timer extends BaseComponent {
     if (Session.get(TIMER) > -1) {
       return true; // keep displaying until time is up
     }
+
     clearInterval(interval_id);
 
     if (nextProps.isHost) {
-      setTimeout(function(){
-        // This is needed to ensure the Participant UI has enough time
-        // to catch up and clear the interval before the host changes the
-        // round status. 
-      }, 2000);
+      // This is needed to ensure the Participant UI has enough time
+      // to catch up and clear the interval before the host changes the
+      // round status. 
+      var endTime = new Date().getTime() + 500;
+      while (new Date().getTime() < endTime);
 
       const didChangeRoundStatus = changeRoundStatus.call({
         room_id: nextProps.room._id,
