@@ -7,36 +7,36 @@ import { TIMER } from '/imports/api/session';
 
 export default class Timer extends BaseComponent {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    componentDidMount() {
-        interval_id = setInterval(() => {
-            this.setState(() => {
-                Session.set(TIMER, Session.get(TIMER) - 1);
-                return {}
-            });
-        }, 1000);
-    }
+  componentDidMount() {
+    interval_id = setInterval(() => {
+      this.setState(() => {
+        Session.set(TIMER, Session.get(TIMER) - 1);
+        return {}
+      });
+    }, 1000);
+  }
 
-    shouldComponentUpdate(nextProps) {
-        if (Session.get(TIMER) > -1) {
-          return true;
-        }
-        clearInterval(interval_id);
-        return false;
+  shouldComponentUpdate(nextProps) {
+    if (Session.get(TIMER) > -1) {
+      return true;
     }
+    clearInterval(interval_id);
+    return false;
+  }
 
-    render() {
-        const {} = this.props;
+  render() {
+    const {} = this.props;
 
-        return (
-            <div className="timer">
-                Timer: {Session.get(TIMER)}
-            </div>
-        );
-    }
+    return (
+      <div className="timer">
+        Timer: {Session.get(TIMER)}
+      </div>
+    );
+  }
 }
 
 Timer.propTypes = {};

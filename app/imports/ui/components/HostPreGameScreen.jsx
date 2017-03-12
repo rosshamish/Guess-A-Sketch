@@ -9,7 +9,6 @@ import PlayerItem from './PlayerItem.jsx';
 import { changeRoomStatus, changeRoundStatus } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
 
-
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
