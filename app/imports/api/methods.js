@@ -6,25 +6,25 @@ import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
 import { Schema } from './schema';
 
-
 export const submitSketch = new ValidatedMethod({
   name: 'submitSketch',
-  validate: Schema.Sketch.validator(),
-  run({ player, sketch, prompt }) {
-    const sketchID = Sketches.insert({
-      player,
-      sketch,
-      scores: {},
-      prompt,
-    });
+  validate: new SimpleSchema({
+    sketch: {
+      type: Schema.Sketch,
+    },
+    round_index: {
+      type: Number,
+    }
+  }).validator(),
+  run({ sketch }) {
+    const sketchID = Sketches.insert(sketch);
+    console.log('Inserting sketch ' + sketch);
 
     Rooms.update({
-      players: {
-        name: player.name,
-        color: player.color,
-      },
+      "players.name": sketch.player.name,
+      "rounds.index": round_index,
     }, {
-      sketches: {
+      "rounds.$": {
         $push: {
           sketches: sketchID,
         },
@@ -32,7 +32,6 @@ export const submitSketch = new ValidatedMethod({
     });
   },
 });
-
 
 export const leaveRoom = new ValidatedMethod({
   name: 'leaveRoom',
@@ -67,7 +66,6 @@ export const leaveRoom = new ValidatedMethod({
     });
   },
 });
-
 
 export const joinRoom = new ValidatedMethod({
   name: 'joinRoom',
@@ -108,7 +106,6 @@ export const joinRoom = new ValidatedMethod({
     });
   },
 });
-
 
 export const changeRoomStatus = new ValidatedMethod({
   name: 'changeRoomStatus',
@@ -166,28 +163,45 @@ export const changeRoundStatus = new ValidatedMethod({
   },
 });
 
-export const incrementNextRoundIndex = new ValidatedMethod({
-  name: 'incrementNextRoundIndex',
+export const createRoom = new ValidatedMethod({
+  name: 'createRoom',
   validate: new SimpleSchema({
-    room_id: {
+    room_name: {
       type: String,
     },
-    next_index: {
+    round_count: {
+      type: Number,
+    },
+    round_time: {
       type: Number,
     },
   }).validator(),
-  run({ room_id, next_index }) {
-    const room = Rooms.findOne({
-      _id: room_id,
-    });
+  run({ room_name, round_count, round_time }) {
+
+    // Problem: Rooms.find({}) doesn't return ANY rooms, even the test ones
+    // that are definitely there. Therefore, we cannot check for name uniqueness.
+
+    if (!room_name){
+        alert('Please fill in a Room Name');
+        return;
+    } else if (round_count < 1){
+        alert('Please allow for at least one round.');
+        return;
+    } else if (round_time < 10){
+        alert('Please give each round at least ten seconds.');
+        return;
+    } else if (Rooms.find({name: room_name}).fetch().length > 0){ 
+        alert('Sorry, that room name is already taken.');
+        return;
+    }
     
-    // Add the player to the room
-    return Rooms.update({
-      _id: room_id,
-    }, {
-      $set: {
-        nextRoundIndex: next_index,
-      },
-    });
+    let rounds = [];
+    for (let count = 0; count < round_count; count++){
+      rounds.push({time: round_time, index: count});
+    }
+    let id = Rooms.insert({ name: room_name, rounds: rounds });
+    console.log(`Creating room ${room_name} ${id}`);
+
+    return id;
   },
 });

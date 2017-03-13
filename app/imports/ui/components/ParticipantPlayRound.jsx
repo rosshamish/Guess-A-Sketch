@@ -6,6 +6,9 @@ import Prompt from './Prompt.jsx';
 import Canvas from './Canvas.jsx';
 import Timer from './Timer.jsx';
 
+import { Session } from 'meteor/session';
+import { PLAYER } from '/imports/api/session';
+
 
 export default class ParticipantPlayRound extends BaseComponent {
   constructor(props) {
@@ -19,7 +22,7 @@ export default class ParticipantPlayRound extends BaseComponent {
       <div className="game-screen">
         <div>
           <Prompt prompt={round.prompt} />
-          <Timer time={round.time} />
+          <Timer time={round.time} isHost={false} />
         </div>
         <Canvas prompt={round.prompt} player={Session.get(PLAYER)} />
       </div>

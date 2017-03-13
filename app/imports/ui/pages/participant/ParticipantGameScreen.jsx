@@ -1,5 +1,4 @@
 import React from 'react';
-import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 import BaseComponent from '../../components/BaseComponent.jsx';
 
@@ -9,8 +8,17 @@ import ParticipantRoundResults from '../../components/ParticipantRoundResults.js
 import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
 
-import { leaveRoom } from '/imports/api/methods';
-import { PLAYER } from '/imports/api/session';
+import { 
+  submitSketch,
+  leaveRoom
+} from '/imports/api/methods';
+
+import { Session } from 'meteor/session';
+import { 
+  PLAYER,
+  SKETCH
+} from '/imports/api/session';
+
 
 import {
   roundHasCompleted,
@@ -44,11 +52,14 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (roundHasCompleted(this.props.room, nextProps.room)) {
+    if (roundHasCompleted(this.latestRoundStatus, nextProps.room)) {
+      console.log('Round has completed.');
       const didSubmitSketch = submitSketch.call({
-        player: Session.get(PLAYER),
-        sketch: Session.get(SKETCH),
-        prompt: latestCompletedRound(this.props.room).prompt,
+        sketch: {
+          player: Session.get(PLAYER),
+          sketch: Session.get(SKETCH),
+          prompt: latestCompletedRound(this.props.room).prompt,
+        },
       });
 
       if (!didSubmitSketch) {
@@ -58,8 +69,8 @@ export default class ParticipantGameScreen extends BaseComponent {
     }
   }
 
-  roundHasCompleted(room, nextRoom) {
-    return currentRound(room)._id != currentRound(nextRoom)._id;
+  componentDidUpdate(props) {
+    this.latestRoundStatus = currentRound(props.room).status;
   }
 
   render() {
@@ -91,18 +102,18 @@ export default class ParticipantGameScreen extends BaseComponent {
     } else if (gameHasEnded(room)) {
       return <ParticipantEndGameScreen room={room} />;
     } else {
-      const currentRound = currentRound(room);
-      if (!currentRound) {
+      const round = currentRound(room);
+      if (!round) {
         console.error('Current round is undefined. What the heck! Something is wrong.');
         return <ErrorMessage />
       }
 
-      if (currentRound.status === 'CREATED') {
+      if (round.status === 'CREATED') {
         // The round has not started yet. We are in-between rounds.
         // So, we want to display results for the *previous* round.
         return <ParticipantRoundResults round={latestCompletedRound(room)} />
-      } else if (currentRound.status === 'PLAYING') {
-        return <ParticipantPlayRound round={currentRound} />
+      } else if (round.status === 'PLAYING') {
+        return <ParticipantPlayRound round={round} />
       } else {
         console.error('Current round is in an illegal state');
         return <ErrorMessage />

@@ -1,5 +1,8 @@
-export function roundHasCompleted(room, nextRoom) {
-	return currentRound(room)._id != currentRound(nextRoom)._id;
+export function roundHasCompleted(latestRoundStatus, nextRoom) {
+	return (
+    latestRoundStatus === 'PLAYING' &&
+    currentRound(nextRoom).status === 'CREATED'
+  );
 }
 
 export function gameHasStarted(room) {

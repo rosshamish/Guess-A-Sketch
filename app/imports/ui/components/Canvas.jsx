@@ -5,6 +5,11 @@ import BaseComponent from './BaseComponent.jsx';
 import { fabric } from 'fabric';
 import { submitSketch } from '/imports/api/methods';
 
+import { Session } from 'meteor/session';
+import {
+  SKETCH,
+} from '/imports/api/session';
+
 
 export default class Canvas extends BaseComponent {
   constructor(props) {
@@ -13,7 +18,6 @@ export default class Canvas extends BaseComponent {
     this.pathStack = [];
 
     this.onUndo = this.onUndo.bind(this);
-    this.onTimeout = this.onTimeout.bind(this);
   }
 
   componentDidMount() {
@@ -64,5 +68,4 @@ export default class Canvas extends BaseComponent {
 Canvas.propTypes = {
   prompt: React.PropTypes.string,
   player: React.PropTypes.object,
-  onTimeout: React.PropTypes.func,
 };
