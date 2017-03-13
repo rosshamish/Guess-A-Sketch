@@ -80,7 +80,7 @@ class Model:
         self.train
         self.accuracy
 
-    @define_scope(initializer=tf.contrib.slim.xavier_initializer())
+    @define_scope()
     def prediction(self):
         filter_1 = 32
         filter_2 = 64

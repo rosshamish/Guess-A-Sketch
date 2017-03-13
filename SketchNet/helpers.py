@@ -6,7 +6,7 @@
 import numpy as np
 import os
 import random
-import scipy
+import scipy.misc
 import tensorflow as tf
 from PIL import Image
 
