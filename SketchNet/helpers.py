@@ -53,10 +53,7 @@ def preprocess(directory):
     imgs = []
     #multiprocess this loop? 
     for i in range(num_classes):
-        ground_truth = np.zeros(num_classes)
-        ground_truth[i] = 1 # set label for this 
-        
-        imgs += read_and_flatten(directory +'/'+ classes[i], ground_truth)
+        imgs += read_and_flatten(directory +'/'+ classes[i], i)
     return imgs
 
 def create_batch(truth_mapping, indicies, batch_size):

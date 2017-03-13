@@ -1,14 +1,15 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+import os
 
 
-# In[2]:
+# In[ ]:
 
 def get_classes(folder):
     return [x[0].split('/')[-1] for x in os.walk(folder)][1:]
@@ -33,93 +34,70 @@ def preprocess(directory):
     return imgs
 
 
-# In[3]:
+# In[22]:
 
-import functools
-def doublewrap(function):
-    """
-    A decorator decorator, allowing to use the decorator to be used without
-    parentheses if not arguments are provided. All arguments must be optional.
-    """
-
-    @functools.wraps(function)
-    def decorator(*args, **kwargs):
-        if len(args) == 1 and len(kwargs) == 0 and callable(args[0]):
-            return function(args[0])
-        else:
-            return lambda wrapee: function(wrapee, *args, **kwargs)
-
-    return decorator
-
-
-@doublewrap
-def define_scope(function, scope=None, *args, **kwargs):
-    """
-    A decorator for functions that define TensorFlow operations. The wrapped
-    function will only be executed once. Subsequent calls to it will directly
-    return the result so that operations are added to the graph only once.
-    The operations added by the function live within a tf.variable_scope(). If
-    this decorator is used with arguments, they will be forwarded to the
-    variable scope. The scope name defaults to the name of the wrapped
-    function.
-    """
-    attribute = '_cache_' + function.__name__
-    name = scope or function.__name__
-    @property
-    @functools.wraps(function)
-    def decorator(self):
-        if not hasattr(self, attribute):
-            with tf.variable_scope(name, *args, **kwargs):
-                setattr(self, attribute, function(self))
-        return getattr(self, attribute)
-
-    return decorator
-
-    # Helper Functions
-
-
-# In[6]:
-
+import glob
+from tqdm import tqdm
 import tensorflow as tf
-from PIL import Image
 import numpy as np
 
-def get_batch(filepaths):
-    filename_queue = tf.train.string_input_producer(filepaths) #  list of files to read
+# imgPaths = ['/Users/anjueappen/png/axe/649.png', '/Users/anjueappen/png/axe/650.png',
+#             '/Users/anjueappen/png/ant/244.png', '/Users/anjueappen/png/ant/245.png',
+#            '/Users/anjueappen/png/ant/246.png', '/Users/anjueappen/png/ant/247.png',
+#            '/Users/anjueappen/png/ant/248.png', '/Users/anjueappen/png/ant/249.png',
+#            '/Users/anjueappen/png/ant/250.png']
 
-    reader = tf.WholeFileReader()
-    _, image_file = reader.read(filename_queue)
+def populate_batch(filenames, final_dim):
 
-    my_img = tf.image.decode_png(image_file) # use png or jpg decoder based on your files.
+    filenames, truth_indicies = zip(*filenames)
+    filenameQ = tf.train.string_input_producer(filenames)
 
-    # Generate ground truth label vector for this image
-    truth = tf.one_hot(8, depth = 250, 
-                               on_value=1.0, off_value=0.0, axis=-1)
+    # Define a subgraph that takes a filename, reads the file, decodes it, and                                                                                     
+    # enqueues it.                                                                                                                                                 
+    filename = filenameQ.dequeue()
+    image_bytes = tf.read_file(filename)
+    decoded_image = tf.image.decode_png(image_bytes)
+    image_queue = tf.FIFOQueue(128, [tf.float32], None)
+    decoded_image = tf.image.resize_images(decoded_image, final_dim)
+    enqueue_op = image_queue.enqueue(decoded_image)
+
+    # Create a queue runner that will enqueue decoded images into `image_queue`.                                                                                   
+    NUM_THREADS = 16
+    queue_runner = tf.train.QueueRunner(
+        image_queue,
+        [enqueue_op] * NUM_THREADS,  # Each element will be run from a separate thread.                                                                                       
+        image_queue.close(),
+        image_queue.close(cancel_pending_enqueues=True))
+
+    # Ensure that the queue runner threads are started when we call                                                                                               
+    # `tf.train.start_queue_runners()` below.                                                                                                                      
+    tf.train.add_queue_runner(queue_runner)
+
+    # Dequeue the next image from the queue, for returning to the client.                                                                                          
+    img = image_queue.dequeue()
 
     init_op = tf.global_variables_initializer()
+
     with tf.Session() as sess:
         sess.run(init_op)
-
-        # Start populating the filename queue.
-
         coord = tf.train.Coordinator()
-        threads = tf.train.start_queue_runners(coord=coord)
+        threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
-        loader = Loader(250, 8)
-        image, truth = sess.run([my_img, truth]) #here is your image Tensor :) 
-
-        print(image.shape)
-        print(truth)
-    #     Image.fromarray(np.asarray(image)).show()
+        imgs = []
+        for _ in tqdm(filenames):
+            if coord.should_stop(): break
+            imgs.append(sess.run(img))
 
         coord.request_stop()
+
+        truth = tf.one_hot(indices=truth_indicies, depth = 250, on_value=1.0, off_value=0.0, axis=-1)
+        truth = sess.run(truth)
+
+        # Wait for threads to finish.
         coord.join(threads)
 
-filepaths =['/Users/anjueappen/png/axe/649.png', '/Users/anjueappen/png/axe/650.png']
-get_batch(filepaths)
-
-
-# In[ ]:
+    tf.reset_default_graph()
+    return np.array(imgs), truth
 
 
 

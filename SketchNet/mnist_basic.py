@@ -90,7 +90,7 @@ class Model:
         W_conv1 = weight_variable([5, 5, 1, filter_1])
         b_conv1 = bias_variable([filter_1])
 
-        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1])
+        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1]) #TODO: probably removable
 
         h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
         h_pool1 = max_pool_2x2(h_conv1)
@@ -133,6 +133,7 @@ class Model:
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         return accuracy
 
+from tf_data_prep import populate_batch
 
 def main():
     # TODO Hard Coding!!!
@@ -141,7 +142,7 @@ def main():
     height = 500
     num_labels = 250
 
-    image = tf.placeholder(tf.float32, [None, width * height])
+    image = tf.placeholder(tf.float32, [None, width,  height, 1])
     label = tf.placeholder(tf.float32, [None, num_labels])
     keep_prob = tf.placeholder(tf.float32)
 
@@ -152,18 +153,19 @@ def main():
         sess.run(init)
 
         ground_truth_mapping = preprocess('/Users/anjueappen/png')
-        index = list(range(len(ground_truth_mapping)))
 
         for i in range(1000):
             print(i)
-            batch = create_batch(ground_truth_mapping, index, 50)
-            sess.run(model.train, {image: np.array(batch[0]), label: np.array(batch[1]), keep_prob: 0.5})
+            batch = populate_batch(ground_truth_mapping[:50], (height, width))
+            sess.run(model.train, {image: batch[0], label:batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
                 train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
-        batch = create_batch(ground_truth_mapping, index, 50)
+            import random; random.shuffle(ground_truth_mapping)
+
+        batch = populate_batch(ground_truth_mapping[:50], (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
