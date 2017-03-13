@@ -133,7 +133,9 @@ class Model:
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         return accuracy
 
+
 from tf_data_prep import populate_batch
+
 
 def main():
     # TODO Hard Coding!!!
@@ -148,7 +150,8 @@ def main():
 
     model = Model(image, width, height, num_labels, label, keep_prob)
 
-    with tf.Session() as sess:
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
+    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
         init = tf.global_variables_initializer()
         sess.run(init)
 
