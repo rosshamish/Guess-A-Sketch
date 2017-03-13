@@ -84,7 +84,7 @@ class Model:
     def prediction(self):
         filter_1 = 32
         filter_2 = 64
-        filter_3 = 1024
+        filter_3 = 100
 
         # Layer 1
         W_conv1 = weight_variable([5, 5, 1, filter_1])
@@ -150,16 +150,18 @@ def main():
 
     model = Model(image, width, height, num_labels, label, keep_prob)
 
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
-    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.75)
+    with tf.Session(config=config) as sess:
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        ground_truth_mapping = preprocess('/Users/anjueappen/png')
+        ground_truth_mapping = preprocess('/home/ubuntu/png')
 
         for i in range(1000):
             print(i)
-            batch = populate_batch(ground_truth_mapping[:50], (height, width))
+            batch = populate_batch(ground_truth_mapping[:16], (height, width))
             sess.run(model.train, {image: batch[0], label:batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
@@ -168,7 +170,7 @@ def main():
 
             import random; random.shuffle(ground_truth_mapping)
 
-        batch = populate_batch(ground_truth_mapping[:50], (height, width))
+        batch = populate_batch(ground_truth_mapping[:16], (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
