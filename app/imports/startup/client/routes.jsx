@@ -12,8 +12,8 @@ import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 // TODO i18n // import i18n from 'meteor/universe:i18n';
 
-// route components
-import ParticipantContainer from '../../ui/containers/ParticipantContainer.jsx';
+import WelcomePage from '../../ui/pages/WelcomePage.jsx';
+
 import RoomListContainer from '../../ui/containers/RoomListContainer.jsx';
 import LoginPage from '../../ui/pages/participant/LoginPage.jsx';
 import ParticipantGameScreenContainer from '../../ui/containers/ParticipantGameScreenContainer.jsx';
@@ -27,11 +27,11 @@ import HostGameScreenContainer from '../../ui/containers/HostGameScreenContainer
 export const renderRoutes = () => (
   <Router history={browserHistory}>
 
-    <Route path="/" component={ParticipantContainer}>
-      <Route path="login" component={LoginPage} />
-      <Route path="join" component={RoomListContainer} />
-      <Route path="play" component={ParticipantGameScreenContainer} />
-    </Route>
+    <Route path="/" component={WelcomePage} />
+
+    <Route path="login" component={LoginPage} />
+    <Route path="join" component={RoomListContainer} />
+    <Route path="play" component={ParticipantGameScreenContainer} />
 
     <Route path="host" component={HostContainer}>
       <Route path="create" component={CreateARoom} />

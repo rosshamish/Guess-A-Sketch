@@ -5,7 +5,11 @@ import BaseComponent from './BaseComponent.jsx';
 
 import { TIMER } from '/imports/api/session';
 import { currentRound } from '/imports/game-status';
-import { changeRoundStatus } from '/imports/api/methods';
+
+import { 
+  changeRoundStatus,
+  changeRoomStatus,
+} from '/imports/api/methods';
 
 export default class Timer extends BaseComponent {
 
@@ -37,6 +41,15 @@ export default class Timer extends BaseComponent {
       // round status. 
       var endTime = new Date().getTime() + 500;
       while (new Date().getTime() < endTime);
+
+      const didChangeRoomStatus = changeRoomStatus.call({
+        room_id: nextProps.room._id,
+        room_status: "JOINABLE"
+      });
+      if (!didChangeRoomStatus) {
+        console.error('Unable to change room status. Server rejected request.');
+        return;
+      }
 
       const didChangeRoundStatus = changeRoundStatus.call({
         room_id: nextProps.room._id,

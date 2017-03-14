@@ -18,7 +18,7 @@ export const submitSketch = new ValidatedMethod({
   }).validator(),
   run({ sketch, roundIndex }) {
     const sketchID = Sketches.insert(sketch);
-    console.log('Inserting sketch ' + sketch);
+    console.log('Submitting sketch ' + sketchID);
 
     return Rooms.update({
       "players.name": sketch.player.name,

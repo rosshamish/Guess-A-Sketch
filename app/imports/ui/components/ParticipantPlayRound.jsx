@@ -19,7 +19,7 @@ export default class ParticipantPlayRound extends BaseComponent {
     const { round } = this.props;
 
     return (
-      <div className="game-screen">
+      <div id='game-container'>
         <div>
           <Prompt prompt={round.prompt} />
           <Timer time={round.time} isHost={false} />

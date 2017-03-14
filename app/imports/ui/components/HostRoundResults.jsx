@@ -9,7 +9,10 @@ import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
-import { changeRoundStatus } from '/imports/api/methods';
+import { 
+  changeRoundStatus,
+  changeRoomStatus,
+} from '/imports/api/methods';
 import { currentRound } from '/imports/game-status';
 
 
@@ -24,8 +27,17 @@ export default class HostRoundResults extends BaseComponent {
 
     let room = Session.get(HOST_ROOM);
 
-    // check if end of game
+    // Is the game still ongoing?
     if (currentRound(room).index < room.rounds.length){
+      const didChangeRoomStatus = changeRoomStatus.call({
+        room_id: room._id,
+        room_status: "PLAYING"
+      });
+      if (!didChangeRoomStatus) {
+        console.error('Unable to change room status. Server rejected request.');
+        return;
+      }
+
       // change round status
       const didChangeRoundStatus = changeRoundStatus.call({
         room_id: room._id,
@@ -37,7 +49,7 @@ export default class HostRoundResults extends BaseComponent {
         return;
       }
     } else {
-      // set game over
+      // The game is over.
       if (room.nextRoundIndex == 0){
         const didChangeRoomStatus = changeRoomStatus.call({
           room_id: room._id,
