@@ -22,11 +22,8 @@ export default class ParticipantRoundResults extends BaseComponent {
     } = this.props;
 
     // TODO more efficient method than fetching ALL sketches and then
-    // filtering to the current plalyer's.
-    console.log('Rendering results for round ' + round.index);
-
+    // filtering to the current player's.
     const currentPlayer = Session.get(PLAYER);
-    console.log('Round sketch IDs: ' + round.sketches);
     const sketches = _.map(round.sketches, (sketchID) => {
       return Sketches.findOne({ _id: sketchID });
     });
@@ -34,11 +31,8 @@ export default class ParticipantRoundResults extends BaseComponent {
       return sketch.player.name === currentPlayer.name;
     });
     if (currentPlayerSketches.length != 1) {
-      console.error('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
-      // TODO better loading screen here. Waiting for sketch to come back from server?
-      // Or, is this really an error case.
-      return <h2>Loading...</h2>
-      // return <ErrorMessage />
+      console.log('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
+      return <p>Loading...</p>;
     }
 
     const currentPlayerSketch = currentPlayerSketches[0];
@@ -54,6 +48,5 @@ export default class ParticipantRoundResults extends BaseComponent {
 }
 
 ParticipantRoundResults.propTypes = {
-  loading: React.PropTypes.bool,
   round: React.PropTypes.object,
 };

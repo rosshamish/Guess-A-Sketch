@@ -66,7 +66,7 @@ export default class HostRoundResults extends BaseComponent {
     });
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      return <SketchImage sketch={sketch} />
+      return <SketchImage key={sketch._id} sketch={sketch} />
     });
 
     return (

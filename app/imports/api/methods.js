@@ -81,7 +81,7 @@ export const joinRoom = new ValidatedMethod({
     });
 
     if (room.status != 'JOINABLE') {
-      console.error('Cannot join a non-joinable room. Doing nothing.');
+      alert('Cannot join a non-joinable room. Doing nothing.');
       return false;
     }
 
@@ -160,6 +160,7 @@ export const changeRoundStatus = new ValidatedMethod({
     });
   },
 });
+
 
 export const createRoom = new ValidatedMethod({
   name: 'createRoom',
