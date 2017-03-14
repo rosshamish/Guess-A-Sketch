@@ -52,18 +52,24 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   componentWillUpdate(nextProps, nextState) {
     if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
-      this.setState({ latestRoundIndex: this.state.latestRoundIndex + 1 });
       console.log('TRUE: round has completed');
       console.log('Sketch:');
       console.log(Session.get(SKETCH));
+
+      const prompt = _.find(this.props.room.rounds, (round) => {
+        return round.index === this.state.latestRoundIndex;
+      }).prompt;
+
       const didSubmitSketch = submitSketch.call({
         sketch: {
           player: Session.get(PLAYER),
           sketch: Session.get(SKETCH),
-          prompt: latestCompletedRound(this.props.room).prompt,
+          prompt: prompt,
         },
-        roundIndex: latestCompletedRound(this.props.room).roundIndex,
+        roundIndex: this.state.latestRoundIndex,
       });
+
+      this.setState({ latestRoundIndex: this.state.latestRoundIndex + 1 });
 
       if (!didSubmitSketch) {
         console.error('Failed to submit sketch');
