@@ -20,6 +20,6 @@ export default class HostEndGameScreen extends BaseComponent {
   }
 }
 
-ParticipantEndGameScreen.propTypes = {
+HostEndGameScreen.propTypes = {
   room: React.PropTypes.object,
 };
