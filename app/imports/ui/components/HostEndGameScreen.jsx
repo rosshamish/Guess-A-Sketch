@@ -35,16 +35,21 @@ export default class HostEndGameScreen extends BaseComponent {
       );
     });
 
-    return(<table>
-      <tbody>
-        <tr>
-          <th>Rank</th>
-          <th>Name</th>
-          <th>Score</th>
-        </tr>
-        {renderScores}
-      </tbody>
-      </table>);
+    return(
+      <div className="host-end-game">
+        <h1>Game Results</h1>
+        <table>
+        <tbody>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+          {renderScores}
+        </tbody>
+        </table>
+      </div>
+    );
   }
 }
 

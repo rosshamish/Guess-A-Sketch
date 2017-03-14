@@ -59,31 +59,34 @@ export default class CreateARoom extends BaseComponent{
   render(){
     const {} = this.props;
     return (
-      <form onSubmit={this.onCreateRoom}>
-        Room Name:
-        <input
-          type="text"
-          name="roomName"
-          ref={(input) => (this.roomName = input)}
-          value={this.state.roomName}
-          onChange={this.onRoomNameChange}/>
-        <br/>
-        Number of Rounds:
-        <input
-          type="number"
-          name="roomName"
-          value={this.state.roundCount}
-          onChange={this.onRoundCountChange}/>
-        <br/>
-        Time:
-        <input
-          type="number"
-          name="roomName"
-          value={this.state.roundTime}
-          onChange={this.onRoundTimeChange}/>
-        <br/>
-        <button>Create A Room</button>
-      </form>
+      <div className="create-room">
+        <h1>Create a room</h1>
+        <form onSubmit={this.onCreateRoom}>
+          Room Name:
+          <input
+            type="text"
+            name="roomName"
+            ref={(input) => (this.roomName = input)}
+            value={this.state.roomName}
+            onChange={this.onRoomNameChange}/>
+          <br/>
+          Number of Rounds:
+          <input
+            type="number"
+            name="roomName"
+            value={this.state.roundCount}
+            onChange={this.onRoundCountChange}/>
+          <br/>
+          Time:
+          <input
+            type="number"
+            name="roomName"
+            value={this.state.roundTime}
+            onChange={this.onRoundTimeChange}/>
+          <br/>
+          <button>Create</button>
+        </form>
+      </div>
     );
   }
 }

@@ -43,9 +43,12 @@ export default class ParticipantRoundResults extends BaseComponent {
 
     return (
       <div>
+        <h1>Round Results</h1>
+        <h3>You drew:</h3>
         <SketchImage sketch={currentPlayerSketch} />
         <hr />
-        <p>Scores: TODO scores</p>
+        <p>SketchNet thinks you drew a: TODO</p>
+        <p>Your score: TODO</p>
       </div>
     );
   }

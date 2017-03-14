@@ -64,14 +64,16 @@ export default class HostPreGameScreen extends BaseComponent {
     }
 
     return (
-      <form onSubmit={this.onStartGame}>
-        <h3>Welcome!</h3>
-        <p>Room Name: {room.name}</p>
-        <p>Room Code: {room._id.substring(0, 4)}</p>
-        <p>Players in Room: </p>
-        <div> {player_list} </div>
-        <button type="submit">Start Game</button>
-      </form>
+      <div className="host-pre-game">
+        <h1>Lobby</h1>
+        <form onSubmit={this.onStartGame}>
+          <p>Room Name: {room.name}</p>
+          <p>Room Code: {room._id.substring(0, 4)}</p>
+          <p>Players in Room: </p>
+          <div> {player_list} </div>
+          <button type="submit">Start Game</button>
+        </form>
+      </div>
     );
   }
 }

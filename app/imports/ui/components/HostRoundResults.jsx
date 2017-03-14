@@ -83,6 +83,7 @@ export default class HostRoundResults extends BaseComponent {
 
     return (
       <div className="collage">
+        <h1>Sketches this round</h1>
         <div className="sketches">
           {SketchComponents}
         </div>
