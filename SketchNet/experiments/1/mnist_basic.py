@@ -63,6 +63,7 @@ class Exp1Model(Model):
     def accuracy(self):
         correct_prediction = tf.equal(tf.argmax(self.label, 1), tf.argmax(self.prediction, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        tf.summary.scalar('accuracy', accuracy)
         return accuracy
 
 
@@ -79,13 +80,18 @@ def main():
 
     model = Exp1Model(image, width, height, num_labels, label, keep_prob)
 
+
+    # Initialize the FileWriter
+    writer = tf.summary.FileWriter('/tmp/tensorflow/', graph=tf.get_default_graph())
+
+
     config = tf.ConfigProto()
     config.gpu_options.allow_growth=True
     with tf.Session(config=config) as sess:
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        ground_truth_mapping = preprocess('/home/ubuntu/png')
+        ground_truth_mapping = preprocess('/Users/anjueappen/png')
 
         for i in range(1000):
             print(i)
@@ -102,6 +108,10 @@ def main():
         batch = populate_batch(ground_truth_mapping[:16], (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
+
+        saver = tf.train.Saver()
+        save_path = saver.save(sess, "./%s.ckpt" % __file__.split('.')[0])
+        print("Model saved in file: %s" % save_path)
 
 
 if __name__ == '__main__':
