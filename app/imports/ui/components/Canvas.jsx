@@ -3,7 +3,6 @@ import { _ } from 'meteor/underscore';
 import BaseComponent from './BaseComponent.jsx';
 
 import { fabric } from 'fabric';
-import { submitSketch } from '/imports/api/methods';
 
 import { Session } from 'meteor/session';
 import {
