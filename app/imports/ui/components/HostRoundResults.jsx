@@ -8,6 +8,8 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
+import { changeRoundStatus } from '/imports/api/methods';
+import { currentRound } from '/imports/game-status';
 
 
 export default class HostRoundResults extends BaseComponent {
@@ -19,11 +21,32 @@ export default class HostRoundResults extends BaseComponent {
   onNextRound(event){
     event.preventDefault();
 
+    let room = Session.get(HOST_ROOM);
+
     // check if end of game
-    if (Session.get(HOST_ROOM).nextRoundIndex < Session.get(HOST_ROOM).rounds.length){
-        // TO DO: set next round
+    if (currentRound(room).index < room.rounds.length){
+      // change round status
+      const didChangeRoundStatus = changeRoundStatus.call({
+        room_id: room._id,
+        round_index: currentRound(room).index + 1,
+        round_status: "PLAYING"
+      });
+      if (!didChangeRoundStatus) {
+        console.error('Unable to change round status. Server rejected request.');
+        return;
+      }
     } else {
-        // TO DO: set game over
+      // set game over
+      if (room.nextRoundIndex == 0){
+        const didChangeRoomStatus = changeRoomStatus.call({
+          room_id: room._id,
+          room_status: "COMPLETE"
+        });
+         if (!didChangeRoomStatus) {
+          console.error('Unable to change room status. Server rejected request.');
+          return;
+        }
+      }
     }
   }
 
@@ -51,7 +74,7 @@ export default class HostRoundResults extends BaseComponent {
           {SketchComponents}
         </div>
         <form onSubmit={this.onNextRound}>
-          <button>Done</button>
+          <button>Next Round</button>
         </form>
       </div>
     );
