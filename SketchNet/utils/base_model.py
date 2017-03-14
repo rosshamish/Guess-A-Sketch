@@ -1,7 +1,10 @@
-from abc import ABCMeta, abstractmethod
+import abc
+from abc import abstractmethod
 
 
-class Model(metaclass=ABCMeta):
+class Model(object):
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self, image, width, height, num_labels, label, keep_prob):
         self.image = image
         self.label = label
