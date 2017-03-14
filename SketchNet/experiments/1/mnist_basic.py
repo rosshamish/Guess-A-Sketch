@@ -84,11 +84,11 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        ground_truth_mapping = preprocess('/Users/anjueappen/png')
+        ground_truth_mapping = preprocess('/home/ubuntu/png')
 
         for i in range(1000):
             print(i)
-            batch = populate_batch(ground_truth_mapping[:50], (height, width))
+            batch = populate_batch(ground_truth_mapping[:16], (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
@@ -98,7 +98,7 @@ def main():
             import random;
             random.shuffle(ground_truth_mapping)
 
-        batch = populate_batch(ground_truth_mapping[:50], (height, width))
+        batch = populate_batch(ground_truth_mapping[:16], (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
