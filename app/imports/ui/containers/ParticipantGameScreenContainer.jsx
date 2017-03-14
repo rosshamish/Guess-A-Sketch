@@ -14,7 +14,6 @@ export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
   const sketchesHandle = Meteor.subscribe('sketches.public');
 
-  console.log('ParticipantGameScreenContainer subscribing to data sources');
   const player = Session.get(PLAYER);
   return {
     loading: !(roomsHandle.ready() && sketchesHandle.ready()),

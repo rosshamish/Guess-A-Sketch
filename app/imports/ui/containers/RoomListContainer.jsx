@@ -10,7 +10,6 @@ import { Rooms } from '/imports/api/collections/rooms'
 
 export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
-  console.log('RoomListContainer subscribing to data sources');
 
   const joinableRoomsCursor = Rooms.find({
     status: 'JOINABLE',

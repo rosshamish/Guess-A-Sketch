@@ -52,8 +52,6 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   componentWillReceiveProps(nextProps) {
     if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
-      console.log('TRUE: round has completed');
-
       const prompt = _.find(this.props.room.rounds, (round) => {
         return round.index === this.state.latestRoundIndex;
       }).prompt;
