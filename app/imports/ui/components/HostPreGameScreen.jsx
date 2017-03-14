@@ -63,6 +63,19 @@ export default class HostPreGameScreen extends BaseComponent {
       });
     }
 
+    /*
+
+          let roomItems = _.map(joinableRooms, (room) => {
+        return (
+          <RoomItem
+            key={room._id}
+            onClick={page.onRoomClickHandler.bind(page, room)}
+            room={room}
+          />
+        );
+
+*/
+
     return (
       <form onSubmit={this.onStartGame}>
         <h3>Welcome!</h3>
