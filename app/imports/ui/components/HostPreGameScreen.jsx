@@ -56,25 +56,12 @@ export default class HostPreGameScreen extends BaseComponent {
 
     let player_list = 'N/A';
     if (room.players.length > 0) {
-      player_list = room.players.map(function(player,index) {
-        return (
-          <PlayerItem key={index} player={player} />
+      player_list = _.map(room.players, (player) => {
+        return ( // key suppresses a key error in console
+          <PlayerItem key = {player} player = {player} /> 
         );
       });
     }
-
-    /*
-
-          let roomItems = _.map(joinableRooms, (room) => {
-        return (
-          <RoomItem
-            key={room._id}
-            onClick={page.onRoomClickHandler.bind(page, room)}
-            room={room}
-          />
-        );
-
-*/
 
     return (
       <form onSubmit={this.onStartGame}>

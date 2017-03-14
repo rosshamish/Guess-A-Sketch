@@ -58,9 +58,7 @@ export default class HostGameScreen extends BaseComponent {
         // So, we want to display collage results for the *previous* round.
         return <HostRoundResults round = {latestCompletedRound(room)} />
       } else if (round.status === 'PLAYING') {
-        return <HostPlayRound
-          round={round}
-          room={room} />
+        return <HostPlayRound round={round} room={room} />
       } else {
         console.error('Current round is in an illegal state');
         return <ErrorMessage />
