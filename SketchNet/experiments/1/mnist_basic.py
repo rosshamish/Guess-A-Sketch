@@ -15,7 +15,7 @@ class Exp1Model(Model):
     def prediction(self):
         filter_1 = 32
         filter_2 = 64
-        filter_3 = 1024
+        filter_3 = 100
 
         # Layer 1
         W_conv1 = weight_variable([5, 5, 1, filter_1])
@@ -79,8 +79,9 @@ def main():
 
     model = Exp1Model(image, width, height, num_labels, label, keep_prob)
 
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
-    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth=True
+    with tf.Session(config=config) as sess:
         init = tf.global_variables_initializer()
         sess.run(init)
 
