@@ -26,3 +26,4 @@ blaze-html-templates
 universe:i18n
 aldeed:collection2-core@2.0.0
 mdg:validated-method
+practicalmeteor:chai

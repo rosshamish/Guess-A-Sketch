@@ -6,6 +6,7 @@ import { HOST_ROOM } from '/imports/api/session';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
+import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
 import { changeRoundStatus } from '/imports/api/methods';
@@ -65,7 +66,7 @@ export default class HostRoundResults extends BaseComponent {
     });
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      return <SketchImage sketch={sketch} />
+      return <SketchImage key={sketch._id} sketch={sketch} />
     });
 
     return (

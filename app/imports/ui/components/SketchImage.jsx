@@ -11,6 +11,10 @@ export default class SketchImage extends BaseComponent {
   render() {
     const { sketch } = this.props;
 
+    if (!sketch) {
+      console.error('SketchImage: sketch is undefined');
+    }
+
     return (
       <div className="sketch">
         <img src={sketch.sketch} />

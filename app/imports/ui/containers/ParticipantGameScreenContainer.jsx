@@ -12,10 +12,11 @@ import { PLAYER } from '/imports/api/session';
 
 export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
-  console.log('ParticipantGameScreenContainer subscribing to data sources');
+  const sketchesHandle = Meteor.subscribe('sketches.public');
+
   const player = Session.get(PLAYER);
   return {
-    loading: !roomsHandle.ready(),
+    loading: !(roomsHandle.ready() && sketchesHandle.ready()),
     room: Rooms.findOne({
       players: {
         name: player.name,

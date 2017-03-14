@@ -7,6 +7,7 @@ import { Sketches } from '/imports/api/collections/sketches';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
+import SketchImage from './SketchImage.jsx';
 
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class ParticipantRoundResults extends BaseComponent {
     } = this.props;
 
     // TODO more efficient method than fetching ALL sketches and then
-    // filtering to the current plalyer's.
+    // filtering to the current player's.
     const currentPlayer = Session.get(PLAYER);
     const sketches = _.map(round.sketches, (sketchID) => {
       return Sketches.findOne({ _id: sketchID });
@@ -30,20 +31,17 @@ export default class ParticipantRoundResults extends BaseComponent {
       return sketch.player.name === currentPlayer.name;
     });
     if (currentPlayerSketches.length != 1) {
-      console.error('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
-      console.error(currentPlayerSketches);
-      console.error(sketches);
-      console.error(currentPlayer);
-      return <ErrorMessage />
+      console.log('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
+      return <p>Loading...</p>;
     }
 
     const currentPlayerSketch = currentPlayerSketches[0];
 
     return (
       <div>
-        <img src={currentPlayerSketch.sketch} />
+        <SketchImage sketch={currentPlayerSketch} />
         <hr />
-        <p>Scores: {currentPlayerSketch.scores}</p>
+        <p>Scores: TODO scores</p>
       </div>
     );
   }

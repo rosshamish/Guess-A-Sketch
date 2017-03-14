@@ -3,13 +3,14 @@ import { _ } from 'meteor/underscore';
 import BaseComponent from './BaseComponent.jsx';
 
 import { fabric } from 'fabric';
-import { submitSketch } from '/imports/api/methods';
 
 import { Session } from 'meteor/session';
 import {
   SKETCH,
 } from '/imports/api/session';
 
+
+const blankImg = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 export default class Canvas extends BaseComponent {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class Canvas extends BaseComponent {
     // this.canvas.freeDrawingBrush.color = ??;
 
     const canvas = this;
+    Session.set(SKETCH, blankImg);
     this.canvas.on('path:created', (event) => {
       canvas.pathStack.push(event.path);
       // Here, we store the sketch to the Session on each mouse-up.

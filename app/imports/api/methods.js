@@ -12,22 +12,20 @@ export const submitSketch = new ValidatedMethod({
     sketch: {
       type: Schema.Sketch,
     },
-    round_index: {
+    roundIndex: {
       type: Number,
-    }
+    },
   }).validator(),
-  run({ sketch }) {
+  run({ sketch, roundIndex }) {
     const sketchID = Sketches.insert(sketch);
     console.log('Inserting sketch ' + sketch);
 
-    Rooms.update({
+    return Rooms.update({
       "players.name": sketch.player.name,
-      "rounds.index": round_index,
+      "rounds.index": roundIndex,
     }, {
-      "rounds.$": {
-        $push: {
-          sketches: sketchID,
-        },
+      "$push": {
+        "rounds.$.sketches": sketchID,
       },
     });
   },
@@ -83,7 +81,7 @@ export const joinRoom = new ValidatedMethod({
     });
 
     if (room.status != 'JOINABLE') {
-      console.error('Cannot join a non-joinable room. Doing nothing.');
+      alert('Cannot join a non-joinable room. Doing nothing.');
       return false;
     }
 
@@ -162,6 +160,7 @@ export const changeRoundStatus = new ValidatedMethod({
     });
   },
 });
+
 
 export const createRoom = new ValidatedMethod({
   name: 'createRoom',
