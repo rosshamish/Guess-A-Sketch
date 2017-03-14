@@ -6,6 +6,7 @@ import { HOST_ROOM } from '/imports/api/session';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
+import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
 import { changeRoundStatus } from '/imports/api/methods';
