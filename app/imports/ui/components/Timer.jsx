@@ -3,7 +3,6 @@ import { _ } from 'meteor/underscore';
 import i18n from 'meteor/universe:i18n';
 import BaseComponent from './BaseComponent.jsx';
 
-import { TIMER } from '/imports/api/session';
 import { currentRound } from '/imports/game-status';
 
 import { 
@@ -15,26 +14,25 @@ export default class Timer extends BaseComponent {
 
   constructor(props) {
     super(props);
-    Session.set(TIMER, props.time);
+    this.state = {
+      remaining: props.time,
+    }
   }
 
   componentDidMount() {
     interval_id = setInterval(() => {
-      this.setState(() => {
-        Session.set(TIMER, Session.get(TIMER) - 1);
-        return {}
+      this.setState({
+        remaining: this.state.remaining - 1,
       });
     }, 1000);
   }
 
-  shouldComponentUpdate(nextProps) {
-
-    if (Session.get(TIMER) > -1) {
-      return true; // keep displaying until time is up
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.remaining > 0) {
+      return;
     }
 
     clearInterval(interval_id);
-
     if (nextProps.isHost) {
       // This is needed to ensure the Participant UI has enough time
       // to catch up and clear the interval before the host changes the
@@ -61,8 +59,6 @@ export default class Timer extends BaseComponent {
         return;
       }
     }
-
-    return false;
   }
 
   render() {
@@ -73,7 +69,7 @@ export default class Timer extends BaseComponent {
 
     return (
       <div className="timer">
-        Timer: {Session.get(TIMER)}
+        Time Remaining: {this.state.remaining}
       </div>
     );
   }
