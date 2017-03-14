@@ -34,7 +34,7 @@ export default class ParticipantGameScreen extends BaseComponent {
     super(props);
     this.state = {
       sketch: null,
-      latestRoundIndex: 0,
+      latestRoundIndex: null,
     };
   }
 
@@ -51,7 +51,13 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
+    // If the round has completed, submit the sketch.
+    if (this.state.latestRoundIndex === null) {
+      this.setState({ 
+        latestRoundIndex: currentRound(nextProps.room).index 
+      });
+      return;
+    } else if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
       const prompt = _.find(this.props.room.rounds, (round) => {
         return round.index === this.state.latestRoundIndex;
       }).prompt;

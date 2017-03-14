@@ -8,6 +8,7 @@ import { Sketches } from '/imports/api/collections/sketches';
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
+import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
 
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
@@ -30,9 +31,12 @@ export default class ParticipantRoundResults extends BaseComponent {
     const currentPlayerSketches = _.filter(sketches, (sketch) => {
       return sketch.player.name === currentPlayer.name;
     });
-    if (currentPlayerSketches.length != 1) {
-      console.log('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
-      return <p>Loading...</p>;
+
+    if (currentPlayerSketches.length === 0) {
+      return <ParticipantJoiningBetweenRounds />
+    } else if (currentPlayerSketches.length > 1) {
+      console.error('Player had too many sketches in latest round. Had ' + currentPlayerSketches.length + '.');
+      return <ErrorMessage />
     }
 
     const currentPlayerSketch = currentPlayerSketches[0];
