@@ -7,6 +7,7 @@ import { Sketches } from '/imports/api/collections/sketches';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
+import SketchImage from './SketchImage.jsx';
 
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
@@ -22,7 +23,10 @@ export default class ParticipantRoundResults extends BaseComponent {
 
     // TODO more efficient method than fetching ALL sketches and then
     // filtering to the current plalyer's.
+    console.log('Rendering results for round ' + round.index);
+
     const currentPlayer = Session.get(PLAYER);
+    console.log('Round sketch IDs: ' + round.sketches);
     const sketches = _.map(round.sketches, (sketchID) => {
       return Sketches.findOne({ _id: sketchID });
     });
@@ -31,9 +35,6 @@ export default class ParticipantRoundResults extends BaseComponent {
     });
     if (currentPlayerSketches.length != 1) {
       console.error('Expected player to have exactly one sketch in the latest round. Had ' + currentPlayerSketches.length + '.');
-      console.error(currentPlayerSketches);
-      console.error(sketches);
-      console.error(currentPlayer);
       // TODO better loading screen here. Waiting for sketch to come back from server?
       // Or, is this really an error case.
       return <h2>Loading...</h2>
@@ -44,9 +45,9 @@ export default class ParticipantRoundResults extends BaseComponent {
 
     return (
       <div>
-        <img src={currentPlayerSketch.sketch} />
+        <SketchImage sketch={currentPlayerSketch} />
         <hr />
-        <p>Scores: {currentPlayerSketch.scores}</p>
+        <p>Scores: TODO scores</p>
       </div>
     );
   }
