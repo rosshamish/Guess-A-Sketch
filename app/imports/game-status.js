@@ -1,4 +1,5 @@
 export function roundHasCompleted(latestRoundStatus, nextRoom) {
+  console.log('roundHasCompleted(' + latestRoundStatus + ', ' + currentRound(nextRoom).status);
 	return (
     latestRoundStatus === 'PLAYING' &&
     currentRound(nextRoom).status === 'CREATED'

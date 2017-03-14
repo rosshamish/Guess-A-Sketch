@@ -34,7 +34,10 @@ export default class ParticipantRoundResults extends BaseComponent {
       console.error(currentPlayerSketches);
       console.error(sketches);
       console.error(currentPlayer);
-      return <ErrorMessage />
+      // TODO better loading screen here. Waiting for sketch to come back from server?
+      // Or, is this really an error case.
+      return <h2>Loading...</h2>
+      // return <ErrorMessage />
     }
 
     const currentPlayerSketch = currentPlayerSketches[0];
@@ -50,5 +53,6 @@ export default class ParticipantRoundResults extends BaseComponent {
 }
 
 ParticipantRoundResults.propTypes = {
+  loading: React.PropTypes.bool,
   round: React.PropTypes.object,
 };

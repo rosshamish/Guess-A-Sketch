@@ -36,7 +36,7 @@ export default class ParticipantGameScreen extends BaseComponent {
       sketch: null,
     };
 
-    this.latestRoundStatus = currentRound(this.props.room).status;
+    this.latestRoundStatus = currentRound(props.room).status;
   }
 
   componentWillUnmount() {
@@ -53,13 +53,16 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   componentWillUpdate(nextProps, nextState) {
     if (roundHasCompleted(this.latestRoundStatus, nextProps.room)) {
-      console.log('Round has completed.');
+      console.log('TRUE: round has completed');
+      console.log('Sketch:');
+      console.log(Session.get(SKETCH));
       const didSubmitSketch = submitSketch.call({
         sketch: {
           player: Session.get(PLAYER),
           sketch: Session.get(SKETCH),
           prompt: latestCompletedRound(this.props.room).prompt,
         },
+        roundIndex: latestCompletedRound(this.props.room).roundIndex,
       });
 
       if (!didSubmitSketch) {
@@ -71,6 +74,7 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   componentDidUpdate(props) {
     this.latestRoundStatus = currentRound(props.room).status;
+    console.log('componentDidUpdate: ' + this.latestRoundStatus);
   }
 
   render() {
