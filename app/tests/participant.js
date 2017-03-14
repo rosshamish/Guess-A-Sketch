@@ -7,22 +7,20 @@
 /* globals browser assert server */
 
 function countLists() {
-  browser.waitForExist('.list-todo');
-  const elements = browser.elements('.list-todo');
-  return elements.value.length;
+  // browser.waitForExist('.list-todo');
+  // const elements = browser.elements('.list-todo');
+  // return elements.value.length;
 };
 
-describe('list ui', function () {
+describe('participant ui', function () {
   beforeEach(function () {
     browser.url('http://localhost:3000');
-    server.call('generateFixtures');
+    // server.call('generateFixtures');
   });
 
-  it('can create a list @watch', function () {
-    const initialCount = countLists();
+  it('lets user get a name and color @watch', function () {
+    // const initialCount = countLists();
 
-    browser.click('.js-new-list');
-
-    assert.equal(countLists(), initialCount + 1);
+    // assert.equal(countLists(), initialCount + 1);
   });
 });
