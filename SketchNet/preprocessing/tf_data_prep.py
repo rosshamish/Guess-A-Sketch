@@ -1,15 +1,11 @@
-
 # coding: utf-8
 
-# In[ ]:
 
-import tensorflow as tf
-from PIL import Image
-import numpy as np
 import os
+from tqdm import tqdm
+import tensorflow as tf
+import numpy as np
 
-
-# In[ ]:
 
 def get_classes(folder):
     return [x[0].split('/')[-1] for x in os.walk(folder)][1:]
@@ -21,31 +17,6 @@ def read_and_flatten(class_dir, ground_truth):
               if os.path.isfile(os.path.join(class_dir, f))]
     return fnames
 
-def preprocess(directory):
-    """
-    Returns: dict of tuples: (filename: ground truth index)
-    """
-    classes = get_classes(directory)
-    num_classes = len(classes)
-    
-    imgs = {}
-    for i in range(num_classes):
-        imgs.update(read_and_flatten(directory +'/'+ classes[i], i))
-    return imgs
-
-
-# In[22]:
-
-import glob
-from tqdm import tqdm
-import tensorflow as tf
-import numpy as np
-
-# imgPaths = ['/Users/anjueappen/png/axe/649.png', '/Users/anjueappen/png/axe/650.png',
-#             '/Users/anjueappen/png/ant/244.png', '/Users/anjueappen/png/ant/245.png',
-#            '/Users/anjueappen/png/ant/246.png', '/Users/anjueappen/png/ant/247.png',
-#            '/Users/anjueappen/png/ant/248.png', '/Users/anjueappen/png/ant/249.png',
-#            '/Users/anjueappen/png/ant/250.png']
 
 def populate_batch(filenames, final_dim):
 
@@ -100,4 +71,15 @@ def populate_batch(filenames, final_dim):
     return np.array(imgs), truth
 
 
+def preprocess(directory):
+    """
+    Returns: list of tuples: (filename, ground truth)
+    """
+    classes = get_classes(directory)
+    num_classes = len(classes)
 
+    imgs = []
+    #multiprocess this loop?
+    for i in range(num_classes):
+        imgs += read_and_flatten(directory +'/'+ classes[i], i)
+    return imgs
