@@ -24,10 +24,8 @@ export const submitSketch = new ValidatedMethod({
       "players.name": sketch.player.name,
       "rounds.index": roundIndex,
     }, {
-      "rounds.$": {
-        $push: {
-          sketches: sketchID,
-        },
+      "$push": {
+        "rounds.$.sketches": sketchID,
       },
     });
   },
