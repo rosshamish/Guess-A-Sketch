@@ -2,7 +2,7 @@ import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 
 
-export default class ParticipantEndGameScreen extends BaseComponent {
+export default class HostEndGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
