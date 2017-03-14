@@ -67,7 +67,7 @@ def populate_batch(filenames, final_dim):
         # Wait for threads to finish.
         coord.join(threads)
 
-    tf.reset_default_graph()
+    #tf.reset_default_graph()
     return np.array(imgs), truth
 
 
