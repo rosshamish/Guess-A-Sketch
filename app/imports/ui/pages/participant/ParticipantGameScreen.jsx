@@ -34,9 +34,8 @@ export default class ParticipantGameScreen extends BaseComponent {
     super(props);
     this.state = {
       sketch: null,
+      latestRoundIndex: 0,
     };
-
-    this.latestRoundStatus = currentRound(props.room).status;
   }
 
   componentWillUnmount() {
@@ -52,7 +51,8 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (roundHasCompleted(this.latestRoundStatus, nextProps.room)) {
+    if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
+      this.setState({ latestRoundIndex: this.state.latestRoundIndex + 1 });
       console.log('TRUE: round has completed');
       console.log('Sketch:');
       console.log(Session.get(SKETCH));
@@ -73,8 +73,6 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentDidUpdate(props) {
-    this.latestRoundStatus = currentRound(props.room).status;
-    console.log('componentDidUpdate: ' + this.latestRoundStatus);
   }
 
   render() {
