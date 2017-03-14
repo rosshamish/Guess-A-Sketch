@@ -1,8 +1,7 @@
-export function roundHasCompleted(latestRoundStatus, nextRoom) {
-	return (
-    latestRoundStatus === 'PLAYING' &&
-    currentRound(nextRoom).status === 'CREATED'
-  );
+export function roundHasCompleted(roundIndex, nextRoom) {
+  return _.find(nextRoom.rounds, (round) => {
+    return round.index === roundIndex;
+  }).status === 'COMPLETE';
 }
 
 export function gameHasStarted(room) {
@@ -30,7 +29,12 @@ export function latestCompletedRound(room) {
   // Attribution: using slice() to avoid modifying the original array
   // Source: http://stackoverflow.com/questions/30610523/reverse-array-in-javascript-without-mutating-original-array
   // Accessed: March 8, 2017
-  return  _.find(room.rounds.slice().reverse(), (round) => {
+  completed = _.filter(room.rounds, (round) => {
     return round.status === 'COMPLETE';
   });
+  if (completed.length > 0) {
+    return completed[0];
+  } else {
+    return null;
+  }
 }
