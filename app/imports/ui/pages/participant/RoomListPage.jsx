@@ -69,9 +69,9 @@ export default class RoomListPage extends BaseComponent {
 
       return (
         <div>
-          <h4>Rooms</h4>
+          <h1>Join a room</h1>
           <div className="room-list">{roomItems}</div>
-          <p>Don't see your room? Make sure your room is joinable, i.e. not started, or between rounds</p>
+          <p>Don't see your room? Don't worry! You can join between rounds.</p>
         </div>
       );
     }
