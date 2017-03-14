@@ -31,7 +31,7 @@ export default class HostEndGameScreen extends BaseComponent {
 
     var renderScores = scores.map(function(row,index) {
       return ( // key suppresses a key error in console
-        <RowComponent key = {row} row = {row} />
+        <RowComponent key={index} row={row} />
       );
     });
 

@@ -10,6 +10,8 @@ import {
 } from '/imports/api/session';
 
 
+const blankImg = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+
 export default class Canvas extends BaseComponent {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ export default class Canvas extends BaseComponent {
     // this.canvas.freeDrawingBrush.color = ??;
 
     const canvas = this;
+    Session.set(SKETCH, blankImg);
     this.canvas.on('path:created', (event) => {
       canvas.pathStack.push(event.path);
       // Here, we store the sketch to the Session on each mouse-up.

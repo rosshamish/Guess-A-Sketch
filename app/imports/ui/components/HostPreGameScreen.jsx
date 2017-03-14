@@ -54,11 +54,11 @@ export default class HostPreGameScreen extends BaseComponent {
 
     Session.set(HOST_ROOM, room);
 
-    let player_list = 'N/A';
+    let player_list = 'None';
     if (room.players.length > 0) {
       player_list = _.map(room.players, (player) => {
         return ( // key suppresses a key error in console
-          <PlayerItem key = {player} player = {player} /> 
+          <PlayerItem key={player.name} player = {player} /> 
         );
       });
     }

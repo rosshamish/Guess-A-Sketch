@@ -1,7 +1,19 @@
 export function roundHasCompleted(roundIndex, nextRoom) {
-  return _.find(nextRoom.rounds, (round) => {
+  if (!nextRoom) {
+    console.error('roundHasCompleted received null nextRoom');
+    return null;
+  }
+
+  round = _.find(nextRoom.rounds, (round) => {
     return round.index === roundIndex;
-  }).status === 'COMPLETE';
+  })
+
+  if (!round) {
+    console.error('No round exists with index ' + roundIndex);
+    return null;
+  } else {
+    return round.status === 'COMPLETE';
+  }
 }
 
 export function gameHasStarted(room) {
