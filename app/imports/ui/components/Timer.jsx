@@ -3,11 +3,8 @@ import { _ } from 'meteor/underscore';
 import i18n from 'meteor/universe:i18n';
 import BaseComponent from './BaseComponent.jsx';
 
-import { currentRound } from '/imports/game-status';
-
 import { 
-  changeRoundStatus,
-  changeRoomStatus,
+  endRound,
 } from '/imports/api/methods';
 
 export default class Timer extends BaseComponent {
@@ -34,25 +31,12 @@ export default class Timer extends BaseComponent {
   componentWillUpdate(nextProps, nextState) {
     if (nextState.remaining > 0) {
       return;
-    }
-
-    if (nextProps.isHost) {
-      const didChangeRoomStatus = changeRoomStatus.call({
+    } else if (nextProps.isHost) {
+      const didEndRound = endRound.call({
         room_id: nextProps.room._id,
-        room_status: "JOINABLE"
       });
-      if (!didChangeRoomStatus) {
-        console.error('Unable to change room status. Server rejected request.');
-        return;
-      }
-
-      const didChangeRoundStatus = changeRoundStatus.call({
-        room_id: nextProps.room._id,
-        round_index: currentRound(nextProps.room).index,
-        round_status: "COMPLETE"
-      });
-      if (!didChangeRoundStatus) {
-        console.error('Unable to change round status. Server rejected request.');
+      if (!didEndRound) {
+        console.error('Failed to end round. Server rejected request.');
         return;
       }
     }

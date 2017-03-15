@@ -9,17 +9,22 @@ import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
-import { 
-  changeRoundStatus,
-  changeRoomStatus,
+import {
+  startRound,
+  endGame,
 } from '/imports/api/methods';
-import { currentRound } from '/imports/game-status';
+import { 
+  currentRound,
+  roundIsNotLastRound,
+} from '/imports/game-status';
 
 
 export default class HostRoundResults extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};
+
+    this.onNextRound = this.onNextRound.bind(this);
   }
 
   onNextRound(event){
@@ -27,44 +32,28 @@ export default class HostRoundResults extends BaseComponent {
 
     let room = Session.get(HOST_ROOM);
 
-    // Is the game still ongoing?
-    if (currentRound(room).index < room.rounds.length){
-      const didChangeRoomStatus = changeRoomStatus.call({
+    if (roundIsNotLastRound(this.props.round, room)) {
+      const didStartRound = startRound.call({
         room_id: room._id,
-        room_status: "PLAYING"
       });
-      if (!didChangeRoomStatus) {
-        console.error('Unable to change room status. Server rejected request.');
-        return;
-      }
-
-      // change round status
-      const didChangeRoundStatus = changeRoundStatus.call({
-        room_id: room._id,
-        round_index: currentRound(room).index + 1,
-        round_status: "PLAYING"
-      });
-      if (!didChangeRoundStatus) {
-        console.error('Unable to change round status. Server rejected request.');
+      if (!didStartRound) {
+        console.error('Failed to start next round. Server rejected request.');
         return;
       }
     } else {
-      // The game is over.
-      if (room.nextRoundIndex == 0){
-        const didChangeRoomStatus = changeRoomStatus.call({
-          room_id: room._id,
-          room_status: "COMPLETE"
-        });
-         if (!didChangeRoomStatus) {
-          console.error('Unable to change room status. Server rejected request.');
-          return;
-        }
+      const didEndGame = endGame.call({
+        room_id: room._id,
+      });
+      if (!didEndGame) {
+        console.error('Unable to end game. Server rejected request.');
+        return;
       }
     }
   }
 
   render() {
     const {
+      room,
       round,
     } = this.props;
 
@@ -88,7 +77,13 @@ export default class HostRoundResults extends BaseComponent {
           {SketchComponents}
         </div>
         <form onSubmit={this.onNextRound}>
-          <button>Next Round</button>
+          <button>
+            { 
+            roundIsNotLastRound(round, room) ?
+              'Next Round' :
+              'End Game' 
+            }
+          </button>
         </form>
       </div>
     );
@@ -96,5 +91,6 @@ export default class HostRoundResults extends BaseComponent {
 }
 
 HostRoundResults.propTypes = {
+  room: React.PropTypes.object,
   round: React.PropTypes.object,
 };

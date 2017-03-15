@@ -37,6 +37,10 @@ export function currentRound(room) {
   });
 }
 
+export function roundIsNotLastRound(round, room) {
+  return round.index != room.rounds.length - 1;
+}
+
 export function latestCompletedRound(room) {
   // Attribution: using slice() to avoid modifying the original array
   // Source: http://stackoverflow.com/questions/30610523/reverse-array-in-javascript-without-mutating-original-array
