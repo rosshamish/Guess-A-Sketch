@@ -18,7 +18,7 @@ def read_and_flatten(class_dir, ground_truth):
     return fnames
 
 
-def populate_batch(filenames, final_dim, session):
+def populate_batch(filenames, final_dim):
 
     config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 1})
     g = tf.Graph()
