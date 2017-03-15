@@ -91,10 +91,10 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        ground_truth_mapping = preprocess('/Users/anjueappen/png')
+        ground_truth_mapping = preprocess('/home/ubuntu/png')
 
         for i in range(1000):
-            print(i)
+   #         print(i)
             batch = populate_batch(ground_truth_mapping[:16], (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 

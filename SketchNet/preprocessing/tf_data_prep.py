@@ -49,13 +49,14 @@ def populate_batch(filenames, final_dim):
 
     init_op = tf.global_variables_initializer()
 
-    with tf.Session() as sess:
+    config = tf.ConfigProto(device_count = {'GPU': 0, 'CPU': 1})
+    with tf.Session(config=config) as sess:
         sess.run(init_op)
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
         imgs = []
-        for _ in tqdm(filenames):
+        for _ in filenames:
             if coord.should_stop(): break
             imgs.append(sess.run(img))
 
