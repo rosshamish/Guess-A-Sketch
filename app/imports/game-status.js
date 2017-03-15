@@ -45,7 +45,7 @@ export function latestCompletedRound(room) {
     return round.status === 'COMPLETE';
   });
   if (completed.length > 0) {
-    return completed[0];
+    return completed[completed.length - 1];
   } else {
     return null;
   }
