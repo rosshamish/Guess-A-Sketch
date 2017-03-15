@@ -20,11 +20,15 @@ export default class Timer extends BaseComponent {
   }
 
   componentDidMount() {
-    interval_id = setInterval(() => {
+    this.interval_id = setInterval(() => {
       this.setState({
         remaining: this.state.remaining - 1,
       });
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval_id);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -32,14 +36,7 @@ export default class Timer extends BaseComponent {
       return;
     }
 
-    clearInterval(interval_id);
     if (nextProps.isHost) {
-      // This is needed to ensure the Participant UI has enough time
-      // to catch up and clear the interval before the host changes the
-      // round status. 
-      var endTime = new Date().getTime() + 500;
-      while (new Date().getTime() < endTime);
-
       const didChangeRoomStatus = changeRoomStatus.call({
         room_id: nextProps.room._id,
         room_status: "JOINABLE"

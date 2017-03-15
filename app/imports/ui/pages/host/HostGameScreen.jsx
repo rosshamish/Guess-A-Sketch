@@ -1,6 +1,7 @@
 import React from 'react';
 import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
+import { browserHistory } from 'react-router';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
@@ -24,6 +25,19 @@ export default class HostGameScreen extends BaseComponent {
     this.state = {};
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      loading,
+      room,
+    } = nextProps;
+
+    if (!loading && !room) {
+      console.error('Room undefined. Redirecting.');
+      browserHistory.push('/');
+      return;
+    }
+  }
+
   render() {
     const {
       loading,
@@ -35,7 +49,7 @@ export default class HostGameScreen extends BaseComponent {
         <p>Loading...</p>
       );
     } else if (!room) {
-      // The player navigated directly here without joining a room.
+      // The player navigated directly here without creating a room.
       // Don't allow this!
       console.error('Error: room is undefined.');
       return <ErrorMessage />

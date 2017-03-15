@@ -15,13 +15,17 @@ export default createContainer(() => {
   const sketchesHandle = Meteor.subscribe('sketches.public');
 
   const player = Session.get(PLAYER);
+  let room = null;
+  if (player) {
+    room = Rooms.findOne({
+             players: {
+               name: player.name,
+               color: player.color,
+             }
+           });
+  }
   return {
     loading: !(roomsHandle.ready() && sketchesHandle.ready()),
-    room: Rooms.findOne({
-      players: {
-        name: player.name,
-        color: player.color,
-      },
-    }),
+    room: room,
   };
 }, ParticipantGameScreen);

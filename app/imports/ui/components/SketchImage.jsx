@@ -15,10 +15,13 @@ export default class SketchImage extends BaseComponent {
       console.error('SketchImage: sketch is undefined');
     }
 
+    const style = {
+      width: "45%",
+      display: "inline-block"
+    };
+
     return (
-      <div className="sketch">
-        <img src={sketch.sketch} />
-      </div>
+      <img style={style} src={sketch.sketch} />
     );
   }
 }

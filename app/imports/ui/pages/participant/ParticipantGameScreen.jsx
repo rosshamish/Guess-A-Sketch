@@ -1,6 +1,7 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { browserHistory } from 'react-router';
 
 import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
 import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
@@ -39,20 +40,33 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentWillUnmount() {
-    // Leave the room.
-    const didLeaveRoom = leaveRoom.call({
-      room_id: this.props.room._id,
-      player: Session.get(PLAYER),
-    });
-    if (!didLeaveRoom) {
-      console.error('Failed to leave room.');
+    // Leave the room, if it exists.
+    if (!this.props.room) {
       return;
+    } else {
+      const didLeaveRoom = leaveRoom.call({
+        room_id: this.props.room._id,
+        player: Session.get(PLAYER),
+      });
+      if (!didLeaveRoom) {
+        console.error('Failed to leave room.');
+        return;
+      }
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    const {
+      loading,
+      room,
+    } = nextProps;
+
     // If the round has completed, submit the sketch.
-    if (this.state.latestRoundIndex === null) {
+    if (!loading && !room) {
+      console.error('Room undefined. Redirecting.');
+      browserHistory.push('/');
+      return;
+    } else if (this.state.latestRoundIndex === null) {
       this.setState({ 
         latestRoundIndex: currentRound(nextProps.room).index 
       });
