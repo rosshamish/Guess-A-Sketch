@@ -19,7 +19,12 @@ def read_and_flatten(class_dir, ground_truth):
 
 
 def populate_batch(filenames, final_dim):
-    with tf.device("/cpu:0"):
+
+    config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 1})
+    g = tf.Graph()
+    sess = tf.InteractiveSession(config=config, graph=g)
+
+    with g.as_default():
         filenames, truth_indicies = zip(*filenames)
         filenameQ = tf.train.string_input_producer(filenames)
 
@@ -47,10 +52,8 @@ def populate_batch(filenames, final_dim):
         # Dequeue the next image from the queue, for returning to the client.
         img = image_queue.dequeue()
 
-    init_op = tf.global_variables_initializer()
+        init_op = tf.global_variables_initializer()
 
-    config = tf.ConfigProto(device_count = {'GPU': 0, 'CPU': 1})
-    with tf.Session(config=config) as sess:
         sess.run(init_op)
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
@@ -68,9 +71,9 @@ def populate_batch(filenames, final_dim):
         # Wait for threads to finish.
         coord.join(threads)
 
-    # tf.reset_default_graph()
+        tf.reset_default_graph()
 
-    return np.array(imgs), truth
+        return np.array(imgs), truth
 
 
 def preprocess(directory):
