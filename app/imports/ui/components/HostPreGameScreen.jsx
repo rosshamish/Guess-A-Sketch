@@ -6,10 +6,8 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import PlayerItem from './PlayerItem.jsx';
 
-import { changeRoomStatus, changeRoundStatus } from '/imports/api/methods';
+import { startRound } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
-
-import { currentRound } from '/imports/game-status';
 
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
@@ -21,29 +19,12 @@ export default class HostPreGameScreen extends BaseComponent {
     event.preventDefault(); // Don't reload the page
     console.log('Starting Game.');
 
-    let room = Session.get(HOST_ROOM);
-
-    // change room status if we're playing for the first time
-    if (currentRound(room).index == 0){
-      const didChangeRoomStatus = changeRoomStatus.call({
-        room_id: room._id,
-        room_status: "PLAYING"
-      });
-       if (!didChangeRoomStatus) {
-        console.error('Unable to change room status. Server rejected request.');
-        return;
-      }
-    }
-
-    // change round status
-    const didChangeRoundStatus = changeRoundStatus.call({
-      room_id: room._id,
-      round_index: currentRound(room).index,
-      round_status: "PLAYING"
+    const didStartRound = startRound.call({
+      room_id: Session.get(HOST_ROOM)._id,
     });
-    if (!didChangeRoundStatus) {
-      console.error('Unable to change round status. Server rejected request.');
-       return;
+    if (!didStartRound) {
+      console.error('Unable to start first round. Server rejected request.');
+      return;
     }
   }
 
