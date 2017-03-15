@@ -19,33 +19,33 @@ def read_and_flatten(class_dir, ground_truth):
 
 
 def populate_batch(filenames, final_dim):
+    with tf.device("/cpu:0"):
+        filenames, truth_indicies = zip(*filenames)
+        filenameQ = tf.train.string_input_producer(filenames)
 
-    filenames, truth_indicies = zip(*filenames)
-    filenameQ = tf.train.string_input_producer(filenames)
+        # Define a subgraph that takes a filename, reads the file, decodes it, and
+        # enqueues it.
+        filename = filenameQ.dequeue()
+        image_bytes = tf.read_file(filename)
+        decoded_image = tf.image.decode_png(image_bytes)
+        image_queue = tf.FIFOQueue(128, [tf.float32], None)
+        decoded_image = tf.image.resize_images(decoded_image, final_dim)
+        enqueue_op = image_queue.enqueue(decoded_image)
 
-    # Define a subgraph that takes a filename, reads the file, decodes it, and                                                                                     
-    # enqueues it.                                                                                                                                                 
-    filename = filenameQ.dequeue()
-    image_bytes = tf.read_file(filename)
-    decoded_image = tf.image.decode_png(image_bytes)
-    image_queue = tf.FIFOQueue(128, [tf.float32], None)
-    decoded_image = tf.image.resize_images(decoded_image, final_dim)
-    enqueue_op = image_queue.enqueue(decoded_image)
+        # Create a queue runner that will enqueue decoded images into `image_queue`.
+        NUM_THREADS = 16
+        queue_runner = tf.train.QueueRunner(
+            image_queue,
+            [enqueue_op] * NUM_THREADS,  # Each element will be run from a separate thread.
+            image_queue.close(),
+            image_queue.close(cancel_pending_enqueues=True))
 
-    # Create a queue runner that will enqueue decoded images into `image_queue`.                                                                                   
-    NUM_THREADS = 16
-    queue_runner = tf.train.QueueRunner(
-        image_queue,
-        [enqueue_op] * NUM_THREADS,  # Each element will be run from a separate thread.                                                                                       
-        image_queue.close(),
-        image_queue.close(cancel_pending_enqueues=True))
+        # Ensure that the queue runner threads are started when we call
+        # `tf.train.start_queue_runners()` below.
+        tf.train.add_queue_runner(queue_runner)
 
-    # Ensure that the queue runner threads are started when we call                                                                                               
-    # `tf.train.start_queue_runners()` below.                                                                                                                      
-    tf.train.add_queue_runner(queue_runner)
-
-    # Dequeue the next image from the queue, for returning to the client.                                                                                          
-    img = image_queue.dequeue()
+        # Dequeue the next image from the queue, for returning to the client.
+        img = image_queue.dequeue()
 
     init_op = tf.global_variables_initializer()
 
