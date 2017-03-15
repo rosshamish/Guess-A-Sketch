@@ -142,7 +142,7 @@ export default class ParticipantGameScreen extends BaseComponent {
         console.error('Current round is in an illegal state');
         return <ErrorMessage />
       }   
-    } 
+    }
   }
 }
 
