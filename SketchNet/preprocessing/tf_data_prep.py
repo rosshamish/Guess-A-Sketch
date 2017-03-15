@@ -14,7 +14,7 @@ def get_classes(folder):
 def read_and_flatten(class_dir, ground_truth):
     fnames = [(os.path.join(class_dir, f), ground_truth) 
               for f in os.listdir(class_dir) 
-              if os.path.isfile(os.path.join(class_dir, f))]
+              if os.path.isfile(os.path.join(class_dir, f)) and f.endswith('.png')]
     return fnames
 
 
@@ -67,7 +67,7 @@ def populate_batch(filenames, final_dim):
         # Wait for threads to finish.
         coord.join(threads)
 
-    tf.reset_default_graph()
+    # tf.reset_default_graph()
     return np.array(imgs), truth
 
 
