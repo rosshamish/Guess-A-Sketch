@@ -1,6 +1,7 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { browserHistory } from 'react-router';
 
 import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
 import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
@@ -34,33 +35,57 @@ export default class ParticipantGameScreen extends BaseComponent {
     super(props);
     this.state = {
       sketch: null,
+      latestRoundIndex: null,
     };
-
-    this.latestRoundStatus = currentRound(this.props.room).status;
   }
 
   componentWillUnmount() {
-    // Leave the room.
-    const didLeaveRoom = leaveRoom.call({
-      room_id: this.props.room._id,
-      player: Session.get(PLAYER),
-    });
-    if (!didLeaveRoom) {
-      console.error('Failed to leave room.');
+    // Leave the room, if it exists.
+    if (!this.props.room) {
       return;
+    } else {
+      const didLeaveRoom = leaveRoom.call({
+        room_id: this.props.room._id,
+        player: Session.get(PLAYER),
+      });
+      if (!didLeaveRoom) {
+        console.error('Failed to leave room.');
+        return;
+      }
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (roundHasCompleted(this.latestRoundStatus, nextProps.room)) {
-      console.log('Round has completed.');
+  componentWillReceiveProps(nextProps) {
+    const {
+      loading,
+      room,
+    } = nextProps;
+
+    // If the round has completed, submit the sketch.
+    if (!loading && !room) {
+      console.error('Room undefined. Redirecting.');
+      browserHistory.push('/');
+      return;
+    } else if (this.state.latestRoundIndex === null) {
+      this.setState({ 
+        latestRoundIndex: currentRound(nextProps.room).index 
+      });
+      return;
+    } else if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
+      const prompt = _.find(this.props.room.rounds, (round) => {
+        return round.index === this.state.latestRoundIndex;
+      }).prompt;
+
       const didSubmitSketch = submitSketch.call({
         sketch: {
           player: Session.get(PLAYER),
           sketch: Session.get(SKETCH),
-          prompt: latestCompletedRound(this.props.room).prompt,
+          prompt: prompt,
         },
+        roundIndex: this.state.latestRoundIndex,
       });
+
+      this.setState({ latestRoundIndex: this.state.latestRoundIndex + 1 });
 
       if (!didSubmitSketch) {
         console.error('Failed to submit sketch');
@@ -70,7 +95,6 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   componentDidUpdate(props) {
-    this.latestRoundStatus = currentRound(props.room).status;
   }
 
   render() {

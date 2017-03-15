@@ -27,8 +27,6 @@ export default class HostLayout extends React.Component {
   }
 
   render() {
-    console.log('HostLayout rendering');
-
     const {
       children,
     } = this.props;
@@ -36,7 +34,6 @@ export default class HostLayout extends React.Component {
     return (
       <div id="container">
         <div id="content-container">
-          <h1>Host says Hello World!</h1>
           { children }
         </div>
       </div>

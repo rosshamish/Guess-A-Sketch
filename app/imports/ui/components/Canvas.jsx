@@ -3,13 +3,18 @@ import { _ } from 'meteor/underscore';
 import BaseComponent from './BaseComponent.jsx';
 
 import { fabric } from 'fabric';
-import { submitSketch } from '/imports/api/methods';
 
 import { Session } from 'meteor/session';
 import {
   SKETCH,
 } from '/imports/api/session';
 
+
+// Attribution: blank PNG data URI
+// Source: StackOverflow
+// URL: http://stackoverflow.com/a/9967193
+// Accessed: March 14, 2017
+const blankImg = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
 export default class Canvas extends BaseComponent {
   constructor(props) {
@@ -22,11 +27,16 @@ export default class Canvas extends BaseComponent {
 
   componentDidMount() {
     this.canvas = new fabric.Canvas('canvas');
+    const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    const height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+    this.canvas.setWidth(width * 0.8);
+    this.canvas.setHeight(height * 0.8);
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = 10;
     // this.canvas.freeDrawingBrush.color = ??;
 
     const canvas = this;
+    Session.set(SKETCH, blankImg);
     this.canvas.on('path:created', (event) => {
       canvas.pathStack.push(event.path);
       // Here, we store the sketch to the Session on each mouse-up.
@@ -58,7 +68,7 @@ export default class Canvas extends BaseComponent {
       <div>
         <button onClick={this.onUndo}>Undo Stroke</button>
         <div className="container">
-          <canvas id="canvas" style={style} />
+          <canvas style={style} id="canvas" />
         </div>
       </div>
     );

@@ -17,8 +17,8 @@ export default class PlayerItem extends BaseComponent {
       color: player.color,
     };
 
-    return (
-      <p style={style}>{player.name}</p>
+    return ( // key suppresses a key error in console
+      <p style={style} key={player}>{player.name}</p> 
     );
   }
 }

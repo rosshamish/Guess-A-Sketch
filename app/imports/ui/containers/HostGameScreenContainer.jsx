@@ -11,11 +11,10 @@ import { HOST_ROOM } from '/imports/api/session';
 
 export default createContainer(() => {
   const roomsHandle = Meteor.subscribe('rooms.public');
-
-  console.log('WelcomePageContainer subscribing to data sources');
+  const sketchesHandle = Meteor.subscribe('sketches.public');
 
   return {
   	room: Rooms.findOne({_id : Session.get(HOST_ROOM)._id}),
-    loading: !roomsHandle.ready(),
+    loading: !(roomsHandle.ready() && sketchesHandle.ready()),
   };
 }, HostGameScreen);

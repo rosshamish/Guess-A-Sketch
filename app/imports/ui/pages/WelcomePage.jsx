@@ -1,17 +1,12 @@
-// Participant Layout
-// Responsibilites:
-//   TODO
-
 import React from 'react';
 import { browserHistory } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
-export default class ParticipantLayout extends React.Component {
+export default class WelcomePage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {};
-    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -21,10 +16,6 @@ export default class ParticipantLayout extends React.Component {
 
   componentWillReceiveProps({ }) {
     // a lifecycle hook for us to use
-  }
-
-  logout() {
-    Meteor.logout();
   }
 
   onClickPlay(event) {
@@ -59,28 +50,20 @@ export default class ParticipantLayout extends React.Component {
           in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
           science project part.
           </p>
-          <p>Message: "{message}"</p>
           <hr />
-          { !!children ?
-            children :
-            <div>
-              <button onClick={this.onClickPlay}>Play</button>
-              <button onClick={this.onClickHost}>Host</button>
-            </div>
-          }
+          <div>
+            <button onClick={this.onClickPlay}>Play</button>
+            <button onClick={this.onClickHost}>Host</button>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-ParticipantLayout.propTypes = {
-  user: React.PropTypes.object,      // current meteor user
-  location: React.PropTypes.object,  // current router location
-  params: React.PropTypes.object,    // parameters of the current route
-  children: React.PropTypes.element,
+WelcomePage.propTypes = {
 };
 
-ParticipantLayout.contextTypes = {
+WelcomePage.contextTypes = {
   router: React.PropTypes.object,
 };

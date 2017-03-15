@@ -18,9 +18,12 @@ export default class HostPlayRound extends BaseComponent {
     } = this.props;
 
     return (
-      <div className="host-game-screen">
-        <Prompt prompt={round.prompt} />
-        <Timer room={room} time={round.time} isHost={true} />
+      <div className="host-play">
+        <h1>Round in progress</h1>
+        <div className="host-game-screen">
+          <Prompt prompt={round.prompt} />
+          <Timer room={room} time={round.time} isHost={true} />
+        </div>
       </div>
     );
   }

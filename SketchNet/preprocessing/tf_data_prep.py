@@ -68,6 +68,7 @@ def populate_batch(filenames, final_dim):
         coord.join(threads)
 
     # tf.reset_default_graph()
+
     return np.array(imgs), truth
 
 

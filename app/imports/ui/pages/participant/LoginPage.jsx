@@ -64,23 +64,26 @@ export default class LoginPage extends BaseComponent {
     } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        Nickname:
-        <input
-          type="text"
-          name="nickname"
-          value={this.state.nickname}
-          onChange={this.onNicknameChange}
-        />
-        <br />
-        Color:
-        <select value={this.state.color} onChange={this.onColorChange}>
-          <option value="red">Red</option>
-          <option value="blue">Blue</option>
-        </select>
-        <br />
-        <button type="submit">Play</button>
-      </form>
+      <div className="login-page">
+        <h1>Pick a name</h1>
+        <form onSubmit={this.onSubmit}>
+          Nickname:
+          <input
+            type="text"
+            name="nickname"
+            value={this.state.nickname}
+            onChange={this.onNicknameChange}
+          />
+          <br />
+          Color:
+          <select value={this.state.color} onChange={this.onColorChange}>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+          </select>
+          <br />
+          <button type="submit">Play</button>
+        </form>
+      </div>
     );
   }
 }
