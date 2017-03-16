@@ -4,6 +4,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import { browserHistory } from 'react-router';
 
 import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
+import ParticipantPreRound from '../../components/ParticipantPreRound.jsx';
 import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
 import ParticipantRoundResults from '../../components/ParticipantRoundResults.jsx';
 import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
@@ -22,13 +23,12 @@ import {
 
 
 import {
-  roundHasCompleted,
-  gameHasStarted,
-  gameHasEnded,
+  isPreGame,
+  isPostGame,
+  isInGame,
   currentRound,
-  latestCompletedRound
+  roundWantsResults,
 } from '/imports/game-status';
-
 
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
@@ -61,17 +61,24 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = nextProps;
 
-    // If the round has completed, submit the sketch.
+    // Debug reloading
     if (!loading && !room) {
       console.error('Room undefined. Redirecting.');
       browserHistory.push('/');
       return;
-    } else if (this.state.latestRoundIndex === null) {
+    }
+
+    // Initialization
+    if (this.state.latestRoundIndex === null) {
       this.setState({ 
         latestRoundIndex: currentRound(nextProps.room).index 
       });
       return;
-    } else if (roundHasCompleted(this.state.latestRoundIndex, nextProps.room)) {
+    }
+
+    // Submit sketch.
+    if (this.state.latestRoundIndex < nextProps.room.rounds.length &&
+        roundWantsResults(this.state.latestRoundIndex, nextProps.room)) {
       const prompt = _.find(this.props.room.rounds, (round) => {
         return round.index === this.state.latestRoundIndex;
       }).prompt;
@@ -118,28 +125,30 @@ export default class ParticipantGameScreen extends BaseComponent {
       return <ErrorMessage />
     }
 
-    // ---
-    // Actual page rendering
-    // ---
-    if (!gameHasStarted(room)) {
-      return <ParticipantPreGameScreen room={room} />;
-    } else if (gameHasEnded(room)) {
+    if (isPreGame(room)) {
+      return <ParticipantPreGameScreen room={room} />
+    } else if (isPostGame(room)) {
       return <ParticipantEndGameScreen room={room} />;
-    } else {
-      const round = currentRound(room);
+    } else if (isInGame(room)) {
+      let round = currentRound(room);
       if (!round) {
-        console.error('Current round is undefined. What the heck! Something is wrong.');
+        console.error('Theres no current round. What the heck! Something is wrong.');
         return <ErrorMessage />
       }
 
-      if (round.status === 'CREATED' || round.status === 'COMPLETE') {
-        return <ParticipantRoundResults round={latestCompletedRound(room)} />
-      } else if (round.status === 'PLAYING') {
-        return <ParticipantPlayRound round={round} />
+      if (round.status === 'PRE') {
+        return <ParticipantPreRound room={room} round={currentRound(room)} />
+      } else if (round.status === 'PLAY') {
+        return <ParticipantPlayRound round={round} room={room} />
+      } else if (round.status === 'RESULTS') {
+        return <ParticipantRoundResults room={room} round={currentRound(room)} />
       } else {
-        console.error('Current round is in an illegal state');
+        console.error('[Room ' + room._id + ']: Current round in illegal state');
         return <ErrorMessage />
-      }   
+      }
+    } else {
+      console.error('[Room ' + room._id + ']: in illegal state');
+      return <ErrorMessage />
     }
   }
 }

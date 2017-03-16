@@ -7,16 +7,16 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
 
 import HostPreGameScreen from '../../components/HostPreGameScreen.jsx';
-import HostEndGameScreen from '../../components/HostEndGameScreen.jsx';
+import HostPreRound from '../../components/HostPreRound.jsx';
 import HostPlayRound from '../../components/HostPlayRound.jsx';
 import HostRoundResults from '../../components/HostRoundResults.jsx';
+import HostEndGameScreen from '../../components/HostEndGameScreen.jsx';
 
 import {
-  roundHasCompleted,
-  gameHasStarted,
-  gameHasEnded,
+  isPreGame,
+  isPostGame,
+  isInGame,
   currentRound,
-  latestCompletedRound
 } from '/imports/game-status';
 
 export default class HostGameScreen extends BaseComponent {
@@ -56,26 +56,31 @@ export default class HostGameScreen extends BaseComponent {
     }
 
     // Page Rendering
-    if (!gameHasStarted(room)) {
+    if (isPreGame(room)) {
       return <HostPreGameScreen room={room} />
-    } else if (gameHasEnded(room)) {
+    } else if (isPostGame(room)) {
       return <HostEndGameScreen room={room} />;
-    } else {
+    } else if (isInGame(room)) {
       let round = currentRound(room);
       if (!round) {
-        console.error('Current round is undefined. What the heck! Something is wrong.');
+        console.error('Theres no current round. What the heck! Something is wrong.');
         return <ErrorMessage />
       }
 
-      if (round.status === 'CREATED' || round.status === 'COMPLETE') {
-        return <HostRoundResults room={room} round={latestCompletedRound(room)} />
-      } else if (round.status === 'PLAYING') {
+      if (round.status === 'PRE') {
+        return <HostPreRound room={room} round={currentRound(room)} />
+      } else if (round.status === 'PLAY') {
         return <HostPlayRound round={round} room={room} />
+      } else if (round.status === 'RESULTS') {
+        return <HostRoundResults room={room} round={currentRound(room)} />
       } else {
-        console.error('Current round is in an illegal state');
+        console.error('[Room ' + room._id + ']: Current round in illegal state');
         return <ErrorMessage />
       }
-    } 
+    } else {
+      console.error('[Room ' + room._id + ']: in illegal state');
+      return <ErrorMessage />
+    }
   }
 }
 

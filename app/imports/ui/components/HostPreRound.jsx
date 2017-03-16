@@ -7,48 +7,48 @@ import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
 
 import {
-  roundTimerOver,
+  playRound,
 } from '/imports/api/methods';
 
 
-export default class HostPlayRound extends BaseComponent {
+export default class HostPreRound extends BaseComponent {
   constructor(props) {
     super(props);
   }
 
   onTimeout(room) {
-    const didSucceed = roundTimerOver.call({
+    const didPlayRound = playRound.call({
       room_id: room._id,
     });
-    if (!didSucceed) {
-      console.error('Server rejected request.');
+    if (!didPlayRound) {
+      console.error('Failed to start/play round. Server rejected request.');
       return;
     }
   }
 
   render() {
-    const { 
+    const {
       round,
-      room
+      room,
     } = this.props;
 
     return (
-      <div className="host-play">
-        <h1>Round in progress</h1>
-        <div className="host-game-screen">
+      <div className="host-pre-container">
+        <h1>Round #{round.index + 1}</h1>
+        <div className="host-pre">
           <Prompt prompt={round.prompt} />
           <Timer
             room={room}
-            time={round.time}
+            time={3}
             onTimeout={this.onTimeout.bind(null, room)}
-            text={'Time remaining: '} />
+            text={'Round starts in '} />
         </div>
       </div>
     );
   }
 }
 
-HostPlayRound.propTypes = {
+HostPreRound.propTypes = {
   round: React.PropTypes.object,
   room: React.PropTypes.object,
 };

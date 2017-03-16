@@ -66,7 +66,7 @@ Schema.Round = new SimpleSchema({
     status: {
         type: String,
         label: "Round Status",
-        allowedValues: ["CREATED", "STARTING", "PLAYING", "COMPLETE"],
+        allowedValues: ["CREATED", "PRE", "PLAY", "RESULTS", "END"],
         defaultValue: "CREATED",
     },
 });

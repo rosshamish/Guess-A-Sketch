@@ -38,12 +38,13 @@ export default class Timer extends BaseComponent {
   render() {
     const { 
       room,
-      time 
+      time ,
+      text,
     } = this.props;
 
     return (
       <div className="timer">
-        Time Remaining: {this.state.remaining}
+        {text}{this.state.remaining}
       </div>
     );
   }
@@ -53,4 +54,5 @@ Timer.propTypes = {
   room: React.PropTypes.object,
   time: Number,
   onTimeout: React.PropTypes.func,
+  text: React.PropTypes.string,
 };

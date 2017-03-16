@@ -11,11 +11,12 @@ import SketchImage from './SketchImage.jsx';
 import { Sketches } from '/imports/api/collections/sketches';
 import {
   startRound,
+  endRound,
   endGame,
 } from '/imports/api/methods';
 import { 
   currentRound,
-  roundIsNotLastRound,
+  isLastRound,
 } from '/imports/game-status';
 
 
@@ -32,20 +33,28 @@ export default class HostRoundResults extends BaseComponent {
 
     let room = Session.get(HOST_ROOM);
 
-    if (roundIsNotLastRound(this.props.round, room)) {
-      const didStartRound = startRound.call({
-        room_id: room._id,
-      });
-      if (!didStartRound) {
-        console.error('Failed to start next round. Server rejected request.');
-        return;
-      }
-    } else {
+    const didEndRound = endRound.call({
+      room_id: room._id,
+    });
+    if (!didEndRound) {
+      console.error('Failed to end round. Server rejected request.');
+      return;
+    }
+
+    if (isLastRound(this.props.round, room)) {
       const didEndGame = endGame.call({
         room_id: room._id,
       });
       if (!didEndGame) {
         console.error('Unable to end game. Server rejected request.');
+        return;
+      }
+    } else {
+      const didStartRound = startRound.call({
+        room_id: room._id,
+      });
+      if (!didStartRound) {
+        console.error('Failed to start next round. Server rejected request.');
         return;
       }
     }
@@ -79,9 +88,9 @@ export default class HostRoundResults extends BaseComponent {
         <form onSubmit={this.onNextRound}>
           <button>
             { 
-            roundIsNotLastRound(round, room) ?
-              'Next Round' :
-              'End Game' 
+              isLastRound(round, room) ?
+              'End Game' :
+              'Next Round' 
             }
           </button>
         </form>

@@ -128,7 +128,7 @@ export const startRound = new ValidatedMethod({
 
     const didChangeRoomStatus = changeRoomStatus.call({
       room_id: room_id,
-      room_status: "PLAYING"
+      room_status: 'PLAYING'
     });
     if (!didChangeRoomStatus) {
       console.error('Failed to change room status.');
@@ -138,7 +138,7 @@ export const startRound = new ValidatedMethod({
     const didChangeRoundStatus = changeRoundStatus.call({
       room_id: room_id,
       round_index: currentRound(room).index,
-      round_status: "PLAYING" // TODO use STARTING once there's PreRound components
+      round_status: 'PRE',
     });
     if (!didChangeRoundStatus) {
       console.error('Failed to change round status.');
@@ -150,27 +150,73 @@ export const startRound = new ValidatedMethod({
 });
 
 
-// TODO uncomment and use once we have PreRound components
-// export const playRound = new ValidatedMethod({
-//   name: 'playRound',
-//   validate: new SimpleSchema({
-//     room_id: {
-//       type: String,
-//     },
-//   }).validator(),
-//   run({ room_id }) {
-//     const didChangeRoundStatus = changeRoundStatus.call({
-//       room_id: room_id,
-//       round_index: currentRound(room).index,
-//       round_status: "PLAYING"
-//     });
-//     if (!didChangeRoundStatus) {
-//       console.error('Failed to change round status.');
-//       return didChangeRoundStatus;
-//     }
-//     return true; // Success
-//   },
-// });
+export const playRound = new ValidatedMethod({
+  name: 'playRound',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+  }).validator(),
+  run({ room_id }) {
+    let room = Rooms.findOne({
+      _id: room_id
+    });
+    if (!room) {
+      console.error('Unable to find room with id ' + room_id);
+      return;
+    }
+
+    const didChangeRoundStatus = changeRoundStatus.call({
+      room_id: room_id,
+      round_index: currentRound(room).index,
+      round_status: 'PLAY'
+    });
+    if (!didChangeRoundStatus) {
+      console.error('Failed to change round status.');
+      return didChangeRoundStatus;
+    }
+    return true; // Success
+  },
+});
+
+export const roundTimerOver = new ValidatedMethod({
+  name: 'roundTimerOver',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+  }).validator(),
+  run({ room_id }) {
+    let room = Rooms.findOne({
+      _id: room_id
+    });
+    if (!room) {
+      console.error('Unable to find room with id ' + room_id);
+      return;
+    }
+
+    const didChangeRoomStatus = changeRoomStatus.call({
+      room_id: room_id,
+      room_status: 'JOINABLE'
+    });
+    if (!didChangeRoomStatus) {
+      console.error('Failed to change room status.');
+      return didChangeRoomStatus;
+    }
+
+    const didChangeRoundStatus = changeRoundStatus.call({
+      room_id: room_id,
+      round_index: currentRound(room).index,
+      round_status: 'RESULTS'
+    });
+    if (!didChangeRoundStatus) {
+      console.error('Failed to change round status.');
+      return didChangeRoundStatus;
+    }
+
+    return true; // Success
+  },
+});
 
 export const endRound = new ValidatedMethod({
   name: 'endRound',
@@ -188,19 +234,10 @@ export const endRound = new ValidatedMethod({
       return;
     }
 
-    const didChangeRoomStatus = changeRoomStatus.call({
-      room_id: room_id,
-      room_status: "JOINABLE"
-    });
-    if (!didChangeRoomStatus) {
-      console.error('Failed to change room status.');
-      return didChangeRoomStatus;
-    }
-
     const didChangeRoundStatus = changeRoundStatus.call({
       room_id: room_id,
       round_index: currentRound(room).index,
-      round_status: "COMPLETE"
+      round_status: 'END'
     });
     if (!didChangeRoundStatus) {
       console.error('Failed to change round status.');
@@ -222,7 +259,7 @@ export const endGame = new ValidatedMethod({
   run({ room_id }) {
     const didChangeRoomStatus = changeRoomStatus.call({
       room_id: room_id,
-      room_status: "COMPLETE"
+      room_status: 'COMPLETE'
     });
     if (!didChangeRoomStatus) {
       console.error('Unable to change room status.');
