@@ -14,8 +14,29 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       room,
     } = this.props;
 
-    return (
-      <p>This will be the post-game individual scoreboard</p>
+    // TODO compute a score for each player in the room based on their matching sketches
+    var renderScores = room.rounds.map(function(round,index) {
+      return ( // key suppresses a key error in console
+        <tr key={index}>
+          <th>{index+1}</th>
+          <th>{Math.floor(Math.random()*100)}</th>
+        </tr>
+      );
+    });
+
+    return(
+      <div className="participant-end-game">
+        <h1>Your Scores</h1>
+        <table>
+        <tbody>
+          <tr>
+            <th>Round</th>
+            <th>Score</th>
+          </tr>
+          {renderScores}
+        </tbody>
+        </table>
+      </div>
     );
   }
 }
