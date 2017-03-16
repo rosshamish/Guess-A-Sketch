@@ -11,16 +11,13 @@ import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.
 import ErrorMessage from '../../components/ErrorMessage.jsx';
 
 import { 
-  submitSketch,
   leaveRoom
 } from '/imports/api/methods';
 
 import { Session } from 'meteor/session';
 import { 
   PLAYER,
-  SKETCH
 } from '/imports/api/session';
-
 
 import {
   isPreGame,
@@ -29,6 +26,7 @@ import {
   currentRound,
   roundWantsResults,
 } from '/imports/game-status';
+
 
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
@@ -67,41 +65,6 @@ export default class ParticipantGameScreen extends BaseComponent {
       browserHistory.push('/');
       return;
     }
-
-    // Initialization
-    if (this.state.latestRoundIndex === null) {
-      this.setState({ 
-        latestRoundIndex: currentRound(nextProps.room).index 
-      });
-      return;
-    }
-
-    // Submit sketch.
-    if (this.state.latestRoundIndex < nextProps.room.rounds.length &&
-        roundWantsResults(this.state.latestRoundIndex, nextProps.room)) {
-      const prompt = _.find(this.props.room.rounds, (round) => {
-        return round.index === this.state.latestRoundIndex;
-      }).prompt;
-
-      const didSubmitSketch = submitSketch.call({
-        sketch: {
-          player: Session.get(PLAYER),
-          sketch: Session.get(SKETCH),
-          prompt: prompt,
-        },
-        roundIndex: this.state.latestRoundIndex,
-      });
-
-      this.setState({ latestRoundIndex: this.state.latestRoundIndex + 1 });
-
-      if (!didSubmitSketch) {
-        console.error('Failed to submit sketch');
-        return;
-      }
-    }
-  }
-
-  componentDidUpdate(props) {
   }
 
   render() {
