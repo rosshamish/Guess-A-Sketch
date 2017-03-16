@@ -4,7 +4,10 @@ import SimpleSchema from 'simpl-schema';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
-import { Schema } from './schema';
+import { 
+  Schema,
+  getFakePrompt, // TODO fetch prompts from sketch net
+} from './schema';
 
 import {
   currentRound,
@@ -126,22 +129,19 @@ export const startRound = new ValidatedMethod({
       return;
     }
 
-    // Start the game, if we're on the first round.
-    if (currentRound(room).index === 0) {
-      const didChangeRoomStatus = changeRoomStatus.call({
-        room_id: room_id,
-        room_status: "PLAYING"
-      });
-      if (!didChangeRoomStatus) {
-        console.error('Failed to change room status.');
-        return didChangeRoomStatus;
-      }
+    const didChangeRoomStatus = changeRoomStatus.call({
+      room_id: room_id,
+      room_status: 'PLAYING'
+    });
+    if (!didChangeRoomStatus) {
+      console.error('Failed to change room status.');
+      return didChangeRoomStatus;
     }
 
     const didChangeRoundStatus = changeRoundStatus.call({
       room_id: room_id,
       round_index: currentRound(room).index,
-      round_status: "PLAYING" // TODO use STARTING once there's PreRound components
+      round_status: 'PRE',
     });
     if (!didChangeRoundStatus) {
       console.error('Failed to change round status.');
@@ -153,27 +153,73 @@ export const startRound = new ValidatedMethod({
 });
 
 
-// TODO uncomment and use once we have PreRound components
-// export const playRound = new ValidatedMethod({
-//   name: 'playRound',
-//   validate: new SimpleSchema({
-//     room_id: {
-//       type: String,
-//     },
-//   }).validator(),
-//   run({ room_id }) {
-//     const didChangeRoundStatus = changeRoundStatus.call({
-//       room_id: room_id,
-//       round_index: currentRound(room).index,
-//       round_status: "PLAYING"
-//     });
-//     if (!didChangeRoundStatus) {
-//       console.error('Failed to change round status.');
-//       return didChangeRoundStatus;
-//     }
-//     return true; // Success
-//   },
-// });
+export const playRound = new ValidatedMethod({
+  name: 'playRound',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+  }).validator(),
+  run({ room_id }) {
+    let room = Rooms.findOne({
+      _id: room_id
+    });
+    if (!room) {
+      console.error('Unable to find room with id ' + room_id);
+      return;
+    }
+
+    const didChangeRoundStatus = changeRoundStatus.call({
+      room_id: room_id,
+      round_index: currentRound(room).index,
+      round_status: 'PLAY'
+    });
+    if (!didChangeRoundStatus) {
+      console.error('Failed to change round status.');
+      return didChangeRoundStatus;
+    }
+    return true; // Success
+  },
+});
+
+export const roundTimerOver = new ValidatedMethod({
+  name: 'roundTimerOver',
+  validate: new SimpleSchema({
+    room_id: {
+      type: String,
+    },
+  }).validator(),
+  run({ room_id }) {
+    let room = Rooms.findOne({
+      _id: room_id
+    });
+    if (!room) {
+      console.error('Unable to find room with id ' + room_id);
+      return;
+    }
+
+    const didChangeRoomStatus = changeRoomStatus.call({
+      room_id: room_id,
+      room_status: 'JOINABLE'
+    });
+    if (!didChangeRoomStatus) {
+      console.error('Failed to change room status.');
+      return didChangeRoomStatus;
+    }
+
+    const didChangeRoundStatus = changeRoundStatus.call({
+      room_id: room_id,
+      round_index: currentRound(room).index,
+      round_status: 'RESULTS'
+    });
+    if (!didChangeRoundStatus) {
+      console.error('Failed to change round status.');
+      return didChangeRoundStatus;
+    }
+
+    return true; // Success
+  },
+});
 
 export const endRound = new ValidatedMethod({
   name: 'endRound',
@@ -191,19 +237,10 @@ export const endRound = new ValidatedMethod({
       return;
     }
 
-    const didChangeRoomStatus = changeRoomStatus.call({
-      room_id: room_id,
-      room_status: "JOINABLE"
-    });
-    if (!didChangeRoomStatus) {
-      console.error('Failed to change room status.');
-      return didChangeRoomStatus;
-    }
-
     const didChangeRoundStatus = changeRoundStatus.call({
       room_id: room_id,
       round_index: currentRound(room).index,
-      round_status: "COMPLETE"
+      round_status: 'END'
     });
     if (!didChangeRoundStatus) {
       console.error('Failed to change round status.');
@@ -225,7 +262,7 @@ export const endGame = new ValidatedMethod({
   run({ room_id }) {
     const didChangeRoomStatus = changeRoomStatus.call({
       room_id: room_id,
-      room_status: "COMPLETE"
+      room_status: 'COMPLETE'
     });
     if (!didChangeRoomStatus) {
       console.error('Unable to change room status.');
@@ -252,7 +289,7 @@ const changeRoomStatus = new ValidatedMethod({
       _id: room_id,
     });
     
-    console.log('[Room ' + room_id + ']: Changing status to ' + room_status);
+    console.log('[Room ' + room_id + ']: is now ' + room_status);
     return Rooms.update({
       _id: room_id,
     }, {
@@ -281,7 +318,7 @@ const changeRoundStatus = new ValidatedMethod({
       _id: room_id,
     });
     
-    console.log('[Room ' + room_id + ']: Changing round ' + round_index + ' to ' + round_status);
+    console.log('[Room ' + room_id + ']: Round ' + round_index + ' is now ' + round_status);
     return Rooms.update({
       _id: room_id,
       "rounds.index": round_index
@@ -328,7 +365,11 @@ export const createRoom = new ValidatedMethod({
     
     let rounds = [];
     for (let count = 0; count < round_count; count++){
-      rounds.push({time: round_time, index: count});
+      rounds.push({
+        time: round_time,
+        index: count,
+        prompt: getFakePrompt(),
+      });
     }
     let id = Rooms.insert({ name: room_name, rounds: rounds });
     console.log(`Creating room ${room_name} ${id}`);

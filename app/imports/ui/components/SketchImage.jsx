@@ -16,7 +16,7 @@ export default class SketchImage extends BaseComponent {
     }
 
     const style = {
-      width: "45%",
+      width: "300px",
       display: "inline-block"
     };
 

@@ -15,6 +15,7 @@ export default class HostEndGameScreen extends BaseComponent {
     } = this.props;
     
     // compute a score for each player in the room based on their matching sketches
+    // TODO pull scoring logic out into /imports/scoring.js
     var scores = [];
     players = room.players;
     sketches = room.rounds.sketches;

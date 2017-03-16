@@ -3,12 +3,8 @@ import { _ } from 'meteor/underscore';
 import i18n from 'meteor/universe:i18n';
 import BaseComponent from './BaseComponent.jsx';
 
-import { 
-  endRound,
-} from '/imports/api/methods';
 
 export default class Timer extends BaseComponent {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -31,13 +27,10 @@ export default class Timer extends BaseComponent {
   componentWillUpdate(nextProps, nextState) {
     if (nextState.remaining > 0) {
       return;
-    } else if (nextProps.isHost) {
-      const didEndRound = endRound.call({
-        room_id: nextProps.room._id,
-      });
-      if (!didEndRound) {
-        console.error('Failed to end round. Server rejected request.');
-        return;
+    } else {
+      clearInterval(this.interval_id);
+      if (this.props.onTimeout) {
+        this.props.onTimeout();
       }
     }
   }
@@ -45,12 +38,13 @@ export default class Timer extends BaseComponent {
   render() {
     const { 
       room,
-      time 
+      time ,
+      text,
     } = this.props;
 
     return (
       <div className="timer">
-        Time Remaining: {this.state.remaining}
+        {text}{this.state.remaining}
       </div>
     );
   }
@@ -59,5 +53,6 @@ export default class Timer extends BaseComponent {
 Timer.propTypes = {
   room: React.PropTypes.object,
   time: Number,
-  isHost: React.PropTypes.bool,
+  onTimeout: React.PropTypes.func,
+  text: React.PropTypes.string,
 };
