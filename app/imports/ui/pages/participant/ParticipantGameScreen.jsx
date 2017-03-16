@@ -132,9 +132,7 @@ export default class ParticipantGameScreen extends BaseComponent {
         return <ErrorMessage />
       }
 
-      if (round.status === 'CREATED') {
-        // The round has not started yet. We are in-between rounds.
-        // So, we want to display results for the *previous* round.
+      if (round.status === 'CREATED' || round.status === 'COMPLETE') {
         return <ParticipantRoundResults round={latestCompletedRound(room)} />
       } else if (round.status === 'PLAYING') {
         return <ParticipantPlayRound round={round} />

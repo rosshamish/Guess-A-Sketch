@@ -67,9 +67,7 @@ export default class HostGameScreen extends BaseComponent {
         return <ErrorMessage />
       }
 
-      if (round.status === 'CREATED') {
-        // The round has not started yet. We are in-between rounds.
-        // So, we want to display collage results for the *previous* round.
+      if (round.status === 'CREATED' || round.status === 'COMPLETE') {
         return <HostRoundResults room={room} round={latestCompletedRound(room)} />
       } else if (round.status === 'PLAYING') {
         return <HostPlayRound round={round} room={room} />

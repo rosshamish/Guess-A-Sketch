@@ -26,15 +26,18 @@ export function gameHasStarted(room) {
 }
 
 export function gameHasEnded(room) {
-  return _.all(room.rounds, (round) => {
-    return round.status === 'COMPLETE';
-  });
+  return room.status === 'COMPLETE';
 }
 
 export function currentRound(room) {
-  return _.find(room.rounds, (round) => {
+  let round = _.find(room.rounds, (round) => {
     return round.status === 'CREATED' || round.status === 'PLAYING';
   });
+  if (!round) {
+    return latestCompletedRound(room);
+  } else {
+    return round;
+  }
 }
 
 export function roundIsNotLastRound(round, room) {
