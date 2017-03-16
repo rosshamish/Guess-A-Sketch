@@ -1,6 +1,13 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 
+import { Session } from 'meteor/session';
+import { PLAYER } from '/imports/api/session';
+
+import {
+  getRoundScore,
+  getGameScore,
+} from '/imports/scoring';
 
 export default class ParticipantEndGameScreen extends BaseComponent {
   constructor(props) {
@@ -19,10 +26,16 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       return ( // key suppresses a key error in console
         <tr key={index}>
           <th>{index+1}</th>
-          <th>{Math.floor(Math.random()*100)}</th>
+          <th>{getRoundScore(round, Session.get(PLAYER))}</th>
         </tr>
       );
     });
+    renderScores.push(
+      <tr key={room.rounds.length}>
+        <th>Total</th>
+        <th>{getGameScore(room, Session.get(PLAYER))}</th>
+      </tr>
+    );
 
     return(
       <div className="participant-end-game">

@@ -1,14 +1,20 @@
 import React from 'react';
-import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 
+import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
+
 import { Sketches } from '/imports/api/collections/sketches';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
+
+import {
+  getRoundScore,
+} from '/imports/scoring';
+
 
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
@@ -47,8 +53,9 @@ export default class ParticipantRoundResults extends BaseComponent {
         <h3>You drew:</h3>
         <SketchImage sketch={currentPlayerSketch} />
         <hr />
-        <p>SketchNet thinks you drew a: TODO</p>
-        <p>Your score: TODO</p>
+        <h3>SketchNet:</h3>
+        <p>"Looks like a... TODO"</p>
+        <p>Score: {getRoundScore(round, Session.get(PLAYER))}</p>
       </div>
     );
   }
