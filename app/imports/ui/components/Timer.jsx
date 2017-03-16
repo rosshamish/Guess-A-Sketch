@@ -3,12 +3,8 @@ import { _ } from 'meteor/underscore';
 import i18n from 'meteor/universe:i18n';
 import BaseComponent from './BaseComponent.jsx';
 
-import { 
-  endRound,
-} from '/imports/api/methods';
 
 export default class Timer extends BaseComponent {
-
   constructor(props) {
     super(props);
     this.state = {
