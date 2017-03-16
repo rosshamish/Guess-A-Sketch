@@ -126,16 +126,13 @@ export const startRound = new ValidatedMethod({
       return;
     }
 
-    // Start the game, if we're on the first round.
-    if (currentRound(room).index === 0) {
-      const didChangeRoomStatus = changeRoomStatus.call({
-        room_id: room_id,
-        room_status: "PLAYING"
-      });
-      if (!didChangeRoomStatus) {
-        console.error('Failed to change room status.');
-        return didChangeRoomStatus;
-      }
+    const didChangeRoomStatus = changeRoomStatus.call({
+      room_id: room_id,
+      room_status: "PLAYING"
+    });
+    if (!didChangeRoomStatus) {
+      console.error('Failed to change room status.');
+      return didChangeRoomStatus;
     }
 
     const didChangeRoundStatus = changeRoundStatus.call({
