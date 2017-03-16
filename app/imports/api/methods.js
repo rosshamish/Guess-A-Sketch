@@ -4,7 +4,10 @@ import SimpleSchema from 'simpl-schema';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
-import { Schema } from './schema';
+import { 
+  Schema,
+  getFakePrompt, // TODO fetch prompts from sketch net
+} from './schema';
 
 import {
   currentRound,
@@ -362,7 +365,11 @@ export const createRoom = new ValidatedMethod({
     
     let rounds = [];
     for (let count = 0; count < round_count; count++){
-      rounds.push({time: round_time, index: count});
+      rounds.push({
+        time: round_time,
+        index: count,
+        prompt: getFakePrompt(),
+      });
     }
     let id = Rooms.insert({ name: room_name, rounds: rounds });
     console.log(`Creating room ${room_name} ${id}`);

@@ -4,7 +4,12 @@
 import SimpleSchema from 'simpl-schema';
 
 export const Schema = {};
-const PROMPTS = ['cat', 'dog', 'monkey', 'freezer', 'ice cream']; //TODO: change to sketchnet API call?
+
+const DEBUG_PROMPTS = ['cat', 'dog', 'monkey', 'freezer', 'ice cream']; //TODO: change to sketchnet API call?
+export function getFakePrompt() {
+    return DEBUG_PROMPTS[Math.floor(Math.random() * DEBUG_PROMPTS.length)];
+}
+
 
 Schema.Player = new SimpleSchema({
     name: {
@@ -47,7 +52,7 @@ Schema.Round = new SimpleSchema({
     prompt:{
         type: String,
         label: "Round Prompt",
-        defaultValue: PROMPTS[Math.floor(Math.random() * PROMPTS.length)],
+        defaultValue: getFakePrompt(),
     },
     sketches:{
         type: Array,
