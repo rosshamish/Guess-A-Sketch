@@ -252,7 +252,7 @@ const changeRoomStatus = new ValidatedMethod({
       _id: room_id,
     });
     
-    console.log('[Room ' + room_id + ']: Changing status to ' + room_status);
+    console.log('[Room ' + room_id + ']: is now ' + room_status);
     return Rooms.update({
       _id: room_id,
     }, {
@@ -281,7 +281,7 @@ const changeRoundStatus = new ValidatedMethod({
       _id: room_id,
     });
     
-    console.log('[Room ' + room_id + ']: Changing round ' + round_index + ' to ' + round_status);
+    console.log('[Room ' + room_id + ']: Round ' + round_index + ' is now ' + round_status);
     return Rooms.update({
       _id: room_id,
       "rounds.index": round_index
