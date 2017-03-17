@@ -80,7 +80,7 @@ def main():
 
 
     # Model Placeholders
-    image = tf.placeholder(tf.float32, [None, None, None, 1])
+    image = tf.placeholder(tf.float32, [None, None, None])
     label = tf.placeholder(tf.float32, [None, num_labels])
     keep_prob = tf.placeholder(tf.float32)
 
