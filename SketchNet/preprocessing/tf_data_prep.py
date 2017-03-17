@@ -6,6 +6,7 @@ import random
 from tqdm import tqdm
 import tensorflow as tf
 import numpy as np
+from utils.tf_graph_scope import define_scope
 
 
 def get_classes(folder):
@@ -32,7 +33,7 @@ def preprocess(directory):
         imgs += read_and_flatten(directory +'/'+ classes[i], i)
     return imgs
 
-FILENAMES = preprocess('/Users/anjueappen/png')
+FILENAMES = preprocess('/home/ubuntu/png')
 
 
 def populate_batch(batch_size, final_dim):
@@ -42,27 +43,30 @@ def populate_batch(batch_size, final_dim):
 
     # Define a subgraph that takes a filename, reads the file, decodes it, and
     # enqueues it.
-    filename = filenameQ.dequeue()
-    image_bytes = tf.read_file(filename)
-    decoded_image = tf.image.decode_png(image_bytes)
-    image_queue = tf.FIFOQueue(128, [tf.float32], None)
-    decoded_image = tf.image.resize_images(decoded_image, final_dim)
-    enqueue_op = image_queue.enqueue(decoded_image)
 
-    # Create a queue runner that will enqueue decoded images into `image_queue`.
-    NUM_THREADS = 16
-    queue_runner = tf.train.QueueRunner(
-        image_queue,
-        [enqueue_op] * NUM_THREADS,  # Each element will be run from a separate thread.
-        image_queue.close(),
-        image_queue.close(cancel_pending_enqueues=True))
+    @define_scope
+    def op():
+        filename = filenameQ.dequeue()
+        image_bytes = tf.read_file(filename)
+        decoded_image = tf.image.decode_png(image_bytes)
+        image_queue = tf.FIFOQueue(128, [tf.float32], None)
+        decoded_image = tf.image.resize_images(decoded_image, final_dim)
+        enqueue_op = image_queue.enqueue(decoded_image)
 
-    # Ensure that the queue runner threads are started when we call
-    # `tf.train.start_queue_runners()` below.
-    tf.train.add_queue_runner(queue_runner)
+        # Create a queue runner that will enqueue decoded images into `image_queue`.
+        NUM_THREADS = 16
+        queue_runner = tf.train.QueueRunner(
+            image_queue,
+            [enqueue_op] * NUM_THREADS,  # Each element will be run from a separate thread.
+            image_queue.close(),
+            image_queue.close(cancel_pending_enqueues=True))
 
-    # Dequeue the next image from the queue, for returning to the client.
-    img = image_queue.dequeue()
+        # Ensure that the queue runner threads are started when we call
+        # `tf.train.start_queue_runners()` below.
+        tf.train.add_queue_runner(queue_runner)
+
+        # Dequeue the next image from the queue, for returning to the client.
+        return image_queue.dequeue()
 
     init_op = tf.global_variables_initializer()
 
@@ -74,7 +78,7 @@ def populate_batch(batch_size, final_dim):
         imgs = []
         for _ in tqdm(filenames):
             if coord.should_stop(): break
-            imgs.append(sess.run(img))
+            imgs.append(sess.run(op))
 
         coord.request_stop()
 
