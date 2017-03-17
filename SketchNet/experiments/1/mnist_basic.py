@@ -89,21 +89,17 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        ground_truth_mapping = preprocess('/Users/anjueappen/png')
-
         for i in range(1000):
             print(i)
-            batch = populate_batch(ground_truth_mapping[:batch_size], (height, width))
+            batch = populate_batch(batch_size, (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
                 train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
-            import random;
-            random.shuffle(ground_truth_mapping)
 
-        batch = populate_batch(ground_truth_mapping[:batch_size], (height, width))
+        batch = populate_batch(batch_size, (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 

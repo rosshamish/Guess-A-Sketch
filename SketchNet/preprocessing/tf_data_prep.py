@@ -2,6 +2,7 @@
 
 
 import os
+import random
 from tqdm import tqdm
 import tensorflow as tf
 import numpy as np
@@ -18,9 +19,25 @@ def read_and_flatten(class_dir, ground_truth):
     return fnames
 
 
-def populate_batch(filenames, final_dim):
+def preprocess(directory):
+    """
+    Returns: list of tuples: (filename, ground truth)
+    """
+    classes = get_classes(directory)
+    num_classes = len(classes)
 
-    filenames, truth_indicies = zip(*filenames)
+    imgs = []
+    #multiprocess this loop?
+    for i in range(num_classes):
+        imgs += read_and_flatten(directory +'/'+ classes[i], i)
+    return imgs
+
+FILENAMES = preprocess('/Users/anjueappen/png')
+
+
+def populate_batch(batch_size, final_dim):
+
+    filenames, truth_indicies = zip(*random.sample(FILENAMES, batch_size))
     filenameQ = tf.train.string_input_producer(filenames)
 
     # Define a subgraph that takes a filename, reads the file, decodes it, and
@@ -71,15 +88,3 @@ def populate_batch(filenames, final_dim):
     return np.array(imgs), truth
 
 
-def preprocess(directory):
-    """
-    Returns: list of tuples: (filename, ground truth)
-    """
-    classes = get_classes(directory)
-    num_classes = len(classes)
-
-    imgs = []
-    #multiprocess this loop?
-    for i in range(num_classes):
-        imgs += read_and_flatten(directory +'/'+ classes[i], i)
-    return imgs
