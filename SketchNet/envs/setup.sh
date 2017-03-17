@@ -5,6 +5,7 @@ sudo apt-get update
 sudo apt-get --assume-yes upgrade
 sudo apt-get --assume-yes install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip wget pkg-config zip g++ zlib1g-dev
 sudo pip install -U pip
+git config --global core.editor "vim"
 
 # Update to Cuda Toolkit 8 - instances have Cuda Toolkit 7.5 installed by default
 wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/cuda-repo-ubuntu1404_8.0.44-1_amd64.deb

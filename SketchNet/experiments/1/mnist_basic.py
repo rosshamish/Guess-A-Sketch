@@ -39,10 +39,10 @@ class Exp1Model(Model):
 
         # Layer 3 - Densely Connected
 
-        W_fc1 = weight_variable([125 * 125 * filter_2, filter_3])
+        W_fc1 = weight_variable([self.width/4 * self.height/4 * filter_2, filter_3])
         b_fc1 = bias_variable([filter_3])
 
-        h_pool2_flat = tf.reshape(h_pool2, [-1, 125 * 125 * filter_2])
+        h_pool2_flat = tf.reshape(h_pool2, [-1, self.width/4 * self.width/4 * filter_2])
         h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
         # Dropout Layer
@@ -73,8 +73,8 @@ class Exp1Model(Model):
 def main():
     # TODO Hard Coding!!!
     train = True
-    width = 256
-    height = 256
+    width = 500
+    height = 500
     num_labels = 250
     batch_size = 16
 
@@ -99,14 +99,14 @@ def main():
 
             print(i)
 
-            batch = get_batch(batch_size)
+            batch = get_batch(batch_size, (width, height))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
                 train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
-        batch = get_batch(batch_size)
+        batch = get_batch(batch_size, (width, height))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 

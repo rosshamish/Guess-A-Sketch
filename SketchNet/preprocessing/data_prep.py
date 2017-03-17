@@ -35,22 +35,23 @@ def preprocess(directory):
 FILENAMES = preprocess('/Users/anjueappen/png')
 
 
-def getExample():
+def getExample(dims):
     try:
         imgPath, index = random.choice(FILENAMES)
         truth = np.zeros(250)
         truth[index] = 1
-        return scipy.misc.imresize(np.array(Image.open(imgPath)), (256, 256)), truth
+        return scipy.misc.imresize(np.array(Image.open(imgPath)), dims), truth
 
     except Exception as e:
         print e
         return getExample()
 
 
-def getExamplesGenerator():
+def getExamplesGenerator(dims):
+
     def examplesGenerator(q):
         while True:
-            q.put(getExample())
+            q.put(getExample(dims))
 
     queue = multiprocessing.Queue(maxsize=128)
     for w in range(0, 16):
@@ -61,7 +62,7 @@ def getExamplesGenerator():
         yield queue.get()
 
 
-def get_batch(batch_size):
-    stuff = itertools.islice(getExamplesGenerator(), batch_size)
+def get_batch(batch_size, dims):
+    stuff = itertools.islice(getExamplesGenerator(dims), batch_size)
     imgs, truths = zip(*stuff)
     return np.array(imgs), np.array(truths)
