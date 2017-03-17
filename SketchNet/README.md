@@ -8,7 +8,6 @@
         
 4. Run the setup script
 
-        wget https://www.dropbox.com/s/q17y1rml1v2udtp/setup.sh
-        bash setup.sh 
+        bash env/setup.sh 
        
 5. The script completes by rebooting up your instance. After a minute, ssh back onto your instance and you should be able to train models via GPU
