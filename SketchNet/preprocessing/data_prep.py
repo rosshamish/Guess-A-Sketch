@@ -1,6 +1,7 @@
 import multiprocessing
 import random
 import itertools
+import os
 
 import numpy as np
 import scipy.misc
