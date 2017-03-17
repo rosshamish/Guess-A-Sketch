@@ -1,10 +1,13 @@
 import sys, os
 import tensorflow as tf
+import random
+from tqdm import tqdm
+import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.tf_graph_scope import define_scope
-from preprocessing.tf_data_prep import populate_batch, preprocess
+from preprocessing.data_prep import get_batch
 from utils.base_model import Model
 from utils.tf_utils import weight_variable, bias_variable, conv2d, max_pool_2x2
 
@@ -70,20 +73,21 @@ class Exp1Model(Model):
 def main():
     # TODO Hard Coding!!!
     train = True
-    width = 500
-    height = 500
+    width = 256
+    height = 256
     num_labels = 250
+    batch_size = 16
 
-    image = tf.placeholder(tf.float32, [None, width, height, 1])
+
+    # Model Placeholders
+    image = tf.placeholder(tf.float32, [None, None, None, 1])
     label = tf.placeholder(tf.float32, [None, num_labels])
     keep_prob = tf.placeholder(tf.float32)
 
     model = Exp1Model(image, width, height, num_labels, label, keep_prob)
 
-
     # Initialize the FileWriter
     writer = tf.summary.FileWriter('/tmp/tensorflow/', graph=tf.get_default_graph())
-
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth=True
@@ -91,21 +95,18 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        ground_truth_mapping = preprocess('/home/ubuntu/png')
-
         for i in range(1000):
-   #         print(i)
-            batch = populate_batch(ground_truth_mapping[:16], (height, width))
+
+            print(i)
+
+            batch = get_batch(batch_size)
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
                 train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
-            import random;
-            random.shuffle(ground_truth_mapping)
-
-        batch = populate_batch(ground_truth_mapping[:16], (height, width))
+        batch = get_batch(batch_size)
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
@@ -116,3 +117,36 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+"""
+# SCRAP CODE
+
+    # Datagen Placeholders
+    filenames_ph = tf.placeholder(tf.string, [batch_size])
+    height_ph = tf.placeholder(tf.int32)
+    width_ph = tf.placeholder(tf.int32)
+    truth_ph = tf.placeholder(tf.float32, [batch_size])
+
+    datagenerator = DataGenerator(filenames_ph, height_ph, width_ph, truth_ph)
+
+    def get_batch(session, datagenerator, fnames, dims):
+        fnames, truth_indicies = zip(*fnames)
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(sess=session, coord=coord)
+        imgs = []
+        for _ in tqdm(fnames):
+            if coord.should_stop(): break
+            imgs.append(session.run(datagenerator.dequeue_img, {filenames_ph: fnames, height_ph: dims[0],
+                                                                width_ph: dims[1], truth_ph: truth_indicies}))
+
+        coord.request_stop()
+        truth = session.run(datagenerator.ground_truth)
+
+        # Wait for threads to finish.
+        coord.join(threads)
+
+        # tf.reset_default_graph()
+        return np.array(imgs), truth
+
+"""
