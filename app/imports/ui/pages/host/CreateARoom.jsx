@@ -15,7 +15,7 @@ export default class CreateARoom extends BaseComponent{
     this.state = {
       roomName: 'apple', // testing vars: to be deleted
       roundCount: 2, // set to 10
-      roundTime: 10 // set to 20
+      roundTime: 10, // set to 20
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);
@@ -57,7 +57,16 @@ export default class CreateARoom extends BaseComponent{
   }
 
   render(){
-    const {} = this.props;
+    const {
+      loading,
+      room,
+    } = this.props;
+
+    if (loading) {
+      return (
+        <p>Loading...</p>
+    );}
+
     return (
       <div className="create-room">
         <h1>Create a room</h1>
@@ -92,5 +101,6 @@ export default class CreateARoom extends BaseComponent{
 }
 
 CreateARoom.propTypes = {
-  room: React.PropTypes.object,
+  Rooms: React.PropTypes.array,
+  loading: React.PropTypes.bool,
 }
