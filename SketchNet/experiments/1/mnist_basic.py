@@ -1,13 +1,10 @@
 import sys, os
 import tensorflow as tf
-import random
-from tqdm import tqdm
-import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.tf_graph_scope import define_scope
-from preprocessing.data_prep import get_batch
+from preprocessing.tf_data_prep import populate_batch, preprocess
 from utils.base_model import Model
 from utils.tf_utils import weight_variable, bias_variable, conv2d, max_pool_2x2
 
@@ -39,10 +36,10 @@ class Exp1Model(Model):
 
         # Layer 3 - Densely Connected
 
-        W_fc1 = weight_variable([self.width/4 * self.height/4 * filter_2, filter_3])
+        W_fc1 = weight_variable([125 * 125 * filter_2, filter_3])
         b_fc1 = bias_variable([filter_3])
 
-        h_pool2_flat = tf.reshape(h_pool2, [-1, self.width/4 * self.width/4 * filter_2])
+        h_pool2_flat = tf.reshape(h_pool2, [-1, 125 * 125 * filter_2])
         h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
         # Dropout Layer
@@ -66,7 +63,6 @@ class Exp1Model(Model):
     def accuracy(self):
         correct_prediction = tf.equal(tf.argmax(self.label, 1), tf.argmax(self.prediction, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        tf.summary.scalar('accuracy', accuracy)
         return accuracy
 
 
@@ -78,9 +74,7 @@ def main():
     num_labels = 250
     batch_size = 16
 
-
-    # Model Placeholders
-    image = tf.placeholder(tf.float32, [None, None, None])
+    image = tf.placeholder(tf.float32, [None, width, height, 1])
     label = tf.placeholder(tf.float32, [None, num_labels])
     keep_prob = tf.placeholder(tf.float32)
 
@@ -90,25 +84,29 @@ def main():
     writer = tf.summary.FileWriter('/tmp/tensorflow/', graph=tf.get_default_graph())
 
     config = tf.ConfigProto()
-    config.gpu_options.allow_growth=True
+    config.gpu_options.allow_growth = True
     with tf.Session(config=config) as sess:
         init = tf.global_variables_initializer()
         sess.run(init)
 
+        ground_truth_mapping = preprocess('/Users/anjueappen/png')
+
         for i in range(1000):
-
             print(i)
-
-            batch = get_batch(batch_size, (width, height))
+            batch = populate_batch(ground_truth_mapping[:batch_size], (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
                 train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
-        batch = get_batch(batch_size, (width, height))
+            import random;
+            random.shuffle(ground_truth_mapping)
+
+        batch = populate_batch(ground_truth_mapping[:batch_size], (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
+
 
         saver = tf.train.Saver()
         save_path = saver.save(sess, "./%s.ckpt" % __file__.split('.')[0])
@@ -117,36 +115,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-"""
-# SCRAP CODE
-
-    # Datagen Placeholders
-    filenames_ph = tf.placeholder(tf.string, [batch_size])
-    height_ph = tf.placeholder(tf.int32)
-    width_ph = tf.placeholder(tf.int32)
-    truth_ph = tf.placeholder(tf.float32, [batch_size])
-
-    datagenerator = DataGenerator(filenames_ph, height_ph, width_ph, truth_ph)
-
-    def get_batch(session, datagenerator, fnames, dims):
-        fnames, truth_indicies = zip(*fnames)
-        coord = tf.train.Coordinator()
-        threads = tf.train.start_queue_runners(sess=session, coord=coord)
-        imgs = []
-        for _ in tqdm(fnames):
-            if coord.should_stop(): break
-            imgs.append(session.run(datagenerator.dequeue_img, {filenames_ph: fnames, height_ph: dims[0],
-                                                                width_ph: dims[1], truth_ph: truth_indicies}))
-
-        coord.request_stop()
-        truth = session.run(datagenerator.ground_truth)
-
-        # Wait for threads to finish.
-        coord.join(threads)
-
-        # tf.reset_default_graph()
-        return np.array(imgs), truth
-
-"""

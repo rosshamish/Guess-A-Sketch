@@ -32,6 +32,7 @@ def preprocess(directory):
     return imgs
 
 
+
 FILENAMES = preprocess('/Users/anjueappen/png')
 
 
