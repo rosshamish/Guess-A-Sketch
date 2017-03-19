@@ -2,6 +2,8 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
+import { Button } from 'semantic-ui-react'
+
 export default class WelcomePage extends React.Component {
 
   constructor(props) {
@@ -52,8 +54,8 @@ export default class WelcomePage extends React.Component {
           </p>
           <hr />
           <div>
-            <button onClick={this.onClickPlay}>Play</button>
-            <button onClick={this.onClickHost}>Host</button>
+            <button className="ui button" onClick={this.onClickPlay}>Play</button>
+            <button className="ui button" onClick={this.onClickHost}>Host</button>
           </div>
         </div>
       </div>
@@ -66,4 +68,4 @@ WelcomePage.propTypes = {
 
 WelcomePage.contextTypes = {
   router: React.PropTypes.object,
-};
+}; 
