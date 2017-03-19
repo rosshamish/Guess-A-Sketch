@@ -51,10 +51,8 @@ dependencies:
   - packaging==16.8
   - pbr==2.0.0
   - pillow==4.0.0
-  - protobuf==3.2.0
   - scikit-learn==0.18.1
   - scipy==0.19.0
-  - tensorflow-gpu==0.12.1
   - tqdm==4.11.2
 prefix: /home/ubuntu/miniconda3/envs/tf27
 

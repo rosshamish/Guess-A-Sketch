@@ -25,7 +25,9 @@ rm -rf cuda
 
 # Set Cuda env vars in bashrc
 echo "export CUDA_HOME=/usr/local/cuda" >> ~/.bashrc
+export CUDA_HOME=/usr/local/cuda
 echo "export CUDA_ROOT=/usr/local/cuda" >> ~/.bashrc
+export CUDA_ROOT=/usr/local/cuda
 echo "export PATH=$PATH:$CUDA_ROOT/bin" >> ~/.bashrc
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64" >> ~/.bashrc
 
@@ -40,6 +42,7 @@ rm Miniconda2-latest-Linux-x86_64.sh
 git clone https://github.com/anjueappen/Guess-A-Sketch.git
 conda env create -f Guess-A-Sketch/SketchNet/envs/tf_env_linux.yaml
 source activate tf27
+pip install tensorflow-gpu
 echo "source activate tf27" >> ~/.bashrc
 
 # Get the images
