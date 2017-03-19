@@ -1,6 +1,8 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
-import RowComponent from './RowComponent.jsx';
+import { _ } from 'meteor/underscore';
+
+import { getGameScore } from '/imports/scoring';
 
 export default class HostEndGameScreen extends BaseComponent {
   constructor(props) {
@@ -14,25 +16,20 @@ export default class HostEndGameScreen extends BaseComponent {
       room,
     } = this.props;
     
-    // compute a score for each player in the room based on their matching sketches
-    // TODO pull scoring logic out into /imports/scoring.js
     var scores = [];
     players = room.players;
-    sketches = room.rounds.sketches;
     for (var i in players) {
-      let score = 0;
-      let rank = parseInt(i) + 1;
-      for (var j in sketches){ // optimize this
-        if (sketches[j].player.name == players[i].name){
-          score += 1; // TO DO: make this a real judgement
-        }
-      }
-      scores[scores.length] = {rank:rank, name:players[i].name, score:score}
+      scores[scores.length] = {name:players[i].name, score:getGameScore(room, players[i])}
     }
+    scores = _.sortBy(scores, 'score').reverse();
 
     var renderScores = scores.map(function(row,index) {
       return ( // key suppresses a key error in console
-        <RowComponent key={index} row={row} />
+        <tr key={index}>
+          <th>{index+1}</th>
+          <th>{row.name}</th>
+          <th>{row.score}</th>
+        </tr>
       );
     });
 

@@ -346,9 +346,6 @@ export const createRoom = new ValidatedMethod({
   }).validator(),
   run({ room_name, round_count, round_time }) {
 
-    // Problem: Rooms.find({}) doesn't return ANY rooms, even the test ones
-    // that are definitely there. Therefore, we cannot check for name uniqueness.
-
     if (!room_name){
         alert('Please fill in a Room Name');
         return;

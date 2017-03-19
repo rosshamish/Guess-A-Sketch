@@ -9,13 +9,15 @@ import { Rooms } from '/imports/api/collections/rooms.js';
 import { HOST_ROOM } from '/imports/api/session';
 import { createRoom } from '/imports/api/methods';
 
+import { Form } from 'semantic-ui-react'
+
 export default class CreateARoom extends BaseComponent{
   constructor(props){
     super(props);
     this.state = {
       roomName: 'apple', // testing vars: to be deleted
       roundCount: 2, // set to 10
-      roundTime: 10 // set to 20
+      roundTime: 10, // set to 20
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);
@@ -57,40 +59,61 @@ export default class CreateARoom extends BaseComponent{
   }
 
   render(){
-    const {} = this.props;
+    const {
+      loading,
+      room,
+    } = this.props;
+
+    if (loading) {
+      return (
+        <p>Loading...</p>
+    );}
+
     return (
-      <div className="create-room">
-        <h1>Create a room</h1>
-        <form onSubmit={this.onCreateRoom}>
-          Room Name:
-          <input
-            type="text"
-            name="roomName"
-            ref={(input) => (this.roomName = input)}
-            value={this.state.roomName}
-            onChange={this.onRoomNameChange}/>
-          <br/>
-          Number of Rounds:
-          <input
-            type="number"
-            name="roomName"
-            value={this.state.roundCount}
-            onChange={this.onRoundCountChange}/>
-          <br/>
-          Time:
-          <input
-            type="number"
-            name="roomName"
-            value={this.state.roundTime}
-            onChange={this.onRoundTimeChange}/>
-          <br/>
-          <button>Create</button>
-        </form>
-      </div>
+      <center>
+        <div className="create-room">
+          <h1>Create a room</h1>
+          <form onSubmit={this.onCreateRoom}>
+
+            Room Name:
+            <input
+              type="text"
+              name="roomName"
+              ref={(input) => (this.roomName = input)}
+              value={this.state.roomName}
+              placeholder="Room Name"
+              onChange={this.onRoomNameChange}/>
+            <br/>
+
+            Number of Rounds:
+            <input
+              type="number"
+              name="roomName"
+              value={this.state.roundCount}
+              placeholder="Number of Rounds"
+              onChange={this.onRoundCountChange}/>
+            <br/>
+
+            Time:
+            <input
+              type="number"
+              name="roomName"
+              value={this.state.roundTime}
+              placeholder="Time"
+              onChange={this.onRoundTimeChange}/>
+            <br/>
+
+            <button className="ui button">
+              Create
+            </button>
+          </form>
+        </div>
+      </center>
     );
   }
 }
 
 CreateARoom.propTypes = {
-  room: React.PropTypes.object,
+  Rooms: React.PropTypes.array,
+  loading: React.PropTypes.bool,
 }
