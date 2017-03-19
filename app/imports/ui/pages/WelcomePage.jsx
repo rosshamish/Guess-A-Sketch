@@ -2,7 +2,7 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
-import { Button } from 'semantic-ui-react'
+import { Button, Header, Icon, Image } from 'semantic-ui-react'
 
 export default class WelcomePage extends React.Component {
 
@@ -40,25 +40,40 @@ export default class WelcomePage extends React.Component {
     } = this.props;
 
     return (
-      <div id="container">
-        <div id="content-container">
-          <h1>Guess a Sketch!</h1>
-          <p>Half party game, half science project.</p>
-          <p>Each round, you get a prompt (eg "Cat"). Draw it! 
-          Well, as best you can, until the timer runs out. 
-          Get points based on the speed and quality of your drawing.
-          </p>
-          <p>Points are awarded by an AI that has learned to recognize objects
-          in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
-          science project part.
-          </p>
-          <hr />
-          <div>
-            <button className="ui button" onClick={this.onClickPlay}>Play</button>
-            <button className="ui button" onClick={this.onClickHost}>Host</button>
+      <center>
+        <p></p>
+        <div id="container">
+          <div id="content-container">
+            <Header as='h2' icon textAlign='center'>
+              <Icon name='edit' circular />
+              <Header.Content>
+                Guess A Sketch
+              </Header.Content>
+            </Header>
+
+            <div className="ui text container">
+              <h4 className="ui header">Half party game, half science project.</h4>
+              <p>Each round, you get a prompt (eg "Cat"). Draw it! 
+              Well, as best you can, until the timer runs out. 
+              Get points based on the speed and quality of your drawing.
+              </p>
+              <p>Points are awarded by an AI that has learned to recognize objects
+              in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
+              science project part.
+              </p>
+            </div>  
+
+            <p></p>
+            <div className="ui buttons">
+              <button className="ui button" onClick={this.onClickPlay}>Play</button>
+              <div className="or">
+              </div>
+              <button className="ui button" onClick={this.onClickHost}>Host</button>
+            </div>
+
           </div>
         </div>
-      </div>
+      </center>
     );
   }
 }
