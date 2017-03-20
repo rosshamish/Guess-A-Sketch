@@ -12,7 +12,7 @@ git config --global core.editor "vim" &&
 wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/cuda-repo-ubuntu1404_8.0.44-1_amd64.deb &&
 sudo dpkg -i cuda-repo-ubuntu1404_8.0.44-1_amd64.deb &&
 sudo apt-get update &&
-sudo apt-get --assume- yes install cuda &&
+sudo apt-get --assume-yes install cuda &&
 rm cuda-repo-ubuntu1404_8.0.44-1_amd64.deb &&
  
 # Install CuDnn 5.1 for Cuda Toolkit 8.0 
