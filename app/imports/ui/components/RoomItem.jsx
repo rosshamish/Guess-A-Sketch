@@ -8,9 +8,9 @@ import {
 
 
 export default class RoomItem extends BaseComponent {
-    constructor(props) {
-      super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     const {
@@ -28,7 +28,7 @@ export default class RoomItem extends BaseComponent {
             {room.status}
           </Card.Meta>
           <Card.Description>
-            {room.players.length + ' players'}
+            {room.players.length} players
           </Card.Description>
         </Card.Content>
       </Card>

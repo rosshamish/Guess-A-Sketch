@@ -73,7 +73,7 @@ export default class LoginPage extends BaseComponent {
     // TODO dice icon to randomize name
     return (
       <Container>
-        <Header as="h2">
+        <Header>
           <Header.Content>
             Pick a name
           </Header.Content>

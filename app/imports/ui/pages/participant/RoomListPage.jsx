@@ -11,6 +11,10 @@ import { joinRoom } from '/imports/api/methods';
 import { PLAYER } from '/imports/api/session';
 
 import {
+  Container,
+  Header,
+  Icon,
+  Card,
 } from 'semantic-ui-react';
 
 
@@ -62,20 +66,27 @@ export default class RoomListPage extends BaseComponent {
       const page = this;
       let roomItems = _.map(joinableRooms, (room) => {
         return (
-          <Card.Group
+          <RoomItem
             key={room._id}
             onClick={page.onRoomClickHandler.bind(page, room)}
-            room={room}
-          />
+            room={room} />
         );
       });
 
       return (
-        <div>
-          <h1>Join a room</h1>
-          <div className="room-list">{roomItems}</div>
-          <p>Don't see your room? Don't worry! You can join between rounds.</p>
-        </div>
+        <Container>
+          <Header as="h2" icon textAlign="center">
+            <Icon name="group" circular />
+            <Header.Content>
+              Rooms
+            </Header.Content>
+          </Header>
+          <Card.Group
+            stackable
+            itemsPerRow={2} >
+            {roomItems}
+          </Card.Group>
+        </Container>
       );
     }
   }
