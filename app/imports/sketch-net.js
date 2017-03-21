@@ -1,7 +1,10 @@
-import HTTP from 'http';
+import { HTTP } from 'meteor/http';
+import { Meteor } from 'meteor/meteor';
 
-export function getPrompt(roomName) {
-  return 'ice cream';
+const sketchNetURL = 'http://localhost:5000';
+
+export function getAllPrompts() {
+  return null;
 }
 
 export function getScore(sketch) {

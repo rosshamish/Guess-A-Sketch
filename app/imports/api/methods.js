@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { HTTP } from 'meteor/http';
 import SimpleSchema from 'simpl-schema';
 
 import { Sketches } from './collections/sketches';
@@ -13,7 +14,7 @@ import {
 } from '../game-status';
 
 import {
-  getPrompt,
+  getAllPrompts,
   getScore,
 } from '../sketch-net';
 
@@ -371,16 +372,23 @@ export const createRoom = new ValidatedMethod({
     }
     
     let rounds = [];
+
+    // TODO move this into module sketch-net
+    const sketchNetURL = 'http://localhost:5000';
+    const url = `${sketchNetURL}/prompts`;
+    const getSync = Meteor.wrapAsync(HTTP.get(url), {});
+    const prompts = getSync();
+    console.log(prompts);
+
     for (let count = 0; count < round_count; count++){
       rounds.push({
         time: round_time,
         index: count,
-        prompt: getPrompt(room_name),
+        // Random choice without replacement
+        prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
       });
     }
     let id = Rooms.insert({ name: room_name, rounds: rounds });
     console.log(`Creating room ${room_name} ${id}`);
-
-    return id;
   },
 });

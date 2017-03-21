@@ -55,7 +55,7 @@ export default class CreateARoom extends BaseComponent{
     let room = Rooms.findOne({name: this.state.roomName});
     if (!createdRoom || !room) {
       console.error('Failed to create room.');
-      return <ErrorMessage />
+      return <ErrorMessage />;
     }
 
     // Navigate to the lobby of the newly created room
