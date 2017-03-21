@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
+import { browserHistory } from 'react-router';
 
 import {
   getRoundScore,
@@ -13,6 +14,8 @@ import {
   Container,
   Table,
   Header,
+  Button,
+  Form,
 } from 'semantic-ui-react';
 
 
@@ -21,6 +24,11 @@ export default class ParticipantEndGameScreen extends BaseComponent {
     super(props);
     this.state = {
     };
+  }
+
+  onSubmit(event) {
+    event.preventDefault(); // Don't reload the page
+    browserHistory.push('/join');
   }
 
   render() {
@@ -61,6 +69,11 @@ export default class ParticipantEndGameScreen extends BaseComponent {
             {renderScores}
           </Table.Body>
         </Table>
+        <Form onSubmit={this.onSubmit}>
+          <Button type="submit">
+            Back to Lobby // PROBLEM: Updates HostEndGameScreen when user leaves
+          </Button>
+        </Form>
       </Container>
     );
   }

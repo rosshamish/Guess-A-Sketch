@@ -3,11 +3,14 @@ import BaseComponent from './BaseComponent.jsx';
 import { _ } from 'meteor/underscore';
 
 import { getGameScore } from '/imports/scoring';
+import { browserHistory } from 'react-router';
 
 import {
   Container,
   Table,
   Header,
+  Button,
+  Form,
 } from 'semantic-ui-react';
 
 export default class HostEndGameScreen extends BaseComponent {
@@ -17,8 +20,13 @@ export default class HostEndGameScreen extends BaseComponent {
     };
   }
 
+  onSubmit(event) {
+    event.preventDefault(); // Don't reload the page
+    browserHistory.push('/');
+  }
+
   render() {
-    const {
+    const { 
       room,
     } = this.props;
     
@@ -54,6 +62,11 @@ export default class HostEndGameScreen extends BaseComponent {
             {renderScores}
           </Table.Body>
         </Table>
+        <Form onSubmit={this.onSubmit}>
+          <Button type="submit">
+            Back to Home
+          </Button>
+        </Form>
       </Container>
     );
   }
