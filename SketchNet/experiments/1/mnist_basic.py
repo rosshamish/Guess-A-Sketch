@@ -103,8 +103,7 @@ def main():
                 writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
-
-        batch = get_batch(batch_size, (height, width))
+        batch = get_batch(batch_size, (height, width), train=False)
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
