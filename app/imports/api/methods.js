@@ -6,12 +6,16 @@ import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
 import { 
   Schema,
-  getFakePrompt, // TODO fetch prompts from sketch net
 } from './schema';
 
 import {
   currentRound,
 } from '../game-status';
+
+import {
+  getPrompt,
+  getScore,
+} from '../sketch-net';
 
 
 export const submitSketch = new ValidatedMethod({
@@ -28,7 +32,7 @@ export const submitSketch = new ValidatedMethod({
     const sketchID = Sketches.insert(sketch);
     console.log('Submitting sketch ' + sketchID);
 
-    return Rooms.update({
+    const didUpdate = Rooms.update({
       "players.name": sketch.player.name,
       "rounds.index": roundIndex,
     }, {
@@ -36,6 +40,12 @@ export const submitSketch = new ValidatedMethod({
         "rounds.$.sketches": sketchID,
       },
     });
+    if (!didUpdate) {
+      console.error("Failed to insert sketchID into room");
+      return didUpdate;
+    }
+
+    return true; // Success
   },
 });
 
@@ -365,7 +375,7 @@ export const createRoom = new ValidatedMethod({
       rounds.push({
         time: round_time,
         index: count,
-        prompt: getFakePrompt(),
+        prompt: getPrompt(room_name),
       });
     }
     let id = Rooms.insert({ name: room_name, rounds: rounds });

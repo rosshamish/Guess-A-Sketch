@@ -5,12 +5,6 @@ import SimpleSchema from 'simpl-schema';
 
 export const Schema = {};
 
-const DEBUG_PROMPTS = ['cat', 'dog', 'monkey', 'freezer', 'ice cream']; //TODO: change to sketchnet API call?
-export function getFakePrompt() {
-    return DEBUG_PROMPTS[Math.floor(Math.random() * DEBUG_PROMPTS.length)];
-}
-
-
 Schema.Player = new SimpleSchema({
     name: {
         type: String,
@@ -52,7 +46,6 @@ Schema.Round = new SimpleSchema({
     prompt:{
         type: String,
         label: "Round Prompt",
-        defaultValue: getFakePrompt(),
     },
     sketches:{
         type: Array,

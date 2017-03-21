@@ -7,7 +7,7 @@ app = Flask(__name__)
 import random
 from preprocessing.data_prep import get_classes
 
-IMAGE_DIR = '/Users/anjueappen/png'
+IMAGE_DIR = 'png'
 
 @app.route("/prompts", methods=['GET'])
 def prompts():

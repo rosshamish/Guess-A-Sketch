@@ -40,7 +40,8 @@ def preprocess(directory):
     return imgs
 
 
-TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
+if __name__ == '__main__':
+    TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
 
 
 def getExample(args):
