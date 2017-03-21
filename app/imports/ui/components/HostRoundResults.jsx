@@ -9,16 +9,23 @@ import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
+
 import {
   startRound,
   endRound,
   endGame,
 } from '/imports/api/methods';
+
 import { 
   currentRound,
   isLastRound,
 } from '/imports/game-status';
 
+import {
+  Button,
+  Header,
+  Container,
+} from 'semantic-ui-react';
 
 export default class HostRoundResults extends BaseComponent {
   constructor(props) {
@@ -79,22 +86,23 @@ export default class HostRoundResults extends BaseComponent {
       return <SketchImage key={sketch._id} sketch={sketch} />
     });
 
+    // TO DO: Pinterest Collage here
     return (
-      <div className="collage">
-        <h1>Sketches this round</h1>
+      <Container>
+        <Header as='h1'>Sketches From This Round</Header>
         <div className="sketches">
           {SketchComponents}
         </div>
         <form onSubmit={this.onNextRound}>
-          <button>
+          <Button>
             { 
               isLastRound(round, room) ?
               'End Game' :
               'Next Round' 
             }
-          </button>
+          </Button>
         </form>
-      </div>
+      </Container>
     );
   }
 }
