@@ -16,6 +16,7 @@ import {
   Button,
   Form,
   List,
+  Label,
 } from 'semantic-ui-react';
 
 export default class HostPreGameScreen extends BaseComponent {
@@ -48,7 +49,13 @@ export default class HostPreGameScreen extends BaseComponent {
     if (room.players.length > 0) {
       player_list = _.map(room.players, (player) => {
         return ( // key suppresses a key error in console
-          <PlayerItem key={player.name} player = {player} /> 
+          <Label 
+            key={player.name}
+            circular
+            size="large"
+            color={player.color}>
+            {player.name}
+          </Label>
         );
       });
     }
@@ -72,7 +79,7 @@ export default class HostPreGameScreen extends BaseComponent {
         <Form onSubmit={this.onStartGame}>
           <Button type="submit">Start Game</Button>
         </Form>
-        <div> {player_list} </div>
+        {player_list}
       </Container>
       </center>
     );
