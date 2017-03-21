@@ -73,9 +73,9 @@ export default class LoginPage extends BaseComponent {
     // TODO dice icon to randomize name
     return (
       <Container>
-        <Header>
+        <Header as='h1'>
           <Header.Content>
-            Pick a name
+            Pick A Name
           </Header.Content>
         </Header>
         <Form onSubmit={this.onSubmit}>

@@ -9,7 +9,12 @@ import { Rooms } from '/imports/api/collections/rooms.js';
 import { HOST_ROOM } from '/imports/api/session';
 import { createRoom } from '/imports/api/methods';
 
-import { Form } from 'semantic-ui-react'
+import {
+  Form,
+  Container,
+  Button,
+  Header,
+} from 'semantic-ui-react';
 
 export default class CreateARoom extends BaseComponent{
   constructor(props){
@@ -70,45 +75,53 @@ export default class CreateARoom extends BaseComponent{
     );}
 
     return (
-      <center>
-        <div className="create-room">
-          <h1>Create a room</h1>
-          <form onSubmit={this.onCreateRoom}>
+      <Container>
+        <Header as='h1'>
+          <Header.Content>
+            Create A Room
+          </Header.Content>
+        </Header>
+        <Form onSubmit={this.onCreateRoom}>
 
-            Room Name:
-            <input
-              type="text"
-              name="roomName"
-              ref={(input) => (this.roomName = input)}
-              value={this.state.roomName}
-              placeholder="Room Name"
-              onChange={this.onRoomNameChange}/>
-            <br/>
+          <Form.Input
+            fluid
+            inline
+            label='Room Name'
+            type="text"
+            name="roomName"
+            ref={(input) => (this.roomName = input)}
+            value={this.state.roomName}
+            onChange={this.onRoomNameChange}/>
 
-            Number of Rounds:
-            <input
-              type="number"
-              name="roomName"
-              value={this.state.roundCount}
-              placeholder="Number of Rounds"
-              onChange={this.onRoundCountChange}/>
-            <br/>
+          <Form.Input
+            fluid
+            inline
+            label='Number of Rounds'
+            type="number"
+            name="roomName"
+            value={this.state.roundCount}
+            placeholder="Number of Rounds"
+            onChange={this.onRoundCountChange}/>
 
-            Time:
-            <input
-              type="number"
-              name="roomName"
-              value={this.state.roundTime}
-              placeholder="Time"
-              onChange={this.onRoundTimeChange}/>
-            <br/>
+          <Form.Input
+            fluid
+            inline
+            label='Time'
+            type="number"
+            name="roomName"
+            value={this.state.roundTime}
+            placeholder="Time"
+            onChange={this.onRoundTimeChange}/>
 
-            <button className="ui button">
-              Create
-            </button>
-          </form>
-        </div>
-      </center>
+          <Button
+            fluid
+            primary
+            type="submit">
+            Create
+          </Button>
+        </Form>
+      </Container>
+      
     );
   }
 }
