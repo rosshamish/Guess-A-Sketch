@@ -11,6 +11,7 @@ import { playRound } from '/imports/api/methods';
 import {
   Header,
   Container,
+  Label,
 } from 'semantic-ui-react';
 
 export default class HostPreRound extends BaseComponent {
@@ -36,15 +37,17 @@ export default class HostPreRound extends BaseComponent {
 
     return (
       <Container>
-        <Header as='h1'>Round #{round.index + 1}</Header>
-        <Container>
-          <Prompt prompt={round.prompt} />
-          <Timer
-            room={room}
-            time={3}
-            onTimeout={this.onTimeout.bind(null, room)}
-            text={'Round starting in '} />
-        </Container>
+        <Label.Group size="huge">
+          <Header as='h1'>Round #{round.index + 1}</Header>
+          <Container>
+            <Prompt prompt={round.prompt} />
+            <Timer
+              room={room}
+              time={3}
+              onTimeout={this.onTimeout.bind(null, room)}
+              text={'Round starting in '} />
+          </Container>
+        </Label.Group>
       </Container>
     );
   }
