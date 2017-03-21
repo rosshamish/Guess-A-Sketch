@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { HTTP } from 'meteor/http';
 import SimpleSchema from 'simpl-schema';
 
 import { Sketches } from './collections/sketches';
@@ -372,14 +371,10 @@ export const createRoom = new ValidatedMethod({
     }
     
     let rounds = [];
-
-    // TODO move this into module sketch-net
-    const sketchNetURL = 'http://localhost:5000';
-    const url = `${sketchNetURL}/prompts`;
-    const getSync = Meteor.wrapAsync(HTTP.get(url), {});
-    const prompts = getSync();
+    const promptsFn = Meteor.wrapAsync(getAllPrompts);
+    const prompts = promptsFn();
+    console.log(promptsFn);
     console.log(prompts);
-
     for (let count = 0; count < round_count; count++){
       rounds.push({
         time: round_time,
