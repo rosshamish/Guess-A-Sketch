@@ -23,7 +23,6 @@ def read_and_flatten(class_dir, ground_truth):
 def reload_K_splits(dir):
     all_imgs = preprocess(dir)
     train_idx, test_idx = KF.split(all_imgs).next()
-
     return [all_imgs[x] for x in train_idx], [all_imgs[x] for x in test_idx]
 
 

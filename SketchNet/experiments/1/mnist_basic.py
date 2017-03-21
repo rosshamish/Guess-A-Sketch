@@ -4,7 +4,6 @@ import tensorflow as tf
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.tf_graph_scope import define_scope
-# from preprocessing.tf_data_prep import populate_batch
 from preprocessing.data_prep import get_batch
 from utils.base_model import Model
 from utils.tf_utils import weight_variable, bias_variable, conv2d, max_pool_2x2
