@@ -4,6 +4,12 @@ import { _ } from 'meteor/underscore';
 
 import { getGameScore } from '/imports/scoring';
 
+import {
+  Container,
+  Table,
+  Header,
+} from 'semantic-ui-react';
+
 export default class HostEndGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
@@ -25,28 +31,30 @@ export default class HostEndGameScreen extends BaseComponent {
 
     var renderScores = scores.map(function(row,index) {
       return ( // key suppresses a key error in console
-        <tr key={index}>
-          <th>{index+1}</th>
-          <th>{row.name}</th>
-          <th>{row.score}</th>
-        </tr>
+        <Table.Row key={index}>
+          <Table.Cell>{index+1}</Table.Cell>
+          <Table.Cell>{row.name}</Table.Cell>
+          <Table.Cell>{row.score}</Table.Cell>
+        </Table.Row>
       );
     });
 
     return(
-      <div className="host-end-game">
-        <h1>Game Results</h1>
-        <table>
-        <tbody>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-          </tr>
-          {renderScores}
-        </tbody>
-        </table>
-      </div>
+      <Container>
+        <Header as="h1">Game Results</Header>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Rank</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Score</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {renderScores}
+          </Table.Body>
+        </Table>
+      </Container>
     );
   }
 }
