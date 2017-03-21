@@ -18,7 +18,7 @@ export default class Prompt extends BaseComponent {
 
     return (
       <Label>
-        Draw a <strong>{prompt}</strong>
+        Drawing Prompt: <strong>{prompt}</strong>
       </Label>
     );
   }
