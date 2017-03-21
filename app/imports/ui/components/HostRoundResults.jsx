@@ -10,7 +10,7 @@ import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
 
-import { Component } from "react-stack-grid";
+import Component from "react-stack-grid";
 import StackGrid from "react-stack-grid";
 
 import {

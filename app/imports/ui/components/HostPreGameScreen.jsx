@@ -8,6 +8,9 @@ import ErrorMessage from './ErrorMessage.jsx';
 import { startRound } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
 
+import Component from "react-stack-grid";
+import StackGrid from "react-stack-grid";
+
 import {
   Container,
   Header,
@@ -48,18 +51,19 @@ export default class HostPreGameScreen extends BaseComponent {
     if (room.players.length > 0) {
       player_list = _.map(room.players, (player) => {
         return ( // key suppresses a key error in console
-          <Label 
-            key={player.name}
-            circular
-            size="large"
-            color={player.color}>
-            {player.name}
-          </Label>
+          <div key={player.name}>
+            <Label 
+              key={player.name}
+              circular
+              size="large"
+              color={player.color}>
+              {player.name}
+            </Label>
+          </div>
         );
       });
     }
-
-    // TO DO: Add animation for people joining the room.
+    
     return (
       <center>
       <Container>
@@ -78,7 +82,10 @@ export default class HostPreGameScreen extends BaseComponent {
         <Form onSubmit={this.onStartGame}>
           <Button type="submit">Start Game</Button>
         </Form>
-        {player_list}
+        <br/>
+        <StackGrid columnWidth={150}>
+          {player_list}
+        </StackGrid>
       </Container>
       </center>
     );
