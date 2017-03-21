@@ -10,6 +10,9 @@ import NoRooms from '../../components/NoRooms.jsx';
 import { joinRoom } from '/imports/api/methods';
 import { PLAYER } from '/imports/api/session';
 
+import {
+} from 'semantic-ui-react';
+
 
 export default class RoomListPage extends BaseComponent {
   constructor(props) {
@@ -59,7 +62,7 @@ export default class RoomListPage extends BaseComponent {
       const page = this;
       let roomItems = _.map(joinableRooms, (room) => {
         return (
-          <RoomItem
+          <Card.Group
             key={room._id}
             onClick={page.onRoomClickHandler.bind(page, room)}
             room={room}
