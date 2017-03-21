@@ -4,7 +4,6 @@ import { _ } from 'meteor/underscore';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
-import PlayerItem from './PlayerItem.jsx';
 
 import { startRound } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
