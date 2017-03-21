@@ -82,7 +82,6 @@ export default class CreateARoom extends BaseComponent{
           </Header.Content>
         </Header>
         <Form onSubmit={this.onCreateRoom}>
-
           <Form.Input
             fluid
             inline
@@ -92,7 +91,6 @@ export default class CreateARoom extends BaseComponent{
             ref={(input) => (this.roomName = input)}
             value={this.state.roomName}
             onChange={this.onRoomNameChange}/>
-
           <Form.Input
             fluid
             inline
@@ -102,7 +100,6 @@ export default class CreateARoom extends BaseComponent{
             value={this.state.roundCount}
             placeholder="Number of Rounds"
             onChange={this.onRoundCountChange}/>
-
           <Form.Input
             fluid
             inline
@@ -112,7 +109,6 @@ export default class CreateARoom extends BaseComponent{
             value={this.state.roundTime}
             placeholder="Time"
             onChange={this.onRoundTimeChange}/>
-
           <Button
             fluid
             primary
@@ -121,7 +117,6 @@ export default class CreateARoom extends BaseComponent{
           </Button>
         </Form>
       </Container>
-      
     );
   }
 }
