@@ -6,14 +6,19 @@ import { PLAYER } from '/imports/api/session';
 
 import { Sketches } from '/imports/api/collections/sketches';
 
+import {
+  getRoundScore,
+} from '/imports/scoring';
+
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
-
 import {
-  getRoundScore,
-} from '/imports/scoring';
+  Container,
+  Header,
+  Divider,
+} from 'semantic-ui-react';
 
 
 export default class ParticipantRoundResults extends BaseComponent {
@@ -48,15 +53,16 @@ export default class ParticipantRoundResults extends BaseComponent {
     const currentPlayerSketch = currentPlayerSketches[0];
 
     return (
-      <div>
-        <h1>Round Results</h1>
-        <h3>You drew:</h3>
+      <Container>
+        <Header as='h1'>Round Results</Header>
+        <Header as='h3'>Looks like a... TODO</Header>
+        <div>Score: {getRoundScore(round, Session.get(PLAYER))}</div>
+
+        <Divider />
+
+        <Header as='h3'>You drew:</Header>
         <SketchImage sketch={currentPlayerSketch} />
-        <hr />
-        <h3>SketchNet:</h3>
-        <p>"Looks like a... TODO"</p>
-        <p>Score: {getRoundScore(round, Session.get(PLAYER))}</p>
-      </div>
+      </Container>
     );
   }
 }
