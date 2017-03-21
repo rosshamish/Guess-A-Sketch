@@ -44,7 +44,7 @@ export default class HostPreGameScreen extends BaseComponent {
 
     Session.set(HOST_ROOM, room);
 
-    let player_list = 'None';
+    let player_list = '';
     if (room.players.length > 0) {
       player_list = _.map(room.players, (player) => {
         return ( // key suppresses a key error in console
@@ -53,6 +53,7 @@ export default class HostPreGameScreen extends BaseComponent {
       });
     }
 
+    // TO DO: Add animation for people joining the room.
     return (
       <center>
       <Container>
@@ -64,18 +65,14 @@ export default class HostPreGameScreen extends BaseComponent {
         </Header>
         <List>
           <List.Item>
-            <List.Icon name='tag' />
-            <List.Content>Room Name: {room.name}</List.Content>
+            <List.Icon name='tag'/>
+            <List.Content><b>Room Name:</b> {room.name}</List.Content>
           </List.Item>
         </List>
-
-          <p>Players in Room: </p>
-          <div> {player_list} </div>
         <Form onSubmit={this.onStartGame}>
-
           <Button type="submit">Start Game</Button>
-
         </Form>
+        <div> {player_list} </div>
       </Container>
       </center>
     );
