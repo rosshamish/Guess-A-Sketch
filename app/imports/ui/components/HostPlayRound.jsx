@@ -6,10 +6,13 @@ import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
 
-import {
-  roundTimerOver,
-} from '/imports/api/methods';
+import { roundTimerOver } from '/imports/api/methods';
 
+import {
+  Header,
+  Container,
+  Label,
+} from 'semantic-ui-react';
 
 export default class HostPlayRound extends BaseComponent {
   constructor(props) {
@@ -33,17 +36,19 @@ export default class HostPlayRound extends BaseComponent {
     } = this.props;
 
     return (
-      <div className="host-play">
-        <h1>Round in progress</h1>
-        <div className="host-game-screen">
-          <Prompt prompt={round.prompt} />
-          <Timer
-            room={room}
-            time={round.time}
-            onTimeout={this.onTimeout.bind(null, room)}
-            text={'Time remaining: '} />
-        </div>
-      </div>
+      <Container>
+        <Label.Group size="huge">
+          <Header as='h1'>Round In Progress</Header>
+          <Container>
+            <Prompt prompt={round.prompt} />
+            <Timer
+              room={room}
+              time={round.time}
+              onTimeout={this.onTimeout.bind(null, room)}
+              text={'Time Remaining: '} />
+          </Container>
+        </Label.Group>
+      </Container>
     );
   }
 }
