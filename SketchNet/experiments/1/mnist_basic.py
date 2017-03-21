@@ -57,14 +57,13 @@ class Exp1Model(Model):
     def train(self):
         cross_entropy = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(labels=self.label, logits=self.prediction))
-        tf.summary.scalar('cross_entropy', cross_entropy)
+        # tf.summary.scalar('cross_entropy', cross_entropy)
         return tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
     @define_scope
     def accuracy(self):
         correct_prediction = tf.equal(tf.argmax(self.label, 1), tf.argmax(self.prediction, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        tf.summary.scalar('accuracy', accuracy)
         return accuracy
 
 
@@ -83,6 +82,7 @@ def main():
     model = Exp1Model(image, width, height, num_labels, label, keep_prob)
 
     # Initialize the FileWriter
+    tf.summary.scalar('accuracy', model.accuracy)
     summary = tf.summary.merge_all()
     writer = tf.summary.FileWriter('/tmp/tensorflow/', graph=tf.get_default_graph())
 
