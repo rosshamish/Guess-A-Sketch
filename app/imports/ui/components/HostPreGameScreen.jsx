@@ -67,10 +67,6 @@ export default class HostPreGameScreen extends BaseComponent {
             <List.Icon name='tag' />
             <List.Content>Room Name: {room.name}</List.Content>
           </List.Item>
-          <List.Item>
-            <List.Icon name='at' />
-            <List.Content>Room Code: {room._id.substring(0, 4)}</List.Content>
-          </List.Item>
         </List>
 
           <p>Players in Room: </p>
