@@ -8,11 +8,11 @@ import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Canvas from './Canvas.jsx';
 import Timer from './Timer.jsx';
+
 import {
   Header,
   Container,
 } from 'semantic-ui-react';
-
 
 export default class ParticipantPreRound extends BaseComponent {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class ParticipantPreRound extends BaseComponent {
 
     return (
       <Container>
-        <Header as='h1'>Round {round.index + 1}</Header>
+        <Header as='h1'>Round #{round.index + 1}</Header>
         <Container>
           <Prompt prompt={round.prompt} />
           <Timer

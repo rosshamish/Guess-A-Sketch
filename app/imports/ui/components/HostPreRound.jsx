@@ -6,10 +6,12 @@ import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
 
-import {
-  playRound,
-} from '/imports/api/methods';
+import { playRound } from '/imports/api/methods';
 
+import {
+  Header,
+  Container,
+} from 'semantic-ui-react';
 
 export default class HostPreRound extends BaseComponent {
   constructor(props) {
@@ -33,17 +35,17 @@ export default class HostPreRound extends BaseComponent {
     } = this.props;
 
     return (
-      <div className="host-pre-container">
-        <h1>Round #{round.index + 1}</h1>
-        <div className="host-pre">
+      <Container>
+        <Header as='h1'>Round #{round.index + 1}</Header>
+        <Container>
           <Prompt prompt={round.prompt} />
           <Timer
             room={room}
             time={3}
             onTimeout={this.onTimeout.bind(null, room)}
-            text={'Round starts in '} />
-        </div>
-      </div>
+            text={'Round starting in '} />
+        </Container>
+      </Container>
     );
   }
 }
