@@ -23,13 +23,13 @@ export default class ParticipantPreRound extends BaseComponent {
 
     return (
       <div className="participant-pre-container">
-        <h1>Round #{round.index + 1}</h1>
+        <Header as='h1'>Round {round.index + 1}</h1>
         <div className="participant-pre">
           <Prompt prompt={round.prompt} />
           <Timer
             room={room}
             time={3}
-            text={'Round starts in '} />
+            text={'Round starting in '} />
         </div>
       </div>
     );

@@ -50,7 +50,10 @@ export default class ParticipantPlayRound extends BaseComponent {
           fluid
         >
           <Prompt prompt={round.prompt} />
-          <Timer time={round.time} />
+          <Timer
+            time={round.time}
+            text="Remaining: "
+          />
         </Label.Group>
         <Canvas prompt={round.prompt} player={Session.get(PLAYER)} />
       </Container>
