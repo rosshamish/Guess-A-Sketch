@@ -55,7 +55,7 @@ export default class ParticipantRoundResults extends BaseComponent {
 
     return (
       <Container>
-        <Header as='h1'>Round Results</Header>
+        <Header as='h1'>Round {round.index+1} Over</Header>
         <Segment.Group>
           <Segment>
             <Header as='h3'>Looks like a... TODO</Header>
