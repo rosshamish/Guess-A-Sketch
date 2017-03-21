@@ -6,14 +6,19 @@ import { PLAYER } from '/imports/api/session';
 
 import { Sketches } from '/imports/api/collections/sketches';
 
+import {
+  getRoundScore,
+} from '/imports/scoring';
+
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
-
 import {
-  getRoundScore,
-} from '/imports/scoring';
+  Container,
+  Header,
+  Segment,
+} from 'semantic-ui-react';
 
 
 export default class ParticipantRoundResults extends BaseComponent {
@@ -25,6 +30,7 @@ export default class ParticipantRoundResults extends BaseComponent {
 
   render() {
     const {
+      room,
       round,
     } = this.props;
 
@@ -39,7 +45,7 @@ export default class ParticipantRoundResults extends BaseComponent {
     });
 
     if (currentPlayerSketches.length === 0) {
-      return <ParticipantJoiningBetweenRounds />
+      return <ParticipantJoiningBetweenRounds room={room} round={round} />
     } else if (currentPlayerSketches.length > 1) {
       console.error('Player had too many sketches in latest round. Had ' + currentPlayerSketches.length + '.');
       return <ErrorMessage />
@@ -48,19 +54,23 @@ export default class ParticipantRoundResults extends BaseComponent {
     const currentPlayerSketch = currentPlayerSketches[0];
 
     return (
-      <div>
-        <h1>Round Results</h1>
-        <h3>You drew:</h3>
-        <SketchImage sketch={currentPlayerSketch} />
-        <hr />
-        <h3>SketchNet:</h3>
-        <p>"Looks like a... TODO"</p>
-        <p>Score: {getRoundScore(round, Session.get(PLAYER))}</p>
-      </div>
+      <Container>
+        <Header as='h1'>Round {round.index+1} Over</Header>
+        <Segment.Group>
+          <Segment>
+            <Header as='h3'>Looks like a... TODO</Header>
+            <div>Score: {getRoundScore(round, currentPlayer)}</div>
+          </Segment>
+          <Segment>
+            <SketchImage sketch={currentPlayerSketch} />
+          </Segment>
+        </Segment.Group>
+      </Container>
     );
   }
 }
 
 ParticipantRoundResults.propTypes = {
+  room: React.PropTypes.object,
   round: React.PropTypes.object,
 };

@@ -6,6 +6,13 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import { PLAYER } from '/imports/api/session';
 import { randomName } from '/imports/random-name';
 
+import {
+  Form,
+  Container,
+  Button,
+  Header,
+  Icon,
+} from 'semantic-ui-react';
 
 export default class LoginPage extends BaseComponent {
 
@@ -27,7 +34,7 @@ export default class LoginPage extends BaseComponent {
       this.setState({ nickname: randomName() });
     }
     if (this.state.color === null) {
-      this.setState({ color: 'red'})
+      this.setState({ color: 'red' });
     }
   }
 
@@ -63,27 +70,41 @@ export default class LoginPage extends BaseComponent {
     const {
     } = this.props;
 
+    // TODO dice icon to randomize name
     return (
-      <div className="login-page">
-        <h1>Pick a name</h1>
-        <form onSubmit={this.onSubmit}>
-          Nickname:
-          <input
-            type="text"
-            name="nickname"
+      <Container>
+        <Header>
+          <Header.Content>
+            Pick a name
+          </Header.Content>
+        </Header>
+        <Form onSubmit={this.onSubmit}>
+          <Form.Input
+            fluid
+            inline
+            label='Name'
+            type='text'
             value={this.state.nickname}
-            onChange={this.onNicknameChange}
-          />
-          <br />
-          Color:
-          <select value={this.state.color} onChange={this.onColorChange}>
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-          </select>
-          <br />
-          <button type="submit">Play</button>
-        </form>
-      </div>
+            onChange={this.onNicknameChange} />
+          <Form.Select
+            fluid
+            inline
+            label='Color'
+            type='text'
+            value={this.state.color}
+            onChange={this.onColorChange}
+            options={[
+              { key: 'red', text: 'Red', value: 'red' },
+              { key: 'blue', text: 'Blue', value: 'blue' }
+            ]} />
+          <Button
+            fluid
+            primary
+            type="submit">
+            Go
+          </Button>
+        </Form>
+      </Container>
     );
   }
 }

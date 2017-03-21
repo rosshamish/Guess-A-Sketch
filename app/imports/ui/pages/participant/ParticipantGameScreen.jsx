@@ -24,7 +24,6 @@ import {
   isPostGame,
   isInGame,
   currentRound,
-  roundWantsResults,
 } from '/imports/game-status';
 
 

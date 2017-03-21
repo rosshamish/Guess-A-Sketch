@@ -41,7 +41,6 @@ export default class WelcomePage extends React.Component {
 
     return (
       <center>
-        <p></p>
         <div id="container">
           <div id="content-container">
             <Header as='h2' icon textAlign='center'>
@@ -63,12 +62,12 @@ export default class WelcomePage extends React.Component {
               </p>
             </div>  
 
-            <p></p>
+            <p />
             <div className="ui buttons">
-              <button className="ui button" onClick={this.onClickPlay}>Play</button>
+              <button className="ui button primary" onClick={this.onClickPlay}>Play</button>
               <div className="or">
               </div>
-              <button className="ui button" onClick={this.onClickHost}>Host</button>
+              <button className="ui button secondary" onClick={this.onClickHost}>Host</button>
             </div>
 
           </div>

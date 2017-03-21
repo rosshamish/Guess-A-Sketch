@@ -1,13 +1,17 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
-import BaseComponent from './BaseComponent.jsx';
-
-import Prompt from './Prompt.jsx';
-import Canvas from './Canvas.jsx';
-import Timer from './Timer.jsx';
 
 import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
+
+import BaseComponent from './BaseComponent.jsx';
+import Prompt from './Prompt.jsx';
+import Canvas from './Canvas.jsx';
+import Timer from './Timer.jsx';
+import {
+  Header,
+  Container,
+} from 'semantic-ui-react';
 
 
 export default class ParticipantPreRound extends BaseComponent {
@@ -22,16 +26,16 @@ export default class ParticipantPreRound extends BaseComponent {
     } = this.props;
 
     return (
-      <div className="participant-pre-container">
-        <h1>Round #{round.index + 1}</h1>
-        <div className="participant-pre">
+      <Container>
+        <Header as='h1'>Round {round.index + 1}</Header>
+        <Container>
           <Prompt prompt={round.prompt} />
           <Timer
             room={room}
             time={3}
-            text={'Round starts in '} />
-        </div>
-      </div>
+            text={'Round starting in '} />
+        </Container>
+      </Container>
     );
   }
 }

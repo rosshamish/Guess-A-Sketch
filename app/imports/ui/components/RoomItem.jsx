@@ -2,10 +2,15 @@ import React from 'react';
 import { _ } from 'meteor/underscore';
 import BaseComponent from './BaseComponent.jsx';
 
+import {
+  Card,
+} from 'semantic-ui-react';
+
+
 export default class RoomItem extends BaseComponent {
-    constructor(props) {
-      super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     const {
@@ -14,9 +19,19 @@ export default class RoomItem extends BaseComponent {
     } = this.props;
 
     return (
-      <button className="room" onClick={onClick}>
-        {room.name + ' (' + room._id.substring(0, 4) + ')'}
-      </button>
+      <Card onClick={onClick}>
+        <Card.Content>
+          <Card.Header>
+            {room.name}
+          </Card.Header>
+          <Card.Meta>
+            {room.status}
+          </Card.Meta>
+          <Card.Description>
+            {room.players.length} players
+          </Card.Description>
+        </Card.Content>
+      </Card>
     );
   }
 }

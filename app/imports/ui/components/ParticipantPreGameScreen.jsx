@@ -1,11 +1,20 @@
 import React from 'react';
-import { Session } from 'meteor/session';
 import { _ } from 'meteor/underscore';
 
+import { Session } from 'meteor/session';
+import { PLAYER } from '/imports/api/session';
+
 import BaseComponent from './BaseComponent.jsx';
+import Canvas from './Canvas.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 
-import { PLAYER } from '/imports/api/session';
+import {
+  Label,
+  Container,
+  Header,
+  Divider,
+} from 'semantic-ui-react';
+
 
 export default class ParticipantPreGameScreen extends BaseComponent {
   constructor(props) {
@@ -20,18 +29,30 @@ export default class ParticipantPreGameScreen extends BaseComponent {
       room,
     } = this.props;
 
+    const player = Session.get(PLAYER);
+
     if (loading) {
       return (
         <p>Loading...</p>
       );
     } else {
       return (
-        <div>
-          <p>Your name is { Session.get(PLAYER).name }</p>
-          <p>Your color is { Session.get(PLAYER).color }</p>
-          <p>You're in room { room.name + ' (' + room._id.substring(0, 4) + ')' }</p>
-          <p>...hold your horses though, the game hasn't started yet.</p>
-        </div>
+        <Container>
+          <Container>
+            <Header size="huge">{room.name}</Header>
+            <Label 
+              circular
+              size="large"
+              color={player.color}>
+              {player.name}
+            </Label>
+          </Container>
+          <Divider />
+          <Container>
+            <p>Feel free to draw while you wait for the game to start</p>
+            <Canvas prompt="" player={player} />
+          </Container>
+        </Container>
       );
     }
   }

@@ -27,24 +27,6 @@ export function currentRound(room) {
   }
 }
 
-export function roundWantsResults(roundIndex, nextRoom) {
-  if (!nextRoom) {
-    console.error('Cant look for rounds in an undefined room');
-    return null;
-  }
-
-  round = _.find(nextRoom.rounds, (round) => {
-    return round.index === roundIndex;
-  });
-
-  if (!round) {
-    console.error('Couldnt find Round #' + roundIndex);
-    return null;
-  }
-
-  return round.status === 'RESULTS';
-}
-
 export function isLastRound(round, room) {
   return round.index == room.rounds.length - 1;
 }

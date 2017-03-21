@@ -1,10 +1,5 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
-import BaseComponent from './BaseComponent.jsx';
-
-import Prompt from './Prompt.jsx';
-import Canvas from './Canvas.jsx';
-import Timer from './Timer.jsx';
 
 import { Session } from 'meteor/session';
 import {
@@ -13,6 +8,15 @@ import {
 } from '/imports/api/session';
 
 import { submitSketch } from '/imports/api/methods';
+
+import BaseComponent from './BaseComponent.jsx';
+import Prompt from './Prompt.jsx';
+import Canvas from './Canvas.jsx';
+import Timer from './Timer.jsx';
+import {
+  Container,
+  Label,
+} from 'semantic-ui-react';
 
 
 export default class ParticipantPlayRound extends BaseComponent {
@@ -40,13 +44,18 @@ export default class ParticipantPlayRound extends BaseComponent {
     const { round } = this.props;
 
     return (
-      <div id='game-container'>
-        <div>
+      <Container>
+        <Label.Group
+          size="huge"
+        >
           <Prompt prompt={round.prompt} />
-          <Timer time={round.time} />
-        </div>
+          <Timer
+            time={round.time}
+            text="Remaining: "
+          />
+        </Label.Group>
         <Canvas prompt={round.prompt} player={Session.get(PLAYER)} />
-      </div>
+      </Container>
     );
   }
 }
