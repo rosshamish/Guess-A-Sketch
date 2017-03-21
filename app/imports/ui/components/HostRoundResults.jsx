@@ -10,6 +10,9 @@ import SketchImage from './SketchImage.jsx';
 
 import { Sketches } from '/imports/api/collections/sketches';
 
+import { Component } from "react-stack-grid";
+import StackGrid from "react-stack-grid";
+
 import {
   startRound,
   endRound,
@@ -83,16 +86,12 @@ export default class HostRoundResults extends BaseComponent {
     });
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      return <SketchImage key={sketch._id} sketch={sketch} />
+      return <div key={sketch._id}><SketchImage key={sketch._id} sketch={sketch} /></div>
     });
 
-    // TO DO: Pinterest Collage here
     return (
       <Container>
         <Header as='h1'>Sketches From This Round</Header>
-        <div className="sketches">
-          {SketchComponents}
-        </div>
         <form onSubmit={this.onNextRound}>
           <Button>
             { 
@@ -102,6 +101,9 @@ export default class HostRoundResults extends BaseComponent {
             }
           </Button>
         </form>
+        <StackGrid columnWidth={150}>
+          {SketchComponents}
+        </StackGrid>
       </Container>
     );
   }
