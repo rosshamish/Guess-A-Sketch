@@ -1,7 +1,11 @@
 import React from 'react';
 import { _ } from 'meteor/underscore';
 import i18n from 'meteor/universe:i18n';
+
 import BaseComponent from './BaseComponent.jsx';
+import {
+  Label,
+} from 'semantic-ui-react';
 
 
 export default class Timer extends BaseComponent {
@@ -43,9 +47,9 @@ export default class Timer extends BaseComponent {
     } = this.props;
 
     return (
-      <div className="timer">
+      <Label>
         {text}{this.state.remaining}
-      </div>
+      </Label>
     );
   }
 }

@@ -9,6 +9,11 @@ import {
   SKETCH,
 } from '/imports/api/session';
 
+import {
+  Container,
+  Button,
+  Icon,
+} from 'semantic-ui-react';
 
 // Attribution: blank PNG data URI
 // Source: StackOverflow
@@ -59,18 +64,32 @@ export default class Canvas extends BaseComponent {
     } = this.props;
 
     const style = {
-      border: '5px',
+      border: '1px',
       borderColor: 'black',
       borderStyle: 'solid',
     };
 
+    const buttonStyle = {
+      position: 'relative',
+      bottom: '47px',
+      left: '10px',
+    };
+
     return (
-      <div>
-        <button onClick={this.onUndo}>Undo Stroke</button>
+      <Container fluid>
         <div className="container">
           <canvas style={style} id="canvas" />
         </div>
-      </div>
+        <Button 
+          style={buttonStyle}
+          icon
+          size="big"
+          onClick={this.onUndo}
+        >
+          <Icon name="undo" />
+          Undo Stroke
+        </Button>
+      </Container>
     );
   }
 }
