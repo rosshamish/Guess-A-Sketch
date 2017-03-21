@@ -99,6 +99,7 @@ export default class LoginPage extends BaseComponent {
             ]} />
           <Button
             fluid
+            primary
             type="submit">
             Go
           </Button>
