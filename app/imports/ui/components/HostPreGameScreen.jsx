@@ -9,6 +9,15 @@ import PlayerItem from './PlayerItem.jsx';
 import { startRound } from '/imports/api/methods';
 import { HOST_ROOM } from '/imports/api/session';
 
+import {
+  Container,
+  Header,
+  Icon,
+  Button,
+  Form,
+  List,
+} from 'semantic-ui-react';
+
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
@@ -45,16 +54,34 @@ export default class HostPreGameScreen extends BaseComponent {
     }
 
     return (
-      <div className="host-pre-game">
-        <h1>Lobby</h1>
-        <form onSubmit={this.onStartGame}>
-          <p>Room Name: {room.name}</p>
-          <p>Room Code: {room._id.substring(0, 4)}</p>
+      <center>
+      <Container>
+        <Header as="h2" icon textAlign="center">
+          <Icon name="sign in" circular />
+          <Header.Content>
+            Lobby
+          </Header.Content>
+        </Header>
+        <List>
+          <List.Item>
+            <List.Icon name='tag' />
+            <List.Content>Room Name: {room.name}</List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Icon name='at' />
+            <List.Content>Room Code: {room._id.substring(0, 4)}</List.Content>
+          </List.Item>
+        </List>
+
           <p>Players in Room: </p>
           <div> {player_list} </div>
-          <button type="submit">Start Game</button>
-        </form>
-      </div>
+        <Form onSubmit={this.onStartGame}>
+
+          <Button type="submit">Start Game</Button>
+
+        </Form>
+      </Container>
+      </center>
     );
   }
 }
