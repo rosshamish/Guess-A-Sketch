@@ -17,7 +17,7 @@ import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.j
 import {
   Container,
   Header,
-  Divider,
+  Segment,
 } from 'semantic-ui-react';
 
 
@@ -56,13 +56,15 @@ export default class ParticipantRoundResults extends BaseComponent {
     return (
       <Container>
         <Header as='h1'>Round Results</Header>
-        <Header as='h3'>Looks like a... TODO</Header>
-        <div>Score: {getRoundScore(round, Session.get(PLAYER))}</div>
-
-        <Divider />
-
-        <Header as='h3'>You drew:</Header>
-        <SketchImage sketch={currentPlayerSketch} />
+        <Segment.Group>
+          <Segment>
+            <Header as='h3'>Looks like a... TODO</Header>
+            <div>Score: {getRoundScore(round, currentPlayer)}</div>
+          </Segment>
+          <Segment>
+            <SketchImage sketch={currentPlayerSketch} />
+          </Segment>
+        </Segment.Group>
       </Container>
     );
   }
