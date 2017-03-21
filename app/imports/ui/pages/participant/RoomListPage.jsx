@@ -18,6 +18,8 @@ import {
 } from 'semantic-ui-react';
 
 
+// TODO display PLAYING rooms as well, but disable their onClick
+// handlers and grey out the card.
 export default class RoomListPage extends BaseComponent {
   constructor(props) {
     super(props);
