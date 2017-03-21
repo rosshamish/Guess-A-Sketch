@@ -47,7 +47,6 @@ export default class ParticipantPlayRound extends BaseComponent {
       <Container>
         <Label.Group
           size="huge"
-          fluid
         >
           <Prompt prompt={round.prompt} />
           <Timer

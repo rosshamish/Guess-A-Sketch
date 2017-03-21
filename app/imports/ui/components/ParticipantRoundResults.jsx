@@ -30,6 +30,7 @@ export default class ParticipantRoundResults extends BaseComponent {
 
   render() {
     const {
+      room,
       round,
     } = this.props;
 
@@ -44,7 +45,7 @@ export default class ParticipantRoundResults extends BaseComponent {
     });
 
     if (currentPlayerSketches.length === 0) {
-      return <ParticipantJoiningBetweenRounds />
+      return <ParticipantJoiningBetweenRounds room={room} round={round} />
     } else if (currentPlayerSketches.length > 1) {
       console.error('Player had too many sketches in latest round. Had ' + currentPlayerSketches.length + '.');
       return <ErrorMessage />
@@ -68,5 +69,6 @@ export default class ParticipantRoundResults extends BaseComponent {
 }
 
 ParticipantRoundResults.propTypes = {
+  room: React.PropTypes.object,
   round: React.PropTypes.object,
 };
