@@ -4,7 +4,8 @@ import tensorflow as tf
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.tf_graph_scope import define_scope
-from preprocessing.tf_data_prep import populate_batch, preprocess
+# from preprocessing.tf_data_prep import populate_batch
+from preprocessing.data_prep import get_batch
 from utils.base_model import Model
 from utils.tf_utils import weight_variable, bias_variable, conv2d, max_pool_2x2
 
@@ -57,12 +58,14 @@ class Exp1Model(Model):
     def train(self):
         cross_entropy = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(labels=self.label, logits=self.prediction))
+        tf.summary.scalar('cross_entropy', cross_entropy)
         return tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
     @define_scope
     def accuracy(self):
         correct_prediction = tf.equal(tf.argmax(self.label, 1), tf.argmax(self.prediction, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        tf.summary.scalar('accuracy', accuracy)
         return accuracy
 
 
@@ -74,13 +77,14 @@ def main():
     num_labels = 250
     batch_size = 16
 
-    image = tf.placeholder(tf.float32, [None, width, height, 1])
+    image = tf.placeholder(tf.float32, [None, width, height])
     label = tf.placeholder(tf.float32, [None, num_labels])
     keep_prob = tf.placeholder(tf.float32)
 
     model = Exp1Model(image, width, height, num_labels, label, keep_prob)
 
     # Initialize the FileWriter
+    summary = tf.summary.merge_all()
     writer = tf.summary.FileWriter('/tmp/tensorflow/', graph=tf.get_default_graph())
 
     config = tf.ConfigProto()
@@ -91,15 +95,16 @@ def main():
 
         for i in range(1000):
             print(i)
-            batch = populate_batch(batch_size, (height, width))
+            batch = get_batch(batch_size, (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
-                train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
+                summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
+                writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
 
-        batch = populate_batch(batch_size, (height, width))
+        batch = get_batch(batch_size, (height, width))
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 

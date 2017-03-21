@@ -48,22 +48,11 @@ def getExample(dims):
         return getExample()
 
 
-def getExamplesGenerator(dims):
-
-    def examplesGenerator(q):
-        while True:
-            q.put(getExample(dims))
-
-    queue = multiprocessing.Queue(maxsize=128)
-    for w in range(0, 16):
-        proc = multiprocessing.Process(target=examplesGenerator, args=(queue,))
-        proc.start()
-
-    while True:
-        yield queue.get()
 
 
 def get_batch(batch_size, dims):
-    stuff = itertools.islice(getExamplesGenerator(dims), batch_size)
-    imgs, truths = zip(*stuff)
+    from multiprocessing.dummy import Pool as ThreadPool
+    pool = ThreadPool()
+    results = pool.map(getExample, [dims] * batch_size)
+    imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
