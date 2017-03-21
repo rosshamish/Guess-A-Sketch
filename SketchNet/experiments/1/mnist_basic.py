@@ -1,5 +1,6 @@
 import sys, os
 import tensorflow as tf
+from tqdm import tqdm
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
@@ -82,7 +83,7 @@ def main():
     model = Exp1Model(image, width, height, num_labels, label, keep_prob)
 
     # Initialize the FileWriter
-    tf.summary.scalar('accuracy', model.accuracy)
+    # tf.summary.scalar('accuracy', model.accuracy)
     summary = tf.summary.merge_all()
     writer = tf.summary.FileWriter('/tmp/tensorflow/', graph=tf.get_default_graph())
 
@@ -92,14 +93,16 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        for i in range(1000):
-            print(i)
+        for i in tqdm(range(1000)):
+            # print(i)
             batch = get_batch(batch_size, (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
-                summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
-                writer.add_summary(summary, i)
+                # summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
+                train_accuracy = sess.run(model.accuracy,
+                                                   {image: batch[0], label: batch[1], keep_prob: 1.0})
+                # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
         batch = get_batch(batch_size, (height, width), train=False)
