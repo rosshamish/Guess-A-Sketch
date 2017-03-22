@@ -1,13 +1,8 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import { Session } from 'meteor/session';
 
 import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
-
-import { playRound } from '/imports/api/methods';
-
 import {
   Header,
   Container,
@@ -19,20 +14,11 @@ export default class HostPreRound extends BaseComponent {
     super(props);
   }
 
-  onTimeout(room) {
-    const didPlayRound = playRound.call({
-      room_id: room._id,
-    });
-    if (!didPlayRound) {
-      console.error('Failed to start/play round. Server rejected request.');
-      return;
-    }
-  }
-
   render() {
     const {
       round,
       room,
+      onPlayRound,
     } = this.props;
 
     return (
@@ -44,7 +30,7 @@ export default class HostPreRound extends BaseComponent {
             <Timer
               room={room}
               time={3}
-              onTimeout={this.onTimeout.bind(null, room)}
+              onTimeout={onPlayRound}
               text={'Round starting in '} />
           </Container>
         </Label.Group>
@@ -56,4 +42,5 @@ export default class HostPreRound extends BaseComponent {
 HostPreRound.propTypes = {
   round: React.PropTypes.object,
   room: React.PropTypes.object,
+  onPlayRound: React.PropTypes.func,
 };

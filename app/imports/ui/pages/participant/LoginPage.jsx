@@ -14,9 +14,7 @@ export default class LoginPage extends BaseComponent {
     super(props);
   }
 
-  onSubmit(name, color, event) {
-    event.preventDefault(); // Don't reload the page
-
+  onSubmit(name, color) {
     Session.set(PLAYER, { name, color });
     browserHistory.push('/join');
   }

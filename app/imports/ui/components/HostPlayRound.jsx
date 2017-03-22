@@ -1,13 +1,8 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import { Session } from 'meteor/session';
 
 import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
-
-import { roundTimerOver } from '/imports/api/methods';
-
 import {
   Header,
   Container,
@@ -19,20 +14,11 @@ export default class HostPlayRound extends BaseComponent {
     super(props);
   }
 
-  onTimeout(room) {
-    const didSucceed = roundTimerOver.call({
-      room_id: room._id,
-    });
-    if (!didSucceed) {
-      console.error('Server rejected request.');
-      return;
-    }
-  }
-
   render() {
     const { 
       round,
-      room
+      room,
+      onRoundTimerOver,
     } = this.props;
 
     return (
@@ -44,7 +30,7 @@ export default class HostPlayRound extends BaseComponent {
             <Timer
               room={room}
               time={round.time}
-              onTimeout={this.onTimeout.bind(null, room)}
+              onTimeout={onRoundTimerOver}
               text={'Time Remaining: '} />
           </Container>
         </Label.Group>
@@ -56,4 +42,5 @@ export default class HostPlayRound extends BaseComponent {
 HostPlayRound.propTypes = {
   round: React.PropTypes.object,
   room: React.PropTypes.object,
+  onRoundTimerOver: React.PropTypes.func,
 };

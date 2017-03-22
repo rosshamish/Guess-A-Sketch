@@ -1,22 +1,11 @@
 import React from 'react';
-import { Session } from 'meteor/session';
-import { browserHistory } from 'react-router';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
+import CreateARoomView from './CreateARoomView.jsx';
 
-import { Rooms } from '/imports/api/collections/rooms.js';
-import { HOST_ROOM } from '/imports/api/session';
-import { createRoom } from '/imports/api/methods';
 
-import {
-  Form,
-  Container,
-  Button,
-  Header,
-} from 'semantic-ui-react';
-
-export default class CreateARoom extends BaseComponent{
+export default class CreateARoomView extends BaseComponent{
   constructor(props){
     super(props);
     this.state = {
@@ -43,16 +32,16 @@ export default class CreateARoom extends BaseComponent{
       this.setState({roundTime: event.target.value});
   }
 
-  onCreateRoom(event){
+  onCreateRoom(room_name, round_count, round_time){
     event.preventDefault();
 
     const createdRoom = createRoom.call({
-      room_name: this.state.roomName,
-      round_count: parseInt(this.state.roundCount),
-      round_time: parseInt(this.state.roundTime)
+      room_name: room_name,
+      round_count: parseInt(round_count),
+      round_time: parseInt(round_time)
     });
 
-    let room = Rooms.findOne({name: this.state.roomName});
+    const room = Rooms.findOne({name: room_name});
     if (!createdRoom || !room) {
       console.error('Failed to create room.');
       return <ErrorMessage />
@@ -69,54 +58,11 @@ export default class CreateARoom extends BaseComponent{
       room,
     } = this.props;
 
-    if (loading) {
-      return (
-        <p>Loading...</p>
-    );}
-
     return (
-      <Container>
-        <Header as='h1'>
-          <Header.Content>
-            Create A Room
-          </Header.Content>
-        </Header>
-        <Form onSubmit={this.onCreateRoom}>
-          <Form.Input
-            fluid
-            inline
-            label='Room Name'
-            type="text"
-            name="roomName"
-            ref={(input) => (this.roomName = input)}
-            value={this.state.roomName}
-            onChange={this.onRoomNameChange}/>
-          <Form.Input
-            fluid
-            inline
-            label='Number of Rounds'
-            type="number"
-            name="roomName"
-            value={this.state.roundCount}
-            placeholder="Number of Rounds"
-            onChange={this.onRoundCountChange}/>
-          <Form.Input
-            fluid
-            inline
-            label='Time'
-            type="number"
-            name="roomName"
-            value={this.state.roundTime}
-            placeholder="Time"
-            onChange={this.onRoundTimeChange}/>
-          <Button
-            fluid
-            primary
-            type="submit">
-            Create
-          </Button>
-        </Form>
-      </Container>
+      <CreateARoomView
+        loading={loading}
+        onCreateRoom={this.onCreateRoom}
+      />
     );
   }
 }

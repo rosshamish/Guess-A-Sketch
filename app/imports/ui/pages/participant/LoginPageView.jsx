@@ -56,7 +56,10 @@ export default class LoginPageView extends BaseComponent {
             Pick A Name
           </Header.Content>
         </Header>
-        <Form onSubmit={onSubmit.bind(null, this.state.nickname, this.state.color)}>
+        <Form onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit(this.state.nickname, this.state.color);
+        }} >
           <Form.Input
             fluid
             inline

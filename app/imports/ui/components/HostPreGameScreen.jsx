@@ -1,16 +1,7 @@
 import React from 'react';
-import { Session } from 'meteor/session';
-import { _ } from 'meteor/underscore';
 
 import BaseComponent from './BaseComponent.jsx';
-import ErrorMessage from './ErrorMessage.jsx';
-
-import { startRound } from '/imports/api/methods';
-import { HOST_ROOM } from '/imports/api/session';
-
-import Component from "react-stack-grid";
-import StackGrid from "react-stack-grid";
-
+import StackGrid from 'react-stack-grid';
 import {
   Container,
   Header,
@@ -21,42 +12,29 @@ import {
   Label,
 } from 'semantic-ui-react';
 
+
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  onStartGame(event){
-    event.preventDefault(); // Don't reload the page
-    console.log('Starting Game.');
-
-    const didStartRound = startRound.call({
-      room_id: Session.get(HOST_ROOM)._id,
-    });
-    if (!didStartRound) {
-      console.error('Unable to start first round. Server rejected request.');
-      return;
-    }
-  }
-
   render() {
     const {
       room,
+      onStartGame,
     } = this.props;
 
-    Session.set(HOST_ROOM, room);
-
-    let player_list = '';
+    let playerList = '';
     if (room.players.length > 0) {
-      player_list = _.map(room.players, (player) => {
+      playerList = room.players.map((player) => {
         return ( // key suppresses a key error in console
           <div key={player.name}>
             <Label 
               key={player.name}
               circular
               size="large"
-              color={player.color}>
+              color={player.color} >
               {player.name}
             </Label>
           </div>
@@ -79,12 +57,17 @@ export default class HostPreGameScreen extends BaseComponent {
             <List.Content><b>Room Name:</b> {room.name}</List.Content>
           </List.Item>
         </List>
-        <Form onSubmit={this.onStartGame}>
+        <Form 
+          onSubmit={(event) => {
+            event.preventDefault();
+            onStartGame();
+          }}
+        >
           <Button type="submit">Start Game</Button>
         </Form>
         <br/>
         <StackGrid columnWidth={150}>
-          {player_list}
+          {playerList}
         </StackGrid>
       </Container>
       </center>
@@ -94,4 +77,5 @@ export default class HostPreGameScreen extends BaseComponent {
 
 HostPreGameScreen.propTypes = {
   room: React.PropTypes.object,
+  onStartGame: React.PropTypes.func,
 };

@@ -1,10 +1,9 @@
 import React from 'react';
-import BaseComponent from './BaseComponent.jsx';
-import { _ } from 'meteor/underscore';
-
-import { getGameScore } from '/imports/scoring';
 import { browserHistory } from 'react-router';
 
+import { _ } from 'underscore';
+
+import BaseComponent from './BaseComponent.jsx';
 import {
   Container,
   Table,
@@ -13,11 +12,10 @@ import {
   Form,
 } from 'semantic-ui-react';
 
+
 export default class HostEndGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   onSubmit(event) {
@@ -28,16 +26,20 @@ export default class HostEndGameScreen extends BaseComponent {
   render() {
     const { 
       room,
+      getGameScore,
     } = this.props;
-    
+
     var scores = [];
-    players = room.players;
+    const players = room.players;
     for (var i in players) {
-      scores[scores.length] = {name:players[i].name, score:getGameScore(room, players[i])}
+      scores[scores.length] = {
+        name: players[i].name,
+        score: getGameScore(room, players[i])
+      };
     }
     scores = _.sortBy(scores, 'score').reverse();
 
-    var renderScores = scores.map(function(row,index) {
+    const renderScores = scores.map(function(row,index) {
       return ( // key suppresses a key error in console
         <Table.Row key={index}>
           <Table.Cell>{index+1}</Table.Cell>
@@ -74,4 +76,5 @@ export default class HostEndGameScreen extends BaseComponent {
 
 HostEndGameScreen.propTypes = {
   room: React.PropTypes.object,
+  getGameScore: React.PropTypes.func,
 };

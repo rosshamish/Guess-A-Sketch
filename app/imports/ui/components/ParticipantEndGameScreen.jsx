@@ -16,6 +16,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
     super(props);
   }
 
+  // TODO pull this out into GameScreen
   onSubmit(event) {
     event.preventDefault(); // Don't reload the page
     browserHistory.push('/join');
@@ -30,7 +31,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
     } = this.props;
 
     // TODO compute a score for each player in the room based on their matching sketches
-    let renderScores = room.rounds.map(function(round,index) {
+    const renderScores = room.rounds.map(function(round,index) {
       return ( // key suppresses a key error in console
         <Table.Row key={index}>
           <Table.Cell>{index+1}</Table.Cell>
@@ -42,7 +43,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       <Table.Row key={room.rounds.length}>
         <Table.Cell>Total</Table.Cell>
         <Table.Cell>{getGameScore(room, player)}</Table.Cell>
-      </Table.Row>
+      </Table.Row>,
     );
 
     return (
