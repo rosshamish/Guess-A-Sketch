@@ -371,19 +371,22 @@ export const createRoom = new ValidatedMethod({
     }
     
     let rounds = [];
-    const promptsFn = Meteor.wrapAsync(getAllPrompts);
-    const prompts = promptsFn();
-    console.log(promptsFn);
-    console.log(prompts);
-    for (let count = 0; count < round_count; count++){
-      rounds.push({
-        time: round_time,
-        index: count,
-        // Random choice without replacement
-        prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
-      });
-    }
-    let id = Rooms.insert({ name: room_name, rounds: rounds });
-    console.log(`Creating room ${room_name} ${id}`);
+    //const promptsFn = Meteor.wrapAsync(getAllPrompts);
+    //const prompts = promptsFn();
+    getAllPrompts(function(prompts){
+	   	for (let count = 0; count < round_count; count++){
+	      rounds.push({
+	        time: round_time,
+	        index: count,
+	        // Random choice without replacement
+	        prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
+	      });
+	    }
+	    let id = Rooms.insert({ name: room_name, rounds: rounds });
+	    console.log(`Creating room ${room_name} ${id}`);
+    });
+    //console.log("Inside Methods: " + prompts);
+
+   return true;
   },
 });
