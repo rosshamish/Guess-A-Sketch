@@ -1,14 +1,7 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
 import BaseComponent from './BaseComponent.jsx';
 
 import { fabric } from 'fabric';
-
-import { Session } from 'meteor/session';
-import {
-  SKETCH,
-} from '/imports/api/session';
-
 import {
   Container,
   Button,
@@ -40,15 +33,14 @@ export default class Canvas extends BaseComponent {
     this.canvas.freeDrawingBrush.width = 10;
     // this.canvas.freeDrawingBrush.color = ??;
 
+    // Send a canvas update on:
+    // 1. startup, the blank canvas, and
+    // 2. each mouse-up, the latest canvas
     const canvas = this;
-    Session.set(SKETCH, blankImg);
+    this.props.onChange && this.props.onChange(this.canvas, event);
     this.canvas.on('path:created', (event) => {
       canvas.pathStack.push(event.path);
-      // Here, we store the sketch to the Session on each mouse-up.
-      // Then, in ParticipantGameScreen, when the round changes, we
-      // fetch it and send it to the server.
-      // TODO Find a better way than using Session
-      Session.set(SKETCH, this.canvas.toDataURL());
+      this.props.onChange && this.props.onChange(this.canvas, event);
     });
   }
 
@@ -61,6 +53,7 @@ export default class Canvas extends BaseComponent {
     const {
       prompt,
       player,
+      onChange
     } = this.props;
 
     const style = {
@@ -97,4 +90,5 @@ export default class Canvas extends BaseComponent {
 Canvas.propTypes = {
   prompt: React.PropTypes.string,
   player: React.PropTypes.object,
+  onChange: React.PropTypes.func,
 };

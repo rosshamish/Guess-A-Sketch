@@ -1,25 +1,16 @@
 import React from 'react';
-import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
 import { _ } from 'meteor/underscore';
 
-import BaseComponent from '../../components/BaseComponent.jsx';
-import RoomItem from '../../components/RoomItem.jsx';
-import NoRooms from '../../components/NoRooms.jsx';
-
-import { joinRoom } from '/imports/api/methods';
+import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
 
-import {
-  Container,
-  Header,
-  Icon,
-  Card,
-} from 'semantic-ui-react';
+import { joinRoom } from '/imports/api/methods';
+
+import BaseComponent from '../../components/BaseComponent.jsx';
+import RoomListPageView from '../../pages/participant/RoomListPageView.jsx';
 
 
-// TODO display PLAYING rooms as well, but disable their onClick
-// handlers and grey out the card.
 export default class RoomListPage extends BaseComponent {
   constructor(props) {
     super(props);
@@ -51,51 +42,20 @@ export default class RoomListPage extends BaseComponent {
   render() {
     const {
       loading,
-      joinableRooms,
-      noJoinableRooms,
+      rooms,
     } = this.props;
 
-    if (noJoinableRooms) {
-      return <NoRooms />
-    } else if (loading) {
-      return <h3>Loading...</h3>;
-    } else {
-      if (!joinableRooms) {
-        console.error('Can\'t display room list: rooms is undefined');
-        return <ErrorMessage />
-      }
-
-      const page = this;
-      let roomItems = _.map(joinableRooms, (room) => {
-        return (
-          <RoomItem
-            key={room._id}
-            onClick={page.onRoomClickHandler.bind(page, room)}
-            room={room} />
-        );
-      });
-
-      return (
-        <Container>
-          <Header as="h2" icon textAlign="center">
-            <Icon name="group" circular />
-            <Header.Content>
-              Rooms
-            </Header.Content>
-          </Header>
-          <Card.Group
-            stackable
-            itemsPerRow={2} >
-            {roomItems}
-          </Card.Group>
-        </Container>
-      );
-    }
+    return (
+      <RoomListPageView
+        loading={loading}
+        rooms={rooms}
+        onRoomClickHandler={this.onRoomClickHandler}
+      />
+    );
   }
 }
 
 RoomListPage.propTypes = {
   loading: React.PropTypes.bool,
-  joinableRooms: React.PropTypes.array,
-  noJoinableRooms: React.PropTypes.bool,
+  rooms: React.PropTypes.array,
 };

@@ -1,6 +1,4 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import i18n from 'meteor/universe:i18n';
 
 import BaseComponent from './BaseComponent.jsx';
 import {
@@ -41,8 +39,6 @@ export default class Timer extends BaseComponent {
 
   render() {
     const { 
-      room,
-      time ,
       text,
     } = this.props;
 
@@ -56,7 +52,7 @@ export default class Timer extends BaseComponent {
 
 Timer.propTypes = {
   room: React.PropTypes.object,
-  time: Number,
+  time: React.PropTypes.number,
   onTimeout: React.PropTypes.func,
   text: React.PropTypes.string,
 };

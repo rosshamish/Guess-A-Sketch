@@ -1,14 +1,8 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-
-import { Session } from 'meteor/session';
-import { PLAYER } from '/imports/api/session';
 
 import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
-import Canvas from './Canvas.jsx';
 import Timer from './Timer.jsx';
-
 import {
   Header,
   Container,
@@ -22,8 +16,8 @@ export default class ParticipantPreRound extends BaseComponent {
 
   render() {
     const {
-      round,
       room,
+      round,
     } = this.props;
 
     return (
@@ -44,6 +38,6 @@ export default class ParticipantPreRound extends BaseComponent {
 }
 
 ParticipantPreRound.propTypes = {
-  round: React.PropTypes.object,
   room: React.PropTypes.object,
+  round: React.PropTypes.object,
 };

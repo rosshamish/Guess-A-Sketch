@@ -1,13 +1,4 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-
-import { Session } from 'meteor/session';
-import {
-  PLAYER,
-  SKETCH,
-} from '/imports/api/session';
-
-import { submitSketch } from '/imports/api/methods';
 
 import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
@@ -26,35 +17,25 @@ export default class ParticipantPlayRound extends BaseComponent {
 
   componentWillUnmount() {
     // Submit sketch before leaving this page.
-    const didSubmitSketch = submitSketch.call({
-      sketch: {
-        player: Session.get(PLAYER),
-        sketch: Session.get(SKETCH),
-        prompt: this.props.round.prompt,
-      },
-      roundIndex: this.props.round.index,
-    });
-    if (!didSubmitSketch) {
-      console.error('Failed to submit sketch');
-      return;
-    }
+    this.props.onRoundOver(this.props.round.prompt, this.props.round.index);
   }
 
   render() {
-    const { round } = this.props;
+    const { 
+      round,
+      player,
+    } = this.props;
 
     return (
       <Container>
-        <Label.Group
-          size="huge"
-        >
+        <Label.Group size="huge">
           <Prompt prompt={round.prompt} />
           <Timer
             time={round.time}
             text="Remaining: "
           />
         </Label.Group>
-        <Canvas prompt={round.prompt} player={Session.get(PLAYER)} />
+        <Canvas prompt={round.prompt} player={player} />
       </Container>
     );
   }
@@ -62,4 +43,6 @@ export default class ParticipantPlayRound extends BaseComponent {
 
 ParticipantPlayRound.propTypes = {
   round: React.PropTypes.object,
+  player: React.PropTypes.object,
+  onRoundOver: React.PropTypes.func,
 };

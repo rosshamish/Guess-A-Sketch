@@ -4,7 +4,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Rooms } from '../../api/collections/rooms.js';
 
-DEBUG = false;
+const DEBUG = false;
 
 Meteor.startup(() => {
   console.log('Adding fake test data (fixtures.js)');

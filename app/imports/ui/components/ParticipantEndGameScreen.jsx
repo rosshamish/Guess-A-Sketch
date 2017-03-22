@@ -1,13 +1,5 @@
 import React from 'react';
-
-import { Session } from 'meteor/session';
-import { PLAYER } from '/imports/api/session';
 import { browserHistory } from 'react-router';
-
-import {
-  getRoundScore,
-  getGameScore,
-} from '/imports/scoring';
 
 import BaseComponent from './BaseComponent.jsx';
 import {
@@ -22,8 +14,6 @@ import {
 export default class ParticipantEndGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   onSubmit(event) {
@@ -34,12 +24,13 @@ export default class ParticipantEndGameScreen extends BaseComponent {
   render() {
     const {
       room,
+      player,
+      getRoundScore,
+      getGameScore,
     } = this.props;
 
-    const player = Session.get(PLAYER);
-
     // TODO compute a score for each player in the room based on their matching sketches
-    var renderScores = room.rounds.map(function(round,index) {
+    let renderScores = room.rounds.map(function(round,index) {
       return ( // key suppresses a key error in console
         <Table.Row key={index}>
           <Table.Cell>{index+1}</Table.Cell>
@@ -54,7 +45,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       </Table.Row>
     );
 
-    return(
+    return (
       <Container>
         <Header as="h1">Game Over</Header>
         <Table celled>
@@ -81,4 +72,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
 
 ParticipantEndGameScreen.propTypes = {
   room: React.PropTypes.object,
+  player: React.PropTypes.object,
+  getRoundScore: React.PropTypes.func,
+  getGameScore: React.PropTypes.func,
 };

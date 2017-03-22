@@ -1,7 +1,6 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import BaseComponent from './BaseComponent.jsx';
 
+import BaseComponent from './BaseComponent.jsx';
 import {
   Card,
 } from 'semantic-ui-react';
@@ -19,7 +18,7 @@ export default class RoomItem extends BaseComponent {
     } = this.props;
 
     return (
-      <Card onClick={onClick}>
+      <Card onClick={onClick ? onClick.bind(null, room) : undefined}>
         <Card.Content>
           <Card.Header>
             {room.name}

@@ -5,8 +5,8 @@
     "start": "meteor run",
     "lint": "eslint .",
     "pretest": "npm run lint --silent",
-    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
-    "chimp-test": "chimp --mocha --path=tests"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
@@ -31,7 +31,13 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^6.10.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2016": "^6.11.3",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-1": "^6.13.0",
+    "babel-root-slash-import": "^1.1.0",
+    "@kadira/storybook": "^2.21.0"
   },
   "eslintConfig": {
     "parser": "babel-eslint",
