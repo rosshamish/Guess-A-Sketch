@@ -65,10 +65,17 @@ export default class ParticipantGameScreen extends BaseComponent {
       browserHistory.push('/');
       return;
     }
+
+    if (!loading && !Session.get(PLAYER)) {
+      console.error('Player undefined. Redirecting.');
+      browserHistory.push('/');
+      return;
+    }
   }
 
   onCanvasChange(canvas, event) {
-    Session.set(SKETCH, this.canvas.toDataURL());
+    Session.set(SKETCH, canvas.toDataURL());
+    console.log(canvas.toDataURL());
   }
 
   onRoundOver(prompt, index) {
@@ -115,6 +122,7 @@ export default class ParticipantGameScreen extends BaseComponent {
           room={room}
           player={player}
         />
+      );
     } else if (isPostGame(room)) {
       return (
         <ParticipantEndGameScreen
@@ -122,7 +130,8 @@ export default class ParticipantGameScreen extends BaseComponent {
           player={player}
           getRoundScore={getRoundScore}
           getGameScore={getGameScore}
-        />;
+        />
+      );
     } else if (isInGame(room)) {
       let round = currentRound(room);
       if (!round) {
@@ -136,13 +145,16 @@ export default class ParticipantGameScreen extends BaseComponent {
             room={room}
             round={currentRound(room)}
           />
+        );
       } else if (round.status === 'PLAY') {
         return (
           <ParticipantPlayRound
             round={round}
             player={player}
             onRoundOver={this.onRoundOver}
+            onCanvasChange={this.onCanvasChange}
           />
+        );
       } else if (round.status === 'RESULTS') {
         const sketches =_.map(round.sketches, (sketchID) => {
           return Sketches.findOne({ _id: sketchID });
@@ -151,16 +163,18 @@ export default class ParticipantGameScreen extends BaseComponent {
           <ParticipantRoundResults
             room={room}
             round={currentRound(room)}
+            player={player}
             sketches={sketches}
             getRoundScore={getRoundScore}
           />
+        );
       } else {
         console.error('[Room ' + room._id + ']: Current round in illegal state');
-        return <ErrorMessage />
+        return <ErrorMessage />;
       }
     } else {
       console.error('[Room ' + room._id + ']: in illegal state');
-      return <ErrorMessage />
+      return <ErrorMessage />;
     }
   }
 }

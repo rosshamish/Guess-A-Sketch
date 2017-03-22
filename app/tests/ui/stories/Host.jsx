@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
-import { rooms } from './constants';
+import { rooms, sketches } from './constants';
 
 import CreateARoomView from '/imports/ui/pages/host/CreateARoomView.jsx';
 import HostPreGameScreen from '/imports/ui/components/HostPreGameScreen.jsx';
@@ -47,6 +47,7 @@ storiesOf('Host', module)
     <HostRoundResults
       room={rooms[0]}
       round={rooms[0].rounds[1]}
+      sketches={sketches}
       isLastRound={() => false}
       onRoundTimerOver={action('round-over')}
     />
@@ -55,6 +56,7 @@ storiesOf('Host', module)
     <HostRoundResults
       room={rooms[0]}
       round={rooms[0].rounds[1]}
+      sketches={sketches}
       isLastRound={() => true}
       onRoundTimerOver={action('game-over')}
     />

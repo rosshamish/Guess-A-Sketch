@@ -5,6 +5,8 @@ import { browserHistory } from 'react-router';
 import { Session } from 'meteor/session';
 import { HOST_ROOM } from '/imports/api/session';
 
+import { Sketches } from '/imports/api/collections/sketches';
+
 import {
   startRound,
   playRound,
@@ -52,29 +54,29 @@ export default class HostGameScreen extends BaseComponent {
     }
   }
 
-  onStartGame() {
+  onStartGame(room) {
     console.log('Starting Game.');
 
     const didStartRound = startRound.call({
-      room_id: Session.get(HOST_ROOM)._id,
+      room_id: room._id,
     });
     if (!didStartRound) {
       console.error('Unable to start first round. Server rejected request.');
-      return;
+      return didStartRound;
     }
   }
 
-  onPlayRound() {
+  onPlayRound(room) {
     const didPlayRound = playRound.call({
       room_id: room._id,
     });
     if (!didPlayRound) {
       console.error('Failed to start/play round. Server rejected request.');
-      return;
+      return didPlayRound;
     }
   }
 
-  onRoundTimerOver() {
+  onRoundTimerOver(room) {
     const didSucceed = roundTimerOver.call({
       room_id: room._id,
     });
@@ -156,14 +158,17 @@ export default class HostGameScreen extends BaseComponent {
           <HostPreRound
             room={room}
             round={currentRound(room)}
-            playRound={this.onPlayRound}
+            onPlayRound={this.onPlayRound}
           />
+        );
       } else if (round.status === 'PLAY') {
         return (
           <HostPlayRound
             round={round}
             room={room}
+            onRoundTimerOver={this.onRoundTimerOver}
           />
+        );
       } else if (round.status === 'RESULTS') {
         const sketches = _.map(round.sketches, (sketchID) => {
           return Sketches.findOne({ _id: sketchID });
@@ -176,13 +181,14 @@ export default class HostGameScreen extends BaseComponent {
             isLastRound={isLastRound}
             onNextRound={this.onNextRound}
           />
+        );
       } else {
         console.error('[Room ' + room._id + ']: Current round in illegal state');
-        return <ErrorMessage />
+        return <ErrorMessage />;
       }
     } else {
       console.error('[Room ' + room._id + ']: in illegal state');
-      return <ErrorMessage />
+      return <ErrorMessage />;
     }
   }
 }

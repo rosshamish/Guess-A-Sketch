@@ -24,6 +24,7 @@ export default class ParticipantPlayRound extends BaseComponent {
     const { 
       round,
       player,
+      onCanvasChange,
     } = this.props;
 
     return (
@@ -35,7 +36,7 @@ export default class ParticipantPlayRound extends BaseComponent {
             text="Remaining: "
           />
         </Label.Group>
-        <Canvas prompt={round.prompt} player={player} />
+        <Canvas onChange={onCanvasChange} />
       </Container>
     );
   }
@@ -45,4 +46,5 @@ ParticipantPlayRound.propTypes = {
   round: React.PropTypes.object,
   player: React.PropTypes.object,
   onRoundOver: React.PropTypes.func,
+  onCanvasChange: React.PropTypes.func,
 };

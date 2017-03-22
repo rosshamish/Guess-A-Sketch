@@ -11,7 +11,7 @@ export default class Timer extends BaseComponent {
     super(props);
     this.state = {
       remaining: props.time,
-    }
+    };
   }
 
   componentDidMount() {

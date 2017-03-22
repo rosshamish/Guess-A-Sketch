@@ -12,6 +12,7 @@ import {
   Form,
 } from 'semantic-ui-react';
 
+
 export default class HostRoundResults extends BaseComponent {
   constructor(props) {
     super(props);

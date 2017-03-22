@@ -16,7 +16,6 @@ import {
 export default class HostPreGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   render() {
@@ -60,7 +59,7 @@ export default class HostPreGameScreen extends BaseComponent {
         <Form 
           onSubmit={(event) => {
             event.preventDefault();
-            onStartGame();
+            onStartGame(room);
           }}
         >
           <Button type="submit">Start Game</Button>

@@ -30,7 +30,7 @@ export default class HostPlayRound extends BaseComponent {
             <Timer
               room={room}
               time={round.time}
-              onTimeout={onRoundTimerOver}
+              onTimeout={onRoundTimerOver.bind(null, room)}
               text={'Time Remaining: '} />
           </Container>
         </Label.Group>

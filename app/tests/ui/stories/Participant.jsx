@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
-import { players, rooms } from './constants';
+import { players, rooms, sketches } from './constants';
 
 import LoginPageView from '/imports/ui/pages/participant/LoginPageView.jsx';
 import RoomListPageView from '/imports/ui/pages/participant/RoomListPageView.jsx';
@@ -61,7 +61,7 @@ storiesOf('Participant', module)
       room={rooms[0]}
       round={rooms[0].rounds[0]}
       player={players[0]}
-      sketches={rooms[0].rounds[0].sketches}
+      sketches={sketches}
       getRoundScore={() => 50}
     />
   ))

@@ -36,11 +36,16 @@ export default class Canvas extends BaseComponent {
     // Send a canvas update on:
     // 1. startup, the blank canvas, and
     // 2. each mouse-up, the latest canvas
-    const canvas = this;
-    this.props.onChange && this.props.onChange(this.canvas, event);
+    const onChange = this.props.onChange;
+    if (onChange) {
+      onChange(canvas);
+    }
+    const that = this;
     this.canvas.on('path:created', (event) => {
-      canvas.pathStack.push(event.path);
-      this.props.onChange && this.props.onChange(this.canvas, event);
+      that.pathStack.push(event.path);
+      if (onChange) {
+        onChange(that.canvas, event);
+      }
     });
   }
 
@@ -50,12 +55,6 @@ export default class Canvas extends BaseComponent {
   }
 
   render() {
-    const {
-      prompt,
-      player,
-      onChange
-    } = this.props;
-
     const style = {
       border: '1px',
       borderColor: 'black',
@@ -88,7 +87,5 @@ export default class Canvas extends BaseComponent {
 }
 
 Canvas.propTypes = {
-  prompt: React.PropTypes.string,
-  player: React.PropTypes.object,
   onChange: React.PropTypes.func,
 };

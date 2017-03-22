@@ -30,7 +30,7 @@ export default class HostPreRound extends BaseComponent {
             <Timer
               room={room}
               time={3}
-              onTimeout={onPlayRound}
+              onTimeout={onPlayRound.bind(null, room)}
               text={'Round starting in '} />
           </Container>
         </Label.Group>
@@ -40,7 +40,7 @@ export default class HostPreRound extends BaseComponent {
 }
 
 HostPreRound.propTypes = {
-  round: React.PropTypes.object,
   room: React.PropTypes.object,
+  round: React.PropTypes.object,
   onPlayRound: React.PropTypes.func,
 };
