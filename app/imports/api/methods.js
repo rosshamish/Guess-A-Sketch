@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
+import { HTTP } from 'meteor/http';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
@@ -14,7 +15,6 @@ import {
 
 import {
   getAllPrompts,
-  getScore,
 } from '../sketch-net';
 
 
@@ -371,22 +371,23 @@ export const createRoom = new ValidatedMethod({
     }
     
     let rounds = [];
-    //const promptsFn = Meteor.wrapAsync(getAllPrompts);
-    //const prompts = promptsFn();
-    getAllPrompts(function(prompts){
-	   	for (let count = 0; count < round_count; count++){
-	      rounds.push({
-	        time: round_time,
-	        index: count,
-	        // Random choice without replacement
-	        prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
-	      });
-	    }
-	    let id = Rooms.insert({ name: room_name, rounds: rounds });
-	    console.log(`Creating room ${room_name} ${id}`);
-    });
-    //console.log("Inside Methods: " + prompts);
+    var getAllPromptsSync = Meteor.wrapAsync(HTTP.get);
+    var prompts = getAllPromptsSync('http://localhost:5000/prompts', {});
+    if (!prompts) {
+      console.error('FUCK');
+      return false;
+    }
+    for (let count = 0; count < round_count; count++){
+      rounds.push({
+        time: round_time,
+        index: count,
+        // Random choice without replacement
+        prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
+      });
+    }
+    let id = Rooms.insert({ name: room_name, rounds: rounds });
+    console.log(`Creating room ${room_name} ${id}`);
 
-   return true;
+    return true;
   },
 });

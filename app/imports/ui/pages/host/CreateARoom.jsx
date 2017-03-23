@@ -46,16 +46,16 @@ export default class CreateARoom extends BaseComponent{
   onCreateRoom(event){
     event.preventDefault();
 
-    const createdRoom = createRoom.call({
+    const didCreateRoom = createRoom.call({
       room_name: this.state.roomName,
-      round_count: parseInt(this.state.roundCount),
-      round_time: parseInt(this.state.roundTime)
+      round_count: parseInt(this.state.roundCount, 10),
+      round_time: parseInt(this.state.roundTime, 10),
     });
 
     let room = Rooms.findOne({name: this.state.roomName});
-    if (!createdRoom || !room) {
+    if (!didCreateRoom || !room) {
       console.error('Failed to create room.');
-      return <ErrorMessage />;
+      return;
     }
 
     // Navigate to the lobby of the newly created room
