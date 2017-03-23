@@ -57,7 +57,6 @@ export default class WelcomePage extends React.Component {
       message,
     } = this.props;
 
-    // TO DO: Make ? button inline with the header.
     return (
       <center>
         <div id="container">
@@ -69,21 +68,30 @@ export default class WelcomePage extends React.Component {
               </Header.Content>
             </Header>
 
-            <div style={{display : 'inline-block'}} className="ui text container">
-              <h3 className="ui header">Half party game, half neural net.</h3>
+            <div style={{display : 'inline-block', valign : 'top'}} className="ui text container">
+              <h4 
+                style={{display : 'inline-block', valign : 'top'}} 
+                className="ui header">
+                Half party game, half neural net. &nbsp; 
+              </h4>
             
-            <Modal trigger={<Button circular basic size='small' icon='question'/>} basic size='small'>
-              <Header content='About Guess-A-Sketch' />
-              <Modal.Content>
-                <p>Each round, you get a prompt (eg "Cat"). Draw it! 
-                Well, as best you can, until the timer runs out. 
-                Get points based on the speed and quality of your drawing.
-                </p>
-                <p>Points are awarded by an AI that has learned to recognize objects
-                in napkin-quality sketches. The AI learns using a variety of neural networks - 
-                that's the science project part. </p>
-              </Modal.Content>
-            </Modal>
+              <Modal 
+                style={{display : 'inline-block', valign : 'top'}} 
+                trigger={
+                  <Button circular basic size='mini' icon='question'/>} 
+                basic size='small'
+              >
+                <Header content='About Guess-A-Sketch' />
+                <Modal.Content>
+                  <p>Each round, you get a prompt (eg "Cat"). Draw it! 
+                  Well, as best you can, until the timer runs out. 
+                  Get points based on the speed and quality of your drawing.
+                  </p>
+                  <p>Points are awarded by an AI that has learned to recognize objects
+                  in napkin-quality sketches. The AI learns using a variety of neural networks - 
+                  that's the science project part. </p>
+                </Modal.Content>
+              </Modal>
             </div>  
 
             <p />
