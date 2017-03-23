@@ -62,6 +62,7 @@ class CanvasImpl extends BaseComponent {
 
   resizeCanvas(props) {
     this.canvas.setWidth(props.containerWidth);
+    // TODO fill remaining screen height
     // this.canvas.setHeight(props.containerHeight);
   }
 

@@ -87,6 +87,8 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = this.props;
 
+    const player = Session.get(PLAYER);
+
     // ---
     // Loading and error handling
     // TODO make these pages pretty.
@@ -99,8 +101,6 @@ export default class ParticipantGameScreen extends BaseComponent {
       console.error('Go back to the homepage. Your session is broken.');
       return <ErrorMessage />;
     }
-
-    const player = Session.get(PLAYER);
 
     if (isPreGame(room)) {
       return (

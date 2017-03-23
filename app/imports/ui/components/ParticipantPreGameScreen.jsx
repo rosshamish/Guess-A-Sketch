@@ -7,6 +7,7 @@ import {
   Container,
   Header,
   Divider,
+  Segment,
 } from 'semantic-ui-react';
 
 
@@ -23,22 +24,23 @@ export default class ParticipantPreGameScreen extends BaseComponent {
     } = this.props;
 
     return (
-      <Container>
-        <Container>
-          <Header size="huge">{room.name}</Header>
-          <Label 
-            circular
-            size="large"
-            color={player.color}>
-            {player.name}
-          </Label>
-        </Container>
-        <Divider />
-        <Container>
+      <Segment.Group>
+        <Segment>
+          <Header size="huge">
+            {room.name}
+            <Label
+              circular
+              size="large"
+              color={player.color}>
+              {player.name}
+            </Label>
+          </Header>
+        </Segment>
+        <Segment>
           <p>Feel free to draw while you wait for the game to start</p>
-          <Canvas player={player} onChange={onCanvasChange} />
-        </Container>
-      </Container>
+          <Canvas color={player.color} onChange={onCanvasChange} />
+        </Segment>
+      </Segment.Group>
     );
   }
 }
