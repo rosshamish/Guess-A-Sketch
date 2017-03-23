@@ -4,6 +4,7 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Header,
   Container,
@@ -20,6 +21,7 @@ export default class ParticipantPreRound extends BaseComponent {
     const {
       room,
       round,
+      player,
     } = this.props;
 
     if (!room || !round) {
@@ -30,7 +32,9 @@ export default class ParticipantPreRound extends BaseComponent {
     return (
       <Segment.Group>
         <Segment>
-          <Header as='h1'>Round {round.index + 1}</Header>
+          <PlayerHeader
+            text={`Round ${round.index+1}`}
+            player={player} />
         </Segment>
         <Segment.Group horizontal>
           <Segment>
@@ -52,4 +56,5 @@ export default class ParticipantPreRound extends BaseComponent {
 ParticipantPreRound.propTypes = {
   room: React.PropTypes.object,
   round: React.PropTypes.object,
+  player: React.PropTypes.object,
 };

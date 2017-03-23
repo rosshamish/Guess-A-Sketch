@@ -20,6 +20,7 @@ storiesOf('Participant', module)
   .add('joining a room', () => (
     <RoomListPageView
       rooms={rooms}
+      player={players[0]}
       onRoomClickHandler={function(args) {
         action('room-click')(args);
       }}
@@ -45,6 +46,7 @@ storiesOf('Participant', module)
     <ParticipantPreRound
       room={rooms[0]}
       round={rooms[0].rounds[1]}
+      player={players[0]}
     />
   ))
   .add('playing round', () => (

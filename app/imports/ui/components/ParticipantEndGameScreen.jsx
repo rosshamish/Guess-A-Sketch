@@ -2,12 +2,15 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 
 import BaseComponent from './BaseComponent.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Container,
   Table,
   Header,
   Button,
   Form,
+  Segment,
+  Label,
 } from 'semantic-ui-react';
 
 
@@ -47,26 +50,28 @@ export default class ParticipantEndGameScreen extends BaseComponent {
     );
 
     return (
-      <Container>
-        <Header as="h1">Game Over</Header>
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Round</Table.HeaderCell>
-              <Table.HeaderCell>Score</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+      <Segment.Group>
+        <Segment>
+          <PlayerHeader text="Game Over" player={player} />
+        </Segment>
+        <Segment>
+          <Table >
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Round</Table.HeaderCell>
+                <Table.HeaderCell>Score</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-          <Table.Body>
-            {renderScores}
-          </Table.Body>
-        </Table>
-        <Form onSubmit={this.onSubmit}>
-          <Button type="submit">
+            <Table.Body>
+              {renderScores}
+            </Table.Body>
+          </Table>
+          <Button onClick={this.onSubmit}>
             Back to Lobby // PROBLEM: Updates HostEndGameScreen when user leaves
           </Button>
-        </Form>
-      </Container>
+        </Segment>
+      </Segment.Group>
     );
   }
 }

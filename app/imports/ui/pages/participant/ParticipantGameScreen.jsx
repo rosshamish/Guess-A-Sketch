@@ -130,6 +130,7 @@ export default class ParticipantGameScreen extends BaseComponent {
           <ParticipantPreRound
             room={room}
             round={currentRound(room)}
+            player={player}
           />
         );
       } else if (round.status === 'PLAY') {

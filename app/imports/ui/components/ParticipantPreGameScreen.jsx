@@ -2,6 +2,7 @@ import React from 'react';
 
 import BaseComponent from './BaseComponent.jsx';
 import Canvas from './Canvas.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Label,
   Container,
@@ -26,15 +27,7 @@ export default class ParticipantPreGameScreen extends BaseComponent {
     return (
       <Segment.Group>
         <Segment>
-          <Header size="huge">
-            {room.name}
-            <Label
-              circular
-              size="large"
-              color={player.color}>
-              {player.name}
-            </Label>
-          </Header>
+          <PlayerHeader text={room.name} player={player} />
         </Segment>
         <Segment>
           <p>The game will start soon.</p>

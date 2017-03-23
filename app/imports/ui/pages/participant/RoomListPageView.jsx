@@ -3,6 +3,7 @@ import React from 'react';
 import BaseComponent from '../../components/BaseComponent.jsx';
 import NoRooms from '../../components/NoRooms.jsx';
 import RoomItem from '../../components/RoomItem.jsx';
+import PlayerHeader from '../../components/PlayerHeader.jsx';
 import {
   Container,
   Header,
@@ -21,6 +22,7 @@ export default class RoomListPageView extends BaseComponent {
     const {
       loading,
       rooms,
+      player,
       onRoomClickHandler,
     } = this.props;
 
@@ -58,23 +60,16 @@ export default class RoomListPageView extends BaseComponent {
       return (
         <Segment.Group>
           <Segment>
-            <Header as="h2" icon textAlign="center">
-              <Icon name="group" circular />
-              <Header.Content>
-                Rooms
-              </Header.Content>
-            </Header>
+            <PlayerHeader text="Rooms" player={player} />
           </Segment>
-          <Segment basic>
+          <Segment>
             <Card.Group
-              stackable
               itemsPerRow={2} >
               {joinable}
             </Card.Group>
           </Segment>
           <Segment disabled>
             <Card.Group
-              stackable
               itemsPerRow={2} >
               {playing}
             </Card.Group>
@@ -88,5 +83,6 @@ export default class RoomListPageView extends BaseComponent {
 RoomListPageView.propTypes = {
   loading: React.PropTypes.bool,
   rooms: React.PropTypes.array,
+  player: React.PropTypes.object,
   onRoomClickHandler: React.PropTypes.func,
 };

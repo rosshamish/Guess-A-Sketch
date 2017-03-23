@@ -4,6 +4,7 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Container,
   Header,
@@ -85,7 +86,7 @@ export default class ParticipantRoundResults extends BaseComponent {
     return (
       <Segment.Group>
         <Segment>
-          <Header as='h1'>Round {round.index+1}</Header>
+          <PlayerHeader text={`Round ${round.index+1}`} player={player} />
         </Segment>
         <Segment style={{
             display: 'flex',

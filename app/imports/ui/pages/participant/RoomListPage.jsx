@@ -45,10 +45,13 @@ export default class RoomListPage extends BaseComponent {
       rooms,
     } = this.props;
 
+    const player = Session.get(PLAYER);
+
     return (
       <RoomListPageView
         loading={loading}
         rooms={rooms}
+        player={player}
         onRoomClickHandler={this.onRoomClickHandler}
       />
     );
