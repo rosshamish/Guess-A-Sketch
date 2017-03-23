@@ -63,7 +63,6 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   onCanvasChange(canvas, event) {
     Session.set(SKETCH, canvas.toDataURL());
-    console.log(canvas.toDataURL());
   }
 
   onRoundOver(prompt, index) {

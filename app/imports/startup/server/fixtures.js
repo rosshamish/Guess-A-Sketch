@@ -9,7 +9,7 @@ const DEBUG = false;
 Meteor.startup(() => {
   console.log('Adding fake test data (fixtures.js)');
 
-  if (Rooms.find().count() === 0 || DEBUG === true) {
+  if (DEBUG === true) {
     const rooms = [
       {
         name: 'Only smarties (one rounds)',

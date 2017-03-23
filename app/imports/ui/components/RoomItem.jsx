@@ -18,8 +18,8 @@ export default class RoomItem extends BaseComponent {
       room,
     } = this.props;
 
-    const playerBubbles = room.players.map((player) => (
-      <Label circle color={player.color} />
+    const playerBubbles = room.players.map(player => (
+      <Label key={player.name} color={player.color} />
     ));
 
     return (

@@ -62,7 +62,7 @@ export default class ParticipantRoundResults extends BaseComponent {
       const confidence = elems[1];
 
       const percent = confidence * 100;
-      let color = '';
+      let color = 'grey';
       if (label === round.prompt) {
         color = 'green';
         // TODO alternate colors based on confidence

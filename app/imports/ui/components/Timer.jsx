@@ -44,14 +44,28 @@ export default class Timer extends BaseComponent {
       text,
     } = this.props;
 
-    return (
-      <Header
-        size="large"
-        floated={floated ? floated : ""}
-        >
-        {text}{this.state.remaining}
-      </Header>
-    );
+    const content = `${text}${this.state.remaining}`;
+
+    // TODO how to do conditional attribute on a component
+    if (floated ) {
+      return (
+        <Header
+          size="large"
+          floated={floated}
+          >
+          {content}
+        </Header>
+      );
+    } else {
+      return (
+        <Header
+          size="large"
+          >
+          {content}
+        </Header>
+      );
+    }
+    
   }
 }
 
@@ -60,5 +74,5 @@ Timer.propTypes = {
   time: React.PropTypes.number,
   onTimeout: React.PropTypes.func,
   text: React.PropTypes.string,
-  floated: React.PropTypes.bool,
+  floated: React.PropTypes.string,
 };
