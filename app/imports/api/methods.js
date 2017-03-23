@@ -370,24 +370,20 @@ export const createRoom = new ValidatedMethod({
         return;
     }
     
-    let rounds = [];
-    var getAllPromptsSync = Meteor.wrapAsync(HTTP.get);
-    var prompts = getAllPromptsSync('http://localhost:5000/prompts', {});
-    if (!prompts) {
-      console.error('FUCK');
-      return false;
+    if (Meteor.isServer) {
+      const prompts = Meteor.wrapAsync(getAllPrompts)();
+      let rounds = [];
+      for (let count = 0; count < round_count; count++){
+        rounds.push({
+          time: round_time,
+          index: count,
+          // Random choice without replacement
+          prompt: prompts.data.splice(Math.floor(Math.random()*prompts.length), 1)[0],
+        });
+      }
+      let id = Rooms.insert({ name: room_name, rounds: rounds });
+      console.log(`Creating room ${room_name} ${id}`);
+      return id;
     }
-    for (let count = 0; count < round_count; count++){
-      rounds.push({
-        time: round_time,
-        index: count,
-        // Random choice without replacement
-        prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
-      });
-    }
-    let id = Rooms.insert({ name: room_name, rounds: rounds });
-    console.log(`Creating room ${room_name} ${id}`);
-
-    return true;
   },
 });

@@ -46,20 +46,22 @@ export default class CreateARoom extends BaseComponent{
   onCreateRoom(event){
     event.preventDefault();
 
-    const didCreateRoom = createRoom.call({
+    createRoom.call({
       room_name: this.state.roomName,
       round_count: parseInt(this.state.roundCount, 10),
       round_time: parseInt(this.state.roundTime, 10),
+    }, (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      const room = Rooms.findOne({_id: result});
+      if (!room) {
+        console.error('Failed to create room.');
+        return;
+      }
+      Session.set(HOST_ROOM, room);
     });
-
-    let room = Rooms.findOne({name: this.state.roomName});
-    if (!didCreateRoom || !room) {
-      console.error('Failed to create room.');
-      return;
-    }
-
-    // Navigate to the lobby of the newly created room
-    Session.set(HOST_ROOM, room);
     browserHistory.push('/host/play');
   }
 

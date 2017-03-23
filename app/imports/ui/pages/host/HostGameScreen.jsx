@@ -44,15 +44,10 @@ export default class HostGameScreen extends BaseComponent {
       room,
     } = this.props;
 
-    if (loading) {
+    if (loading || !room) {
       return (
         <p>Loading...</p>
       );
-    } else if (!room) {
-      // The player navigated directly here without creating a room.
-      // Don't allow this!
-      console.error('Error: room is undefined.');
-      return <ErrorMessage />
     }
 
     // Page Rendering
