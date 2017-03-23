@@ -37,7 +37,8 @@ export default class ParticipantPreGameScreen extends BaseComponent {
           </Header>
         </Segment>
         <Segment>
-          <p>Feel free to draw while you wait for the game to start</p>
+          <p>The game will start soon.</p>
+          <p>Feel free to draw while you wait!</p>
           <Canvas color={player.color} onChange={onCanvasChange} />
         </Segment>
       </Segment.Group>
