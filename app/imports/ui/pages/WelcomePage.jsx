@@ -5,7 +5,8 @@ import {
   Button, 
   Header,
   Icon,
-  Image
+  Image,
+  Modal
 } from 'semantic-ui-react'
 
 export default class WelcomePage extends React.Component {
@@ -34,6 +35,19 @@ export default class WelcomePage extends React.Component {
     browserHistory.push('/host/create');
   }
 
+  onClickAbout(event) {
+    event.preventDefault();
+
+    alert("Test");
+    //
+
+    /*
+
+
+
+              */
+  }
+
   render() {
     const {
       user,
@@ -43,27 +57,33 @@ export default class WelcomePage extends React.Component {
       message,
     } = this.props;
 
+    // TO DO: Make ? button inline with the header.
     return (
       <center>
         <div id="container">
           <div id="content-container">
-            <Header as='h2' icon textAlign='center'>
+            <Header as='h1' icon textAlign='center'>
               <Icon name='edit' circular />
               <Header.Content>
                 Guess A Sketch
               </Header.Content>
             </Header>
 
-            <div className="ui text container">
-              <h4 className="ui header">Half party game, half neural net.</h4>
-              <p>Each round, you get a prompt (eg "Cat"). Draw it! 
-              Well, as best you can, until the timer runs out. 
-              Get points based on the speed and quality of your drawing.
-              </p>
-              <p>Points are awarded by an AI that has learned to recognize objects
-              in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
-              science project part.
-              </p>
+            <div style={{display : 'inline-block'}} className="ui text container">
+              <h3 className="ui header">Half party game, half neural net.</h3>
+            
+            <Modal trigger={<Button circular basic size='small' icon='question'/>} basic size='small'>
+              <Header content='About Guess-A-Sketch' />
+              <Modal.Content>
+                <p>Each round, you get a prompt (eg "Cat"). Draw it! 
+                Well, as best you can, until the timer runs out. 
+                Get points based on the speed and quality of your drawing.
+                </p>
+                <p>Points are awarded by an AI that has learned to recognize objects
+                in napkin-quality sketches. The AI learns using a variety of neural networks - 
+                that's the science project part. </p>
+              </Modal.Content>
+            </Modal>
             </div>  
 
             <p />
@@ -73,7 +93,6 @@ export default class WelcomePage extends React.Component {
               </div>
               <Button className="ui button" onClick={this.onClickHost}>Host</Button>
             </div>
-
           </div>
         </div>
       </center>
