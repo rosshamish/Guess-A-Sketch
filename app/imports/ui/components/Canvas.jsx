@@ -30,6 +30,16 @@ class CanvasImpl extends BaseComponent {
     this.canvas.freeDrawingBrush.color = this.state.color;
     this.resizeCanvas(this.props);
 
+    const containers = document.getElementsByClassName('canvas-container');
+    if (!containers || containers.length != 1) {
+      console.error('Failed to find a single canvas-container');
+    } else {
+      const container = containers[0];
+      container.style.display = 'flex';
+      container.style['flex-direction'] = 'column';
+      container.style['flex-grow'] = 1;
+    }
+
     // Send a canvas update on:
     // 1. startup, the blank canvas, and
     // 2. each mouse-up, the latest canvas
@@ -62,8 +72,7 @@ class CanvasImpl extends BaseComponent {
 
   resizeCanvas(props) {
     this.canvas.setWidth(props.containerWidth);
-    // TODO fill remaining screen height
-    // this.canvas.setHeight(props.containerHeight);
+    this.canvas.setHeight(props.containerHeight);
   }
 
   render() {
@@ -71,17 +80,25 @@ class CanvasImpl extends BaseComponent {
       color,
     } = this.props;
 
-    const noPadding = {
-      padding: 0,
-    };
-
     return (
-      <Segment.Group>
-        <Segment style={noPadding} raised color={color || 'black'} >
+      <Segment.Group style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}>
+        <Segment style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: 0,
+              flexGrow: 1,
+            }}
+            raised
+            color={color || 'black'} >
           <canvas id="canvas" />
         </Segment>
-        <Segment disabled={this.state.pathStack.length <= 0}>
-          <Button 
+        <Segment
+          disabled={this.state.pathStack.length <= 0}>
+          <Button
             icon
             fluid
             size="large"

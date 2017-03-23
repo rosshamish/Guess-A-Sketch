@@ -26,8 +26,11 @@ export default class ParticipantPlayRound extends BaseComponent {
       onCanvasChange,
     } = this.props;
 
+    // TODO proper fullscreen instead of height: 90vh
     return (
-      <Segment.Group>
+      <Segment.Group style={{
+        height: '90vh',
+      }}>
         <Segment.Group horizontal>
           <Segment>
             <Prompt prompt={round.prompt} />
