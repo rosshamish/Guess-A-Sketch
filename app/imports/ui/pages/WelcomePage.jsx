@@ -8,17 +8,13 @@ import {
   Image,
   Segment,
   Container,
+  Modal,
 } from 'semantic-ui-react'
 
 export default class WelcomePage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      about: false,
-    };
-
-    this.onClickAbout = this.onClickAbout.bind(this);
   }
 
   onClickPlay(event) {
@@ -31,13 +27,6 @@ export default class WelcomePage extends React.Component {
     browserHistory.push('/host/create');
   }
 
-  onClickAbout(event) {
-    event.preventDefault();
-    this.setState({
-      about: !this.state.about,
-    });
-  }
-
   render() {
     const {
       user,
@@ -46,10 +35,6 @@ export default class WelcomePage extends React.Component {
       children,
       message,
     } = this.props;
-
-    const aboutStyle = {
-      visibility: this.state.about ? 'visible' : 'hidden',
-    };
 
     const style = {
       display: 'flex',
@@ -65,7 +50,7 @@ export default class WelcomePage extends React.Component {
           </Header>
           <Header
             as='h4'
-            textAlign="center">Half party game, half science project.</Header>
+            textAlign="center">Half party game, half AI experiment</Header>
         </Segment>
         <Segment>
           <Button.Group style={style} size="big">
@@ -74,20 +59,27 @@ export default class WelcomePage extends React.Component {
             <Button onClick={this.onClickHost}>Host</Button>
           </Button.Group>
           <br />
-          <Button toggle size="big" style={style} fluid onClick={this.onClickAbout}>About</Button>
-          <br />
-          <div style={aboutStyle}>
-            <p>
-              Each round, you get a prompt (eg "Cat"). Draw it! 
-              Well, as best you can, until the timer runs out. 
-              Get points based on the speed and quality of your drawing.
-            </p>
-            <p>
-              Points are awarded by a program that has learned to recognize objects
-              in napkin-quality sketches. The program learns using neural networks - that's the
-              science project part.
-            </p>
-          </div>
+          <Modal 
+            style={{display : 'inline-block', valign : 'top'}} 
+            trigger={
+              <Button toggle size="big" style={style} fluid>About</Button>
+            } 
+            basic size='small'
+          >
+            <Header content='About Guess-A-Sketch' />
+            <Modal.Content>
+              <p>
+                Each round, you get a prompt (eg "Cat"). Draw it! 
+                Well, as best you can, until the timer runs out. 
+                Get points based on the speed and quality of your drawing.
+              </p>
+              <p>
+                Points are awarded by a program that has learned to recognize objects
+                in napkin-quality sketches. The program learns using neural networks - that's the
+                science project part.
+              </p>
+            </Modal.Content>
+          </Modal>
         </Segment>
       </Segment.Group>
     );
