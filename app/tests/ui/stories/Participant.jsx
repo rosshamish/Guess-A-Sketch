@@ -29,6 +29,7 @@ storiesOf('Participant', module)
   .add('joining a room (no rooms)', () => (
     <RoomListPageView
       rooms={[]}
+      player={players[0]}
     />
   ))
   .add('joining a room (loading)', () => (

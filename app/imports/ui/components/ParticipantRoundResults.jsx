@@ -64,13 +64,15 @@ export default class ParticipantRoundResults extends BaseComponent {
       const percent = confidence * 100;
       let color = '';
       if (label === round.prompt) {
-        if (percent > 65) {
-          color = 'green';
-        } else if (percent > 35) {
-          color = 'yellow';
-        } else {
-          color = 'red';
-        }
+        color = 'green';
+        // TODO alternate colors based on confidence
+        // if (percent > 65) {
+        //   color = 'green';
+        // } else if (percent > 35) {
+        //   color = 'yellow';
+        // } else {
+        //   color = 'red';
+        // }
       }
       
       return (
@@ -95,7 +97,8 @@ export default class ParticipantRoundResults extends BaseComponent {
            }}>
           <SketchImage 
             sketch={currentPlayerSketch} />
-          <Rating 
+          <Rating
+            icon="star"
             size="massive"
             disabled
             maxRating={5}

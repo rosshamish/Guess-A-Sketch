@@ -1,5 +1,14 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
+
 import BaseComponent from './BaseComponent.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
+import {
+  Container,
+  Header,
+  Segment,
+  Button,
+} from 'semantic-ui-react';
 
 
 export default class NoRooms extends BaseComponent {
@@ -9,24 +18,34 @@ export default class NoRooms extends BaseComponent {
     };
   }
 
+  onClickHost(event) {
+    browserHistory.push('/host/create');
+  }
+
   render() {
     const {
+      player
     } = this.props;
 
     return (
-      <div className="room-list-empty">
-        <h3>
-          {this._pickRandom([
-            'No Rooms',
-            'Someone host!',
-            'Dang it!',
-            'Host\'s gotta host',
-            'Crickets...'
-          ])}
-        </h3>
-        <p>No joinable rooms found. Go to /host/create to host a room!</p>
-        <p>Or, wait for the current round to end. You can join between rounds!</p>
-      </div>
+      <Segment.Group>
+        <Segment>
+          <PlayerHeader text="Rooms" player={player} />
+        </Segment>
+        <Segment>
+          <Header as='h3'>
+            {this._pickRandom([
+              'Someone host!',
+              'Dang it!',
+              'Host\'s gotta host',
+              'Crickets...',
+              'Whew.',
+            ])}
+          </Header>
+          <p>No rooms found. Someone has to create one!</p>
+          <Button onClick={this.onClickHost}>Host a Room</Button>
+        </Segment>
+      </Segment.Group>
     );
   }
 
@@ -40,4 +59,5 @@ export default class NoRooms extends BaseComponent {
 }
 
 NoRooms.propTypes = {
+  player: React.PropTypes.object,
 };

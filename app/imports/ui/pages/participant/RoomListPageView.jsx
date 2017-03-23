@@ -4,6 +4,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import NoRooms from '../../components/NoRooms.jsx';
 import RoomItem from '../../components/RoomItem.jsx';
 import PlayerHeader from '../../components/PlayerHeader.jsx';
+import ErrorMessage from '../../components/ErrorMessage.jsx';
 import {
   Container,
   Header,
@@ -28,8 +29,11 @@ export default class RoomListPageView extends BaseComponent {
 
     if (loading) {
       return <p>Loading...</p>;
-    } else if (!rooms || rooms.length === 0) {
-      return <NoRooms />;
+    } else if (!loading && (!rooms || !player)) {
+      console.error('Your session is corrupt. Reload the homepage.');
+      return <ErrorMessage />;
+    } else if (rooms.length === 0) {
+      return <NoRooms player={player} />;
     } else {
       rooms.sort((a, b) => {
         if (!a.players) {

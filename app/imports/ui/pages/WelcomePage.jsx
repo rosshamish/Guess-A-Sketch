@@ -75,16 +75,19 @@ export default class WelcomePage extends React.Component {
           </Button.Group>
           <br />
           <Button toggle size="big" style={style} fluid onClick={this.onClickAbout}>About</Button>
-          <Header as='h5' style={aboutStyle}>
-            Each round, you get a prompt (eg "Cat"). Draw it! 
-            Well, as best you can, until the timer runs out. 
-            Get points based on the speed and quality of your drawing.
-          </Header>
-          <Header as='h5' style={aboutStyle}>
-            Points are awarded by a program that has learned to recognize objects
-            in napkin-quality sketches. The program learns using neural networks - that's the
-            science project part.
-          </Header>
+          <br />
+          <div style={aboutStyle}>
+            <p>
+              Each round, you get a prompt (eg "Cat"). Draw it! 
+              Well, as best you can, until the timer runs out. 
+              Get points based on the speed and quality of your drawing.
+            </p>
+            <p>
+              Points are awarded by a program that has learned to recognize objects
+              in napkin-quality sketches. The program learns using neural networks - that's the
+              science project part.
+            </p>
+          </div>
         </Segment>
       </Segment.Group>
     );
