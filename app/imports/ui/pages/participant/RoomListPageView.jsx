@@ -56,13 +56,15 @@ export default class RoomListPageView extends BaseComponent {
           />
         ));
       return (
-        <Container>
-          <Header as="h2" icon textAlign="center">
-            <Icon name="group" circular />
-            <Header.Content>
-              Rooms
-            </Header.Content>
-          </Header>
+        <Segment.Group>
+          <Segment>
+            <Header as="h2" icon textAlign="center">
+              <Icon name="group" circular />
+              <Header.Content>
+                Rooms
+              </Header.Content>
+            </Header>
+          </Segment>
           <Segment basic>
             <Card.Group
               stackable
@@ -70,14 +72,14 @@ export default class RoomListPageView extends BaseComponent {
               {joinable}
             </Card.Group>
           </Segment>
-          <Segment basic disabled>
+          <Segment disabled>
             <Card.Group
               stackable
               itemsPerRow={2} >
               {playing}
             </Card.Group>
           </Segment>
-        </Container>
+        </Segment.Group>
       );
     }
   }

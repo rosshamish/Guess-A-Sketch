@@ -3,6 +3,7 @@ import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import {
   Card,
+  Label,
 } from 'semantic-ui-react';
 
 
@@ -17,6 +18,10 @@ export default class RoomItem extends BaseComponent {
       room,
     } = this.props;
 
+    const playerBubbles = room.players.map((player) => (
+      <Label circle color={player.color} />
+    ));
+
     return (
       <Card onClick={onClick ? onClick.bind(null, room) : undefined}>
         <Card.Content>
@@ -27,7 +32,7 @@ export default class RoomItem extends BaseComponent {
             {room.status}
           </Card.Meta>
           <Card.Description>
-            {room.players.length} players
+            {playerBubbles}
           </Card.Description>
         </Card.Content>
       </Card>
