@@ -6,6 +6,12 @@ export function getSketchScore(sketch) {
   return Math.floor(Math.random()*100);
 }
 
+function sum(arr) {
+  return _.reduce(arr, (sum, score) => {
+    return sum + score;
+  }, 0);
+}
+
 export function getRoundScore(round, player) {
   let sketches = _.filter(round.sketches, (sketchID) => {
     let sketch = Sketches.findOne({ _id: sketchID });
@@ -36,10 +42,4 @@ export function getGameScore(room, player) {
     return getRoundScore(round, player);
   });
   return sum(scores);
-}
-
-function sum(arr) {
-  return _.reduce(arr, (sum, score) => {
-    return sum + score;
-  }, 0);
 }

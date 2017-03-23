@@ -8,6 +8,7 @@ import {
   Container,
   Header,
   Segment,
+  Rating,
 } from 'semantic-ui-react';
 
 
@@ -45,20 +46,31 @@ export default class ParticipantRoundResults extends BaseComponent {
     }
 
     const currentPlayerSketch = currentPlayerSketches[0];
+    // TODO implement star rating based on real confidence scores
+    // Min( 5, Ceil( Max(0, A - Rank) + B( Confidence ) ) )
+    // A := 3 or so. Get stars for sketchnet getting it right in the first few guesses.
+    // B := fn(confidence-of-correct-label). Get stars for high confidence in the correct label.
+    const rating = Math.ceil(getRoundScore(round, player) / 20);
 
     return (
-      <Container>
-        <Header as='h1'>Round {round.index+1} Over</Header>
-        <Segment.Group>
-          <Segment>
-            <Header as='h3'>Looks like a... TODO</Header>
-            <div>Score: {getRoundScore(round, player)}</div>
-          </Segment>
-          <Segment>
-            <SketchImage sketch={currentPlayerSketch} />
-          </Segment>
-        </Segment.Group>
-      </Container>
+      <Segment.Group>
+        <Segment>
+          <Header as='h1'>Round {round.index+1}</Header>
+        </Segment>
+        <Segment>
+          <Rating 
+            size="massive"
+            disabled
+            maxRating={5}
+            rating={rating} />
+          <SketchImage sketch={currentPlayerSketch} />
+          <Header as='h3'>Guesses</Header>
+          <div>Button (73%)</div>
+          <div>Bagel (40%)</div>
+          <div>Globe (21%)</div>
+          <br />
+        </Segment>
+      </Segment.Group>
     );
   }
 }
