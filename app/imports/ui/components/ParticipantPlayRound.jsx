@@ -36,6 +36,7 @@ export default class ParticipantPlayRound extends BaseComponent {
             <Timer
               time={round.time}
               text=""
+              floated="right"
             />
           </Segment>
         </Segment.Group>

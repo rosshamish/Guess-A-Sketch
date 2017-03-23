@@ -7,6 +7,7 @@ import {
   Header,
   Container,
   Label,
+  Segment,
 } from 'semantic-ui-react';
 
 export default class HostPreRound extends BaseComponent {
@@ -22,19 +23,21 @@ export default class HostPreRound extends BaseComponent {
     } = this.props;
 
     return (
-      <Container>
-        <Label.Group size="huge">
-          <Header as='h1'>Round #{round.index + 1}</Header>
-          <Container>
-            <Prompt prompt={round.prompt} />
+      <Segment.Group>
+        <Segment>
+          <Header as='h1'>Round {round.index + 1}</Header>
+        </Segment>
+        <Segment.Group horizontal>
+          <Segment><Prompt prompt={round.prompt} /></Segment>
+          <Segment>
             <Timer
               room={room}
               time={3}
               onTimeout={onPlayRound.bind(null, room)}
-              text={'Round starting in '} />
-          </Container>
-        </Label.Group>
-      </Container>
+              text={'Starting in '} />
+          </Segment>
+        </Segment.Group>
+      </Segment.Group>
     );
   }
 }

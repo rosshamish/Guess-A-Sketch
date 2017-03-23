@@ -39,14 +39,15 @@ export default class Timer extends BaseComponent {
   }
 
   render() {
-    const { 
+    const {
+      floated,
       text,
     } = this.props;
 
     return (
       <Header
         size="large"
-        floated="right"
+        floated={floated ? floated : ""}
         >
         {text}{this.state.remaining}
       </Header>
@@ -59,4 +60,5 @@ Timer.propTypes = {
   time: React.PropTypes.number,
   onTimeout: React.PropTypes.func,
   text: React.PropTypes.string,
+  floated: React.PropTypes.bool,
 };
