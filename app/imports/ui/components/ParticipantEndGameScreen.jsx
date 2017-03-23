@@ -33,7 +33,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       getGameScore,
     } = this.props;
 
-    // TODO compute a score for each player in the room based on their matching sketches
+    // TODO use star rating for this score.
     const renderScores = room.rounds.map(function(round,index) {
       return ( // key suppresses a key error in console
         <Table.Row key={index}>
@@ -42,6 +42,8 @@ export default class ParticipantEndGameScreen extends BaseComponent {
         </Table.Row>
       );
     });
+
+    // TODO use sum of star ratings / # rounds for this score.
     renderScores.push(
       <Table.Row key={room.rounds.length}>
         <Table.Cell>Total</Table.Cell>
@@ -55,7 +57,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
           <PlayerHeader text="Game Over" player={player} />
         </Segment>
         <Segment>
-          <Table >
+          <Table unstackable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Round</Table.HeaderCell>

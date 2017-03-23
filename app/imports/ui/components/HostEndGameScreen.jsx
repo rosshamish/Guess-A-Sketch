@@ -52,7 +52,7 @@ export default class HostEndGameScreen extends BaseComponent {
     return(
       <Container>
         <Header as="h1">Game Results</Header>
-        <Table celled>
+        <Table unstackable>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Rank</Table.HeaderCell>
