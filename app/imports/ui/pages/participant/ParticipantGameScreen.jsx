@@ -59,18 +59,6 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
     } = nextProps;
 
-    // Debug reloading
-    if (!loading && !room) {
-      console.error('Room undefined. Redirecting.');
-      browserHistory.push('/');
-      return;
-    }
-
-    if (!loading && !Session.get(PLAYER)) {
-      console.error('Player undefined. Redirecting.');
-      browserHistory.push('/');
-      return;
-    }
   }
 
   onCanvasChange(canvas, event) {
@@ -107,11 +95,9 @@ export default class ParticipantGameScreen extends BaseComponent {
       return (
         <p>Loading...</p>
       );
-    } else if (!room) {
-      // The player navigated directly here without joining a room.
-      // Don't allow this!
-      console.error('Error: room is undefined.');
-      return <ErrorMessage />
+    } else if (!loading && (!room || !player)) {
+      console.error('Go back to the homepage. Your session is broken.');
+      return <ErrorMessage />;
     }
 
     const player = Session.get(PLAYER);
