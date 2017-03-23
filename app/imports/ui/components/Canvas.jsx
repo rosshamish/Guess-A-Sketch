@@ -71,9 +71,13 @@ class CanvasImpl extends BaseComponent {
       color,
     } = this.props;
 
+    const noPadding = {
+      padding: 0,
+    };
+
     return (
       <Segment.Group>
-        <Segment raised color={color || 'black'} >
+        <Segment style={noPadding} raised color={color || 'black'} >
           <canvas id="canvas" />
         </Segment>
         <Segment disabled={this.state.pathStack.length <= 0}>
