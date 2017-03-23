@@ -9,6 +9,7 @@ import {
   Header,
   Segment,
   Rating,
+  Progress,
 } from 'semantic-ui-react';
 
 
@@ -50,24 +51,58 @@ export default class ParticipantRoundResults extends BaseComponent {
     // Min( 5, Ceil( Max(0, A - Rank) + B( Confidence ) ) )
     // A := 3 or so. Get stars for sketchnet getting it right in the first few guesses.
     // B := fn(confidence-of-correct-label). Get stars for high confidence in the correct label.
-    const rating = Math.ceil(getRoundScore(round, player) / 20);
+    const rating = Math.ceil(getRoundScore(round, player) / 100 * 5);
+
+    // TODO use real confidences from sketch net
+    const confidences = [['bagel', 0.4], ['button', 0.73], ['apple', 0.21]];
+    confidences.sort((a, b) => b[1] - a[1]);
+    const confidenceComponents = confidences.map((elems) => {
+      const label = elems[0];
+      const confidence = elems[1];
+
+      const percent = confidence * 100;
+      let color = '';
+      if (label === round.prompt) {
+        if (percent > 65) {
+          color = 'green';
+        } else if (percent > 35) {
+          color = 'yellow';
+        } else {
+          color = 'red';
+        }
+      }
+      
+      return (
+        <Progress
+          key={label}
+          percent={percent}
+          color={color}
+          label={label}
+        />
+      );
+    });
 
     return (
       <Segment.Group>
         <Segment>
           <Header as='h1'>Round {round.index+1}</Header>
         </Segment>
-        <Segment>
+        <Segment style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+           }}>
+          <SketchImage 
+            sketch={currentPlayerSketch} />
           <Rating 
             size="massive"
             disabled
             maxRating={5}
             rating={rating} />
-          <SketchImage sketch={currentPlayerSketch} />
+        </Segment>
+        <Segment>
           <Header as='h3'>Guesses</Header>
-          <div>Button (73%)</div>
-          <div>Bagel (40%)</div>
-          <div>Globe (21%)</div>
+          {confidenceComponents}
           <br />
         </Segment>
       </Segment.Group>

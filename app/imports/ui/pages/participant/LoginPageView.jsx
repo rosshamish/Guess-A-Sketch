@@ -77,12 +77,12 @@ export default class LoginPageView extends BaseComponent {
             <Form.Input
               style={style}
               inline
+              fluid
               label='Name'
               type='text'
               value={this.state.nickname}
               onChange={this.onNicknameChange} />
             <CirclePicker
-              style={style}
               circleSize={35}
               color={this.state.color}
               onChangeComplete={this.onColorChange} />
