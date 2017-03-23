@@ -3,12 +3,14 @@ import React from 'react';
 import { randomName } from '/imports/random-name';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
+import { CirclePicker } from 'react-color';
 import {
   Form,
   Container,
   Button,
   Header,
   Icon,
+  Segment,
 } from 'semantic-ui-react';
 
 
@@ -31,7 +33,8 @@ export default class LoginPageView extends BaseComponent {
       this.setState({ nickname: randomName() });
     }
     if (this.state.color === null) {
-      this.setState({ color: 'red' });
+      // TODO refactor default color out to somewhere
+      this.setState({ color: 'black' });
     }
   }
 
@@ -39,8 +42,8 @@ export default class LoginPageView extends BaseComponent {
     this.setState({ nickname: event.target.value });
   }
 
-  onColorChange(event) {
-    this.setState({ color: event.target.value });
+  onColorChange(color, event) {
+    this.setState({ color: color.hex });
   }
 
   render() {
@@ -48,44 +51,50 @@ export default class LoginPageView extends BaseComponent {
       onSubmit,
     } = this.props;
 
+    // TODO check browser compat
+    const style = {
+      display: 'flex',
+      justifyContent: 'center',
+    };
+
     // TODO dice icon to randomize name
+    // TODO get color picker better centered
+    // TODO more circle color options
     return (
-      <Container>
-        <Header as='h1'>
-          <Header.Content>
-            Pick A Name
-          </Header.Content>
-        </Header>
-        <Form onSubmit={(event) => {
-          event.preventDefault();
-          onSubmit(this.state.nickname, this.state.color);
-        }} >
-          <Form.Input
-            fluid
-            inline
-            label='Name'
-            type='text'
-            value={this.state.nickname}
-            onChange={this.onNicknameChange} />
-          <Form.Select
-            fluid
-            inline
-            label='Color'
-            type='text'
-            value={this.state.color}
-            onChange={this.onColorChange}
-            options={[
-              { key: 'red', text: 'Red', value: 'red' },
-              { key: 'blue', text: 'Blue', value: 'blue' }
-            ]} />
-          <Button
-            fluid
-            primary
-            type="submit">
-            Go
-          </Button>
-        </Form>
-      </Container>
+      <Segment.Group style={style}>
+        <Segment>
+          <Header as="h1" style={style}>
+            Guess a Sketch
+          </Header>
+        </Segment>
+        <Segment>
+          <Form 
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSubmit(this.state.nickname, this.state.color);
+            }}
+            >
+            <Form.Input
+              style={style}
+              inline
+              label='Name'
+              type='text'
+              value={this.state.nickname}
+              onChange={this.onNicknameChange} />
+            <CirclePicker
+              style={style}
+              circleSize={35}
+              color={this.state.color}
+              onChangeComplete={this.onColorChange} />
+            <br />
+            <Button
+              fluid
+              type="submit" >
+              Go
+            </Button>
+          </Form>
+        </Segment>
+      </Segment.Group>
     );
   }
 }
