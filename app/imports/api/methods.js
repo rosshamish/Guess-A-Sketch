@@ -15,6 +15,7 @@ import {
 
 import {
   getAllPrompts,
+  getFallbackPrompts,
 } from '../sketch-net';
 
 
@@ -371,14 +372,24 @@ export const createRoom = new ValidatedMethod({
     }
 
     if (Meteor.isServer) {
-      const prompts = Meteor.wrapAsync(getAllPrompts)();
+      // TODO better fallback
+      let prompts = [];
+      try {
+        prompts = Meteor.wrapAsync(getAllPrompts)();
+        if (prompts) {
+          prompts = prompts.data;
+        }
+      } catch (error) {
+        console.error(`SketchNet API unreachable. ${error}`);
+        prompts = getFallbackPrompts();
+      }
       const rounds = [];
       for (let count = 0; count < round_count; count++){
         rounds.push({
           time: round_time,
           index: count,
           // Random choice without replacement
-          prompt: prompts.data.splice(Math.floor(Math.random()*prompts.length), 1)[0],
+          prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
         });
       }
       let id = Rooms.insert({ name: room_name, rounds: rounds });

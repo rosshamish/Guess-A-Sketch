@@ -46,12 +46,6 @@ export default class HostGameScreen extends BaseComponent {
       loading,
       room,
     } = nextProps;
-
-    if (!loading && !room) {
-      console.error('Room undefined. Redirecting.');
-      browserHistory.push('/');
-      return;
-    }
   }
 
   onStartGame(room) {
@@ -120,10 +114,13 @@ export default class HostGameScreen extends BaseComponent {
       room,
     } = this.props;
 
-    if (loading || !room) {
+    if (loading) {
       return (
         <p>Loading...</p>
       );
+    } else if (!loading && !room) {
+      console.error('Go back to the homepage. Your session is broken.');
+      return <ErrorMessage />;
     }
 
     // Page Rendering
