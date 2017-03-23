@@ -89,6 +89,7 @@ export default class LoginPageView extends BaseComponent {
             <br />
             <Button
               fluid
+              primary
               type="submit" >
               Go
             </Button>
