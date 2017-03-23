@@ -1,7 +1,12 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 
-import { Button, Header, Icon, Image } from 'semantic-ui-react'
+import { 
+  Button, 
+  Header,
+  Icon,
+  Image
+} from 'semantic-ui-react'
 
 export default class WelcomePage extends React.Component {
 
@@ -50,7 +55,7 @@ export default class WelcomePage extends React.Component {
             </Header>
 
             <div className="ui text container">
-              <h4 className="ui header">Half party game, half science project.</h4>
+              <h4 className="ui header">Half party game, half neural net.</h4>
               <p>Each round, you get a prompt (eg "Cat"). Draw it! 
               Well, as best you can, until the timer runs out. 
               Get points based on the speed and quality of your drawing.
@@ -63,10 +68,10 @@ export default class WelcomePage extends React.Component {
 
             <p />
             <div className="ui buttons">
-              <button className="ui button primary" onClick={this.onClickPlay}>Play</button>
+              <Button color='teal' className="ui button" onClick={this.onClickPlay}>Play</Button>
               <div className="or">
               </div>
-              <button className="ui button secondary" onClick={this.onClickHost}>Host</button>
+              <Button className="ui button" onClick={this.onClickHost}>Host</Button>
             </div>
 
           </div>
