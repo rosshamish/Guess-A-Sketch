@@ -3,6 +3,7 @@ import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import {
   Label,
+  Header,
 } from 'semantic-ui-react';
 
 
@@ -15,9 +16,10 @@ export default class Prompt extends BaseComponent {
     const { prompt } = this.props;
 
     return (
-      <Label>
-        Drawing Prompt: <strong>{prompt}</strong>
-      </Label>
+      <Header
+        size="large" >
+        <strong>{prompt}</strong>
+      </Header>
     );
   }
 }

@@ -5,8 +5,7 @@ import Prompt from './Prompt.jsx';
 import Canvas from './Canvas.jsx';
 import Timer from './Timer.jsx';
 import {
-  Container,
-  Label,
+  Segment,
 } from 'semantic-ui-react';
 
 
@@ -28,16 +27,20 @@ export default class ParticipantPlayRound extends BaseComponent {
     } = this.props;
 
     return (
-      <Container>
-        <Label.Group size="huge">
-          <Prompt prompt={round.prompt} />
-          <Timer
-            time={round.time}
-            text="Remaining: "
-          />
-        </Label.Group>
-        <Canvas onChange={onCanvasChange} />
-      </Container>
+      <Segment.Group>
+        <Segment.Group horizontal>
+          <Segment>
+            <Prompt prompt={round.prompt} />
+          </Segment>
+          <Segment> 
+            <Timer
+              time={round.time}
+              text=""
+            />
+          </Segment>
+        </Segment.Group>
+        <Canvas onChange={onCanvasChange} color={player.color} />
+      </Segment.Group>
     );
   }
 }

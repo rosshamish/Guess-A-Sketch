@@ -36,7 +36,7 @@ export default class ParticipantPreGameScreen extends BaseComponent {
         <Divider />
         <Container>
           <p>Feel free to draw while you wait for the game to start</p>
-          <Canvas prompt="" player={player} onChange={onCanvasChange} />
+          <Canvas player={player} onChange={onCanvasChange} />
         </Container>
       </Container>
     );

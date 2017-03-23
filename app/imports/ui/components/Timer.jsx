@@ -3,6 +3,7 @@ import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import {
   Label,
+  Header,
 } from 'semantic-ui-react';
 
 
@@ -43,9 +44,12 @@ export default class Timer extends BaseComponent {
     } = this.props;
 
     return (
-      <Label>
+      <Header
+        size="large"
+        floated="right"
+        >
         {text}{this.state.remaining}
-      </Label>
+      </Header>
     );
   }
 }
