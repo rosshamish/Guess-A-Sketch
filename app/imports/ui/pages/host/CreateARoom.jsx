@@ -18,22 +18,26 @@ export default class CreateARoom extends BaseComponent {
     this.onCreateRoom = this.onCreateRoom.bind(this);
   }
 
-  onCreateRoom(room_name, round_count, round_time) {
-    const createdRoom = createRoom.call({
-      room_name: room_name,
-      round_count: parseInt(round_count, 10),
-      round_time: parseInt(round_time, 10),
+  onCreateRoom(roomName, roundCount, roundTime) {
+    const didSimulateSuccessfully = createRoom.call({
+      room_name: roomName,
+      round_count: parseInt(roundCount, 10),
+      round_time: parseInt(roundTime, 10),
+    }, (error, result) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      const room = Rooms.findOne({_id: result});
+      if (!room) {
+        console.error('Failed to create room.');
+        return;
+      }
+      Session.set(HOST_ROOM, room);
     });
-
-    const room = Rooms.findOne({name: room_name});
-    if (!createdRoom || !room) {
-      console.error('Failed to create room.');
-      return <ErrorMessage />;
+    if (didSimulateSuccessfully) {
+      browserHistory.push('/host/play');
     }
-
-    // Navigate to the lobby of the newly created room
-    Session.set(HOST_ROOM, room);
-    browserHistory.push('/host/play');
   }
 
   render(){

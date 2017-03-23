@@ -1,17 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
+import { HTTP } from 'meteor/http';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
 import { 
   Schema,
-  getFakePrompt, // TODO fetch prompts from sketch net
 } from './schema';
 
 import {
   currentRound,
 } from '../game-status';
+
+import {
+  getAllPrompts,
+} from '../sketch-net';
 
 
 export const submitSketch = new ValidatedMethod({
@@ -28,7 +32,7 @@ export const submitSketch = new ValidatedMethod({
     const sketchID = Sketches.insert(sketch);
     console.log('Submitting sketch ' + sketchID);
 
-    return Rooms.update({
+    const didUpdate = Rooms.update({
       "players.name": sketch.player.name,
       "rounds.index": roundIndex,
     }, {
@@ -36,6 +40,12 @@ export const submitSketch = new ValidatedMethod({
         "rounds.$.sketches": sketchID,
       },
     });
+    if (!didUpdate) {
+      console.error("Failed to insert sketchID into room");
+      return didUpdate;
+    }
+
+    return true; // Success
   },
 });
 
@@ -345,32 +355,37 @@ export const createRoom = new ValidatedMethod({
     },
   }).validator(),
   run({ room_name, round_count, round_time }) {
-
+    // TODO use better message passing than alert() here
     if (!room_name){
         alert('Please fill in a Room Name');
-        return;
+        return false;
     } else if (round_count < 1){
         alert('Please allow for at least one round.');
-        return;
+        return false;
     } else if (round_time < 10){
         alert('Please give each round at least ten seconds.');
-        return;
+        return false;
     } else if (Rooms.find({name: room_name}).fetch().length > 0){ 
         alert('Sorry, that room name is already taken.');
-        return;
+        return false;
     }
-    
-    let rounds = [];
-    for (let count = 0; count < round_count; count++){
-      rounds.push({
-        time: round_time,
-        index: count,
-        prompt: getFakePrompt(),
-      });
-    }
-    let id = Rooms.insert({ name: room_name, rounds: rounds });
-    console.log(`Creating room ${room_name} ${id}`);
 
-    return id;
+    if (Meteor.isServer) {
+      const prompts = Meteor.wrapAsync(getAllPrompts)();
+      const rounds = [];
+      for (let count = 0; count < round_count; count++){
+        rounds.push({
+          time: round_time,
+          index: count,
+          // Random choice without replacement
+          prompt: prompts.data.splice(Math.floor(Math.random()*prompts.length), 1)[0],
+        });
+      }
+      let id = Rooms.insert({ name: room_name, rounds: rounds });
+      console.log(`Creating room ${room_name} ${id}`);
+      return id;
+    }
+
+    return true;
   },
 });
