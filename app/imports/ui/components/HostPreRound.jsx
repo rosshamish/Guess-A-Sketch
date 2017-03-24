@@ -28,8 +28,12 @@ export default class HostPreRound extends BaseComponent {
           <Header as='h1'>Round {round.index + 1}</Header>
         </Segment>
         <Segment.Group horizontal>
-          <Segment><Prompt prompt={round.prompt} /></Segment>
           <Segment>
+            Prompt:
+            <Prompt prompt={round.prompt} />
+          </Segment>
+          <Segment>
+            Countdown:
             <Timer
               room={room}
               time={3}
