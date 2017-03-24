@@ -1,7 +1,10 @@
 import React from 'react';
 import { _ } from 'underscore';
 
-import { randomName } from '/imports/random-name';
+import {
+  randomName,
+  pickRandom,
+} from '/imports/random-name';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 import { CirclePicker } from 'react-color';
@@ -76,7 +79,7 @@ export default class LoginPageView extends BaseComponent {
     super(props);
     this.state = {
       nickname: randomName(),
-      color: semanticUIColors[0].hex,
+      color: pickRandom(_.pluck(semanticUIColors, 'hex')),
     };
 
     this.onNicknameChange = this.onNicknameChange.bind(this);

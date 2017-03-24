@@ -17,7 +17,7 @@ export function randomName() {
 // Attribution: Pick a random element from a list
 // Url: https://jsfiddle.net/katowulf/3gtDf/
 // Accessed: March 7, 2017
-function pickRandom(list) {
+export function pickRandom(list) {
   const i = Math.floor(Math.random() * list.length);
   return list[i];
 }
