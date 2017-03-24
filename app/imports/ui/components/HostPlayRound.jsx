@@ -40,9 +40,9 @@ export default class HostPlayRound extends BaseComponent {
               text={'Time Remaining: '} />
           </Segment>
         </Segment.Group>
-        <Segment.Group horizontal>
+        <Segment>
           <ProgressBar time={round.time} />
-        </Segment.Group>
+        </Segment>
       </Segment.Group>
     );
   }

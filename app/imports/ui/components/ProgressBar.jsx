@@ -17,9 +17,9 @@ export default class ProgressBar extends BaseComponent {
   componentDidMount() {
     this.interval_id = setInterval(() => {
       this.setState({
-        remaining: this.state.remaining - 1,
+        remaining: this.state.remaining - 0.1,
       });
-    }, 1000);
+    }, 100);
   }
 
   componentWillUnmount() {
@@ -40,7 +40,6 @@ export default class ProgressBar extends BaseComponent {
     } = this.props;
 
     percent = (time - this.state.remaining)/time*100;
-    console.log(percent);
     return (
       <Progress color='blue' percent={percent} />
     );
