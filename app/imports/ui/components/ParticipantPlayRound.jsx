@@ -30,7 +30,7 @@ export default class ParticipantPlayRound extends BaseComponent {
     // TODO proper fullscreen instead of height: 90vh
     return (
       <Segment.Group style={{
-        height: '80vh',
+        height: '70vh',
       }}>
         <Segment>
           <PlayerHeader text={`Round ${round.index+1}`} player={player} />

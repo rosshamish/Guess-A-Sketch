@@ -26,7 +26,7 @@ export default class ParticipantPreGameScreen extends BaseComponent {
 
     return (
       <Segment.Group style={{
-        height: '80vh',
+        height: '70vh',
       }}>
         <Segment>
           <PlayerHeader text={room.name} player={player} />
