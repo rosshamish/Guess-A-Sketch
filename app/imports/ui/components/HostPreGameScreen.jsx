@@ -44,7 +44,7 @@ export default class HostPreGameScreen extends BaseComponent {
     return (
       <center>
       <Container>
-        <Header as="h2" icon textAlign="center">
+        <Header as="h1" icon textAlign="center">
           <Icon name="sign in" circular />
           <Header.Content>
             Lobby

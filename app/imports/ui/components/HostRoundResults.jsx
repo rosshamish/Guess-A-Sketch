@@ -53,7 +53,7 @@ export default class HostRoundResults extends BaseComponent {
               onNextRound(room);
             }}
           >
-            <Button>
+            <Button primary>
               { 
                 isLastRound(round, room) ?
                 'End Game' :

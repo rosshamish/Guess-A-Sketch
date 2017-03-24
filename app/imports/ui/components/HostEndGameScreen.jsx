@@ -75,7 +75,7 @@ export default class HostEndGameScreen extends BaseComponent {
             </Table.Body>
           </Table>
           <Form onSubmit={this.onSubmit}>
-            <Button type="submit">
+            <Button primary type="submit">
               Back to Home
             </Button>
           </Form>
