@@ -3,7 +3,6 @@ import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
-import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
 import {
   Container,
@@ -21,50 +20,42 @@ export default class ParticipantRoundResults extends BaseComponent {
 
   render() {
     const {
-      room,
       round,
       player,
-      sketches,
-      getRoundScore,
+      sketch,
+      getSketchScore,
     } = this.props;
 
-    // TODO more efficient method than fetching ALL sketches and then
-    // filtering to the current player's.
-    const currentPlayerSketches = sketches.filter((sketch) =>
-      sketch.player.name === player.name
-    );
+    let rating;
+    let loading = false;
 
-    if (currentPlayerSketches.length === 0) {
-      return (
-        <ParticipantJoiningBetweenRounds
-          room={room}
-          round={round}
-          player={player}
-        />
-      );
-    } else if (currentPlayerSketches.length > 1) {
-      console.error('Player had too many sketches in latest round. Had ' + currentPlayerSketches.length + '.');
-      return <ErrorMessage />
+    if (!sketch.scores || !sketch.scores.length) {
+      loading = true;
+      rating = 0;
+      sketch.scores = [{
+        'label': `Your ${sketch.prompt} is being scored.`,
+        'confidence': 0.75,
+      }, {
+        'label': 'The neural network is working.',
+        'confidence': 0.5,
+      }, {
+        'label': 'Thanks for your patience!',
+        'confidence': 0.3,
+      }];
+    } else {
+      rating = getSketchScore(sketch);
     }
 
-    const currentPlayerSketch = currentPlayerSketches[0];
-    // TODO loading screen while sketch is scored
-    if (!currentPlayerSketch.scores || !currentPlayerSketch.scores.length) {
-      return <p>Loading...</p>;
-    }
-
-    const rating = getRoundScore(round, player);
-
-    currentPlayerSketch.scores.sort((a, b) => b.confidence - a.confidence);
+    sketch.scores.sort((a, b) => b.confidence - a.confidence);
     // TODO refactor TOP_N constant
     const TOP_N = 3;
-    const topScores = currentPlayerSketch.scores.slice(0, TOP_N);
+    const topScores = sketch.scores.slice(0, TOP_N);
     const topScoreComponents = topScores.map((score) => {
       const percent = score.confidence * 100;
       let color = 'grey';
       if (score.label === round.prompt) {
         color = 'green';
-        // TODO alternate colors based on confidence
+        // TODO use colors based on confidence
         // if (percent > 65) {
         //   color = 'green';
         // } else if (percent > 35) {
@@ -76,6 +67,7 @@ export default class ParticipantRoundResults extends BaseComponent {
       
       return (
         <Progress
+          indicating={loading}
           key={score.label}
           percent={percent}
           color={color}
@@ -89,13 +81,15 @@ export default class ParticipantRoundResults extends BaseComponent {
         <Segment>
           <PlayerHeader text={`Round ${round.index+1}`} player={player} />
         </Segment>
-        <Segment style={{
+        <Segment
+          loading={loading}
+          style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-           }}>
+           }} >
           <SketchImage 
-            sketch={currentPlayerSketch} />
+            sketch={sketch} />
           <Rating
             icon="star"
             size="massive"
@@ -104,7 +98,7 @@ export default class ParticipantRoundResults extends BaseComponent {
             rating={rating} />
         </Segment>
         <Segment>
-          <Header as='h3'>Looks like...</Header>
+          <Header as='h3'>SketchNet's best guesses</Header>
           {topScoreComponents}
           <br />
         </Segment>
@@ -114,9 +108,8 @@ export default class ParticipantRoundResults extends BaseComponent {
 }
 
 ParticipantRoundResults.propTypes = {
-  room: React.PropTypes.object,
   round: React.PropTypes.object,
   player: React.PropTypes.object,
-  sketches: React.PropTypes.array,
-  getRoundScore: React.PropTypes.func,
+  sketch: React.PropTypes.object,
+  getSketchScore: React.PropTypes.func,
 };

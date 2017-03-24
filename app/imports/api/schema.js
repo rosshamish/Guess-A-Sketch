@@ -28,8 +28,9 @@ Schema.Sketch = new SimpleSchema({
     },
     scores:{
         type: Array,
-        minCount: 1,
         label: "SketchNet Scores",
+        optional: true,
+        defaultValue: [],
     },
     'scores.$': Object,
     'scores.$.label': {

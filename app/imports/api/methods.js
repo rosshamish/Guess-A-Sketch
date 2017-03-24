@@ -37,10 +37,29 @@ export const submitSketch = new ValidatedMethod({
     },
   }).validator(),
   run({ player, sketch, prompt, roundIndex }) {
+    const sketchID = Sketches.insert({
+      player,
+      sketch,
+      prompt,
+    });
+
+    const didUpdate = Rooms.update({
+      "players.name": player.name,
+      "rounds.index": roundIndex,
+    }, {
+      $push: {
+        "rounds.$.sketches": sketchID,
+      },
+    });
+    if (!didUpdate) {
+      console.error("Failed to insert sketchID into room");
+      return didUpdate;
+    }
+
     if (Meteor.isServer) {
       let scores = [];
       try {
-        let result = Meteor.wrapAsync(getScoresForSketch)(sketch);
+        const result = Meteor.wrapAsync(getScoresForSketch)(sketch);
         if (result) {
           scores = result.data;
         }
@@ -49,33 +68,17 @@ export const submitSketch = new ValidatedMethod({
         scores = getFallbackScores();
       }
 
-      const sketchID = Sketches.insert({
-        player,
-        sketch,
-        scores,
-        prompt,
-      });
-      if (!sketchID) {
-        console.error('Failed to insert sketch');
-        return sketchID;
-      }
-
-      const didUpdate = Rooms.update({
-        "players.name": player.name,
-        "rounds.index": roundIndex,
-      }, {
-        $push: {
-          "rounds.$.sketches": sketchID,
+      const numUpdated = Sketches.update(sketchID, {
+        $set: {
+          scores,
         },
       });
-      if (!didUpdate) {
-        console.error("Failed to insert sketchID into room");
-        return didUpdate;
+      if (!numUpdated) {
+        console.error('Failed to update sketch with scores');
+        return numUpdated;
       }
-
-      return sketchID;
+      return true; // Success
     }
-
     return true; // Success
   },
 });

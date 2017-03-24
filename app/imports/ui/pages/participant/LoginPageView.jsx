@@ -23,10 +23,11 @@ const semanticUIColors = [
     name: 'orange',
     hex: '#FE9A76',
   },
-  {
-    name: 'yellow',
-    hex: '#FFD700',
-  },
+  // Omit yellow. Too hard to see.
+  // {
+  //   name: 'yellow',
+  //   hex: '#FFD700',
+  // },
   {
     name: 'olive',
     hex: '#32CD32',

@@ -15,6 +15,7 @@ import {
   currentRound,
 } from '/imports/game-status';
 import {
+  getSketchScore,
   getRoundScore,
   getGameScore,
 } from '/imports/scoring';
@@ -23,6 +24,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
 import ParticipantPreRound from '../../components/ParticipantPreRound.jsx';
 import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
+import ParticipantJoiningBetweenRounds from '../../components/ParticipantJoiningBetweenRounds.jsx';
 import ParticipantRoundResults from '../../components/ParticipantRoundResults.jsx';
 import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
 import ErrorMessage from '../../components/ErrorMessage.jsx';
@@ -31,10 +33,6 @@ import ErrorMessage from '../../components/ErrorMessage.jsx';
 export default class ParticipantGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      sketch: null,
-      latestRoundIndex: null,
-    };
   }
 
   componentWillUnmount() {
@@ -53,14 +51,6 @@ export default class ParticipantGameScreen extends BaseComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {
-      loading,
-      room,
-    } = nextProps;
-
-  }
-
   onCanvasChange(canvas, event) {
     Session.set(SKETCH, canvas.toDataURL());
   }
@@ -71,12 +61,12 @@ export default class ParticipantGameScreen extends BaseComponent {
       sketch: Session.get(SKETCH),
       prompt,
       roundIndex: index,
-    }, (error, sketchID) => {
+    }, (error, result) => {
       if (error) {
         console.error(error);
         return;
       }
-      console.log(`Successfully submitted sketch ${sketchID}`);
+      console.log('Successfully submitted sketch');
     });
   }
 
@@ -84,6 +74,7 @@ export default class ParticipantGameScreen extends BaseComponent {
     const {
       loading,
       room,
+      sketches,
     } = this.props;
 
     const player = Session.get(PLAYER);
@@ -142,18 +133,28 @@ export default class ParticipantGameScreen extends BaseComponent {
           />
         );
       } else if (round.status === 'RESULTS') {
-        const sketches = _.map(round.sketches, (sketchID) => {
-          return Sketches.findOne(sketchID);
+        const sketchID = _.find(round.sketches, (sketchID) => {
+          const sketch = Sketches.findOne(sketchID);
+          return sketch && sketch.player && sketch.player.name === player.name;
         });
-        return (
-          <ParticipantRoundResults
-            room={room}
-            round={currentRound(room)}
-            player={player}
-            sketches={sketches}
-            getRoundScore={getRoundScore}
-          />
-        );
+        if (!sketchID) {
+          return (
+            <ParticipantJoiningBetweenRounds
+              room={room}
+              round={currentRound(room)}
+              player={player}
+            />
+          );
+        } else {
+          return (
+            <ParticipantRoundResults
+              round={currentRound(room)}
+              player={player}
+              sketch={_.find(sketches, (sketch) => sketch._id === sketchID )}
+              getSketchScore={getSketchScore}
+            />
+          );
+        }
       } else {
         console.error('[Room ' + room._id + ']: Current round in illegal state');
         return <ErrorMessage />;
@@ -168,4 +169,5 @@ export default class ParticipantGameScreen extends BaseComponent {
 ParticipantGameScreen.propTypes = {
   loading: React.PropTypes.bool,
   room: React.PropTypes.object,
+  sketches: React.PropTypes.array,
 };
