@@ -3,10 +3,10 @@ import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
+import ProgressBar from './ProgressBar.jsx';
 import {
   Header,
-  Container,
-  Label,
+  Segment,
 } from 'semantic-ui-react';
 
 export default class HostPlayRound extends BaseComponent {
@@ -22,19 +22,28 @@ export default class HostPlayRound extends BaseComponent {
     } = this.props;
 
     return (
-      <Container>
-        <Label.Group size="huge">
-          <Header as='h1'>Round In Progress</Header>
-          <Container>
+      <Segment.Group>
+        <Segment>
+          <Header as='h1'>Round {round.index + 1} - In Progress</Header>
+        </Segment>
+        <Segment.Group horizontal>
+          <Segment>
+            Prompt:
             <Prompt prompt={round.prompt} />
+          </Segment>
+          <Segment>
+            Countdown:
             <Timer
               room={room}
               time={round.time}
               onTimeout={onRoundTimerOver.bind(null, room)}
               text={'Time Remaining: '} />
-          </Container>
-        </Label.Group>
-      </Container>
+          </Segment>
+        </Segment.Group>
+        <Segment.Group horizontal>
+          <ProgressBar time={round.time} />
+        </Segment.Group>
+      </Segment.Group>
     );
   }
 }
