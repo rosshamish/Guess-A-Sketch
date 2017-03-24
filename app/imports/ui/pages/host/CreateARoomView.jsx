@@ -6,6 +6,7 @@ import {
   Container,
   Button,
   Header,
+  Segment,
 } from 'semantic-ui-react';
 
 
@@ -47,22 +48,30 @@ export default class CreateARoom extends BaseComponent {
       )
     }
 
+    // TODO check browser compat
+    const style = {
+      display: 'flex',
+      justifyContent: 'center',
+    };
+
     return (
-      <Container>
-        <Header as='h1'>
-          <Header.Content>
+      <Segment.Group style={style}>
+        <Segment>
+          <Header as="h1" style={style}>
             Create A Room
-          </Header.Content>
-        </Header>
-        <Form 
-          onSubmit={(event) => {
-            event.preventDefault();
-            onCreateRoom(this.state.roomName,
-                         this.state.roundCount,
-                         this.state.roundTime);
-          }}
-        >
+          </Header>
+        </Segment>
+        <Segment>
+          <Form 
+            onSubmit={(event) => {
+              event.preventDefault();
+              onCreateRoom(this.state.roomName,
+                           this.state.roundCount,
+                           this.state.roundTime);
+            }}
+          >
           <Form.Input
+            style={style}
             fluid
             inline
             label='Room Name'
@@ -72,6 +81,7 @@ export default class CreateARoom extends BaseComponent {
             value={this.state.roomName}
             onChange={this.onRoomNameChange}/>
           <Form.Input
+            style={style}
             fluid
             inline
             label='Number of Rounds'
@@ -81,6 +91,7 @@ export default class CreateARoom extends BaseComponent {
             placeholder="Number of Rounds"
             onChange={this.onRoundCountChange}/>
           <Form.Input
+            style={style}
             fluid
             inline
             label='Time'
@@ -95,8 +106,9 @@ export default class CreateARoom extends BaseComponent {
             type="submit" >
             Create
           </Button>
-        </Form>
-      </Container>
+          </Form>
+        </Segment>
+      </Segment.Group>
     );
   }
 }
