@@ -1,15 +1,15 @@
 Guess-a-Sketch
 ===
 
-Half party game, half science project.
+Half party game, half AI experiment.
 
-Each round, you get a prompt (eg "Cat"). Draw it! 
+Each round, you get a prompt (eg "cat"). Draw it! 
 Well, as best you can, until the timer runs out. 
-Get points based on the speed and quality of your drawing.
+Get points based on the quality of your drawing.
 
-Points are awarded by an AI that has learned to recognize objects
-in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
-science project part.
+Points are awarded by a program which can recognize objects
+in napkin-quality sketches. The program learns how to do this
+using machine learning - specifically, neural networks.
 
 ---
 

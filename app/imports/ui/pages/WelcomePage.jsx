@@ -9,12 +9,19 @@ import {
   Segment,
   Container,
   Modal,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
+
 
 export default class WelcomePage extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      aboutModalOpen: false,
+    };
+
+    this.handleAboutOpen = this.handleAboutOpen.bind(this);
+    this.handleAboutClose = this.handleAboutClose.bind(this);
   }
 
   onClickPlay(event) {
@@ -25,6 +32,14 @@ export default class WelcomePage extends React.Component {
   onClickHost(event) {
     event.preventDefault();
     browserHistory.push('/host/create');
+  }
+
+  handleAboutOpen(event) {
+    this.setState({ aboutModalOpen: true });
+  }
+
+  handleAboutClose(event) {
+    this.setState({ aboutModalOpen: false });
   }
 
   render() {
@@ -61,23 +76,30 @@ export default class WelcomePage extends React.Component {
           <br />
           <Modal 
             trigger={
-              <Button toggle size="large" style={style}>About</Button>
+              <Button toggle size="large" onClick={this.handleAboutOpen} style={style}>About</Button>
             } 
             basic size='small'
+            open={this.state.aboutModalOpen}
+            onClose={this.handleAboutClose}
           >
-            <Header content='About Guess-A-Sketch' />
+            <Modal.Header content='About Guess-A-Sketch' />
             <Modal.Content>
               <p>
-                Each round, you get a prompt (eg "Cat"). Draw it! 
+                Each round, you get a prompt (eg "cat"). Draw it! 
                 Well, as best you can, until the timer runs out. 
-                Get points based on the speed and quality of your drawing.
+                Get points based on the quality of your drawing.
               </p>
               <p>
-                Points are awarded by a program that has learned to recognize objects
-                in napkin-quality sketches. The program learns using neural networks - that's the
-                science project part.
+                Points are awarded by a program which can recognize objects
+                in napkin-quality sketches. The program learns how to do this
+                using neural networks - that's the AI experiment.
               </p>
             </Modal.Content>
+            <Modal.Actions>
+              <Button color='green' onClick={this.handleAboutClose}>
+                <Icon name='checkmark' />Cool!
+              </Button>
+            </Modal.Actions>
           </Modal>
         </Segment>
       </Segment.Group>

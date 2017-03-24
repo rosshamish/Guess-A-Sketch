@@ -39,7 +39,7 @@ export default class ProgressBar extends BaseComponent {
       time,
     } = this.props;
 
-    percent = (time - this.state.remaining)/time*100;
+    const percent = (time - this.state.remaining)/time*100;
     return (
       <Progress color='blue' percent={percent} />
     );
