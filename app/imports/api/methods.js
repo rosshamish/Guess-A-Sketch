@@ -405,7 +405,6 @@ export const createRoom = new ValidatedMethod({
     }
 
     if (Meteor.isServer) {
-      // TODO better fallback
       let prompts = [];
       try {
         prompts = Meteor.wrapAsync(getAllPrompts)();

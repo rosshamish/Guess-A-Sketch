@@ -55,7 +55,7 @@ function getStarRating(sketch) {
   };
 
   // TODO tune this value
-  const makeItEasier = 0.8; // on [0.1,1.0], lower is easier
+  const makeItEasier = 1.0; // on [0.1,1.0], lower is easier
   const compositionFn = (_rankComponent, _confidenceComponent) => {
     const max = rankFn(bestRank, maxRank) + confidenceFn(bestConfidence);
     const score = _rankComponent + _confidenceComponent;

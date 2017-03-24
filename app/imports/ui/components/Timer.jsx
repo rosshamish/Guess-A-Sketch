@@ -1,8 +1,8 @@
 import React from 'react';
+import { _ } from 'underscore';
 
 import BaseComponent from './BaseComponent.jsx';
 import {
-  Label,
   Header,
 } from 'semantic-ui-react';
 
@@ -44,28 +44,18 @@ export default class Timer extends BaseComponent {
       text,
     } = this.props;
 
-    const content = `${text}${this.state.remaining}`;
-
-    // TODO how to do conditional attribute on a component
-    if (floated ) {
-      return (
-        <Header
-          size="large"
-          floated={floated}
-          >
-          {content}
-        </Header>
-      );
-    } else {
-      return (
-        <Header
-          size="large"
-          >
-          {content}
-        </Header>
-      );
+    let realFloated = floated;
+    if (!_.contains(["left", "right"], realFloated)) {
+      realFloated = null;
     }
-    
+    return (
+      <Header
+        size="large"
+        floated={realFloated}
+        >
+        {text}{this.state.remaining}
+      </Header>
+    );
   }
 }
 

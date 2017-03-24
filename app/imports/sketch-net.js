@@ -15,9 +15,12 @@ export function getFallbackPrompts() {
 }
 
 export function getScoresForSketch(sketch, callback) {
-  // TODO pass sketch in once API supports it
   const submit = `${sketchNetURL}/submit`;
-  HTTP.post(submit, {}, callback);
+  HTTP.post(submit, {
+    params: {
+      sketch: sketch,
+    },
+  }, callback);
 }
 
 export function getFallbackScores() {

@@ -110,7 +110,7 @@ export default class LoginPageView extends BaseComponent {
       onSubmit,
     } = this.props;
 
-    // TODO check browser compat
+    // TODO check browser compat of flex
     const style = {
       display: 'flex',
       justifyContent: 'center',
@@ -118,7 +118,6 @@ export default class LoginPageView extends BaseComponent {
 
     // TODO dice icon to randomize name
     // TODO get color picker better centered
-    // TODO more circle color options
     return (
       <Segment.Group style={style}>
         <Segment>
