@@ -60,9 +60,12 @@ export default class HostPreGameScreen extends BaseComponent {
           onSubmit={(event) => {
             event.preventDefault();
             onStartGame(room);
-          }}
-        >
-          <Button type="submit">Start Game</Button>
+          }}>
+          <Button 
+            primary 
+            type="submit">
+            Start Game
+          </Button>
         </Form>
         <br/>
         <StackGrid columnWidth={150}>

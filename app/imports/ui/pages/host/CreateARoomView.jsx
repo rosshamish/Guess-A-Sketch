@@ -7,6 +7,7 @@ import {
   Button,
   Header,
   Segment,
+  Icon,
 } from 'semantic-ui-react';
 
 
@@ -57,8 +58,11 @@ export default class CreateARoom extends BaseComponent {
     return (
       <Segment.Group style={style}>
         <Segment>
-          <Header as="h1" style={style}>
-            Create A Room
+         <Header as="h1" icon textAlign="center">
+            <Icon name="group" circular />
+            <Header.Content>
+              Create A Room
+            </Header.Content>
           </Header>
         </Segment>
         <Segment>
@@ -72,7 +76,6 @@ export default class CreateARoom extends BaseComponent {
           >
           <Form.Input
             style={style}
-            fluid
             inline
             label='Room Name'
             type="text"
@@ -82,7 +85,6 @@ export default class CreateARoom extends BaseComponent {
             onChange={this.onRoomNameChange}/>
           <Form.Input
             style={style}
-            fluid
             inline
             label='Number of Rounds'
             type="number"
@@ -92,7 +94,6 @@ export default class CreateARoom extends BaseComponent {
             onChange={this.onRoundCountChange}/>
           <Form.Input
             style={style}
-            fluid
             inline
             label='Time'
             type="number"
@@ -100,12 +101,13 @@ export default class CreateARoom extends BaseComponent {
             value={this.state.roundTime}
             placeholder="Time"
             onChange={this.onRoundTimeChange} />
-          <Button
-            fluid
-            primary
-            type="submit" >
-            Create
-          </Button>
+          <center>
+            <Button
+              primary
+              type="submit" >
+              Create
+            </Button>
+          </center>
           </Form>
         </Segment>
       </Segment.Group>
