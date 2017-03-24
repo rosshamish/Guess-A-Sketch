@@ -37,7 +37,6 @@ export default class WelcomePage extends React.Component {
     } = this.props;
 
     const style = {
-      display: 'flex',
       justifyContent: 'center',
     };
 
@@ -52,17 +51,17 @@ export default class WelcomePage extends React.Component {
             as='h4'
             textAlign="center">Half party game, half AI experiment</Header>
         </Segment>
-        <Segment>
+        <Segment textAlign='center'>
           <Button.Group style={style} size="big">
             <Button primary onClick={this.onClickPlay}>Play</Button>
             <Button.Or />
             <Button onClick={this.onClickHost}>Host</Button>
           </Button.Group>
           <br />
+          <br />
           <Modal 
-            style={{display : 'inline-block', valign : 'top'}} 
             trigger={
-              <Button toggle size="big" style={style} fluid>About</Button>
+              <Button toggle size="large" style={style}>About</Button>
             } 
             basic size='small'
           >
