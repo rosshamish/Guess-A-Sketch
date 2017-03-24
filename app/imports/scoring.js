@@ -1,9 +1,21 @@
 import { _ } from 'meteor/underscore';
 import { Sketches } from '/imports/api/collections/sketches';
 
+function getStarRating(sketch) {
+  if (!sketch.scores || !sketch.scores.length) {
+    console.error('Cant score sketch with no scores');
+    console.error('Sketch was:');
+    console.error(sketch);
+    return 0;
+  }
+
+  // TODO actually calculate this score.
+  return 3;
+}
+
 export function getSketchScore(sketch) {
   // TODO actually score the sketch using SketchNet's output
-  return Math.floor(Math.random()*100);
+  return getStarRating(sketch);
 }
 
 function sum(arr) {
@@ -13,28 +25,21 @@ function sum(arr) {
 }
 
 export function getRoundScore(round, player) {
-  let sketches = _.filter(round.sketches, (sketchID) => {
-    let sketch = Sketches.findOne({ _id: sketchID });
-    if (!sketch) {
-      console.error('Couldnt find sketch with id ' + sketchID);
-      return false;
-    } else {
-      return sketch.player.name === player.name;
-    }
-  });
-  let scores = _.map(sketches, (sketch) => {
-    return getSketchScore(sketch);
-  });
+  const sketches = _.map(round.sketches, (sketchID) => Sketches.findOne(sketchID));
+  const byPlayer = _.filter(sketches, (sketch) => 
+      sketch.player.name === player.name
+  );
+  const scores = _.map(byPlayer, getSketchScore);
 
-  if (sketches.length < 1) {
-    console.error('Player did not submit a sketch.');
+  if (scores.length < 1) {
+    console.error('Cant score round. Player did not submit a sketch.');
     return 0;
-  } else if (sketches.length > 1) {
-    console.error('Player submitted multiple sketches.');
-    return sum(scores);
-  } else {
-    return scores[0];
+  } else if (scores.length > 1) {
+    console.error('Cant score round. Player submitted multiple sketches.');
+    return 0;
   }
+
+  return scores[0];
 }
 
 export function getGameScore(room, player) {

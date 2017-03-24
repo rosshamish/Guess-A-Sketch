@@ -14,6 +14,60 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
+const semanticUIColors = [
+  {
+    name: 'red',
+    hex: '#B03060',
+  },
+  {
+    name: 'orange',
+    hex: '#FE9A76',
+  },
+  {
+    name: 'yellow',
+    hex: '#FFD700',
+  },
+  {
+    name: 'olive',
+    hex: '#32CD32',
+  },
+  {
+    name: 'green',
+    hex: '#016936',
+  },
+  {
+    name: 'teal',
+    hex: '#008080',
+  },
+  {
+    name: 'blue',
+    hex: '#0E6EB8',
+  },
+  {
+    name: 'violet',
+    hex: '#EE82EE',
+  },
+  {
+    name: 'purple',
+    hex: '#B413EC',
+  },
+  {
+    name: 'pink',
+    hex: '#FF1493',
+  },
+  {
+    name: 'brown',
+    hex: '#A52A2A',
+  },
+  {
+    name: 'grey',
+    hex: '#A0A0A0',
+  },
+  {
+    name: 'black',
+    hex: '#000000',
+  },
+];
 
 export default class LoginPageView extends BaseComponent {
 
@@ -21,63 +75,8 @@ export default class LoginPageView extends BaseComponent {
     super(props);
     this.state = {
       nickname: randomName(),
-      color: 'black',
+      color: semanticUIColors[0].hex,
     };
-
-    this.semanticUIColors = [
-      {
-        name: 'red',
-        hex: '#B03060',
-      },
-      {
-        name: 'orange',
-        hex: '#FE9A76',
-      },
-      {
-        name: 'yellow',
-        hex: '#FFD700',
-      },
-      {
-        name: 'olive',
-        hex: '#32CD32',
-      },
-      {
-        name: 'green',
-        hex: '#016936',
-      },
-      {
-        name: 'teal',
-        hex: '#008080',
-      },
-      {
-        name: 'blue',
-        hex: '#0E6EB8',
-      },
-      {
-        name: 'violet',
-        hex: '#EE82EE',
-      },
-      {
-        name: 'purple',
-        hex: '#B413EC',
-      },
-      {
-        name: 'pink',
-        hex: '#FF1493',
-      },
-      {
-        name: 'brown',
-        hex: '#A52A2A',
-      },
-      {
-        name: 'grey',
-        hex: '#A0A0A0',
-      },
-      {
-        name: 'black',
-        hex: '#000000',
-      },
-    ];
 
     this.onNicknameChange = this.onNicknameChange.bind(this);
     this.onColorChange = this.onColorChange.bind(this);
@@ -92,7 +91,7 @@ export default class LoginPageView extends BaseComponent {
   }
 
   colorName(hex) {
-    let color = _.find(this.semanticUIColors, (color) => {
+    let color = _.find(semanticUIColors, (color) => {
       return color.hex.toLowerCase() === hex.toLowerCase();
     });
     if (!color) {
@@ -141,7 +140,7 @@ export default class LoginPageView extends BaseComponent {
             <CirclePicker
               circleSize={35}
               color={this.state.color}
-              colors={_.map(this.semanticUIColors, (color) => color.hex)}
+              colors={_.map(semanticUIColors, (color) => color.hex)}
               onChangeComplete={this.onColorChange} />
             <br />
             <Button

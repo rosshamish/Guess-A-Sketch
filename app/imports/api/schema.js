@@ -27,10 +27,18 @@ Schema.Sketch = new SimpleSchema({
         label: "Base64 Encoded Sketch",
     },
     scores:{
-        type: Object,
+        type: Array,
+        minCount: 1,
         label: "SketchNet Scores",
-        defaultValue: {},
-        optional: true,
+    },
+    'scores.$': Object,
+    'scores.$.label': {
+        type: String,
+        label: "Label / prompt",
+    },
+    'scores.$.confidence': {
+        type: Number,
+        label: "Confidence of the label",
     },
     prompt:{
         type: String,

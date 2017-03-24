@@ -66,18 +66,18 @@ export default class ParticipantGameScreen extends BaseComponent {
   }
 
   onRoundOver(prompt, index) {
-    const didSubmitSketch = submitSketch.call({
-      sketch: {
-        player: Session.get(PLAYER),
-        sketch: Session.get(SKETCH),
-        prompt: prompt,
-      },
+    submitSketch.call({
+      player: Session.get(PLAYER),
+      sketch: Session.get(SKETCH),
+      prompt,
       roundIndex: index,
+    }, (error, sketchID) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      console.log(`Successfully submitted sketch ${sketchID}`);
     });
-    if (!didSubmitSketch) {
-      console.error('Failed to submit sketch');
-      return;
-    }
   }
 
   render() {
@@ -142,8 +142,8 @@ export default class ParticipantGameScreen extends BaseComponent {
           />
         );
       } else if (round.status === 'RESULTS') {
-        const sketches =_.map(round.sketches, (sketchID) => {
-          return Sketches.findOne({ _id: sketchID });
+        const sketches = _.map(round.sketches, (sketchID) => {
+          return Sketches.findOne(sketchID);
         });
         return (
           <ParticipantRoundResults

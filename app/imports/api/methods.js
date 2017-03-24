@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
-import { HTTP } from 'meteor/http';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
@@ -16,34 +15,65 @@ import {
 import {
   getAllPrompts,
   getFallbackPrompts,
+  getScoresForSketch,
+  getFallbackScores,
 } from '../sketch-net';
 
 
 export const submitSketch = new ValidatedMethod({
   name: 'submitSketch',
   validate: new SimpleSchema({
+    player: {
+      type: Schema.Player,
+    },
     sketch: {
-      type: Schema.Sketch,
+      type: String,
+    },
+    prompt: {
+      type: String,
     },
     roundIndex: {
       type: Number,
     },
   }).validator(),
-  run({ sketch, roundIndex }) {
-    const sketchID = Sketches.insert(sketch);
-    console.log('Submitting sketch ' + sketchID);
+  run({ player, sketch, prompt, roundIndex }) {
+    if (Meteor.isServer) {
+      let scores = [];
+      try {
+        let result = Meteor.wrapAsync(getScoresForSketch)(sketch);
+        if (result) {
+          scores = result.data;
+        }
+      } catch (error) {
+        console.error(`SketchNet API unreachable. Using fallback scores instead. ${error}`);
+        scores = getFallbackScores();
+      }
 
-    const didUpdate = Rooms.update({
-      "players.name": sketch.player.name,
-      "rounds.index": roundIndex,
-    }, {
-      "$push": {
-        "rounds.$.sketches": sketchID,
-      },
-    });
-    if (!didUpdate) {
-      console.error("Failed to insert sketchID into room");
-      return didUpdate;
+      const sketchID = Sketches.insert({
+        player,
+        sketch,
+        scores,
+        prompt,
+      });
+      if (!sketchID) {
+        console.error('Failed to insert sketch');
+        return sketchID;
+      }
+
+      const didUpdate = Rooms.update({
+        "players.name": player.name,
+        "rounds.index": roundIndex,
+      }, {
+        $push: {
+          "rounds.$.sketches": sketchID,
+        },
+      });
+      if (!didUpdate) {
+        console.error("Failed to insert sketchID into room");
+        return didUpdate;
+      }
+
+      return sketchID;
     }
 
     return true; // Success
@@ -380,7 +410,7 @@ export const createRoom = new ValidatedMethod({
           prompts = prompts.data;
         }
       } catch (error) {
-        console.error(`SketchNet API unreachable. ${error}`);
+        console.error(`SketchNet API unreachable. Using fallback prompts instead. ${error}`);
         prompts = getFallbackPrompts();
       }
       const rounds = [];

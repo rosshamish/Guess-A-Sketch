@@ -48,22 +48,21 @@ export default class ParticipantRoundResults extends BaseComponent {
     }
 
     const currentPlayerSketch = currentPlayerSketches[0];
-    // TODO implement star rating based on real confidence scores
-    // Min( 5, Ceil( Max(0, A - Rank) + B( Confidence ) ) )
-    // A := 3 or so. Get stars for sketchnet getting it right in the first few guesses.
-    // B := fn(confidence-of-correct-label). Get stars for high confidence in the correct label.
-    const rating = Math.ceil(getRoundScore(round, player) / 100 * 5);
+    // TODO loading screen while sketch is scored
+    if (!currentPlayerSketch.scores || !currentPlayerSketch.scores.length) {
+      return <p>Loading...</p>;
+    }
 
-    // TODO use real confidences from sketch net
-    const confidences = [['bagel', 0.4], ['button', 0.73], ['apple', 0.21]];
-    confidences.sort((a, b) => b[1] - a[1]);
-    const confidenceComponents = confidences.map((elems) => {
-      const label = elems[0];
-      const confidence = elems[1];
+    const rating = getRoundScore(round, player);
 
-      const percent = confidence * 100;
+    currentPlayerSketch.scores.sort((a, b) => b.confidence - a.confidence);
+    // TODO refactor TOP_N constant
+    const TOP_N = 3;
+    const topScores = currentPlayerSketch.scores.slice(0, TOP_N);
+    const topScoreComponents = topScores.map((score) => {
+      const percent = score.confidence * 100;
       let color = 'grey';
-      if (label === round.prompt) {
+      if (score.label === round.prompt) {
         color = 'green';
         // TODO alternate colors based on confidence
         // if (percent > 65) {
@@ -77,10 +76,10 @@ export default class ParticipantRoundResults extends BaseComponent {
       
       return (
         <Progress
-          key={label}
+          key={score.label}
           percent={percent}
           color={color}
-          label={label}
+          label={score.label}
         />
       );
     });
@@ -105,8 +104,8 @@ export default class ParticipantRoundResults extends BaseComponent {
             rating={rating} />
         </Segment>
         <Segment>
-          <Header as='h3'>Guesses</Header>
-          {confidenceComponents}
+          <Header as='h3'>Looks like...</Header>
+          {topScoreComponents}
           <br />
         </Segment>
       </Segment.Group>

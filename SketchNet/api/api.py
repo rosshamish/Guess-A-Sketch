@@ -19,8 +19,10 @@ def prompts():
 
 @app.route("/submit", methods=['POST'])
 def submit():
-    return jsonify(dict([(cls, random.uniform(0.0, 1.0))
-                           for cls in get_classes(IMAGE_DIR)]))
+    return jsonify([{
+    	'label': cls,
+    	'confidence': random.uniform(0.0, 1.0)
+    } for cls in get_classes(IMAGE_DIR)]);
 
 
 if __name__ == "__main__":
