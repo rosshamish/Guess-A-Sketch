@@ -8,7 +8,7 @@ import StackGrid from "react-stack-grid";
 import {
   Button,
   Header,
-  Container,
+  Segment,
   Form,
 } from 'semantic-ui-react';
 
@@ -37,27 +37,37 @@ export default class HostRoundResults extends BaseComponent {
       return <div key={sketch._id}><SketchImage key={sketch._id} sketch={sketch} /></div>;
     });
 
+    // TODO check browser compat
+    const style = {
+      display: 'flex',
+      justifyContent: 'center',
+    };
+
     return (
-      <Container>
-        <Header as='h1'>Sketches From This Round</Header>
-        <Form 
-          onSubmit={(event) => {
-            event.preventDefault();
-            onNextRound(room);
-          }}
-        >
-          <Button>
-            { 
-              isLastRound(round, room) ?
-              'End Game' :
-              'Next Round' 
-            }
-          </Button>
-        </Form>
-        <StackGrid columnWidth={150}>
-          {SketchComponents}
-        </StackGrid>
-      </Container>
+      <Segment.Group style={style}>
+        <Segment>
+          <Header as='h1'>Sketches From This Round</Header>
+          <Form 
+            onSubmit={(event) => {
+              event.preventDefault();
+              onNextRound(room);
+            }}
+          >
+            <Button>
+              { 
+                isLastRound(round, room) ?
+                'End Game' :
+                'Next Round' 
+              }
+            </Button>
+          </Form>
+        </Segment>
+        <Segment>
+          <StackGrid columnWidth={150}>
+            {SketchComponents}
+          </StackGrid>
+        </Segment>
+      </Segment.Group>
     );
   }
 }
