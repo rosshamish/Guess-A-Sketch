@@ -23,7 +23,9 @@ export default class ParticipantJoiningBetweenRounds extends BaseComponent {
     } = this.props;
 
     return (
-      <Segment.Group>
+      <Segment.Group style={{
+        height: '80vh',
+      }} >
         <Segment>
           <Header size="huge">
             {room.name}
@@ -38,8 +40,8 @@ export default class ParticipantJoiningBetweenRounds extends BaseComponent {
         <Segment>
           <p>You're in! You'll play in the next round.</p>
           <p>Feel free to draw while you wait!</p>
-          <Canvas color={player.color} />
         </Segment>
+        <Canvas color={player.color} />
       </Segment.Group>
     );
   }

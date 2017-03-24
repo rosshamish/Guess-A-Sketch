@@ -25,15 +25,17 @@ export default class ParticipantPreGameScreen extends BaseComponent {
     } = this.props;
 
     return (
-      <Segment.Group>
+      <Segment.Group style={{
+        height: '80vh',
+      }}>
         <Segment>
           <PlayerHeader text={room.name} player={player} />
         </Segment>
         <Segment>
           <p>The game will start soon.</p>
           <p>Feel free to draw while you wait!</p>
-          <Canvas color={player.color} onChange={onCanvasChange} />
         </Segment>
+        <Canvas color={player.color} onChange={onCanvasChange} />
       </Segment.Group>
     );
   }

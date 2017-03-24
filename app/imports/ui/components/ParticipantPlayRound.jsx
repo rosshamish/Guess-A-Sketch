@@ -4,6 +4,7 @@ import BaseComponent from './BaseComponent.jsx';
 import Prompt from './Prompt.jsx';
 import Canvas from './Canvas.jsx';
 import Timer from './Timer.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Segment,
 } from 'semantic-ui-react';
@@ -29,8 +30,11 @@ export default class ParticipantPlayRound extends BaseComponent {
     // TODO proper fullscreen instead of height: 90vh
     return (
       <Segment.Group style={{
-        height: '90vh',
+        height: '80vh',
       }}>
+        <Segment>
+          <PlayerHeader text={`Round ${round.index+1}`} player={player} />
+        </Segment>
         <Segment.Group horizontal>
           <Segment>
             <Prompt prompt={round.prompt} />
