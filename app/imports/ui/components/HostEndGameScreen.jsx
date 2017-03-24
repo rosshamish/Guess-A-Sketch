@@ -5,11 +5,12 @@ import { _ } from 'underscore';
 
 import BaseComponent from './BaseComponent.jsx';
 import {
-  Container,
+  Segment,
   Table,
   Header,
   Button,
   Form,
+  Icon,
 } from 'semantic-ui-react';
 
 
@@ -50,26 +51,37 @@ export default class HostEndGameScreen extends BaseComponent {
     });
 
     return(
-      <Container>
-        <Header as="h1">Game Results</Header>
-        <Table unstackable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Rank</Table.HeaderCell>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Score</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {renderScores}
-          </Table.Body>
-        </Table>
-        <Form onSubmit={this.onSubmit}>
-          <Button type="submit">
-            Back to Home
-          </Button>
-        </Form>
-      </Container>
+      <center>
+      <Segment.Group>
+        <Segment>
+        <Header as="h1" icon textAlign="center">
+          <Icon name="trophy" circular />
+          <Header.Content>
+            Game Results
+          </Header.Content>
+        </Header>
+        </Segment>
+        <Segment>
+          <Table unstackable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Rank</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Score</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {renderScores}
+            </Table.Body>
+          </Table>
+          <Form onSubmit={this.onSubmit}>
+            <Button type="submit">
+              Back to Home
+            </Button>
+          </Form>
+        </Segment>
+      </Segment.Group>
+      </center>
     );
   }
 }
