@@ -87,7 +87,6 @@ Schema.Room = new SimpleSchema({
         type: Array,
         label: "Round List",
         minCount: 1,
-        optional: true, //TODO: Remove this
     },
     'rounds.$':{
         type: Schema.Round,
@@ -95,7 +94,7 @@ Schema.Room = new SimpleSchema({
     players: {
         type: Array,
         label: "Player List",
-        defaultValue: []
+        defaultValue: [],
     },
     'players.$': {
         type: Schema.Player,

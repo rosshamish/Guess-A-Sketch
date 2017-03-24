@@ -1,7 +1,3 @@
-// RoomListContainer
-// 
-// TODO blurb: responsibilities, relationshiops
-
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import RoomListPage from '../pages/participant/RoomListPage.jsx';

@@ -17,6 +17,7 @@ def prompts():
     return jsonify(get_classes(IMAGE_DIR))
 
 
+# TODO accept sketch parameter
 @app.route("/submit", methods=['POST'])
 def submit():
     return jsonify([{
