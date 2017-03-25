@@ -14,6 +14,26 @@ export function getFallbackPrompts() {
     'satellite dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea turtle', 'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard', 'skull', 'skyscraper', 'snail', 'snake', 'snowboard', 'snowman', 'socks', 'space shuttle', 'speed-boat', 'spider', 'sponge bob', 'spoon', 'squirrel', 'standing bird', 'stapler', 'strawberry', 'streetlight', 'submarine', 'suitcase', 'sun', 'suv', 'swan', 'sword', 'syringe', 't-shirt', 'table', 'tablelamp', 'teacup', 'teapot', 'teddy-bear', 'telephone', 'tennis-racket', 'tent', 'tiger', 'tire', 'toilet', 'tomato', 'tooth', 'toothbrush', 'tractor', 'traffic light', 'train', 'tree', 'trombone', 'trousers', 'truck', 'trumpet', 'tv', 'umbrella', 'van', 'vase', 'violin', 'walkie talkie', 'wheel', 'wheelbarrow', 'windmill', 'wine-bottle', 'wineglass', 'wrist-watch', 'zebra' ];
 }
 
+export const prompts = {
+  standard: getFallbackPrompts(),
+  animals: [
+    'ant', 'butterfly', 'camel', 'crab', 'crocodile', 'cat', 'cow', 'dog', 'dolphin',
+    'dragon', 'duck', 'elephant', 'fish', 'flying bird', 'frog', 'giraffe', 'hedgehog',
+    'horse', 'kangaroo', 'lion', 'lobster', 'monkey', 'mosquito', 'mouse (animal)', 
+    'octopus', 'owl', 'panda', 'parrot', 'penguin', 'pig', 'pigeon', 'rabbit', 'rooster',
+    'scorpion', 'sea turtle', 'seagull', 'shark', 'sheep', 'snail', 'snake', 'spider',
+    'squirrel', 'standing bird', 'tiger', 'zebra'],
+  easy: [
+    'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
+    'fork', 'key', 'spider'],
+  food: [
+    'apple', 'banana', 'brea', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
+    'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'],
+
+  playtest1: [
+    'cannon', 'cactus', 'rooster', 'bicycle', 'pipe (for smoking)'],
+};
+
 export function getScoresForSketch(sketch, callback) {
   const submit = `${sketchNetURL}/submit`;
   HTTP.post(submit, {

@@ -18,6 +18,7 @@ import {
   getScoresForSketch,
   getFallbackScores,
 } from '../sketch-net';
+import gametype from '../gametypes';
 
 
 export const submitSketch = new ValidatedMethod({
@@ -387,8 +388,12 @@ export const createRoom = new ValidatedMethod({
     round_time: {
       type: Number,
     },
+    gametypeName: {
+      type: String,
+      defaultValue: 'standard',
+    },
   }).validator(),
-  run({ room_name, round_count, round_time }) {
+  run({ room_name, round_count, round_time, gametypeName }) {
     // TODO use better message passing than alert() here
     if (!room_name){
         alert('Please fill in a Room Name');
@@ -415,15 +420,10 @@ export const createRoom = new ValidatedMethod({
         console.error(`SketchNet API unreachable. Using fallback prompts instead. ${error}`);
         prompts = getFallbackPrompts();
       }
-      const rounds = [];
-      for (let count = 0; count < round_count; count++){
-        rounds.push({
-          time: round_time,
-          index: count,
-          // Random choice without replacement
-          prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
-        });
-      }
+      const rounds = gametype(gametypeName, {
+        _numRounds: round_count,
+        _roundTime: round_time,
+      }).rounds;
       let id = Rooms.insert({ name: room_name, rounds: rounds });
       console.log(`Creating room ${room_name} ${id}`);
       return id;
