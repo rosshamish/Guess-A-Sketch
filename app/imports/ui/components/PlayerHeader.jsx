@@ -19,17 +19,20 @@ export default class PlayerHeader extends BaseComponent {
       size,
     } = this.props;
 
-    const defaultSize = "large";
+    const defaultSize = 'large';
 
     return (
       <Header size={size || defaultSize}>
         {text}
-        <Label
-          circular
-          size={size || defaultSize}
-          color={player.color}>
-          {player.name}
-        </Label>
+        { player ?
+          <Label
+            circular
+            size={size || defaultSize}
+            color={player.color}
+            content={player.name} />
+          :
+          null
+        }
       </Header>
     );
   }

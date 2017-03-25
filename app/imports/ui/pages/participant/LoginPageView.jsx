@@ -2,7 +2,7 @@ import React from 'react';
 import { _ } from 'underscore';
 
 import {
-  randomName,
+  randomArtistName,
   pickRandom,
 } from '/imports/random-name';
 
@@ -78,7 +78,7 @@ export default class LoginPageView extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      nickname: randomName(),
+      nickname: randomArtistName(),
       color: pickRandom(_.pluck(semanticUIColors, 'hex')),
     };
 
