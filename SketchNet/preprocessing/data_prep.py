@@ -9,6 +9,7 @@ from sklearn.model_selection import KFold
 
 KF = KFold(n_splits=10, shuffle=True)
 
+
 def get_classes(folder):
     return [x[0].split('/')[-1] for x in os.walk(folder)][1:]
 
@@ -34,11 +35,11 @@ def preprocess(directory):
     classes = get_classes(directory)
     num_classes = len(classes)
 
+
     imgs = []
     for i in range(num_classes):
         imgs += read_and_flatten(directory + '/' + classes[i], i)
     return imgs
-
 
 TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
 
@@ -62,3 +63,4 @@ def get_batch(batch_size, dims, train=True):
     results = pool.map(getExample, [(dims, train)] * batch_size)
     imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
+

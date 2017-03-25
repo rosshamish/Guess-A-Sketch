@@ -37,6 +37,7 @@ class Exp1Model(Model):
 
         # Layer 3 - Densely Connected
 
+
         W_fc1 = weight_variable([125 * 125 * filter_2, filter_3])
         b_fc1 = bias_variable([filter_3])
 
@@ -74,7 +75,7 @@ def main():
     width = 500
     height = 500
     num_labels = 250
-    batch_size = 16
+    batch_size = 50
 
     image = tf.placeholder(tf.float32, [None, width, height])
     label = tf.placeholder(tf.float32, [None, num_labels])
