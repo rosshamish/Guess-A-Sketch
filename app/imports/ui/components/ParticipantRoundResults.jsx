@@ -29,6 +29,11 @@ export default class ParticipantRoundResults extends BaseComponent {
     let rating;
     let loading = false;
 
+    if (!sketch) {
+      console.error('Cant show round results for an undefined sketch');
+      return <ErrorMessage />;
+    }
+
     if (!sketch.scores || !sketch.scores.length) {
       loading = true;
       rating = 0;
@@ -64,7 +69,7 @@ export default class ParticipantRoundResults extends BaseComponent {
         //   color = 'red';
         // }
       }
-      
+
       return (
         <Progress
           indicating={loading}
