@@ -1,48 +1,48 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-
-import { Session } from 'meteor/session';
-import { PLAYER } from '/imports/api/session';
 
 import BaseComponent from './BaseComponent.jsx';
-import ErrorMessage from './ErrorMessage.jsx';
+import Canvas from './Canvas.jsx';
 import {
   Container,
   Header,
   Label,
   Divider,
+  Segment,
 } from 'semantic-ui-react';
 
 
 export default class ParticipantJoiningBetweenRounds extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   render() {
     const {
       room,
-      round,
+      player,
     } = this.props;
 
-    const player = Session.get(PLAYER);
-
     return (
-      <Container>
-        <Header size="huge">{room.name}</Header>
-        <Label 
-          circular
-          size="large"
-          color={player.color}>
-          {player.name}
-        </Label>
-
-        <Divider />
-
-        <p>You're in! You'll play in the next round.</p>
-      </Container>
+      <Segment.Group style={{
+        height: '70vh',
+      }} >
+        <Segment>
+          <Header size="huge">
+            {room.name}
+            <Label
+              circular
+              size="large"
+              color={player.color}>
+              {player.name}
+            </Label>
+          </Header>
+        </Segment>
+        <Segment>
+          <p>You're in! You'll play in the next round.</p>
+          <p>Feel free to draw while you wait!</p>
+        </Segment>
+        <Canvas color={player.color} />
+      </Segment.Group>
     );
   }
 }
@@ -50,4 +50,5 @@ export default class ParticipantJoiningBetweenRounds extends BaseComponent {
 ParticipantJoiningBetweenRounds.propTypes = {
   room: React.PropTypes.object,
   round: React.PropTypes.object,
+  player: React.PropTypes.object,
 };

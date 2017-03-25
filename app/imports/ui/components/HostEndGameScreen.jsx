@@ -1,56 +1,92 @@
 import React from 'react';
-import BaseComponent from './BaseComponent.jsx';
-import { _ } from 'meteor/underscore';
+import { browserHistory } from 'react-router';
 
-import { getGameScore } from '/imports/scoring';
+import { _ } from 'underscore';
+
+import BaseComponent from './BaseComponent.jsx';
+import {
+  Segment,
+  Table,
+  Header,
+  Button,
+  Form,
+  Icon,
+} from 'semantic-ui-react';
+
 
 export default class HostEndGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+  }
+
+  onSubmit(event) {
+    event.preventDefault(); // Don't reload the page
+    browserHistory.push('/');
   }
 
   render() {
-    const {
+    const { 
       room,
+      getGameScore,
     } = this.props;
-    
+
     var scores = [];
-    players = room.players;
+    const players = room.players;
     for (var i in players) {
-      scores[scores.length] = {name:players[i].name, score:getGameScore(room, players[i])}
+      scores[scores.length] = {
+        name: players[i].name,
+        score: getGameScore(room, players[i])
+      };
     }
     scores = _.sortBy(scores, 'score').reverse();
 
-    var renderScores = scores.map(function(row,index) {
+    const renderScores = scores.map(function(row,index) {
       return ( // key suppresses a key error in console
-        <tr key={index}>
-          <th>{index+1}</th>
-          <th>{row.name}</th>
-          <th>{row.score}</th>
-        </tr>
+        <Table.Row key={index}>
+          <Table.Cell>{index+1}</Table.Cell>
+          <Table.Cell>{row.name}</Table.Cell>
+          <Table.Cell>{row.score}</Table.Cell>
+        </Table.Row>
       );
     });
 
     return(
-      <div className="host-end-game">
-        <h1>Game Results</h1>
-        <table>
-        <tbody>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-          </tr>
-          {renderScores}
-        </tbody>
-        </table>
-      </div>
+      <center>
+      <Segment.Group>
+        <Segment>
+        <Header as="h1" icon textAlign="center">
+          <Icon name="trophy" circular />
+          <Header.Content>
+            Game Results
+          </Header.Content>
+        </Header>
+        </Segment>
+        <Segment>
+          <Table unstackable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Rank</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Score</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {renderScores}
+            </Table.Body>
+          </Table>
+          <Form onSubmit={this.onSubmit}>
+            <Button primary type="submit">
+              Back to Home
+            </Button>
+          </Form>
+        </Segment>
+      </Segment.Group>
+      </center>
     );
   }
 }
 
 HostEndGameScreen.propTypes = {
   room: React.PropTypes.object,
+  getGameScore: React.PropTypes.func,
 };

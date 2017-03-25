@@ -1,10 +1,9 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import i18n from 'meteor/universe:i18n';
 
 import BaseComponent from './BaseComponent.jsx';
 import {
   Label,
+  Header,
 } from 'semantic-ui-react';
 
 
@@ -17,9 +16,10 @@ export default class Prompt extends BaseComponent {
     const { prompt } = this.props;
 
     return (
-      <Label>
-        Draw a <strong>{prompt}</strong>
-      </Label>
+      <Header
+        size="large" >
+        <strong>{prompt}</strong>
+      </Header>
     );
   }
 }

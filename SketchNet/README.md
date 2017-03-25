@@ -1,3 +1,22 @@
+SketchNet
+===
+
+# How to run the API
+
+First, put the training images in a directory named `png` at this repo's root directory.
+
+Then, install python2.7. On a Mac, you might need to do `brew install python` then `brew link python`.
+
+Install dependencies
+```sh
+pip2 install -r SketchNet/api/requirements.txt
+```
+
+Run the API
+```sh
+python2 SketchNet/api/api.py
+```
+
 # How to Setup Your GPU instance for Training 
 
 1. Create a Cybera RAC Account [here](https://rac-portal.cybera.ca)

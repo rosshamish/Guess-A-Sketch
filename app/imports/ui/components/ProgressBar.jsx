@@ -1,13 +1,12 @@
 import React from 'react';
-import { _ } from 'underscore';
 
 import BaseComponent from './BaseComponent.jsx';
 import {
-  Header,
+  Progress
 } from 'semantic-ui-react';
 
 
-export default class Timer extends BaseComponent {
+export default class ProgressBar extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +17,9 @@ export default class Timer extends BaseComponent {
   componentDidMount() {
     this.interval_id = setInterval(() => {
       this.setState({
-        remaining: this.state.remaining - 1,
+        remaining: this.state.remaining - 0.1,
       });
-    }, 1000);
+    }, 100);
   }
 
   componentWillUnmount() {
@@ -32,37 +31,21 @@ export default class Timer extends BaseComponent {
       return;
     } else {
       clearInterval(this.interval_id);
-      if (this.props.onTimeout) {
-        this.props.onTimeout();
-      }
     }
   }
 
   render() {
     const {
-      floated,
-      text,
+      time,
     } = this.props;
 
-    let realFloated = floated;
-    if (!_.contains(["left", "right"], realFloated)) {
-      realFloated = null;
-    }
+    const percent = (time - this.state.remaining)/time*100;
     return (
-      <Header
-        size="large"
-        floated={realFloated}
-        >
-        {text}{this.state.remaining}
-      </Header>
+      <Progress color='blue' percent={percent} />
     );
   }
 }
 
-Timer.propTypes = {
-  room: React.PropTypes.object,
+ProgressBar.propTypes = {
   time: React.PropTypes.number,
-  onTimeout: React.PropTypes.func,
-  text: React.PropTypes.string,
-  floated: React.PropTypes.string,
 };

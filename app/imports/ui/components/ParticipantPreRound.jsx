@@ -1,18 +1,16 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-
-import { Session } from 'meteor/session';
-import { PLAYER } from '/imports/api/session';
 
 import BaseComponent from './BaseComponent.jsx';
+import ErrorMessage from './ErrorMessage.jsx';
 import Prompt from './Prompt.jsx';
-import Canvas from './Canvas.jsx';
 import Timer from './Timer.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Header,
   Container,
+  Label,
+  Segment,
 } from 'semantic-ui-react';
-
 
 export default class ParticipantPreRound extends BaseComponent {
   constructor(props) {
@@ -21,26 +19,42 @@ export default class ParticipantPreRound extends BaseComponent {
 
   render() {
     const {
-      round,
       room,
+      round,
+      player,
     } = this.props;
 
+    if (!room || !round) {
+      console.error('Received illegal round or room');
+      return <ErrorMessage />;
+    }
+
     return (
-      <Container>
-        <Header as='h1'>Round {round.index + 1}</Header>
-        <Container>
-          <Prompt prompt={round.prompt} />
-          <Timer
-            room={room}
-            time={3}
-            text={'Round starting in '} />
-        </Container>
-      </Container>
+      <Segment.Group>
+        <Segment>
+          <PlayerHeader
+            text={`Round ${round.index+1}`}
+            player={player} />
+        </Segment>
+        <Segment.Group horizontal>
+          <Segment>
+            <Prompt prompt={round.prompt} />
+          </Segment>
+          <Segment> 
+            <Timer
+              time={3}
+              text="Starting in "
+              floated="right"
+            />
+          </Segment>
+        </Segment.Group>
+      </Segment.Group>
     );
   }
 }
 
 ParticipantPreRound.propTypes = {
-  round: React.PropTypes.object,
   room: React.PropTypes.object,
+  round: React.PropTypes.object,
+  player: React.PropTypes.object,
 };

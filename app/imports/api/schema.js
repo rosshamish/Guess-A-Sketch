@@ -5,12 +5,6 @@ import SimpleSchema from 'simpl-schema';
 
 export const Schema = {};
 
-const DEBUG_PROMPTS = ['cat', 'dog', 'monkey', 'freezer', 'ice cream']; //TODO: change to sketchnet API call?
-export function getFakePrompt() {
-    return DEBUG_PROMPTS[Math.floor(Math.random() * DEBUG_PROMPTS.length)];
-}
-
-
 Schema.Player = new SimpleSchema({
     name: {
         type: String,
@@ -33,10 +27,19 @@ Schema.Sketch = new SimpleSchema({
         label: "Base64 Encoded Sketch",
     },
     scores:{
-        type: Object,
+        type: Array,
         label: "SketchNet Scores",
-        defaultValue: {},
         optional: true,
+        defaultValue: [],
+    },
+    'scores.$': Object,
+    'scores.$.label': {
+        type: String,
+        label: "Label / prompt",
+    },
+    'scores.$.confidence': {
+        type: Number,
+        label: "Confidence of the label",
     },
     prompt:{
         type: String,
@@ -52,7 +55,6 @@ Schema.Round = new SimpleSchema({
     prompt:{
         type: String,
         label: "Round Prompt",
-        defaultValue: getFakePrompt(),
     },
     sketches:{
         type: Array,
@@ -85,7 +87,6 @@ Schema.Room = new SimpleSchema({
         type: Array,
         label: "Round List",
         minCount: 1,
-        optional: true, //TODO: Remove this
     },
     'rounds.$':{
         type: Schema.Round,
@@ -93,7 +94,7 @@ Schema.Room = new SimpleSchema({
     players: {
         type: Array,
         label: "Player List",
-        defaultValue: []
+        defaultValue: [],
     },
     'players.$': {
         type: Schema.Player,

@@ -6,36 +6,80 @@ import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
 import { 
   Schema,
-  getFakePrompt, // TODO fetch prompts from sketch net
 } from './schema';
 
 import {
   currentRound,
 } from '../game-status';
 
+import {
+  getAllPrompts,
+  getFallbackPrompts,
+  getScoresForSketch,
+  getFallbackScores,
+} from '../sketch-net';
+
 
 export const submitSketch = new ValidatedMethod({
   name: 'submitSketch',
   validate: new SimpleSchema({
+    player: {
+      type: Schema.Player,
+    },
     sketch: {
-      type: Schema.Sketch,
+      type: String,
+    },
+    prompt: {
+      type: String,
     },
     roundIndex: {
       type: Number,
     },
   }).validator(),
-  run({ sketch, roundIndex }) {
-    const sketchID = Sketches.insert(sketch);
-    console.log('Submitting sketch ' + sketchID);
+  run({ player, sketch, prompt, roundIndex }) {
+    const sketchID = Sketches.insert({
+      player,
+      sketch,
+      prompt,
+    });
 
-    return Rooms.update({
-      "players.name": sketch.player.name,
+    const didUpdate = Rooms.update({
+      "players.name": player.name,
       "rounds.index": roundIndex,
     }, {
-      "$push": {
+      $push: {
         "rounds.$.sketches": sketchID,
       },
     });
+    if (!didUpdate) {
+      console.error("Failed to insert sketchID into room");
+      return didUpdate;
+    }
+
+    if (Meteor.isServer) {
+      let scores = [];
+      try {
+        const result = Meteor.wrapAsync(getScoresForSketch)(sketch);
+        if (result) {
+          scores = result.data;
+        }
+      } catch (error) {
+        console.error(`SketchNet API unreachable. Using fallback scores instead. ${error}`);
+        scores = getFallbackScores();
+      }
+
+      const numUpdated = Sketches.update(sketchID, {
+        $set: {
+          scores,
+        },
+      });
+      if (!numUpdated) {
+        console.error('Failed to update sketch with scores');
+        return numUpdated;
+      }
+      return true; // Success
+    }
+    return true; // Success
   },
 });
 
@@ -345,32 +389,46 @@ export const createRoom = new ValidatedMethod({
     },
   }).validator(),
   run({ room_name, round_count, round_time }) {
-
+    // TODO use better message passing than alert() here
     if (!room_name){
         alert('Please fill in a Room Name');
-        return;
+        return false;
     } else if (round_count < 1){
         alert('Please allow for at least one round.');
-        return;
+        return false;
     } else if (round_time < 10){
         alert('Please give each round at least ten seconds.');
-        return;
+        return false;
     } else if (Rooms.find({name: room_name}).fetch().length > 0){ 
         alert('Sorry, that room name is already taken.');
-        return;
+        return false;
     }
-    
-    let rounds = [];
-    for (let count = 0; count < round_count; count++){
-      rounds.push({
-        time: round_time,
-        index: count,
-        prompt: getFakePrompt(),
-      });
-    }
-    let id = Rooms.insert({ name: room_name, rounds: rounds });
-    console.log(`Creating room ${room_name} ${id}`);
 
-    return id;
+    if (Meteor.isServer) {
+      let prompts = [];
+      try {
+        prompts = Meteor.wrapAsync(getAllPrompts)();
+        if (prompts) {
+          prompts = prompts.data;
+        }
+      } catch (error) {
+        console.error(`SketchNet API unreachable. Using fallback prompts instead. ${error}`);
+        prompts = getFallbackPrompts();
+      }
+      const rounds = [];
+      for (let count = 0; count < round_count; count++){
+        rounds.push({
+          time: round_time,
+          index: count,
+          // Random choice without replacement
+          prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
+        });
+      }
+      let id = Rooms.insert({ name: room_name, rounds: rounds });
+      console.log(`Creating room ${room_name} ${id}`);
+      return id;
+    }
+
+    return true;
   },
 });

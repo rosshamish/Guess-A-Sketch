@@ -1,23 +1,27 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import { Meteor } from 'meteor/meteor';
 
-import { Button, Header, Icon, Image } from 'semantic-ui-react'
+import {
+  Button,
+  Header,
+  Icon,
+  Image,
+  Segment,
+  Container,
+  Modal,
+} from 'semantic-ui-react';
+
 
 export default class WelcomePage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
-  }
+    this.state = {
+      aboutModalOpen: false,
+    };
 
-  componentDidMount() {
-    // a lifecycle hook for us to use.
-    // Fires when React mounts the component in the view.
-  }
-
-  componentWillReceiveProps({ }) {
-    // a lifecycle hook for us to use
+    this.handleAboutOpen = this.handleAboutOpen.bind(this);
+    this.handleAboutClose = this.handleAboutClose.bind(this);
   }
 
   onClickPlay(event) {
@@ -30,6 +34,14 @@ export default class WelcomePage extends React.Component {
     browserHistory.push('/host/create');
   }
 
+  handleAboutOpen(event) {
+    this.setState({ aboutModalOpen: true });
+  }
+
+  handleAboutClose(event) {
+    this.setState({ aboutModalOpen: false });
+  }
+
   render() {
     const {
       user,
@@ -39,40 +51,58 @@ export default class WelcomePage extends React.Component {
       message,
     } = this.props;
 
+    const style = {
+      justifyContent: 'center',
+    };
+
+    // TODO logo instead of header text
     return (
-      <center>
-        <div id="container">
-          <div id="content-container">
-            <Header as='h2' icon textAlign='center'>
-              <Icon name='edit' circular />
-              <Header.Content>
-                Guess A Sketch
-              </Header.Content>
-            </Header>
-
-            <div className="ui text container">
-              <h4 className="ui header">Half party game, half science project.</h4>
-              <p>Each round, you get a prompt (eg "Cat"). Draw it! 
-              Well, as best you can, until the timer runs out. 
-              Get points based on the speed and quality of your drawing.
+      <Segment.Group>
+        <Segment>
+          <Header as='h2' icon textAlign='center'>
+            Guess A Sketch
+          </Header>
+          <Header
+            as='h4'
+            textAlign="center">Half party game, half AI experiment</Header>
+        </Segment>
+        <Segment textAlign='center'>
+          <Button.Group style={style} size="big">
+            <Button primary onClick={this.onClickPlay}>Play</Button>
+            <Button.Or />
+            <Button onClick={this.onClickHost}>Host</Button>
+          </Button.Group>
+          <br />
+          <br />
+          <Modal 
+            trigger={
+              <Button toggle size="large" onClick={this.handleAboutOpen} style={style}>About</Button>
+            } 
+            basic size='small'
+            open={this.state.aboutModalOpen}
+            onClose={this.handleAboutClose}
+          >
+            <Modal.Header content='About Guess-A-Sketch' />
+            <Modal.Content>
+              <p>
+                Each round, you get a prompt (eg "cat"). Draw it! 
+                Well, as best you can, until the timer runs out. 
+                Get points based on the quality of your drawing.
               </p>
-              <p>Points are awarded by an AI that has learned to recognize objects
-              in napkin-quality sketches. The AI learns using a variety of neural networks - that's the
-              science project part.
+              <p>
+                Points are awarded by a program which can recognize objects
+                in napkin-quality sketches. The program learns how to do this
+                using neural networks - that's the AI experiment.
               </p>
-            </div>  
-
-            <p />
-            <div className="ui buttons">
-              <button className="ui button primary" onClick={this.onClickPlay}>Play</button>
-              <div className="or">
-              </div>
-              <button className="ui button secondary" onClick={this.onClickHost}>Host</button>
-            </div>
-
-          </div>
-        </div>
-      </center>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button color='green' onClick={this.handleAboutClose}>
+                <Icon name='checkmark' />Cool!
+              </Button>
+            </Modal.Actions>
+          </Modal>
+        </Segment>
+      </Segment.Group>
     );
   }
 }

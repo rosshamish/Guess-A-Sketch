@@ -1,9 +1,9 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import BaseComponent from './BaseComponent.jsx';
 
+import BaseComponent from './BaseComponent.jsx';
 import {
   Card,
+  Label,
 } from 'semantic-ui-react';
 
 
@@ -18,8 +18,12 @@ export default class RoomItem extends BaseComponent {
       room,
     } = this.props;
 
+    const playerBubbles = room.players.map(player => (
+      <Label key={player.name} color={player.color} />
+    ));
+
     return (
-      <Card onClick={onClick}>
+      <Card onClick={onClick ? onClick.bind(null, room) : undefined}>
         <Card.Content>
           <Card.Header>
             {room.name}
@@ -28,7 +32,7 @@ export default class RoomItem extends BaseComponent {
             {room.status}
           </Card.Meta>
           <Card.Description>
-            {room.players.length} players
+            {playerBubbles}
           </Card.Description>
         </Card.Content>
       </Card>

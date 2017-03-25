@@ -1,76 +1,115 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-
-import { Session } from 'meteor/session';
-import { PLAYER } from '/imports/api/session';
-
-import { Sketches } from '/imports/api/collections/sketches';
-
-import {
-  getRoundScore,
-} from '/imports/scoring';
 
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
-import ParticipantJoiningBetweenRounds from './ParticipantJoiningBetweenRounds.jsx';
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Container,
   Header,
   Segment,
+  Rating,
+  Progress,
 } from 'semantic-ui-react';
 
 
 export default class ParticipantRoundResults extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   render() {
     const {
-      room,
       round,
+      player,
+      sketch,
+      getSketchScore,
     } = this.props;
 
-    // TODO more efficient method than fetching ALL sketches and then
-    // filtering to the current player's.
-    const currentPlayer = Session.get(PLAYER);
-    const sketches = _.map(round.sketches, (sketchID) => {
-      return Sketches.findOne({ _id: sketchID });
-    });
-    const currentPlayerSketches = _.filter(sketches, (sketch) => {
-      return sketch.player.name === currentPlayer.name;
-    });
+    let rating;
+    let loading = false;
 
-    if (currentPlayerSketches.length === 0) {
-      return <ParticipantJoiningBetweenRounds room={room} round={round} />
-    } else if (currentPlayerSketches.length > 1) {
-      console.error('Player had too many sketches in latest round. Had ' + currentPlayerSketches.length + '.');
-      return <ErrorMessage />
+    if (!sketch.scores || !sketch.scores.length) {
+      loading = true;
+      rating = 0;
+      sketch.scores = [{
+        'label': `Your ${sketch.prompt} is being scored.`,
+        'confidence': 0.75,
+      }, {
+        'label': 'The neural network is working.',
+        'confidence': 0.5,
+      }, {
+        'label': 'Thanks for your patience!',
+        'confidence': 0.3,
+      }];
+    } else {
+      rating = getSketchScore(sketch);
     }
 
-    const currentPlayerSketch = currentPlayerSketches[0];
+    sketch.scores.sort((a, b) => b.confidence - a.confidence);
+    // TODO refactor TOP_N constant
+    const TOP_N = 3;
+    const topScores = sketch.scores.slice(0, TOP_N);
+    const topScoreComponents = topScores.map((score) => {
+      const percent = score.confidence * 100;
+      let color = 'grey';
+      if (score.label === round.prompt) {
+        color = 'green';
+        // TODO use colors based on confidence
+        // if (percent > 65) {
+        //   color = 'green';
+        // } else if (percent > 35) {
+        //   color = 'yellow';
+        // } else {
+        //   color = 'red';
+        // }
+      }
+      
+      return (
+        <Progress
+          indicating={loading}
+          key={score.label}
+          percent={percent}
+          color={color}
+          label={score.label}
+        />
+      );
+    });
 
     return (
-      <Container>
-        <Header as='h1'>Round {round.index+1} Over</Header>
-        <Segment.Group>
-          <Segment>
-            <Header as='h3'>Looks like a... TODO</Header>
-            <div>Score: {getRoundScore(round, currentPlayer)}</div>
-          </Segment>
-          <Segment>
-            <SketchImage sketch={currentPlayerSketch} />
-          </Segment>
-        </Segment.Group>
-      </Container>
+      <Segment.Group>
+        <Segment>
+          <PlayerHeader text={`Round ${round.index+1}`} player={player} />
+        </Segment>
+        <Segment
+          loading={loading}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+           }} >
+          <SketchImage 
+            sketch={sketch} />
+          <Rating
+            icon="star"
+            size="massive"
+            disabled
+            maxRating={5}
+            rating={rating} />
+        </Segment>
+        <Segment>
+          <Header as='h3'>SketchNet's best guesses</Header>
+          {topScoreComponents}
+          <br />
+        </Segment>
+      </Segment.Group>
     );
   }
 }
 
 ParticipantRoundResults.propTypes = {
-  room: React.PropTypes.object,
   round: React.PropTypes.object,
+  player: React.PropTypes.object,
+  sketch: React.PropTypes.object,
+  getSketchScore: React.PropTypes.func,
 };

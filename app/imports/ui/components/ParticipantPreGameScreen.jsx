@@ -1,64 +1,48 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-
-import { Session } from 'meteor/session';
-import { PLAYER } from '/imports/api/session';
 
 import BaseComponent from './BaseComponent.jsx';
 import Canvas from './Canvas.jsx';
-import ErrorMessage from './ErrorMessage.jsx';
-
+import PlayerHeader from './PlayerHeader.jsx';
 import {
   Label,
   Container,
   Header,
   Divider,
+  Segment,
 } from 'semantic-ui-react';
 
 
 export default class ParticipantPreGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
 
   render() {
     const {
-      loading,
       room,
+      player,
+      onCanvasChange,
     } = this.props;
 
-    const player = Session.get(PLAYER);
-
-    if (loading) {
-      return (
-        <p>Loading...</p>
-      );
-    } else {
-      return (
-        <Container>
-          <Container>
-            <Header size="huge">{room.name}</Header>
-            <Label 
-              circular
-              size="large"
-              color={player.color}>
-              {player.name}
-            </Label>
-          </Container>
-          <Divider />
-          <Container>
-            <p>Feel free to draw while you wait for the game to start</p>
-            <Canvas prompt="" player={player} />
-          </Container>
-        </Container>
-      );
-    }
+    return (
+      <Segment.Group style={{
+        height: '70vh',
+      }}>
+        <Segment>
+          <PlayerHeader text={room.name} player={player} />
+        </Segment>
+        <Segment>
+          <p>The game will start soon.</p>
+          <p>Feel free to draw while you wait!</p>
+        </Segment>
+        <Canvas color={player.color} onChange={onCanvasChange} />
+      </Segment.Group>
+    );
   }
 }
 
 ParticipantPreGameScreen.propTypes = {
-  loading: React.PropTypes.bool,
   room: React.PropTypes.object,
+  player: React.PropTypes.object,
+  onCanvasChange: React.PropTypes.func,
 };
