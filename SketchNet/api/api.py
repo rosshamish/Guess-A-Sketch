@@ -20,12 +20,10 @@ def prompts():
 # TODO accept sketch parameter
 @app.route("/submit", methods=['POST'])
 def submit():
-    print(request.form);
     sketchPng = request.form['sketch']
-    print(sketchPng)
     return jsonify([{
         'label': cls,
-        'confidence': random.uniform(0.0, 1.0)
+        'confidence': abs(random.normalvariate(0.4, 0.15))
     } for cls in get_classes(IMAGE_DIR)]);
 
 
