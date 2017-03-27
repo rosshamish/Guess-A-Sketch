@@ -41,7 +41,7 @@ def preprocess(directory):
         imgs += read_and_flatten(directory + '/' + classes[i], i)
     return imgs
 
-TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
+TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/home/ubuntu/png')
 
 
 def getExample(args):
@@ -61,6 +61,9 @@ def get_batch(batch_size, dims, train=True):
     from multiprocessing.dummy import Pool as ThreadPool
     pool = ThreadPool()
     results = pool.map(getExample, [(dims, train)] * batch_size)
+    pool.close()
+    pool.join()
+    pool.terminate()
     imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
 
