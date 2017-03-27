@@ -38,6 +38,7 @@ describe('submitting a sketch', function () {
     const round = currentRound(room);
 
     const afterSubmitSketch = new Promise((resolve, reject) => {
+      // TODO error-handling: pass a callback.
       const result = submitSketch.call(sketch, round, 
         function(error, result) {
           if (error) {

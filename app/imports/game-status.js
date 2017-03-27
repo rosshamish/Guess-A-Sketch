@@ -1,3 +1,5 @@
+import { _ } from 'underscore';
+
 export function isPreGame(room) {
   return _.all(room.rounds, (round) => {
     return round.status === 'CREATED';
@@ -17,7 +19,7 @@ export function isInGame(room) {
 export function currentRound(room) {
   // It's the first round that's not over yet,
   // or if they're all over, it's the last one.
-  let round = _.find(room.rounds, (round) => {
+  const round = _.find(room.rounds, (round) => {
     return round.status != 'END';
   });
   if (round) {
@@ -28,5 +30,5 @@ export function currentRound(room) {
 }
 
 export function isLastRound(round, room) {
-  return round.index == room.rounds.length - 1;
+  return round.index === room.rounds.length - 1;
 }
