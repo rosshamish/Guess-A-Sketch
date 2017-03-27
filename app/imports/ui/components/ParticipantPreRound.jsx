@@ -29,6 +29,8 @@ export default class ParticipantPreRound extends BaseComponent {
       return <ErrorMessage />;
     }
 
+    const circle = { width: 175, height: 175 }
+
     return (
       <Segment.Group>
         <Segment>
@@ -36,18 +38,18 @@ export default class ParticipantPreRound extends BaseComponent {
             text={`Round ${round.index+1}`}
             player={player} />
         </Segment>
-        <Segment.Group horizontal>
-          <Segment>
-            <Prompt prompt={round.prompt} />
-          </Segment>
-          <Segment> 
-            <Timer
-              time={3}
-              text="Starting in "
-              floated="right"
-            />
-          </Segment>
-        </Segment.Group>
+        <Segment size='massive' textAlign='center'>
+          <Header as='h1'>
+              <Timer
+                time={3}
+                text="Start Drawing In "
+                floated=""
+              />
+          </Header>
+          <Header.Subheader as='h2'>
+            Prompt: {round.prompt}
+          </Header.Subheader>
+        </Segment>
       </Segment.Group>
     );
   }
