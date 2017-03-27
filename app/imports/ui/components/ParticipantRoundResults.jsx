@@ -98,7 +98,7 @@ export default class ParticipantRoundResults extends BaseComponent {
     return (
       <Segment.Group>
         <Segment>
-          <PlayerHeader text={`Round ${round.index+1}`} player={player} />
+          <PlayerHeader text={`Round ${round.index+1} (Prompt: "${round.prompt}")`} player={player} />
         </Segment>
         <Segment
           loading={loading}

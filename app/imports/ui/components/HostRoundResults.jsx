@@ -58,7 +58,7 @@ export default class HostRoundResults extends BaseComponent {
             }/>
         </Segment>
         <Segment>
-          <Header as='h2'>Sketches From This Round</Header>
+          <Header as='h2'>Sketches from This Round (Prompt: &quot;{round.prompt}&quot;)</Header>
           <StackGrid columnWidth={150}>
             {SketchComponents}
           </StackGrid>
