@@ -41,7 +41,7 @@ def preprocess(directory):
         imgs += read_and_flatten(directory + '/' + classes[i], i)
     return imgs
 
-TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
+TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
 
 
 def getExample(args):
@@ -63,4 +63,3 @@ def get_batch(batch_size, dims, train=True):
     results = pool.map(getExample, [(dims, train)] * batch_size)
     imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
-
