@@ -65,7 +65,7 @@ def main():
     width = 225
     height = 225
     num_labels = 250
-    batch_size = 50
+    batch_size = 135
 
     image = tf.placeholder(tf.float32, [None, width, height])
     label = tf.placeholder(tf.float32, [None, num_labels])
@@ -84,7 +84,7 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        for i in tqdm(range(1000)):
+        for i in tqdm(range(15000)):
             # print(i)
             batch = get_batch(batch_size, (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
