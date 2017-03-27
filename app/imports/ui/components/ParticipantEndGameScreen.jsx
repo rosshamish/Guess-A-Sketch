@@ -33,7 +33,6 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       getGameScore,
     } = this.props;
 
-    // TODO use star rating for this score.
     const renderScores = room.rounds.map(function(round,index) {
       return ( // key suppresses a key error in console
         <Table.Row key={index}>
@@ -43,7 +42,6 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       );
     });
 
-    // TODO use sum of star ratings / # rounds for this score.
     renderScores.push(
       <Table.Row key={room.rounds.length}>
         <Table.Cell>Total</Table.Cell>

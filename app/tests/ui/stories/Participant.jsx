@@ -10,6 +10,7 @@ import ParticipantEndGameScreen from '/imports/ui/components/ParticipantEndGameS
 import ParticipantPreRound from '/imports/ui/components/ParticipantPreRound.jsx';
 import ParticipantPlayRound from '/imports/ui/components/ParticipantPlayRound.jsx';
 import ParticipantRoundResults from '/imports/ui/components/ParticipantRoundResults.jsx';
+import ParticipantJoiningBetweenRounds from '/imports/ui/components/ParticipantJoiningBetweenRounds.jsx';
 
 storiesOf('Participant', module)
   .add('logging in', () => (
@@ -64,17 +65,24 @@ storiesOf('Participant', module)
       room={rooms[0]}
       round={rooms[0].rounds[0]}
       player={players[0]}
-      sketches={sketches}
-      getRoundScore={() => 50}
+      sketch={sketches[0]}
+      getSketchScore={() => 50}
     />
   ))
-  .add('round results (joining between rounds)', () => (
+  .add('round results (loading)', () => (
     <ParticipantRoundResults
       room={rooms[0]}
       round={rooms[0].rounds[0]}
+      player={players[1]}
+      sketch={sketches[1]}
+      getSketchScore={() => 50}
+    />
+  ))
+  .add('round results (joining between rounds)', () => (
+    <ParticipantJoiningBetweenRounds
+      room={rooms[0]}
+      round={rooms[0].rounds[0]}
       player={players[0]}
-      sketches={[]}
-      getRoundScore={() => 50}
     />
   ))
   .add('post game', () => (

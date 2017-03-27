@@ -18,6 +18,76 @@ import {
   getScoresForSketch,
   getFallbackScores,
 } from '../sketch-net';
+import gametype from '../gametypes';
+
+
+function changeRoomStatus(room, status, callback) {
+  Rooms.update({
+    _id: room._id,
+  }, {
+    $set: {
+      status,
+    },
+  }, callback);
+}
+
+function changeRoundStatus(room, round, status, callback) {
+  Rooms.update({
+    _id: room._id,
+    "rounds.index": round.index,
+  }, {
+    $set:{
+      "rounds.$.status": status,
+    },
+  }, callback);
+}
+
+export const errors = {
+  validationError: 'validation-error',
+  submitSketch: {
+    insertFailure: 'submitSketch.insertFailure',
+    scoreUpdateFailure: 'submitSketch.scoreUpdateFailure',
+  },
+  leaveRoom: {
+    noRoom: 'leaveRoom.noRoom',
+    playerNotInRoom: 'leaveRoom.playerNotInRoom',
+    pullPlayer: 'leaveRoom.pullPlayer',
+  },
+  joinRoom: {
+    noRoom: 'joinRoom.noRoom',
+    joinability: 'joinRoom.joinability',
+    uniqueName: 'joinRoom.uniqueName',
+    pushPlayer: 'joinRoom.pushPlayer',
+  },
+  startRound: {
+    noRoom: 'startRound.noRoom',
+    roomStatus: 'startRound.roomStatus',
+    roundStatus: 'startRound.roundStatus',
+  },
+  playRound: {
+    noRoom: 'playRound.noRoom',
+    roundStatus: 'playRound.roundStatus',
+  },
+  roundTimerOver: {
+    noRoom: 'roundTimerOver.noRoom',
+    roomStatus: 'roundTimerOver.roomStatus',
+    roundStatus: 'roundTimerOver.roundStatus',
+  },
+  endRound: {
+    noRoom: 'endRound.noRoom',
+    roundStatus: 'endRound.roundStatus',
+  },
+  endGame: {
+    noRoom: 'endGame.noRoom',
+    roomStatus: 'endGame.roomStatus',
+  },
+  createRoom: {
+    noName: 'createRoom.noName',
+    uniqueName: 'createRoom.uniqueName',
+    gametype: 'createRoom.gametype',
+    insertRoom: 'createRoom.insertRoom',
+  },
+};
 
 
 export const submitSketch = new ValidatedMethod({
@@ -37,49 +107,61 @@ export const submitSketch = new ValidatedMethod({
     },
   }).validator(),
   run({ player, sketch, prompt, roundIndex }) {
-    const sketchID = Sketches.insert({
+    Sketches.insert({
       player,
       sketch,
       prompt,
-    });
-
-    const didUpdate = Rooms.update({
-      "players.name": player.name,
-      "rounds.index": roundIndex,
-    }, {
-      $push: {
-        "rounds.$.sketches": sketchID,
-      },
-    });
-    if (!didUpdate) {
-      console.error("Failed to insert sketchID into room");
-      return didUpdate;
-    }
-
-    if (Meteor.isServer) {
-      let scores = [];
-      try {
-        const result = Meteor.wrapAsync(getScoresForSketch)(sketch);
-        if (result) {
-          scores = result.data;
-        }
-      } catch (error) {
-        console.error(`SketchNet API unreachable. Using fallback scores instead. ${error}`);
-        scores = getFallbackScores();
+    }, (error, sketchID) => {
+      if (error) {
+        // TODO remove
+        console.log('failed to insert sketch');
+        throw new Meteor.Error(errors.submitSketch.insertFailure,
+          'Failed to insert the sketch in the collection',
+          `For player ${player.name}, prompt ${prompt}`);
       }
 
-      const numUpdated = Sketches.update(sketchID, {
-        $set: {
-          scores,
+      Rooms.update({
+        "players.name": player.name,
+        "rounds.index": roundIndex,
+      }, {
+        $push: {
+          "rounds.$.sketches": sketchID,
         },
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(errors.submitSketch.insertFailure,
+            'Failed to insert sketch ID into the room');
+        }
       });
-      if (!numUpdated) {
-        console.error('Failed to update sketch with scores');
-        return numUpdated;
+
+      // Get the score from SketchNet, update the DB.
+      // This should only run on the server, since the client shouldn't
+      // hit the network.
+      if (Meteor.isServer) {
+        let scores = [];
+        try {
+          const result = Meteor.wrapAsync(getScoresForSketch)(sketch);
+          if (result) {
+            scores = result.data;
+          }
+        } catch (error) {
+          console.error(`SketchNet API unreachable. Using fallback scores instead. ${error}`);
+          scores = getFallbackScores();
+        }
+
+        Sketches.update(sketchID, {
+          $set: {
+            scores,
+          },
+        }, (error, result) => {
+          if (error) {
+            throw new Meteor.Error(submitSketch.scoreUpdateFailure,
+              'Failed to add scores to the sketch',
+              `For player ${player.name}, prompt ${prompt}, scores ${scores}`);
+          }
+        });
       }
-      return true; // Success
-    }
-    return true; // Success
+    });
   },
 });
 
@@ -97,22 +179,34 @@ export const leaveRoom = new ValidatedMethod({
     const room = Rooms.findOne({
       _id: room_id,
     });
+    if (!room) {
+      throw new Meteor.Error(errors.leaveRoom.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
+    }
 
     const playerInRoom = _.find(room.players, (existingPlayer) => {
       return existingPlayer.name === player.name;
     });
     if (!playerInRoom) {
-      console.error('Cannot leave room. Player was never in the room.');
-      return false;
+      throw new Meteor.Error(errors.leaveRoom.playerNotInRoom,
+        'Cannot leave room -- player was never in the room.',
+        `For room id ${room_id}, player ${player.name}`);
     }
 
     // Remove the player from the room
-    return Rooms.update({
+    Rooms.update({
       _id: room_id,
     }, {
       $pull: {
         players: player,
       },
+    }, (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.leaveRoom.pullPlayer,
+          'Failed to remove player from the room',
+          `For room id ${room_id}, player ${player.name}`);
+      }
     });
   },
 });
@@ -131,28 +225,40 @@ export const joinRoom = new ValidatedMethod({
     const room = Rooms.findOne({
       _id: room_id,
     });
+    if (!room) {
+      throw new Meteor.Error(errors.joinRoom.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
+    }
 
     if (room.status != 'JOINABLE') {
-      alert('Cannot join a non-joinable room. Doing nothing.');
-      return false;
+      throw new Meteor.Error(errors.joinRoom.joinability,
+        'Cannot join a non-joinable room',
+        `For room id ${room_id}`);
     }
 
     const playerNameUnique = _.every(room.players, (existingPlayer) => {
       return existingPlayer.name != player.name;
     });
     if (!playerNameUnique) {
-      // TODO tell the user this in the UI
-      console.error('Cannot join room. Name must be unique.');
-      return false;
+      throw new Meteor.Error(errors.joinRoom.uniqueName,
+        'Cannot join room. Name must be unique.',
+        `For room id ${room_id}, player ${player.name}`);
     }
     
     // Add the player to the room
-    return Rooms.update({
+    Rooms.update({
       _id: room_id,
     }, {
       $push: {
         players: player,
       },
+    }, (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.joinRoom.pushPlayer,
+          'Failed to push player onto room\'s players Array',
+          `Collection error ${error}`);
+      }
     });
   },
 });
@@ -165,34 +271,27 @@ export const startRound = new ValidatedMethod({
     },
   }).validator(),
   run({ room_id }) {
-    let room = Rooms.findOne({
-      _id: room_id
+    const room = Rooms.findOne({
+      _id: room_id,
     });
     if (!room) {
-      console.error('Unable to find room with id ' + room_id);
-      return;
+      throw new Meteor.Error(errors.startRound.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
     }
 
-    const didChangeRoomStatus = changeRoomStatus.call({
-      room_id: room_id,
-      room_status: 'PLAYING'
+    changeRoomStatus(room, 'PLAYING', (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.startRound.roomStatus,
+          'Failed to change room status to PLAYING');
+      }
+      changeRoundStatus(room, currentRound(room), 'PRE', (error, result) => {
+        if (error) {
+          throw new Meteor.Error(errors.startRound.roundStatus,
+            'Failed to change round status to PRE');
+        }
+      });
     });
-    if (!didChangeRoomStatus) {
-      console.error('Failed to change room status.');
-      return didChangeRoomStatus;
-    }
-
-    const didChangeRoundStatus = changeRoundStatus.call({
-      room_id: room_id,
-      round_index: currentRound(room).index,
-      round_status: 'PRE',
-    });
-    if (!didChangeRoundStatus) {
-      console.error('Failed to change round status.');
-      return didChangeRoundStatus;
-    }
-
-    return true; // Success
   },
 });
 
@@ -209,20 +308,17 @@ export const playRound = new ValidatedMethod({
       _id: room_id
     });
     if (!room) {
-      console.error('Unable to find room with id ' + room_id);
-      return;
+      throw new Meteor.Error(errors.playRound.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
     }
 
-    const didChangeRoundStatus = changeRoundStatus.call({
-      room_id: room_id,
-      round_index: currentRound(room).index,
-      round_status: 'PLAY'
+    changeRoundStatus(room, currentRound(room), 'PLAY', (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.playRound.roundStatus, '',
+          `${error}`);
+      }
     });
-    if (!didChangeRoundStatus) {
-      console.error('Failed to change round status.');
-      return didChangeRoundStatus;
-    }
-    return true; // Success
   },
 });
 
@@ -238,30 +334,24 @@ export const roundTimerOver = new ValidatedMethod({
       _id: room_id
     });
     if (!room) {
-      console.error('Unable to find room with id ' + room_id);
-      return;
+      throw new Meteor.Error(errors.roundTimerOver.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
     }
 
-    const didChangeRoomStatus = changeRoomStatus.call({
-      room_id: room_id,
-      room_status: 'JOINABLE'
+    changeRoomStatus(room, 'JOINABLE', (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.roundTimerOver.roomStatus, '',
+          `${error}`);
+      }
     });
-    if (!didChangeRoomStatus) {
-      console.error('Failed to change room status.');
-      return didChangeRoomStatus;
-    }
 
-    const didChangeRoundStatus = changeRoundStatus.call({
-      room_id: room_id,
-      round_index: currentRound(room).index,
-      round_status: 'RESULTS'
+    changeRoundStatus(room, currentRound(room), 'RESULTS', (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.roundTimerOver.roundStatus, '',
+          `${error}`);
+      }
     });
-    if (!didChangeRoundStatus) {
-      console.error('Failed to change round status.');
-      return didChangeRoundStatus;
-    }
-
-    return true; // Success
   },
 });
 
@@ -277,21 +367,17 @@ export const endRound = new ValidatedMethod({
       _id: room_id
     });
     if (!room) {
-      console.error('Unable to find room with id ' + room_id);
-      return;
+      throw new Meteor.Error(errors.endRound.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
     }
 
-    const didChangeRoundStatus = changeRoundStatus.call({
-      room_id: room_id,
-      round_index: currentRound(room).index,
-      round_status: 'END'
+    changeRoundStatus(room, currentRound(room), 'END', (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.endRound.roundStatus, '',
+          `${error}`);
+      }
     });
-    if (!didChangeRoundStatus) {
-      console.error('Failed to change round status.');
-      return didChangeRoundStatus;
-    }
-
-    return true; // Success
   },
 });
 
@@ -304,76 +390,21 @@ export const endGame = new ValidatedMethod({
     },
   }).validator(),
   run({ room_id }) {
-    const didChangeRoomStatus = changeRoomStatus.call({
-      room_id: room_id,
-      room_status: 'COMPLETE'
+    let room = Rooms.findOne({
+      _id: room_id
     });
-    if (!didChangeRoomStatus) {
-      console.error('Unable to change room status.');
-      return;
+    if (!room) {
+      throw new Meteor.Error(errors.endGame.noRoom,
+        'Couldn\'t find the room',
+        `For room id ${room_id}`);
     }
 
-    return true; // Success
+    changeRoomStatus(room, 'COMPLETE', (error, result) => {
+      throw new Meteor.Error(errors.endGame.roomStatus, '',
+        `${error}`);
+    })
   },
 });
-
-
-const changeRoomStatus = new ValidatedMethod({
-  name: 'changeRoomStatus',
-  validate: new SimpleSchema({
-    room_id: {
-      type: String,
-    },
-    room_status: {
-      type: String,
-    },
-  }).validator(),
-  run({ room_id, room_status }) {
-    const room = Rooms.findOne({
-      _id: room_id,
-    });
-    
-    console.log('[Room ' + room_id + ']: is now ' + room_status);
-    return Rooms.update({
-      _id: room_id,
-    }, {
-      $set: {
-        status: room_status,
-      },
-    });
-  },
-});
-
-const changeRoundStatus = new ValidatedMethod({
-  name: 'changeRoundStatus',
-  validate: new SimpleSchema({
-    room_id: {
-      type: String,
-    },
-    round_index: {
-      type: Number,
-    },
-    round_status: {
-      type: String,
-    },
-  }).validator(),
-  run({ room_id, round_index, round_status }) {
-    const room = Rooms.findOne({
-      _id: room_id,
-    });
-    
-    console.log('[Room ' + room_id + ']: Round ' + round_index + ' is now ' + round_status);
-    return Rooms.update({
-      _id: room_id,
-      "rounds.index": round_index
-    }, {
-      $set:{
-        "rounds.$.status": round_status
-      },
-    });
-  },
-});
-
 
 export const createRoom = new ValidatedMethod({
   name: 'createRoom',
@@ -383,52 +414,45 @@ export const createRoom = new ValidatedMethod({
     },
     round_count: {
       type: Number,
+      minCount: 1,
     },
     round_time: {
       type: Number,
+      minCount: 5,
+    },
+    gametypeName: {
+      type: String,
+      defaultValue: 'standard',
     },
   }).validator(),
-  run({ room_name, round_count, round_time }) {
-    // TODO use better message passing than alert() here
-    if (!room_name){
-        alert('Please fill in a Room Name');
-        return false;
-    } else if (round_count < 1){
-        alert('Please allow for at least one round.');
-        return false;
-    } else if (round_time < 10){
-        alert('Please give each round at least ten seconds.');
-        return false;
-    } else if (Rooms.find({name: room_name}).fetch().length > 0){ 
-        alert('Sorry, that room name is already taken.');
-        return false;
+  run({ room_name, round_count, round_time, gametypeName }) {
+    if (!room_name || !room_name.length) {
+      throw new Meteor.Error(errors.createRoom.noName,
+        'Room name must be non-null and non-empty',
+        `For room name ${room_name}`);
+    } else if (Rooms.find({ name: room_name }).count() > 0) {
+      throw new Meteor.Error(errors.createRoom.uniqueName,
+        'Room name must be unique',
+        `For room name ${room_name}`);
     }
 
-    if (Meteor.isServer) {
-      let prompts = [];
-      try {
-        prompts = Meteor.wrapAsync(getAllPrompts)();
-        if (prompts) {
-          prompts = prompts.data;
-        }
-      } catch (error) {
-        console.error(`SketchNet API unreachable. Using fallback prompts instead. ${error}`);
-        prompts = getFallbackPrompts();
-      }
-      const rounds = [];
-      for (let count = 0; count < round_count; count++){
-        rounds.push({
-          time: round_time,
-          index: count,
-          // Random choice without replacement
-          prompt: prompts.splice(Math.floor(Math.random()*prompts.length), 1)[0],
-        });
-      }
-      let id = Rooms.insert({ name: room_name, rounds: rounds });
-      console.log(`Creating room ${room_name} ${id}`);
-      return id;
+    let rounds = [];
+    try {
+      rounds = gametype(gametypeName, {
+        _numRounds: round_count,
+        _roundTime: round_time,
+      }).rounds;
+    } catch (error) {
+      throw new Meteor.Error(errors.createRoom.gametype,
+        'Gametype failed to generate rounds, check that the gametype exists',
+        `For gametype ${gametypeName}, error was ${error}`);
     }
 
-    return true;
+    const roomID = Rooms.insert({ name: room_name, rounds: rounds }, (error, result) => {
+      if (error) {
+        throw new Meteor.Error(errors.createRoom.insertRoom);
+      }
+    });
+    return roomID;
   },
 });

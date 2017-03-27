@@ -5,14 +5,44 @@
 const adjectives = ["adamant", "adroit", "amatory", "animistic", "antic", "arcadian", "baleful", "bellicose", "bilious", "boorish", "calamitous", "caustic", "cerulean", "comely", "concomitant", "corpulent", "defamatory", "didactic", "dilatory", "dowdy", "efficacious", "effulgent", "egregious", "endemic", "equanimous", "execrable", "fastidious", "feckless", "friable", "fulsome", "garrulous", "guileless", "gustatory", "histrionic", "hubristic", "incendiary", "insidious", "insolent", "intransigent", "inveterate", "invidious", "irksome", "jejune", "jocular", "judicious", "lachrymose", "limpid", "loquacious", "luminous", "mannered", "mendacious", "meretricious", "minatory", "mordant", "munificent", "nefarious", "noxious", "obtuse", "parsimonious", "pendulous", "pernicious", "pervasive", "petulant", "platitudinous", "precipitate", "propitious", "puckish", "querulous", "quiescent", "rebarbative", "recalcitant", "redolent", "rhadamanthine", "risible", "ruminative", "sagacious", "salubrious", "sartorial", "sclerotic", "serpentine", "spasmodic", "strident", "taciturn", "tenacious", "tremulous", "trenchant", "turbulent", "turgid", "ubiquitous", "uxorious", "verdant", "voluble", "voracious", "wheedling", "withering", "zealous"];
 const nouns = ["ninja", "chair", "pancake", "statue", "unicorn", "rainbows", "laser", "senor", "bunny", "captain", "nibblets", "cupcake", "carrot", "gnome", "glitter", "potato", "salad", "toejam", "curtains", "beets", "toilet", "exorcism", "mermaid", "barnacle", "dragons", "jellybeans", "snakes", "dolls", "bushes", "cookies", "apples", "ice", "ukulele", "kazoo", "banjo", "singer", "circus", "trampoline", "carousel", "carnival", "locomotive", "balloon", "mantis", "animator", "artisan", "artist", "colorist", "inker", "coppersmith", "director", "designer", "flatter", "stylist", "leadman", "limner", "artist", "model", "musician", "penciller", "producer", "scenographer", "decorator", "silversmith", "teacher", "mechanic", "beader", "bobbin", "clerk", "attendant", "foreman", "mechanic", "miller", "moldmaker", "patternmaker", "operator", "plumber", "sawfiler", "foreman", "soaper", "sengineer", "wheelwright", "woodworkers"];
 
-// E.g. AdamantUnicorn
-export function randomName() {
-  return (
-    capitalizeFirstLetter(pickRandom(adjectives)) +
-    '-' +
-    capitalizeFirstLetter(pickRandom(nouns))
-  );
-}
+// Attribution: Famous painter names corpus
+// Title: "A List of The 50 Greatest Paintings in the History of Art."
+// Url: http://www.historyofpainters.com/paintings.htm
+// Accessed: March 25, 2017
+const artists = [
+  'Pieter Bruegel the Elder',
+  'Joachim Patinir',
+  'Ivan Konstantinovich Aivazovsky',
+  'Fra Angelico',
+  'Jean Leon Gerome',
+  'Robert Campin',
+  'Hieronymus Bosch',
+  'John Singleton Copley',
+  'Alessandro Botticelli',
+  'Henry Ossawa Tanner',
+  'Caravaggio',
+  'Paul Cézanne',
+  'Antonio Allegri da Correggio',
+  'Gustave Courbet',
+  'Lucas Cranach the Elder',
+  'Bernardo Daddi',
+  'Jacques-Louis David',
+  'Thomas Eakins',
+  'Piero della Francesca',
+  'Domenico Di Michelino',
+  'Albrecht Dürer',
+  'Jean Fouquet',
+  'Thomas Gainsborough',
+  'Paul Gauguin',
+  'Giorgione',
+  'Giotto',
+  'Georges Seurat',
+  'Vincent van Gogh',
+  'Claude Monet',
+  'Francisco Goya',
+  'Keith Haring',
+  'Andy Warhol',
+];
 
 // Attribution: Pick a random element from a list
 // Url: https://jsfiddle.net/katowulf/3gtDf/
@@ -20,6 +50,20 @@ export function randomName() {
 export function pickRandom(list) {
   const i = Math.floor(Math.random() * list.length);
   return list[i];
+}
+
+
+// E.g. Adamant Unicorn
+export function randomName() {
+  return (
+    capitalizeFirstLetter(pickRandom(adjectives)) +
+    ' ' +
+    capitalizeFirstLetter(pickRandom(nouns))
+  );
+}
+
+export function randomArtistName() {
+  return pickRandom(artists);
 }
 
 // Attribution: capitalize first letter of a string

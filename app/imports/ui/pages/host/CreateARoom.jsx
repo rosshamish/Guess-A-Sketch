@@ -2,13 +2,12 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 
 import { Rooms } from '/imports/api/collections/rooms';
-import { createRoom } from '/imports/api/methods';
+import { createRoom, errors } from '/imports/api/methods';
 
 import { Session } from 'meteor/session';
 import { HOST_ROOM } from '/imports/api/session';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
-import ErrorMessage from '../../components/ErrorMessage.jsx';
 import CreateARoomView from './CreateARoomView.jsx';
 
 
@@ -19,25 +18,36 @@ export default class CreateARoom extends BaseComponent {
   }
 
   onCreateRoom(roomName, roundCount, roundTime) {
-    const didSimulateSuccessfully = createRoom.call({
+    createRoom.call({
       room_name: roomName,
       round_count: parseInt(roundCount, 10),
       round_time: parseInt(roundTime, 10),
+      // TODO control gametype with UI
+      gametypeName: 'standard',
     }, (error, roomID) => {
       if (error) {
-        console.error(error);
-        return;
+        switch (error.error) {
+          case errors.createRoom.noName:
+            alert('Please enter a room name');
+            break;
+          case errors.createRoom.uniqueName:
+            alert('Sorry, that room name is already taken.');
+            break;
+          case errors.createRoom.gametype:
+            alert('Gametype error. Check the gametype being used.');
+            break;
+          case errors.createRoom.insertRoom:
+            alert('Failed to create the room, try again.');
+            break;
+          default:
+            alert(`Unknown createRoom error: ${error.error}`);
+        }
+      } else {
+        const room = Rooms.findOne({ _id: roomID });
+        Session.set(HOST_ROOM, room);
+        browserHistory.push('/host/play');
       }
-      const room = Rooms.findOne({_id: roomID});
-      if (!room) {
-        console.error('Failed to create room.');
-        return;
-      }
-      Session.set(HOST_ROOM, room);
     });
-    if (didSimulateSuccessfully) {
-      browserHistory.push('/host/play');
-    }
   }
 
   render(){
@@ -56,4 +66,4 @@ export default class CreateARoom extends BaseComponent {
 
 CreateARoom.propTypes = {
   loading: React.PropTypes.bool,
-}
+};

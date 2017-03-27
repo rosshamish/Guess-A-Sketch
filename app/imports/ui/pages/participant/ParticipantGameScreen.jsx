@@ -1,13 +1,12 @@
 import React from 'react';
-import { _ } from 'meteor/underscore';
-import { browserHistory } from 'react-router';
+import { _ } from 'underscore';
 
 import { Session } from 'meteor/session';
 import { PLAYER, SKETCH } from '/imports/api/session';
 
 import { Sketches } from '/imports/api/collections/sketches';
 
-import { leaveRoom, submitSketch } from '/imports/api/methods';
+import { leaveRoom, submitSketch, errors } from '/imports/api/methods';
 import {
   isPreGame,
   isPostGame,
@@ -37,17 +36,27 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   componentWillUnmount() {
     // Leave the room, if it exists.
-    if (!this.props.room) {
-      return;
-    } else {
-      const didLeaveRoom = leaveRoom.call({
+    if (this.props.room && Session.get(PLAYER)) {
+      leaveRoom.call({
         room_id: this.props.room._id,
         player: Session.get(PLAYER),
+      }, (error, result) => {
+        if (error) {
+          switch (error.error) {
+            case errors.leaveRoom.noRoom:
+              alert('The room no longer exists');
+              break;
+            case errors.leaveRoom.playerNotInRoom:
+              alert('Failed to leave the room, you were never in it');
+              break;
+            case errors.leaveRoom.pullPlayer:
+              alert('Failed to remove you from the room');
+              break;
+            default:
+              alert(`Unknown leaveRoom error: ${error.error}`);
+          }
+        }
       });
-      if (!didLeaveRoom) {
-        console.error('Failed to leave room.');
-        return;
-      }
     }
   }
 
@@ -63,10 +72,17 @@ export default class ParticipantGameScreen extends BaseComponent {
       roundIndex: index,
     }, (error, result) => {
       if (error) {
-        console.error(error);
-        return;
+        switch (error.error) {
+          case errors.submitSketch.insertFailure:
+            alert('Sorry! Failed to add your sketch.');
+            break;
+          case errors.submitSketch.scoreUpdateFailure:
+            alert('Sorry! Failed to score your sketch.');
+            break;
+          default:
+            alert(`Unknown submitSketch error: ${error.error}`);
+        }
       }
-      console.log('Successfully submitted sketch');
     });
   }
 

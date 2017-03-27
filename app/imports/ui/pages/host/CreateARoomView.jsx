@@ -15,9 +15,10 @@ export default class CreateARoom extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      roomName: 'test' + Math.floor((Math.random() * 100) + 1), // make room name random
-      roundCount: 2, // set to 10
-      roundTime: 10, // set to 20
+      // TODO random themed room name. Perhaps famous museums?
+      roomName: 'test' + Math.floor((Math.random() * 100) + 1),
+      roundCount: 5, // TODO put lower for debug
+      roundTime: 25, // TODO put lower for debug
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);

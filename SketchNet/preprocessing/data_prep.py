@@ -66,4 +66,3 @@ def get_batch(batch_size, dims, train=True):
     pool.terminate()
     imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
-

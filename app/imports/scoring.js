@@ -65,7 +65,8 @@ function getStarRating(sketch) {
   rankComponent = rankFn(getRank(sketch));
   confidenceComponent = confidenceFn(getCorrectLabelConfidence(sketch));
   rawRating = compositionFn(rankComponent, confidenceComponent);
-  console.log(`Raw rating ${rawRating}, rank component ${rankComponent}, confidence component ${confidenceComponent}`);
+  console.log(`Raw rating ${rawRating}, rank component ${rankComponent}, confidence component ${confidenceComponent}.\n` +
+              `Inputs: rank ${getRank(sketch)}, confidence ${getCorrectLabelConfidence(sketch)}`);
   return Math.ceil(clamp(rawRating, minRating, maxRating));
 }
 

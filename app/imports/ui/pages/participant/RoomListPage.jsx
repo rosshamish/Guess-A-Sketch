@@ -1,11 +1,10 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import { _ } from 'meteor/underscore';
 
 import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
 
-import { joinRoom } from '/imports/api/methods';
+import { joinRoom, errors } from '/imports/api/methods';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 import RoomListPageView from '../../pages/participant/RoomListPageView.jsx';
@@ -27,16 +26,31 @@ export default class RoomListPage extends BaseComponent {
       return;
     }
 
-    const didJoinRoom = joinRoom.call({
+    joinRoom.call({
       room_id: room._id,
       player: currentPlayer,
+    }, (error, result) => {
+      if (error) {
+        switch (error.error) {
+          case errors.joinRoom.noRoom:
+            alert('The room no longer exists');
+            break;
+          case errors.joinRoom.joinability:
+            alert('The room is not joinable');
+            break;
+          case errors.joinRoom.uniqueName:
+            alert('Sorry! Someone in that room took your name. Try again with a new name.');
+            break;
+          case errors.joinRoom.pushPlayer:
+            alert('Sorry, failed to add you to the room');
+            break;
+          default:
+            alert(`Unknown joinRoom error: ${error.error}`);
+        }
+      } else {
+        browserHistory.push('/play');
+      }
     });
-    if (!didJoinRoom) {
-      console.error('Failed to join room. Server rejected join request.');
-      return;
-    }
-
-    browserHistory.push('/play');
   }
 
   render() {
