@@ -39,16 +39,16 @@ export default class ParticipantPreRound extends BaseComponent {
             player={player} />
         </Segment>
         <Segment size='massive' textAlign='center'>
-          <Header as='h1'>
+          <Header as='h2'>
               <Timer
                 time={3}
                 text="Start Drawing In "
                 floated=""
               />
           </Header>
-          <Header.Subheader as='h2'>
+          <Header as='h3'>
             Prompt: {round.prompt}
-          </Header.Subheader>
+          </Header>
         </Segment>
       </Segment.Group>
     );
