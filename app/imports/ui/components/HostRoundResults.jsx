@@ -4,6 +4,7 @@ import { _ } from 'underscore';
 import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
+import Timer from './Timer.jsx';
 import StackGrid from "react-stack-grid";
 import {
   Button,
@@ -46,23 +47,18 @@ export default class HostRoundResults extends BaseComponent {
     return (
       <Segment.Group style={style}>
         <Segment>
-          <Header as='h1'>Sketches From This Round</Header>
-          <Form 
-            onSubmit={(event) => {
-              event.preventDefault();
-              onNextRound(room);
-            }}
-          >
-            <Button primary>
-              { 
-                isLastRound(round, room) ?
-                'End Game' :
-                'Next Round' 
-              }
-            </Button>
-          </Form>
+          <Timer
+            room={room}
+            time={15}
+            onTimeout={onNextRound.bind(null, room)}
+            text={
+              isLastRound(round, room) ?
+              'Game Ending in ' :
+              'Next Round Starting in ' 
+            }/>
         </Segment>
         <Segment>
+          <Header as='h2'>Sketches From This Round</Header>
           <StackGrid columnWidth={150}>
             {SketchComponents}
           </StackGrid>

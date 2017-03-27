@@ -42,6 +42,8 @@ const artists = [
   'Francisco Goya',
   'Keith Haring',
   'Andy Warhol',
+  'Kanye West',
+  'Beyonce',
 ];
 
 // Attribution: Pick a random element from a list
