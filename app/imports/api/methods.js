@@ -113,8 +113,6 @@ export const submitSketch = new ValidatedMethod({
       prompt,
     }, (error, sketchID) => {
       if (error) {
-        // TODO remove
-        console.log('failed to insert sketch');
         throw new Meteor.Error(errors.submitSketch.insertFailure,
           'Failed to insert the sketch in the collection',
           `For player ${player.name}, prompt ${prompt}`);

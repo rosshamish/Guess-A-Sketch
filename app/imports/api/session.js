@@ -2,4 +2,4 @@
 
 export const PLAYER = 'current-player';
 export const SKETCH = 'latest-sketch';
-export const HOST_ROOM = 'host-room';
+export const HOST_ROOM = 'host-room-name';
