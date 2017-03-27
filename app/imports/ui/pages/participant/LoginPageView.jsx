@@ -19,18 +19,21 @@ import {
 
 const semanticUIColors = [
   {
+    name: 'brown',
+    hex: '#A52A2A',
+  },
+  {
     name: 'red',
     hex: '#B03060',
+  },
+    {
+    name: 'pink',
+    hex: '#FF1493',
   },
   {
     name: 'orange',
     hex: '#FE9A76',
   },
-  // Omit yellow. Too hard to see.
-  // {
-  //   name: 'yellow',
-  //   hex: '#FFD700',
-  // },
   {
     name: 'olive',
     hex: '#32CD32',
@@ -54,14 +57,6 @@ const semanticUIColors = [
   {
     name: 'purple',
     hex: '#B413EC',
-  },
-  {
-    name: 'pink',
-    hex: '#FF1493',
-  },
-  {
-    name: 'brown',
-    hex: '#A52A2A',
   },
   {
     name: 'grey',
