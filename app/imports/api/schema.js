@@ -26,10 +26,6 @@ Schema.Sketch = new SimpleSchema({
         type: String,
         label: "Base64 Encoded Sketch",
     },
-    svg:{
-        type:String,
-        label: "SVG representation",
-    },
     scores:{
         type: Array,
         label: "SketchNet Scores",
