@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'underscore';
 import { createContainer } from 'meteor/react-meteor-data';
 import ParticipantGameScreen from '../pages/participant/ParticipantGameScreen.jsx';
 
@@ -8,30 +9,17 @@ import { Sketches } from '/imports/api/collections/sketches';
 import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
 
-export default createContainer(() => {
-  const roomsHandle = Meteor.subscribe('rooms.public');
-  const sketchesHandle = Meteor.subscribe('sketches.public');
+import { currentRound } from '/imports/game-status';
 
+export default createContainer(() => {
   const player = Session.get(PLAYER);
-  let room = null;
-  let sketches = [];
-  if (player) {
-    room = Rooms.findOne({
-      players: {
-        name: player.name,
-        color: player.color,
-      }
-    });
-    sketches = Sketches.find({
-      player: {
-        name: player.name,
-        color: player.color,
-      }
-    }).fetch();
-  }
+  const name = (player && player.name) || '';
+  const subscription = Meteor.subscribe('participant.pub', name);
+
   return {
-    loading: !(roomsHandle.ready() && sketchesHandle.ready()),
-    room: room,
-    sketches: sketches,
+    loading: !(subscription.ready()),
+    room: Rooms.findOne({ players: { $elemMatch: { name } } }),
+    sketches: Sketches.find({}).fetch(),
+    player: player,
   };
 }, ParticipantGameScreen);

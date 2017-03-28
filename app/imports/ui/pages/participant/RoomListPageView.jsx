@@ -52,17 +52,17 @@ export default class RoomListPageView extends BaseComponent {
       rooms = [{
         name: 'Looking for rooms',
         rounds: [round],
-        players: players.concat(players).concat(players),
+        players: players,
         status: 'JOINABLE',
       }, {
         name: 'Hopefully someone is hosting one!',
         rounds: [round],
-        players: players.concat(players),
+        players: players.slice(0, 3),
         status: 'JOINABLE',
       }, {
         name: 'Thanks for your patience.',
         rounds: [round],
-        players: players,
+        players: players.slice(0, 2),
         status: 'JOINABLE',
       }];
     }

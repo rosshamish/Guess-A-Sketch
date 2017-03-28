@@ -1,12 +1,54 @@
 import { Meteor } from 'meteor/meteor';
+import { publishComposite } from 'meteor/reywood:publish-composite';
+import { _ } from 'underscore';
 
 import { Rooms } from './collections/rooms';
 import { Sketches } from './collections/sketches';
 
-Meteor.publish('rooms.public', () => {
-  return Rooms.find();
+// Publishes:
+// 1. Rooms that the player is in, and
+// 2. sketches that the player has drawn in that room
+publishComposite('participant.pub', (playerName) => {
+  return {
+    find: () => Rooms.find({ players: { $elemMatch: { name: playerName } } }),
+    children: [
+      {
+        find: (room) => {
+          const sketchIDsArrs = _.map(room.rounds, round => round.sketches);
+          const sketchIDs = _.reduce(sketchIDsArrs, (soFar, ids) => soFar.concat(ids), []);
+          return Sketches.find({
+            _id: {
+              $in: sketchIDs,
+            },
+            'player.name': playerName,
+          });
+        },
+      },
+    ],
+  };
 });
 
-Meteor.publish('sketches.public', () => {
-  return Sketches.find();
+// Publishes:
+// 1. The room being hosted, and
+// 2. Sketches in the room being hosted.
+publishComposite('host.pub', (roomName) => {
+  return {
+    find: () => Rooms.find({ name: roomName }),
+    children: [
+      {
+        find: (room) => {
+          const sketchIDsArrs = _.map(room.rounds, round => round.sketches);
+          const sketchIDs = _.reduce(sketchIDsArrs, (soFar, ids) => soFar.concat(ids), []);
+          return Sketches.find({
+            _id: {
+              $in: sketchIDs,
+            },
+          });
+        },
+      },
+    ],
+  };
 });
+
+// Self-explanatory
+Meteor.publish('rooms.all', () => Rooms.find({}));

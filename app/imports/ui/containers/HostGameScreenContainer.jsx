@@ -8,17 +8,17 @@ import { Session } from 'meteor/session';
 import { HOST_ROOM } from '/imports/api/session';
 
 import { Rooms } from '/imports/api/collections/rooms';
+import { Sketches } from '/imports/api/collections/sketches';
 
 import HostGameScreen from '../pages/host/HostGameScreen.jsx';
 
 
 export default createContainer(() => {
-  const roomsHandle = Meteor.subscribe('rooms.public');
-  const sketchesHandle = Meteor.subscribe('sketches.public');
-
-  const room = Session.get(HOST_ROOM);
+  const roomName = Session.get(HOST_ROOM);
+  const subscription = Meteor.subscribe('host.pub', roomName);
   return {
-    loading: !(roomsHandle.ready() && sketchesHandle.ready()),
-    room: room ? Rooms.findOne({_id : room._id}) : null,
+    loading: !(subscription.ready()),
+    room: Rooms.findOne({ name: roomName }),
+    roomSketches: Sketches.find({}).fetch(),
   };
 }, HostGameScreen);

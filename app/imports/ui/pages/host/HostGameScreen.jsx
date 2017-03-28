@@ -1,12 +1,7 @@
 import React from 'react';
 import { _ } from 'underscore';
-import { browserHistory } from 'react-router';
-
-import { Session } from 'meteor/session';
-import { HOST_ROOM } from '/imports/api/session';
 
 import { Sketches } from '/imports/api/collections/sketches';
-import { Rooms } from '/imports/api/collections/rooms';
 
 import {
   startRound,
@@ -44,13 +39,10 @@ export default class HostGameScreen extends BaseComponent {
   }
 
   onStartGame(room) {
-    console.log(`onStartGame`);
-    console.log(room);
     startRound.call({
       room_id: room._id,
     }, (error, result) => {
       if (error) {
-        console.error(error, room);
         switch (error.error) {
           case errors.startRound.noRoom:
             alert('The room no longer exists');
@@ -66,9 +58,6 @@ export default class HostGameScreen extends BaseComponent {
             console.error(room);
             break;
         }
-      } else {
-        console.log('started game successfully!');
-        console.log(Rooms.findOne(room._id));
       }
     });
   }
@@ -181,6 +170,7 @@ export default class HostGameScreen extends BaseComponent {
     const {
       loading,
       room,
+      roomSketches,
     } = this.props;
 
     if (loading) {
@@ -232,7 +222,7 @@ export default class HostGameScreen extends BaseComponent {
         );
       } else if (round.status === 'RESULTS') {
         const sketches = _.map(round.sketches, (sketchID) => {
-          return Sketches.findOne({ _id: sketchID });
+          return _.find(roomSketches, (sketch) => sketch._id === sketchID);
         });
         return (
           <HostRoundResults
@@ -257,4 +247,5 @@ export default class HostGameScreen extends BaseComponent {
 HostGameScreen.propTypes = {
   loading: React.PropTypes.bool,
   room: React.PropTypes.object,
+  roomSketches: React.PropTypes.array,
 };

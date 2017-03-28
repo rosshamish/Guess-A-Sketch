@@ -36,10 +36,10 @@ export default class ParticipantGameScreen extends BaseComponent {
 
   componentWillUnmount() {
     // Leave the room, if it exists.
-    if (this.props.room && Session.get(PLAYER)) {
+    if (this.props.room && this.props.player) {
       leaveRoom.call({
         room_id: this.props.room._id,
-        player: Session.get(PLAYER),
+        player: this.props.player,
       }, (error, result) => {
         if (error) {
           switch (error.error) {
@@ -91,9 +91,8 @@ export default class ParticipantGameScreen extends BaseComponent {
       loading,
       room,
       sketches,
+      player,
     } = this.props;
-
-    const player = Session.get(PLAYER);
 
     // ---
     // Loading and error handling
@@ -128,7 +127,7 @@ export default class ParticipantGameScreen extends BaseComponent {
       let round = currentRound(room);
       if (!round) {
         console.error('Theres no current round. What the heck! Something is wrong.');
-        return <ErrorMessage />
+        return <ErrorMessage />;
       }
 
       if (round.status === 'PRE') {
@@ -149,11 +148,12 @@ export default class ParticipantGameScreen extends BaseComponent {
           />
         );
       } else if (round.status === 'RESULTS') {
-        const sketchID = _.find(round.sketches, (sketchID) => {
-          const sketch = Sketches.findOne(sketchID);
-          return sketch && sketch.player && sketch.player.name === player.name;
-        });
-        if (!sketchID) {
+        const sketch = _.find(sketches, (s) => {
+          return _.contains(round.sketches, s._id);
+        })
+        if (!sketch) {
+          // TODO bugfix: this case renders for a moment after the round,
+          // before the sketch has been inserted/submitted.
           return (
             <ParticipantJoiningBetweenRounds
               room={room}
@@ -166,12 +166,13 @@ export default class ParticipantGameScreen extends BaseComponent {
             <ParticipantRoundResults
               round={currentRound(room)}
               player={player}
-              sketch={_.find(sketches, (sketch) => sketch._id === sketchID )}
+              sketch={sketch}
               getSketchScore={getSketchScore}
             />
           );
         }
       } else {
+        // TODO bugfix: this case hits very briefly at the end of each round.
         console.error('[Room ' + room._id + ']: Current round in illegal state');
         return <ErrorMessage />;
       }
@@ -186,4 +187,5 @@ ParticipantGameScreen.propTypes = {
   loading: React.PropTypes.bool,
   room: React.PropTypes.object,
   sketches: React.PropTypes.array,
+  player: React.PropTypes.object,
 };
