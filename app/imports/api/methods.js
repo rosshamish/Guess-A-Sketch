@@ -99,6 +99,9 @@ export const submitSketch = new ValidatedMethod({
     sketch: {
       type: String,
     },
+    svg: {
+      type: String,
+    },
     prompt: {
       type: String,
     },
@@ -106,10 +109,11 @@ export const submitSketch = new ValidatedMethod({
       type: Number,
     },
   }).validator(),
-  run({ player, sketch, prompt, roundIndex }) {
+  run({ player, sketch, svg, prompt, roundIndex }) {
     Sketches.insert({
       player,
       sketch,
+      svg,
       prompt,
     }, (error, sketchID) => {
       if (error) {

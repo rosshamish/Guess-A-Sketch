@@ -3,6 +3,9 @@ import { storiesOf, action } from '@kadira/storybook';
 
 import { players, rooms, sketches } from './constants';
 
+import { fabric } from 'fabric';
+import trimCanvasToSketch from '/imports/trim-canvas';
+
 import LoginPageView from '/imports/ui/pages/participant/LoginPageView.jsx';
 import RoomListPageView from '/imports/ui/pages/participant/RoomListPageView.jsx';
 import ParticipantPreGameScreen from '/imports/ui/components/ParticipantPreGameScreen.jsx';
