@@ -1,6 +1,7 @@
 import sys, os
 import tensorflow as tf
 from tqdm import tqdm
+import tfdeploy as td
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
@@ -100,10 +101,13 @@ def main():
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
-
-        saver = tf.train.Saver()
-        save_path = saver.save(sess, "./%s.ckpt" % __file__.split('.')[0])
-        print("Model saved in file: %s" % save_path)
+	deploy_model = td.Model()
+	print(type(prediction))
+        deploy_model.add(prediction, sess)
+        deploy_model.save("./%s.pkl" % __file__.split('.')[0])
+        #saver = tf.train.Saver()
+        #save_path = saver.save(sess, "./%s.ckpt" % __file__.split('.')[0])
+        print("Model saved")
 
 
 if __name__ == '__main__':
