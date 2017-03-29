@@ -94,7 +94,6 @@ export default class SketchImage extends BaseComponent {
         <div style={style} />
       );
     }
-
   }
 }
 

@@ -5,6 +5,7 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
+import SketchRating from './SketchRating.jsx';
 import {
   Header,
   Segment,
@@ -95,16 +96,15 @@ export default class ParticipantRoundResults extends BaseComponent {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-          }} >
+          }}
+        >
           <SketchImage 
             sketch={sketch}
-            useFrame={true}/>
-          <Rating
-            icon="star"
-            size="massive"
-            disabled
-            maxRating={5}
-            rating={rating} />
+            useFrame
+          />
+          <SketchRating
+            rating={rating}
+          />
         </Segment>
         <Segment>
           <Header as='h3'>SketchNet's best guesses</Header>
