@@ -47,18 +47,22 @@ export default class HostRoundResults extends BaseComponent {
     return (
       <Segment.Group style={style}>
         <Segment>
-          <Timer
-            room={room}
-            time={15}
-            onTimeout={onNextRound.bind(null, room)}
-            text={
-              isLastRound(round, room) ?
-              'Game Ending in ' :
-              'Next Round Starting in ' 
-            }/>
+          <Header as='h2'>Sketches from This Round (Prompt: {round.prompt})</Header>
+          <Form 
+            onSubmit={(event) => {
+              event.preventDefault();
+              onNextRound(room);
+            }}>
+            <Button primary>
+              { 
+                isLastRound(round, room) ?
+                'End Game' :
+                'Next Round' 
+              }
+            </Button>
+          </Form>
         </Segment>
         <Segment>
-          <Header as='h2'>Sketches from This Round (Prompt: {round.prompt})</Header>
           <StackGrid columnWidth={"33.33%"}>
             {SketchComponents}
           </StackGrid>
