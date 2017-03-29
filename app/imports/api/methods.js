@@ -85,6 +85,8 @@ export const errors = {
   createRoom: {
     noName: 'createRoom.noName',
     uniqueName: 'createRoom.uniqueName',
+    roundCount: 'createRoom.roundCount',
+    roundTime: 'createRoom.roundTime',
     gametype: 'createRoom.gametype',
     insertRoom: 'createRoom.insertRoom',
   },
@@ -446,11 +448,9 @@ export const createRoom = new ValidatedMethod({
     },
     round_count: {
       type: Number,
-      minCount: 1,
     },
     round_time: {
       type: Number,
-      minCount: 5,
     },
     gametypeName: {
       type: String,
@@ -466,6 +466,14 @@ export const createRoom = new ValidatedMethod({
       throw new Meteor.Error(errors.createRoom.uniqueName,
         'Room name must be unique',
         `For room name ${room_name}`);
+    } else if (round_count < 1) {
+      throw new Meteor.Error(errors.createRoom.roundCount,
+        'There must be at least 1 round!',
+        `Received round count ${round_count}`);
+    } else if (round_time < 5) {
+      throw new Meteor.Error(errors.createRoom.roundTime,
+        'Rounds must be at least 5 seconds',
+        `Received round time ${round_time}`);
     }
 
     let rounds = [];

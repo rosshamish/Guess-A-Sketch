@@ -33,6 +33,12 @@ export default class CreateARoom extends BaseComponent {
           case errors.createRoom.uniqueName:
             alert('Sorry, that room name is already taken.');
             break;
+          case errors.createRoom.roundCount:
+            alert(error.reason);
+            break;
+          case errors.createRoom.roundTime:
+            alert(error.reason);
+            break;
           case errors.createRoom.gametype:
             alert('Gametype error. Check the gametype being used.');
             break;

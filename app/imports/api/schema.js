@@ -68,7 +68,7 @@ Schema.Round = new SimpleSchema({
     time: {
         type: Number,
         label: "Round Timer setting",
-        min: 10,
+        min: 5, // Keep in sync with methods.createRoom's error cases
     },
     status: {
         type: String,
