@@ -67,7 +67,6 @@ export default class ParticipantGameScreen extends BaseComponent {
     submitSketch.call({
       player: Session.get(PLAYER),
       sketch: Session.get(SKETCH_PNG),
-      svg: Session.get(SKETCH_SVG),
       prompt,
       roundIndex: index,
     }, (error, result) => {
