@@ -12,7 +12,7 @@ import CreateARoomView from './CreateARoomView.jsx';
 
 
 export default class CreateARoom extends BaseComponent {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.onCreateRoom = this.onCreateRoom.bind(this);
   }
@@ -43,14 +43,13 @@ export default class CreateARoom extends BaseComponent {
             alert(`Unknown createRoom error: ${error.error}`);
         }
       } else {
-        const room = Rooms.findOne({ _id: roomID });
-        Session.set(HOST_ROOM, room);
+        Session.set(HOST_ROOM, roomName);
         browserHistory.push('/host/play');
       }
     });
   }
 
-  render(){
+  render() {
     const {
       loading,
     } = this.props;

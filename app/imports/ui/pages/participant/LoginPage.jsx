@@ -1,4 +1,5 @@
 import React from 'react';
+import { _ } from 'underscore';
 import { browserHistory } from 'react-router';
 
 import { Session } from 'meteor/session';
@@ -15,14 +16,23 @@ export default class LoginPage extends BaseComponent {
   }
 
   onSubmit(name, color) {
+    // Name uniqueness is handled by LoginPageView.
     Session.set(PLAYER, { name, color });
     browserHistory.push('/join');
   }
 
   render() {
-    return <LoginPageView onSubmit={this.onSubmit} />
+    return (
+      <LoginPageView
+        loading={this.props.loading}
+        namesInUse={this.props.namesInUse}
+        onSubmit={this.onSubmit}
+      />
+    );
   }
 }
 
 LoginPage.propTypes = {
+  loading: React.PropTypes.bool,
+  namesInUse: React.PropTypes.array,
 };

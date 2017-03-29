@@ -68,7 +68,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
             </Table.Body>
           </Table>
           <Button onClick={this.onSubmit}>
-            Back to Lobby // PROBLEM: Updates HostEndGameScreen when user leaves
+            Back to Lobby
           </Button>
         </Segment>
       </Segment.Group>

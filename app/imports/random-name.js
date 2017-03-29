@@ -9,6 +9,16 @@ const nouns = ["ninja", "chair", "pancake", "statue", "unicorn", "rainbows", "la
 // Title: "A List of The 50 Greatest Paintings in the History of Art."
 // Url: http://www.historyofpainters.com/paintings.htm
 // Accessed: March 25, 2017
+
+// Attribution: Famous musical artists corpus
+// Title: "Artist 100"
+// Url: http://www.billboard.com/charts/artist-100
+// Accessed: March 29, 2017
+
+// Attribution: Most important painters corpus
+// Title: "Most Important Painters"
+// Url: http://www.theartwolf.com/articles/most-important-painters.htm
+// Accessed: March 29, 2017
 const artists = [
   'Pieter Bruegel the Elder',
   'Joachim Patinir',
@@ -42,6 +52,40 @@ const artists = [
   'Francisco Goya',
   'Keith Haring',
   'Andy Warhol',
+  'Kanye West',
+  'Beyonce',
+  'Drake', 
+  'Ed Sheeran',
+  'Bruno Mars',
+  'Adele',
+  'Taylor Swift',
+  'Ariana Grande',
+  'Lady Gaga',
+  'Chuck Berry',
+  'Justin Timberlake',
+  'John Legend',
+  'Pablo Picasso',
+  'Paul Cezanne',
+  'Rembrandt',
+  'Jean-Michel Basquiat',
+  'Edvard Munch',
+  'Francis Bacon',
+  'Frida Kahlo',
+  'Salvador Dali',
+];
+
+// Attribution: List of most visited art museums corpus
+// Title: "List of most visited art museums"
+// Url: https://en.wikipedia.org/wiki/List_of_most_visited_art_museums
+// Accessed: March 29, 2017
+const museums = [
+  'Louvre',
+  'Metropolitan Museum of Art',
+  'Tate Modern',
+  'Musée d\'Orsay',
+  'Dalí Theatre and Museum',
+  'Guggenheim Museum',
+  'National Gallery of Art',
 ];
 
 // Attribution: Pick a random element from a list
@@ -64,6 +108,10 @@ export function randomName() {
 
 export function randomArtistName() {
   return pickRandom(artists);
+}
+
+export function randomMuseumName() {
+  return pickRandom(museums);
 }
 
 // Attribution: capitalize first letter of a string

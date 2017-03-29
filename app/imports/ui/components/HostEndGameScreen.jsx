@@ -13,29 +13,24 @@ import {
   Icon,
 } from 'semantic-ui-react';
 
-
 export default class HostEndGameScreen extends BaseComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      gotProps: false,
+      renderScores: null,
+      room: props.room,
+      getGameScore: props.getGameScore,
+    };
   }
 
-  onSubmit(event) {
-    event.preventDefault(); // Don't reload the page
-    browserHistory.push('/');
-  }
-
-  render() {
-    const { 
-      room,
-      getGameScore,
-    } = this.props;
-
+  componentDidMount() {
     var scores = [];
-    const players = room.players;
+    const players = this.state.room.players;
     for (var i in players) {
       scores[scores.length] = {
         name: players[i].name,
-        score: getGameScore(room, players[i])
+        score: this.state.getGameScore(this.state.room, players[i])
       };
     }
     scores = _.sortBy(scores, 'score').reverse();
@@ -49,6 +44,21 @@ export default class HostEndGameScreen extends BaseComponent {
         </Table.Row>
       );
     });
+
+    this.setState({gotProps: true});
+    this.setState({renderScores: renderScores});
+  }
+
+  onSubmit(event) {
+    event.preventDefault(); // Don't reload the page
+    browserHistory.push('/');
+  }
+
+  render() {
+    const { 
+      room,
+      getGameScore,
+    } = this.props;
 
     return(
       <center>
@@ -71,7 +81,7 @@ export default class HostEndGameScreen extends BaseComponent {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {renderScores}
+              {this.state.renderScores}
             </Table.Body>
           </Table>
           <Form onSubmit={this.onSubmit}>

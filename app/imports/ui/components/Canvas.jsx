@@ -49,6 +49,7 @@ class CanvasImpl extends BaseComponent {
     }
     const that = this;
     this.canvas.on('path:created', (event) => {
+
       that.setState({
         pathStack: this.state.pathStack.concat([event.path]),
       });
@@ -56,6 +57,10 @@ class CanvasImpl extends BaseComponent {
         onChange(that.canvas, event);
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.canvas.off('path:created');
   }
 
   onUndo(event) {

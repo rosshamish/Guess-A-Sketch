@@ -10,15 +10,17 @@ import {
   Icon,
 } from 'semantic-ui-react';
 
+import {
+  randomMuseumName,
+} from '/imports/random-name';
 
 export default class CreateARoom extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO random themed room name. Perhaps famous museums?
-      roomName: 'test' + Math.floor((Math.random() * 100) + 1),
-      roundCount: 5, // TODO put lower for debug
-      roundTime: 25, // TODO put lower for debug
+      roomName: randomMuseumName(),
+      roundCount: 5,
+      roundTime: 25,
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);

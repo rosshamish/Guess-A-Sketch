@@ -49,7 +49,7 @@ storiesOf('Host', module)
       round={rooms[0].rounds[1]}
       sketches={sketches}
       isLastRound={() => false}
-      onRoundTimerOver={action('round-over')}
+      onNextRound={action('round-over')}
     />
   ))
   .add('round results (last round)', () => (
@@ -58,7 +58,7 @@ storiesOf('Host', module)
       round={rooms[0].rounds[1]}
       sketches={sketches}
       isLastRound={() => true}
-      onRoundTimerOver={action('game-over')}
+      onNextRound={action('game-over')}
     />
   ))
   .add('post game', () => (
