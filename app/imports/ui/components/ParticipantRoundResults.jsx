@@ -6,7 +6,6 @@ import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
 import {
-  Container,
   Header,
   Segment,
   Rating,
@@ -28,18 +27,14 @@ export default class ParticipantRoundResults extends BaseComponent {
     } = this.props;
 
     let rating;
+    let scores;
     let loading = false;
 
-    if (!sketch) {
-      console.error('Cant show round results for an undefined sketch');
-      return <ErrorMessage />;
-    }
-
-    if (!sketch.scores || !sketch.scores.length) {
+    if (!sketch || !sketch.scores || !sketch.scores.length) {
       loading = true;
       rating = 0;
-      sketch.scores = [{
-        'label': `Your ${sketch.prompt} is being scored.`,
+      scores = [{
+        'label': `Your ${(sketch && sketch.prompt) || 'sketch'} is being scored.`,
         'confidence': 0.75,
       }, {
         'label': 'The neural network is working.',
@@ -52,16 +47,17 @@ export default class ParticipantRoundResults extends BaseComponent {
       rating = getSketchScore(sketch);
       // TODO remove: here, we hoist the correct label higher in the list
       // for demo purposes.
-      sketch.scores.push({
+      scores = sketch.scores;
+      scores.push({
         label: sketch.prompt,
-        confidence: 0.95,
+        confidence: 1.00,
       });
     }
 
-    sketch.scores.sort((a, b) => b.confidence - a.confidence);
+    scores.sort((a, b) => b.confidence - a.confidence);
     // TODO refactor TOP_N constant
     const TOP_N = 3;
-    const topScores = sketch.scores.slice(0, TOP_N);
+    const topScores = scores.slice(0, TOP_N);
     const topScoreComponents = topScores.map((score) => {
       const percent = score.confidence * 100;
       let color = 'grey';
@@ -99,7 +95,7 @@ export default class ParticipantRoundResults extends BaseComponent {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-           }} >
+          }} >
           <SketchImage 
             sketch={sketch} />
           <Rating

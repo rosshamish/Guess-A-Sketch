@@ -14,7 +14,13 @@ Meteor.publish('login.pub', () => Rooms.find({}, { 'players.name': 1 }));
 // 2. sketches that the player has drawn in that room
 publishComposite('participant.pub', (playerName) => {
   return {
-    find: () => Rooms.find({ players: { $elemMatch: { name: playerName } } }),
+    find: () => Rooms.find(
+      { 
+        $or: [
+          { players: { $elemMatch: { name: playerName } } },
+          { joiningPlayers: { $elemMatch: { name: playerName } } },
+        ],
+      }),
     children: [
       {
         find: (room) => {

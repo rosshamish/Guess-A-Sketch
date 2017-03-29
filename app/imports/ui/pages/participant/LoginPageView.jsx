@@ -83,7 +83,6 @@ export default class LoginPageView extends BaseComponent {
 
   nicknameUnique() {
     const isUnique = !(_.contains(this.props.namesInUse, this.state.nickname));
-    console.log(this.props.namesInUse, this.state.nickname, isUnique);
     return isUnique;
   }
 

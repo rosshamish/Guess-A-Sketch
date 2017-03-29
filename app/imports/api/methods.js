@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
+import { _ } from 'underscore';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
@@ -229,7 +230,7 @@ export const joinRoom = new ValidatedMethod({
         `For room id ${room_id}`);
     }
 
-    if (room.status != 'JOINABLE') {
+    if (room.status !== 'JOINABLE') {
       throw new Meteor.Error(errors.joinRoom.joinability,
         'Cannot join a non-joinable room',
         `For room id ${room_id}`);
@@ -245,19 +246,37 @@ export const joinRoom = new ValidatedMethod({
     }
     
     // Add the player to the room
-    Rooms.update({
-      _id: room_id,
-    }, {
-      $push: {
-        players: player,
-      },
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(errors.joinRoom.pushPlayer,
-          'Failed to push player onto room\'s players Array',
-          `Collection error ${error}`);
-      }
-    });
+    if (currentRound(room).status === 'CREATED') {
+      // Round not started, push to the actual player list
+      Rooms.update({
+        _id: room_id,
+      }, {
+        $push: {
+          players: player,
+        },
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(errors.joinRoom.pushPlayer,
+            'Failed to push player onto room\'s players Array',
+            `Collection error ${error}`);
+        }
+      });
+    } else {
+      // In-between rounds, push to waiting players
+      Rooms.update({
+        _id: room_id,
+      }, {
+        $push: {
+          joiningPlayers: player,
+        },
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(errors.joinRoom.pushPlayer,
+            'Failed to push player onto room\'s joiningPlayers Array',
+            `Collection error ${error}`);
+        }
+      });
+    }
   },
 });
 
@@ -278,6 +297,21 @@ export const startRound = new ValidatedMethod({
         `For room id ${room_id}`);
     }
 
+    // Add waiting players to the room
+    _.each(room.joiningPlayers, (player) => {
+      Rooms.update({
+        _id: room_id,
+      }, {
+        $push: {
+          players: player,
+        },
+        $pull: {
+          $elemMatch: { joiningPlayers: { name: player.name } },
+        },
+      });
+    });
+
+    // Update the room and round status
     changeRoomStatus(room, 'PLAYING', (error, result) => {
       if (error) {
         throw new Meteor.Error(errors.startRound.roomStatus,
@@ -400,7 +434,7 @@ export const endGame = new ValidatedMethod({
     changeRoomStatus(room, 'COMPLETE', (error, result) => {
       throw new Meteor.Error(errors.endGame.roomStatus, '',
         `${error}`);
-    })
+    });
   },
 });
 
