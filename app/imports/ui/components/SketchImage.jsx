@@ -1,5 +1,8 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
+
+import SVG from 'svg.js';
+
 const framePath = '/frame.svg';
 
 
