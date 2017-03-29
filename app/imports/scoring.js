@@ -106,8 +106,8 @@ export function getRoundScore(round, player) {
 }
 
 export function getGameScore(room, player) {
-  let scores = _.map(room.rounds, (round) => {
+  const roundScores = _.map(room.rounds, (round) => {
     return getRoundScore(round, player);
   });
-  return sum(scores);
+  return Math.avg(roundScores);
 }
