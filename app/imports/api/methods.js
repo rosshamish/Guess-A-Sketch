@@ -466,11 +466,11 @@ export const createRoom = new ValidatedMethod({
       throw new Meteor.Error(errors.createRoom.uniqueName,
         'Room name must be unique',
         `For room name ${room_name}`);
-    } else if (round_count < 1) {
+    } else if (round_count < 1) { // Keep this in sync with Schema.Room
       throw new Meteor.Error(errors.createRoom.roundCount,
         'There must be at least 1 round!',
         `Received round count ${round_count}`);
-    } else if (round_time < 5) {
+    } else if (round_time < 5) { // Keep this in sync with Schema.Round
       throw new Meteor.Error(errors.createRoom.roundTime,
         'Rounds must be at least 5 seconds',
         `Received round time ${round_time}`);
