@@ -65,11 +65,16 @@ export default class SketchImage extends BaseComponent {
   }
 
   componentDidMount() {
-    this.draw = SVG(`sketchImage_${this.props.sketch._id}`);
-    this.drawFrameAndSketch(this.props.sketch);
+    if (this.props.sketch){
+      this.draw = SVG(`sketchImage_${this.props.sketch._id}`);
+      this.drawFrameAndSketch(this.props.sketch);
+    }
   }
 
   componentDidUpdate() {
+    if (!this.draw){
+      this.draw = SVG(`sketchImage_${this.props.sketch._id}`);
+    }
     this.drawFrameAndSketch(this.props.sketch);
   }
 
@@ -80,9 +85,16 @@ export default class SketchImage extends BaseComponent {
       margin: '5px',
     };
 
-    return (
-      <div id={`sketchImage_${this.props.sketch._id}`} style={style} />
-    );
+    if (this.props.sketch){
+      return (
+        <div id={`sketchImage_${this.props.sketch._id}`} style={style} />
+      );
+    } else {
+      return (
+        <div style={style} />
+      );
+    }
+
   }
 }
 

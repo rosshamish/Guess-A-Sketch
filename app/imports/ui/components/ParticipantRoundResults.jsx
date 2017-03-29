@@ -97,9 +97,8 @@ export default class ParticipantRoundResults extends BaseComponent {
             alignItems: 'center',
           }} >
           <SketchImage 
-            key={sketch._id}
             sketch={sketch}
-            useFrame={true} />
+            useFrame={true}/>
           <Rating
             icon="star"
             size="massive"
