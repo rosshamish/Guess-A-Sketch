@@ -15,7 +15,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import WelcomePage from '../../ui/pages/WelcomePage.jsx';
 
 import RoomListContainer from '../../ui/containers/RoomListContainer.jsx';
-import LoginPage from '../../ui/pages/participant/LoginPage.jsx';
+import LoginPageContainer from '../../ui/containers/LoginPageContainer.jsx';
 import ParticipantGameScreenContainer from '../../ui/containers/ParticipantGameScreenContainer.jsx';
 
 import HostContainer from '../../ui/containers/HostContainer.jsx';
@@ -29,7 +29,7 @@ export const renderRoutes = () => (
 
     <Route path="/" component={WelcomePage} />
 
-    <Route path="login" component={LoginPage} />
+    <Route path="login" component={LoginPageContainer} />
     <Route path="join" component={RoomListContainer} />
     <Route path="play" component={ParticipantGameScreenContainer} />
 

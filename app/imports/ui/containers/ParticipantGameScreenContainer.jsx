@@ -9,7 +9,6 @@ import { Sketches } from '/imports/api/collections/sketches';
 import { Session } from 'meteor/session';
 import { PLAYER } from '/imports/api/session';
 
-import { currentRound } from '/imports/game-status';
 
 export default createContainer(() => {
   const player = Session.get(PLAYER);
