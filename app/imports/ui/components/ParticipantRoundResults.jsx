@@ -5,6 +5,7 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
+import SketchRating from './SketchRating.jsx';
 import {
   Header,
   Segment,
@@ -98,11 +99,7 @@ export default class ParticipantRoundResults extends BaseComponent {
           }} >
           <SketchImage 
             sketch={sketch} />
-          <Rating
-            icon="star"
-            size="massive"
-            disabled
-            maxRating={5}
+          <SketchRating
             rating={rating} />
         </Segment>
         <Segment>

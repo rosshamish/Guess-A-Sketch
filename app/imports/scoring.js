@@ -1,5 +1,5 @@
-import { _ } from 'meteor/underscore';
-import { Sketches } from '/imports/api/collections/sketches';
+import { _ } from 'underscore';
+// import { Sketches } from '/imports/api/collections/sketches';
 
 function clamp(val, low, high) {
   // Clamps val between low and high, inclusive.
@@ -24,13 +24,7 @@ function getCorrectLabelConfidence(sketch) {
   return score.confidence;
 }
 
-function getStarRating(sketch) {
-  if (!sketch.scores || !sketch.scores.length) {
-    console.error('Cant score sketch with no scores. Sketch was:');
-    console.error(sketch);
-    return 0;
-  }
-
+export function getStarRating(rank, confidence) {
   let rawRating;
   const maxRating = 5;
   const minRating = 0;
@@ -62,16 +56,25 @@ function getStarRating(sketch) {
     return score / (max * makeItEasier);
   };
 
-  rankComponent = rankFn(getRank(sketch));
-  confidenceComponent = confidenceFn(getCorrectLabelConfidence(sketch));
+  rankComponent = rankFn(rank);
+  confidenceComponent = confidenceFn(confidence);
   rawRating = compositionFn(rankComponent, confidenceComponent);
   console.log(`Raw rating ${rawRating}, rank component ${rankComponent}, confidence component ${confidenceComponent}.\n` +
-              `Inputs: rank ${getRank(sketch)}, confidence ${getCorrectLabelConfidence(sketch)}`);
+              `Inputs: rank ${rank}, confidence ${confidence}`);
   return Math.ceil(clamp(rawRating, minRating, maxRating));
 }
 
+function getStarRatingForSketch(sketch) {
+  return getStarRating(getRank(sketch), getCorrectLabelConfidence(sketch));
+}
+
 export function getSketchScore(sketch) {
-  return getStarRating(sketch);
+  if (!sketch.scores || !sketch.scores.length) {
+    console.error('Cant score sketch with no scores. Sketch was:');
+    console.error(sketch);
+    return 0;
+  }
+  return getStarRatingForSketch(sketch);
 }
 
 function sum(arr) {
