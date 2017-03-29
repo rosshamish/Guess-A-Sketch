@@ -32,10 +32,12 @@ export default class SketchImage extends BaseComponent {
           y: this.sketchY(),
         });
     }
-    frame
-      .image(framePath, this.containerWidth(), this.containerHeight())
-      .attr({
-      });
+    if (this.props.useFrame){
+      frame
+        .image(framePath, this.containerWidth(), this.containerHeight())
+        .attr({
+        });
+    }
   }
 
   containerWidth() {
@@ -63,7 +65,7 @@ export default class SketchImage extends BaseComponent {
   }
 
   componentDidMount() {
-    this.draw = SVG('sketchImage');
+    this.draw = SVG(`sketchImage_${this.props.sketch._id}`);
     this.drawFrameAndSketch(this.props.sketch);
   }
 
@@ -79,11 +81,12 @@ export default class SketchImage extends BaseComponent {
     };
 
     return (
-      <div id='sketchImage' style={style} />
+      <div id={`sketchImage_${this.props.sketch._id}`} style={style} />
     );
   }
 }
 
 SketchImage.propTypes = {
   sketch: React.PropTypes.object,
+  useFrame: React.PropTypes.bool,
 };

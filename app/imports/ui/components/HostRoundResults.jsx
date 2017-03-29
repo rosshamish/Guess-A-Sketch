@@ -35,8 +35,9 @@ export default class HostRoundResults extends BaseComponent {
     }
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      //return <div key={sketch._id}><SketchImage key={sketch._id} sketch={sketch} /></div>;
-      return <div key={sketch._id}><img src={sketch.sketch} /></div>;
+      return <SketchImage key={sketch._id} sketch={sketch} useFrame={false} />;
+      //return <div key={sketch._id}><SketchBareImage key={sketch._id} sketch={sketch} /></div>;
+      //return <div key={sketch._id}><img src={sketch.sketch} /></div>;
     });
 
     // TODO check browser compat
@@ -64,7 +65,7 @@ export default class HostRoundResults extends BaseComponent {
           </Form>
         </Segment>
         <Segment>
-          <StackGrid columnWidth={"33.33%"} gutterWidth={1} gutterHeight={1}>
+          <StackGrid columnWidth={"20%"} gutterWidth={0} gutterHeight={0}>
             {SketchComponents}
           </StackGrid>
         </Segment>
