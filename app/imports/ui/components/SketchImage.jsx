@@ -1,5 +1,8 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
+
+import SVG from 'svg.js';
+
 const framePath = '/frame.svg';
 
 
@@ -41,7 +44,6 @@ export default class SketchImage extends BaseComponent {
     return this.containerHeight() - this.state.padding*2;
   }
 
-/*
   componentDidMount() {
     this.draw = SVG('sketchImage');
 
@@ -56,7 +58,7 @@ export default class SketchImage extends BaseComponent {
       .image(framePath, this.containerWidth(), this.containerHeight())
       .attr({
       });
-  }*/
+  }
 
   render() {
     const {
@@ -74,8 +76,7 @@ export default class SketchImage extends BaseComponent {
     };
 
     return (
-      //<div id='sketchImage' style={style} />
-      <img style={style} src={sketch.sketch} />
+      <div id='sketchImage' style={style} />
     );
   }
 }
