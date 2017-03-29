@@ -10,11 +10,10 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import { CirclePicker } from 'react-color';
 import {
   Form,
-  Container,
   Button,
   Header,
-  Icon,
   Segment,
+  Message,
 } from 'semantic-ui-react';
 
 const semanticUIColors = [
@@ -77,8 +76,14 @@ export default class LoginPageView extends BaseComponent {
       color: pickRandom(_.pluck(semanticUIColors, 'hex')),
     };
 
+    this.nicknameUnique = this.nicknameUnique.bind(this);
     this.onNicknameChange = this.onNicknameChange.bind(this);
     this.onColorChange = this.onColorChange.bind(this);
+  }
+
+  nicknameUnique() {
+    const isUnique = !(_.contains(this.props.namesInUse, this.state.nickname));
+    return isUnique;
   }
 
   onNicknameChange(event) {
@@ -90,8 +95,8 @@ export default class LoginPageView extends BaseComponent {
   }
 
   colorName(hex) {
-    let color = _.find(semanticUIColors, (color) => {
-      return color.hex.toLowerCase() === hex.toLowerCase();
+    const color = _.find(semanticUIColors, (c) => {
+      return c.hex.toLowerCase() === hex.toLowerCase();
     });
     if (!color) {
       console.error(`Invalid color hex ${hex} falling back to black`);
@@ -122,9 +127,12 @@ export default class LoginPageView extends BaseComponent {
         </Segment>
         <Segment>
           <Form 
+            error={!this.nicknameUnique()}
             onSubmit={(event) => {
               event.preventDefault();
-              onSubmit(this.state.nickname, this.colorName(this.state.color));
+              if (this.nicknameUnique()) {
+                onSubmit(this.state.nickname, this.colorName(this.state.color));
+              }
             }}
             >
             <Form.Input
@@ -138,12 +146,18 @@ export default class LoginPageView extends BaseComponent {
             <CirclePicker
               circleSize={35}
               color={this.state.color}
-              colors={_.map(semanticUIColors, (color) => color.hex)}
+              colors={_.map(semanticUIColors, color => color.hex)}
               onChangeComplete={this.onColorChange} />
             <br />
+            <Message
+              error
+              header='Sorry, that name is taken.'
+              content='Pick a different name!'
+            />
             <Button
               fluid
               primary
+              disabled={!this.nicknameUnique()}
               type="submit" >
               Go
             </Button>
@@ -156,4 +170,5 @@ export default class LoginPageView extends BaseComponent {
 
 LoginPageView.propTypes = {
   onSubmit: React.PropTypes.func,
+  namesInUse: React.PropTypes.array,
 };

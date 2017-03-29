@@ -99,6 +99,14 @@ Schema.Room = new SimpleSchema({
     'players.$': {
         type: Schema.Player,
     },
+    joiningPlayers: {
+        type: Array,
+        label: "Players who will join in the next round",
+        defaultValue: [],
+    },
+    'joiningPlayers.$': {
+        type: Schema.Player,
+    },
     status: {
         type: String,
         label: "Room Status",

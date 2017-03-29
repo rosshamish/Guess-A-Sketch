@@ -12,12 +12,30 @@ export default class SketchImage extends BaseComponent {
 
     const width = 300;
     const height = 200;
+    this.draw = null;
     this.state = {
       padding: height*0.3,
       width,
       height,
     };
-    this.draw = null;
+
+    this.drawFrameAndSketch = this.drawFrameAndSketch.bind(this);
+  }
+
+  drawFrameAndSketch(sketch) {
+    const frame = this.draw.group();
+    if (sketch) {
+      frame
+        .image(sketch.sketch, this.sketchWidth(), this.sketchHeight())
+        .attr({
+          x: this.sketchX(),
+          y: this.sketchY(),
+        });
+    }
+    frame
+      .image(framePath, this.containerWidth(), this.containerHeight())
+      .attr({
+      });
   }
 
   containerWidth() {
@@ -46,29 +64,14 @@ export default class SketchImage extends BaseComponent {
 
   componentDidMount() {
     this.draw = SVG('sketchImage');
+    this.drawFrameAndSketch(this.props.sketch);
+  }
 
-    const frame = this.draw.group();
-    frame
-      .image(this.props.sketch.sketch, this.sketchWidth(), this.sketchHeight())
-      .attr({
-        x: this.sketchX(),
-        y: this.sketchY(),
-      });
-    frame
-      .image(framePath, this.containerWidth(), this.containerHeight())
-      .attr({
-      });
+  componentDidUpdate() {
+    this.drawFrameAndSketch(this.props.sketch);
   }
 
   render() {
-    const {
-      sketch,
-    } = this.props;
-
-    if (!sketch) {
-      console.error('SketchImage: sketch is undefined');
-    }
-
     const style = {
       width: `${this.containerWidth()}px`,
       height: `${this.containerHeight()}px`,

@@ -6,11 +6,21 @@ import { Rooms } from './collections/rooms';
 import { Sketches } from './collections/sketches';
 
 // Publishes:
+// 1. All rooms, but only the player names in them
+Meteor.publish('login.pub', () => Rooms.find({}, { 'players.name': 1 }));
+
+// Publishes:
 // 1. Rooms that the player is in, and
 // 2. sketches that the player has drawn in that room
 publishComposite('participant.pub', (playerName) => {
   return {
-    find: () => Rooms.find({ players: { $elemMatch: { name: playerName } } }),
+    find: () => Rooms.find(
+      { 
+        $or: [
+          { players: { $elemMatch: { name: playerName } } },
+          { joiningPlayers: { $elemMatch: { name: playerName } } },
+        ],
+      }),
     children: [
       {
         find: (room) => {
