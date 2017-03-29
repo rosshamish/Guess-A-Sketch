@@ -79,7 +79,7 @@ export default class SketchImage extends BaseComponent {
     };
 
     return (
-      <div id='sketchImage' style={style} />
+      <div id={`sketchId_${this.props.sketch._id}`} style={style} />
     );
   }
 }

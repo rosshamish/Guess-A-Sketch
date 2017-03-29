@@ -16,22 +16,20 @@ export default class ScoringTuning extends BaseComponent {
     const { } = this.props;
 
     const ranks = [];
-    for (var i=0; i < 10; i++) {
+    for (var i=9; i >= 0; i--) {
       ranks.push(i);
     }
     const confidences = [];
-    for (var i=0.00; i <= 1.00; i += 0.05) {
+    for (var i=0.00; i <= 1.00; i += 0.1) {
       confidences.push(Math.round(i * 100) / 100);
     }
     const renderRows = [];
     _.each(confidences, (confidence) => {
-      const ratings = _.map(ranks, (rank) => {
-        return (
-          <Table.Cell>
-            <SketchRating size="tiny" rating={getStarRating(rank, confidence)} />
-          </Table.Cell>
-        );
-      });
+      const ratings = _.map(ranks, (rank) => (
+        <Table.Cell>
+          <SketchRating size="tiny" rating={getStarRating(rank, confidence)} />
+        </Table.Cell>
+      ));
       renderRows.push(
         <Table.Row>
           <Table.Cell>{confidence}</Table.Cell>
@@ -44,7 +42,7 @@ export default class ScoringTuning extends BaseComponent {
     ));
 
     return (
-      <Table>
+      <Table stackable={false}>
         <Table.Header>
           <Table.HeaderCell></Table.HeaderCell>
           {renderRankHeaders}

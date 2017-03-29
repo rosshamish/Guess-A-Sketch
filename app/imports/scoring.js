@@ -34,8 +34,10 @@ export function getStarRating(rank, confidence) {
   let rankComponent;
   const bestRank = 0;
   const maxRank = 250;
+  const rankTop = 40;
+  const rFn = (val) => Math.log(1 + val);
   const rankFn = (rank) => {
-    return Math.log((maxRank - rank) + 1);
+    return rFn(clamp((rankTop - rank) / rankTop, 0, 1));
   };
 
   // Give points for how confident we were about the correct label.
@@ -43,24 +45,25 @@ export function getStarRating(rank, confidence) {
   let confidenceComponent;
   const bestConfidence = 1;
   const confidenceA = 1;
-  const confidenceB = 0.5;
+  const confidenceB = 7;
+  const cFn = (val) => Math.log(1 + val);
   const confidenceFn = (_confidence) => {
-    return Math.exp(_confidence + confidenceA) - confidenceB;
+    return cFn(clamp(_confidence, 0, 1));
   };
 
   // TODO tune this value
-  const makeItEasier = 1.0; // on [0.1,1.0], lower is easier
+  const makeItEasier = 1.1; // on [0.1,1.0], lower is easier
   const compositionFn = (_rankComponent, _confidenceComponent) => {
-    const max = rankFn(bestRank, maxRank) + confidenceFn(bestConfidence);
-    const score = _rankComponent + _confidenceComponent;
-    return score / (max * makeItEasier);
+    const maxRankScore = rankFn(bestRank);
+    const maxConfidenceScore = confidenceFn(bestConfidence);
+    const rankRating = maxRating * (_rankComponent / (maxRankScore * makeItEasier));
+    const confidenceRating = maxRating * (_confidenceComponent / (maxConfidenceScore * makeItEasier));
+    return (rankRating + confidenceRating) / 2;
   };
 
   rankComponent = rankFn(rank);
   confidenceComponent = confidenceFn(confidence);
   rawRating = compositionFn(rankComponent, confidenceComponent);
-  console.log(`Raw rating ${rawRating}, rank component ${rankComponent}, confidence component ${confidenceComponent}.\n` +
-              `Inputs: rank ${rank}, confidence ${confidence}`);
   return Math.ceil(clamp(rawRating, minRating, maxRating));
 }
 

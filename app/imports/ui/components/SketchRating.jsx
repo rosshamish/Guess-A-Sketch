@@ -11,7 +11,8 @@ export default class SketchRating extends BaseComponent {
         size={this.props.size || "massive"}
         disabled
         maxRating={5}
-        rating={this.props.rating} />
+        rating={this.props.rating}
+      />
     );
   }
 }
