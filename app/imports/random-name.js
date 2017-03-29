@@ -19,7 +19,6 @@ const nouns = ["ninja", "chair", "pancake", "statue", "unicorn", "rainbows", "la
 // Title: "Most Important Painters"
 // Url: http://www.theartwolf.com/articles/most-important-painters.htm
 // Accessed: March 29, 2017
-
 const artists = [
   'Pieter Bruegel the Elder',
   'Joachim Patinir',
@@ -75,6 +74,20 @@ const artists = [
   'Salvador Dali',
 ];
 
+// Attribution: List of most visited art museums corpus
+// Title: "List of most visited art museums"
+// Url: https://en.wikipedia.org/wiki/List_of_most_visited_art_museums
+// Accessed: March 29, 2017
+const museums = [
+  'Louvre',
+  'Metropolitan Museum of Art',
+  'Tate Modern',
+  'Musée d\'Orsay',
+  'Dalí Theatre and Museum',
+  'Guggenheim Museum',
+  'National Gallery of Art',
+];
+
 // Attribution: Pick a random element from a list
 // Url: https://jsfiddle.net/katowulf/3gtDf/
 // Accessed: March 7, 2017
@@ -95,6 +108,10 @@ export function randomName() {
 
 export function randomArtistName() {
   return pickRandom(artists);
+}
+
+export function randomMuseumName() {
+  return pickRandom(museums);
 }
 
 // Attribution: capitalize first letter of a string
