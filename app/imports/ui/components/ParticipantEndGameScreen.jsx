@@ -3,14 +3,11 @@ import { browserHistory } from 'react-router';
 
 import BaseComponent from './BaseComponent.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
+import SketchRating from './SketchRating.jsx';
 import {
-  Container,
   Table,
-  Header,
   Button,
-  Form,
   Segment,
-  Label,
 } from 'semantic-ui-react';
 
 
@@ -37,7 +34,11 @@ export default class ParticipantEndGameScreen extends BaseComponent {
       return ( // key suppresses a key error in console
         <Table.Row key={index}>
           <Table.Cell>{index+1}</Table.Cell>
-          <Table.Cell>{getRoundScore(round, player)}</Table.Cell>
+          <Table.Cell>
+            <SketchRating
+              rating={getRoundScore(round, player)}
+            />
+          </Table.Cell>
         </Table.Row>
       );
     });

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import SimpleSchema from 'simpl-schema';
+import { _ } from 'underscore';
 
 import { Sketches } from './collections/sketches';
 import { Rooms } from './collections/rooms';
@@ -84,6 +85,8 @@ export const errors = {
   createRoom: {
     noName: 'createRoom.noName',
     uniqueName: 'createRoom.uniqueName',
+    roundCount: 'createRoom.roundCount',
+    roundTime: 'createRoom.roundTime',
     gametype: 'createRoom.gametype',
     insertRoom: 'createRoom.insertRoom',
   },
@@ -229,7 +232,7 @@ export const joinRoom = new ValidatedMethod({
         `For room id ${room_id}`);
     }
 
-    if (room.status != 'JOINABLE') {
+    if (room.status !== 'JOINABLE') {
       throw new Meteor.Error(errors.joinRoom.joinability,
         'Cannot join a non-joinable room',
         `For room id ${room_id}`);
@@ -245,19 +248,37 @@ export const joinRoom = new ValidatedMethod({
     }
     
     // Add the player to the room
-    Rooms.update({
-      _id: room_id,
-    }, {
-      $push: {
-        players: player,
-      },
-    }, (error, result) => {
-      if (error) {
-        throw new Meteor.Error(errors.joinRoom.pushPlayer,
-          'Failed to push player onto room\'s players Array',
-          `Collection error ${error}`);
-      }
-    });
+    if (currentRound(room).status === 'CREATED') {
+      // Round not started, push to the actual player list
+      Rooms.update({
+        _id: room_id,
+      }, {
+        $push: {
+          players: player,
+        },
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(errors.joinRoom.pushPlayer,
+            'Failed to push player onto room\'s players Array',
+            `Collection error ${error}`);
+        }
+      });
+    } else {
+      // In-between rounds, push to waiting players
+      Rooms.update({
+        _id: room_id,
+      }, {
+        $push: {
+          joiningPlayers: player,
+        },
+      }, (error, result) => {
+        if (error) {
+          throw new Meteor.Error(errors.joinRoom.pushPlayer,
+            'Failed to push player onto room\'s joiningPlayers Array',
+            `Collection error ${error}`);
+        }
+      });
+    }
   },
 });
 
@@ -278,6 +299,21 @@ export const startRound = new ValidatedMethod({
         `For room id ${room_id}`);
     }
 
+    // Add waiting players to the room
+    _.each(room.joiningPlayers, (player) => {
+      Rooms.update({
+        _id: room_id,
+      }, {
+        $push: {
+          players: player,
+        },
+        $pull: {
+          $elemMatch: { joiningPlayers: { name: player.name } },
+        },
+      });
+    });
+
+    // Update the room and round status
     changeRoomStatus(room, 'PLAYING', (error, result) => {
       if (error) {
         throw new Meteor.Error(errors.startRound.roomStatus,
@@ -400,7 +436,7 @@ export const endGame = new ValidatedMethod({
     changeRoomStatus(room, 'COMPLETE', (error, result) => {
       throw new Meteor.Error(errors.endGame.roomStatus, '',
         `${error}`);
-    })
+    });
   },
 });
 
@@ -412,11 +448,9 @@ export const createRoom = new ValidatedMethod({
     },
     round_count: {
       type: Number,
-      minCount: 1,
     },
     round_time: {
       type: Number,
-      minCount: 5,
     },
     gametypeName: {
       type: String,
@@ -432,6 +466,14 @@ export const createRoom = new ValidatedMethod({
       throw new Meteor.Error(errors.createRoom.uniqueName,
         'Room name must be unique',
         `For room name ${room_name}`);
+    } else if (round_count < 1) { // Keep this in sync with Schema.Room
+      throw new Meteor.Error(errors.createRoom.roundCount,
+        'There must be at least 1 round!',
+        `Received round count ${round_count}`);
+    } else if (round_time < 5) { // Keep this in sync with Schema.Round
+      throw new Meteor.Error(errors.createRoom.roundTime,
+        'Rounds must be at least 5 seconds',
+        `Received round time ${round_time}`);
     }
 
     let rounds = [];

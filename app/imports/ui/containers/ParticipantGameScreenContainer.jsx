@@ -15,10 +15,22 @@ export default createContainer(() => {
   const name = (player && player.name) || '';
   const subscription = Meteor.subscribe('participant.pub', name);
 
+  let room = Rooms.findOne({ players: { $elemMatch: { name } } });
+  let isWaiting = false;
+  if (!room) {
+    isWaiting = true;
+    room = Rooms.findOne({ joiningPlayers: { $elemMatch: { name } } });
+    if (!room) {
+      // TODO handle this error case better. Offer to redirect.
+      throw new Error('Cannot play, player is not in any room');
+    }
+  }
+
   return {
     loading: !(subscription.ready()),
-    room: Rooms.findOne({ players: { $elemMatch: { name } } }),
+    room,
     sketches: Sketches.find({}).fetch(),
-    player: player,
+    player,
+    isWaiting,
   };
 }, ParticipantGameScreen);

@@ -6,6 +6,7 @@ import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import Timer from './Timer.jsx';
 import StackGrid from "react-stack-grid";
+import { easings } from "react-stack-grid";
 import {
   Button,
   Header,
@@ -35,7 +36,7 @@ export default class HostRoundResults extends BaseComponent {
     }
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      return <div key={sketch._id}><SketchImage key={sketch._id} sketch={sketch} /></div>;
+      return <SketchImage key={sketch._id} sketch={sketch} useFrame={false} />;
     });
 
     // TODO check browser compat
@@ -63,7 +64,7 @@ export default class HostRoundResults extends BaseComponent {
           </Form>
         </Segment>
         <Segment>
-          <StackGrid columnWidth={"33.33%"}>
+          <StackGrid columnWidth={"25%"}>
             {SketchComponents}
           </StackGrid>
         </Segment>

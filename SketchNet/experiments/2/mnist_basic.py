@@ -105,7 +105,7 @@ def main():
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
-	    deploy_model = td.Model()
+	deploy_model = td.Model()
         deploy_model.add(model.prediction, sess)
         deploy_model.save("./%s.pkl" % __file__.split('.')[0])
         saver = tf.train.Saver()

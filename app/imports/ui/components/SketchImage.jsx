@@ -12,12 +12,32 @@ export default class SketchImage extends BaseComponent {
 
     const width = 300;
     const height = 200;
+    this.draw = null;
     this.state = {
       padding: height*0.3,
       width,
       height,
     };
-    this.draw = null;
+
+    this.drawFrameAndSketch = this.drawFrameAndSketch.bind(this);
+  }
+
+  drawFrameAndSketch(sketch) {
+    const frame = this.draw.group();
+    if (sketch) {
+      frame
+        .image(sketch.sketch, this.sketchWidth(), this.sketchHeight())
+        .attr({
+          x: this.sketchX(),
+          y: this.sketchY(),
+        });
+    }
+    if (this.props.useFrame){
+      frame
+        .image(framePath, this.containerWidth(), this.containerHeight())
+        .attr({
+        });
+    }
   }
 
   containerWidth() {
@@ -45,42 +65,39 @@ export default class SketchImage extends BaseComponent {
   }
 
   componentDidMount() {
-    this.draw = SVG('sketchImage');
+    if (this.props.sketch){
+      this.draw = SVG(`sketchImage_${this.props.sketch._id}`);
+      this.drawFrameAndSketch(this.props.sketch);
+    }
+  }
 
-    const frame = this.draw.group();
-    frame
-      .image(this.props.sketch.sketch, this.sketchWidth(), this.sketchHeight())
-      .attr({
-        x: this.sketchX(),
-        y: this.sketchY(),
-      });
-    frame
-      .image(framePath, this.containerWidth(), this.containerHeight())
-      .attr({
-      });
+  componentDidUpdate() {
+    if (!this.draw){
+      this.draw = SVG(`sketchImage_${this.props.sketch._id}`);
+    }
+    this.drawFrameAndSketch(this.props.sketch);
   }
 
   render() {
-    const {
-      sketch,
-    } = this.props;
-
-    if (!sketch) {
-      console.error('SketchImage: sketch is undefined');
-    }
-
     const style = {
       width: `${this.containerWidth()}px`,
       height: `${this.containerHeight()}px`,
       margin: '5px',
     };
 
-    return (
-      <div id='sketchImage' style={style} />
-    );
+    if (this.props.sketch){
+      return (
+        <div id={`sketchImage_${this.props.sketch._id}`} style={style} />
+      );
+    } else {
+      return (
+        <div style={style} />
+      );
+    }
   }
 }
 
 SketchImage.propTypes = {
   sketch: React.PropTypes.object,
+  useFrame: React.PropTypes.bool,
 };
