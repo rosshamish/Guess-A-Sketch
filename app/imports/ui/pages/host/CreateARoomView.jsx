@@ -77,7 +77,7 @@ export default class CreateARoom extends BaseComponent {
                            this.state.roundTime);
             }}
           >
-          <div id='div1' style={{display: 'inline-block', width: '98%'}}>
+          <div id='roomName' style={{display: 'inline-block', width: '98%'}}>
             <Form.Input
               style={style}
               inline
@@ -88,7 +88,7 @@ export default class CreateARoom extends BaseComponent {
               value={this.state.roomName}
               onChange={this.onRoomNameChange}/>
           </div>
-          <div id='div1' style={{display: 'inline-block', width: '2%'}}>
+          <div id='roomNameRandomize' style={{display: 'inline-block', width: '2%'}}>
             <Button icon onClick={(event) => {
               event.preventDefault();
               this.setState({roomName: randomMuseumName()});
