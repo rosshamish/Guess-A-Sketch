@@ -116,8 +116,7 @@ export default class LoginPageView extends BaseComponent {
       display: 'flex',
       justifyContent: 'center',
     };
-
-    // TODO get color picker better centered
+    
     return (
       <Segment.Group style={style}>
         <Segment>
