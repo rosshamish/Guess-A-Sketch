@@ -4,7 +4,7 @@
 sudo apt-get update  &&
 sudo apt-get --assume-yes upgrade &&
 sudo apt-get --assume-yes install -y build-essential git python-pip libfreetype6-dev libxft-dev libncurses-dev libopenblas-dev gfortran python-matplotlib libblas-dev liblapack-dev libatlas-base-dev python-dev python-pydot linux-headers-generic linux-image-extra-virtual unzip python-numpy swig python-pandas python-sklearn unzip wget pkg-config zip g++ zlib1g-dev &&
-sudo apt-get install htop &&
+sudo apt-get --assume-yes install -y htop &&
 sudo pip install -U pip &&
 git config --global core.editor "vim" &&
  
@@ -12,7 +12,7 @@ git config --global core.editor "vim" &&
 wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/cuda-repo-ubuntu1404_8.0.44-1_amd64.deb &&
 sudo dpkg -i cuda-repo-ubuntu1404_8.0.44-1_amd64.deb &&
 sudo apt-get update &&
-sudo apt-get --assume-yes install cuda &&
+sudo apt-get --assume-yes install -y cuda &&
 rm cuda-repo-ubuntu1404_8.0.44-1_amd64.deb &&
  
 # Install CuDnn 5.1 for Cuda Toolkit 8.0 
@@ -59,7 +59,7 @@ rm sketches_png.zip &&
 # Accessed: March 29, 2017
 # ###
 # Nginx, for routing port 80 to our meteor application
-sudo apt-get install nginx &&
+sudo apt-get --assume-yes install -y nginx &&
 sudo cp Guess-A-Sketch/SketchNet/envs/nginx-sites-available /etc/nginx/sites-available/GuessASketch &&
 sudo rm /etc/nginx/sites-enabled/default &&
 sudo ln -s /etc/nginx/sites-available/GuessASketch /etc/nginx/sites-enabled/GuessASketch &&
