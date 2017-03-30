@@ -20,7 +20,7 @@ export function currentRound(room) {
   // It's the first round that's not over yet,
   // or if they're all over, it's the last one.
   const round = _.find(room.rounds, (round) => {
-    return round.status != 'END';
+    return round.status !== 'END';
   });
   if (round) {
     return round;

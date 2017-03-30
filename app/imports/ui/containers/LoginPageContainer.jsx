@@ -11,9 +11,10 @@ export default createContainer(() => {
   const rooms = Rooms.find({}).fetch();
   const namesInUseArrs = _.map(rooms, room => _.pluck(room.players, 'name'));
   const namesInUse = _.reduce(namesInUseArrs, (soFar, names) => soFar.concat(names), []);
-  console.log(rooms);
-  console.log(namesInUse);
+  const joiningNamesInUseArrs = _.map(rooms, room => _.pluck(room.joiningPlayers, 'name'));
+  const joiningNamesInUse = _.reduce(joiningNamesInUseArrs, (soFar, names) => soFar.concat(names), []);
 
+  namesInUse.concat(joiningNamesInUse);
   return {
     loading: !(subscription.ready()),
     namesInUse,

@@ -68,7 +68,7 @@ Schema.Round = new SimpleSchema({
     time: {
         type: Number,
         label: "Round Timer setting",
-        min: 10,
+        min: 5, // Keep in sync with methods.createRoom's error cases
     },
     status: {
         type: String,
@@ -97,6 +97,14 @@ Schema.Room = new SimpleSchema({
         defaultValue: [],
     },
     'players.$': {
+        type: Schema.Player,
+    },
+    joiningPlayers: {
+        type: Array,
+        label: "Players who will join in the next round",
+        defaultValue: [],
+    },
+    'joiningPlayers.$': {
         type: Schema.Player,
     },
     status: {

@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import { _ } from 'underscore';
 
 import BaseComponent from './BaseComponent.jsx';
+import SketchRating from './SketchRating.jsx';
 import {
   Segment,
   Table,
@@ -40,7 +41,9 @@ export default class HostEndGameScreen extends BaseComponent {
         <Table.Row key={index}>
           <Table.Cell>{index+1}</Table.Cell>
           <Table.Cell>{row.name}</Table.Cell>
-          <Table.Cell>{row.score}</Table.Cell>
+          <Table.Cell>
+            <SketchRating rating={row.score} />
+          </Table.Cell>
         </Table.Row>
       );
     });

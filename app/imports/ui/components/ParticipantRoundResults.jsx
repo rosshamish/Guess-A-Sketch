@@ -5,8 +5,8 @@ import BaseComponent from './BaseComponent.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
+import SketchRating from './SketchRating.jsx';
 import {
-  Container,
   Header,
   Segment,
   Rating,
@@ -28,18 +28,14 @@ export default class ParticipantRoundResults extends BaseComponent {
     } = this.props;
 
     let rating;
+    let scores;
     let loading = false;
 
-    if (!sketch) {
-      console.error('Cant show round results for an undefined sketch');
-      return <ErrorMessage />;
-    }
-
-    if (!sketch.scores || !sketch.scores.length) {
+    if (!sketch || !sketch.scores || !sketch.scores.length) {
       loading = true;
       rating = 0;
-      sketch.scores = [{
-        'label': `Your ${sketch.prompt} is being scored.`,
+      scores = [{
+        'label': `Your ${(sketch && sketch.prompt) || 'sketch'} is being scored.`,
         'confidence': 0.75,
       }, {
         'label': 'The neural network is working.',
@@ -52,16 +48,17 @@ export default class ParticipantRoundResults extends BaseComponent {
       rating = getSketchScore(sketch);
       // TODO remove: here, we hoist the correct label higher in the list
       // for demo purposes.
-      sketch.scores.push({
+      scores = sketch.scores;
+      scores.push({
         label: sketch.prompt,
-        confidence: 0.95,
+        confidence: 1.00,
       });
     }
 
-    sketch.scores.sort((a, b) => b.confidence - a.confidence);
+    scores.sort((a, b) => b.confidence - a.confidence);
     // TODO refactor TOP_N constant
     const TOP_N = 3;
-    const topScores = sketch.scores.slice(0, TOP_N);
+    const topScores = scores.slice(0, TOP_N);
     const topScoreComponents = topScores.map((score) => {
       const percent = score.confidence * 100;
       let color = 'grey';
@@ -88,26 +85,31 @@ export default class ParticipantRoundResults extends BaseComponent {
       );
     });
 
+    // Attribution: Greg Dean
+    // Title: Convert string to title case with JavaScript
+    // Url: http://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript/196991#196991
+    // Accessed: March 29, 2017
+    var str = round.prompt;
+    var capitalizedPrompt = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+
     return (
       <Segment.Group>
-        <Segment>
-          <PlayerHeader text={`Round ${round.index+1} (Prompt: ${round.prompt})`} player={player} />
-        </Segment>
         <Segment
           loading={loading}
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-           }} >
+          }}
+        >
+          <Header as='h1'>"{capitalizedPrompt}" by {player.name}</Header>
           <SketchImage 
-            sketch={sketch} />
-          <Rating
-            icon="star"
-            size="massive"
-            disabled
-            maxRating={5}
-            rating={rating} />
+            sketch={sketch}
+            useFrame
+          />
+          <SketchRating
+            rating={rating}
+          />
         </Segment>
         <Segment>
           <Header as='h3'>SketchNet's best guesses</Header>

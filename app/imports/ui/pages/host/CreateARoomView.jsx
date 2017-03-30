@@ -77,15 +77,25 @@ export default class CreateARoom extends BaseComponent {
                            this.state.roundTime);
             }}
           >
-          <Form.Input
-            style={style}
-            inline
-            label='Room Name'
-            type="text"
-            name="roomName"
-            ref={(input) => (this.roomName = input)}
-            value={this.state.roomName}
-            onChange={this.onRoomNameChange}/>
+          <div id='roomName' style={{display: 'inline-block', width: '98%'}}>
+            <Form.Input
+              style={style}
+              inline
+              label='Room Name'
+              type="text"
+              name="roomName"
+              ref={(input) => (this.roomName = input)}
+              value={this.state.roomName}
+              onChange={this.onRoomNameChange}/>
+          </div>
+          <div id='roomNameRandomize' style={{display: 'inline-block', width: '2%'}}>
+            <Button icon onClick={(event) => {
+                event.preventDefault();
+                this.setState({roomName: randomMuseumName()});
+              }}>
+              <Icon name='refresh' />
+            </Button>
+          </div>
           <Form.Input
             style={style}
             inline

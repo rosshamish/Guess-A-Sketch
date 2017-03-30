@@ -91,6 +91,7 @@ export default class ParticipantGameScreen extends BaseComponent {
       room,
       sketches,
       player,
+      isWaiting,
     } = this.props;
 
     // ---
@@ -147,12 +148,7 @@ export default class ParticipantGameScreen extends BaseComponent {
           />
         );
       } else if (round.status === 'RESULTS') {
-        const sketch = _.find(sketches, (s) => {
-          return _.contains(round.sketches, s._id);
-        })
-        if (!sketch) {
-          // TODO bugfix: this case renders for a moment after the round,
-          // before the sketch has been inserted/submitted.
+        if (isWaiting) {
           return (
             <ParticipantJoiningBetweenRounds
               room={room}
@@ -161,6 +157,7 @@ export default class ParticipantGameScreen extends BaseComponent {
             />
           );
         } else {
+          const sketch = _.find(sketches, s => _.contains(round.sketches, s._id));
           return (
             <ParticipantRoundResults
               round={currentRound(room)}
@@ -187,4 +184,5 @@ ParticipantGameScreen.propTypes = {
   room: React.PropTypes.object,
   sketches: React.PropTypes.array,
   player: React.PropTypes.object,
+  isWaiting: React.PropTypes.bool,
 };
