@@ -40,6 +40,7 @@ rm Miniconda2-latest-Linux-x86_64.sh &&
 
 # Clone Guess-A-Sketch into home and create conda environment 
 git clone https://github.com/anjueappen/Guess-A-Sketch.git &&
+ls &&
 conda env create -f Guess-A-Sketch/SketchNet/envs/tf_env_linux.yaml &&
 source activate tf27 &&
 pip install tensorflow-gpu &&
@@ -59,27 +60,20 @@ rm sketches_png.zip &&
 # ###
 # Nginx, for routing port 80 to our meteor application
 sudo apt-get install nginx &&
-cp Guess-A-Sketch/SketchNet/envs/nginx-sites-available /etc/nginx/sites-available/GuessASketch &&
+sudo cp Guess-A-Sketch/SketchNet/envs/nginx-sites-available /etc/nginx/sites-available/GuessASketch &&
 sudo rm /etc/nginx/sites-enabled/default &&
 sudo ln -s /etc/nginx/sites-available/GuessASketch /etc/nginx/sites-enabled/GuessASketch &&
-nginx -t &&
-nginx -s reload &&
+sudo nginx -t &&
+sudo nginx -s reload &&
 # MongoDB, as Meteor's database
-sudo apt-get install mongodb-server &&
+sudo apt-get --assume-yes install -y mongodb-server &&
 netstat -ln | grep -E '27017|28017' &&
-# Node, for running the built application
-sudo apt-get install nodejs &&
-sudo apt-get install npm &&
-sudo ln -s /usr/bin/nodejs /usr/bin/node &&
-sudo apt-get install g++ make && # for installing some npm packages
-# Build the meteor project into a node-runnable application
-pushd Guess-A-Sketch/app &&
-meteor build . &&
-tar -xvzf GuessASketch.tar.gz &&
-pushd bundle/programs/server &&
-npm install &&
-popd &&
-popd &&
+# Node, for running the app, and npm, for installing packages
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | bash &&
+source ~/.nvm/nvm.sh && echo 'source ~/.nvm/nvm.sh' >> ~/.bashrc
+nvm install 4.0 &&
+nvm use 4.0
+sudo apt-get --assume-yes install -y nodejs npm g++ make &&
 
 # Reboot to get Cuda dependancies down 
 sudo reboot 
