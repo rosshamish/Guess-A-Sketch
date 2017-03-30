@@ -1,0 +1,23 @@
+server_tokens off; # for security-by-obscurity: stop displaying nginx version
+
+# this section is needed to proxy web-socket connections
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+# HTTP
+server {
+    listen 80 default_server; # if this is not a default server, remove "default_server"
+    listen [::]:80 default_server ipv6only=on;
+
+    root /usr/share/nginx/html; # root is irrelevant
+    index index.html index.htm; # this is also irrelevant
+
+    server_name todos.net; # the domain on which we want to host the application. Since we set "default_server" previously, nginx will answer all hosts anyway.
+
+    # redirect non-SSL to SSL
+    location / {
+        rewrite     ^ https://$server_name$request_uri? permanent;
+    }
+}
