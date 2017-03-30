@@ -55,16 +55,16 @@ export default class WelcomePage extends React.Component {
       justifyContent: 'center',
     };
 
-    // TODO logo instead of header text
     return (
       <Segment.Group>
         <Segment>
-          <Header as='h2' icon textAlign='center'>
-            Guess A Sketch
+          <Header as='h1' icon textAlign='center'>
+            <Icon name='write' circular />
+            <Header.Content>
+              Guess A Sketch
+              <Header.Subheader as='h4'>Half party game, half AI experiment</Header.Subheader>
+            </Header.Content>
           </Header>
-          <Header
-            as='h4'
-            textAlign="center">Half party game, half AI experiment</Header>
         </Segment>
         <Segment textAlign='center'>
           <Button.Group style={style} size="big">
@@ -76,7 +76,7 @@ export default class WelcomePage extends React.Component {
           <br />
           <Modal 
             trigger={
-              <Button toggle size="large" onClick={this.handleAboutOpen} style={style}>About</Button>
+              <Button toggle size="medium" onClick={this.handleAboutOpen} style={style}>About</Button>
             } 
             basic size='small'
             open={this.state.aboutModalOpen}

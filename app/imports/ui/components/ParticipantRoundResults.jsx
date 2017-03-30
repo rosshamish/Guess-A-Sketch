@@ -85,11 +85,15 @@ export default class ParticipantRoundResults extends BaseComponent {
       );
     });
 
+    // Attribution: Greg Dean
+    // Title: Convert string to title case with JavaScript
+    // Url: http://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript/196991#196991
+    // Accessed: March 29, 2017
+    var str = round.prompt;
+    var capitalizedPrompt = str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+
     return (
       <Segment.Group>
-        <Segment>
-          <PlayerHeader text={`Round ${round.index+1} (Prompt: ${round.prompt})`} player={player} />
-        </Segment>
         <Segment
           loading={loading}
           style={{
@@ -98,6 +102,7 @@ export default class ParticipantRoundResults extends BaseComponent {
             alignItems: 'center',
           }}
         >
+          <Header as='h1'>"{capitalizedPrompt}" by {player.name}</Header>
           <SketchImage 
             sketch={sketch}
             useFrame

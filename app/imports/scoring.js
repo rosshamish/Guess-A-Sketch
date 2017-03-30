@@ -1,5 +1,5 @@
 import { _ } from 'underscore';
-// import { Sketches } from '/imports/api/collections/sketches';
+import { Sketches } from '/imports/api/collections/sketches';
 
 function clamp(val, low, high) {
   // Clamps val between low and high, inclusive.
@@ -86,6 +86,10 @@ function sum(arr) {
   }, 0);
 }
 
+function avg(arr){
+	return sum(arr) / arr.length;
+}
+
 export function getRoundScore(round, player) {
   // TODO refactor to remove dependency on Sketches collection
   const sketches = _.map(round.sketches, (sketchID) => Sketches.findOne(sketchID));
@@ -109,5 +113,5 @@ export function getGameScore(room, player) {
   const roundScores = _.map(room.rounds, (round) => {
     return getRoundScore(round, player);
   });
-  return Math.avg(roundScores);
+  return avg(roundScores);
 }

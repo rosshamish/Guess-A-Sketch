@@ -40,6 +40,13 @@ export default class HostPreGameScreen extends BaseComponent {
         );
       });
     }
+
+    // generate variable column widths to make player list more interesting
+    var columnWidth = "100%"
+    if (room.players.length > 3){
+      var percent = Math.random() * 66;
+      columnWidth = (percent.toString()).concat("%");
+    }
     
     return (
       <center>
@@ -68,7 +75,7 @@ export default class HostPreGameScreen extends BaseComponent {
           </Button>
         </Form>
         <br/>
-        <StackGrid columnWidth={150}>
+        <StackGrid columnWidth={columnWidth}>
           {playerList}
         </StackGrid>
       </Container>

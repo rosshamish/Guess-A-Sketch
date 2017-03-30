@@ -10,6 +10,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import { CirclePicker } from 'react-color';
 import {
   Form,
+  Icon,
   Button,
   Header,
   Segment,
@@ -115,14 +116,12 @@ export default class LoginPageView extends BaseComponent {
       display: 'flex',
       justifyContent: 'center',
     };
-
-    // TODO dice icon to randomize name
-    // TODO get color picker better centered
+    
     return (
       <Segment.Group style={style}>
         <Segment>
           <Header as="h1" style={style}>
-            Guess a Sketch
+            Create a Player
           </Header>
         </Segment>
         <Segment>
@@ -135,15 +134,27 @@ export default class LoginPageView extends BaseComponent {
               }
             }}
             >
-            <Form.Input
-              style={style}
-              inline
-              fluid
-              label='Name'
-              type='text'
-              value={this.state.nickname}
-              onChange={this.onNicknameChange} />
+            <div id='Name' style={{display: 'inline-block', width: '90%'}}>
+              <Form.Input
+                style={style}
+                inline
+                fluid
+                label='Name'
+                type='text'
+                value={this.state.nickname}
+                onChange={this.onNicknameChange} />
+            </div>
+            <div id='NameRandomize' style={{display: 'inline-block', width: '10%'}}>
+              <Button icon onClick={(event) => {
+                  event.preventDefault();
+                  this.setState({nickname: randomArtistName()});
+                }}>
+                <Icon name='refresh' />
+              </Button>
+            </div>
+            <div style={{color: '#FFFFFF'}}>.{"\n"}</div>
             <CirclePicker
+              width = "100%"
               circleSize={35}
               color={this.state.color}
               colors={_.map(semanticUIColors, color => color.hex)}
