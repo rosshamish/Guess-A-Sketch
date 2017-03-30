@@ -433,6 +433,8 @@ export const endGame = new ValidatedMethod({
         `For room id ${room_id}`);
     }
 
+    // TO DO: Figure out why this is erroring out, even though it still 
+    // successfully changes to room status from Joinable -> Complete
     changeRoomStatus(room, 'COMPLETE', (error, result) => {
       throw new Meteor.Error(errors.endGame.roomStatus, '',
         `${error}`);
