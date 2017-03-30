@@ -2,13 +2,13 @@ import sys, os
 import tensorflow as tf
 from tqdm import tqdm
 import tfdeploy as td
+import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.tf_graph_scope import define_scope
 from preprocessing.data_prep import get_batch
 from utils.base_model import Model
-from utils.tf_utils import weight_variable, bias_variable
 
 conv2d = tf.nn.conv2d
 max_pool = tf.nn.max_pool
@@ -43,11 +43,8 @@ class Exp1Model(Model):
 
         h_fc2 = slim.fully_connected(h_fc1_drop, filter_4)
         h_fc2_drop = tf.nn.dropout(h_fc2, self.keep_prob)
-       
+
         y_conv = slim.fully_connected(h_fc2_drop, self.num_labels)
-        #W_fc1 = weight_variable([1 * 1 * filter_4, self.num_labels])
-        #b_fc1 = bias_variable([self.num_labels])
-        #y_conv = tf.nn.relu(tf.matmul(h_fc2_drop, W_fc1) + b_fc1)
         return y_conv
 
     @define_scope
@@ -97,7 +94,7 @@ def main():
             if i % 100 == 0:
                 # summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
                 train_accuracy = sess.run(model.accuracy,
-                                                   {image: batch[0], label: batch[1], keep_prob: 1.0})
+                                          {image: batch[0], label: batch[1], keep_prob: 1.0})
                 # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
@@ -105,16 +102,16 @@ def main():
         acc = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
         print("test accuracy %g" % acc)
 
-	deploy_model = td.Model()
-        deploy_model.add(model.prediction, sess)
-        deploy_model.save("./%s.pkl" % __file__.split('.')[0])
+        tf.add_to_collection('inputs', image)
+        tf.add_to_collection('inputs', keep_prob)
+        tf.add_to_collection('output', model.prediction)
         saver = tf.train.Saver()
         save_path = saver.save(sess, "./%s" % __file__.split('.')[0])
         print("Model saved")
 
-def eval_img(img):
-    sess = tf.Session()
-    
+
+
+
 
 if __name__ == '__main__':
     main()
