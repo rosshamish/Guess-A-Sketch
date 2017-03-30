@@ -52,28 +52,34 @@ rm sketches_png.zip &&
  
 # ###
 # Setup meteor deployment
+# Attribution: DigitalOcean Meteor deployment article, as a template for this setup script
+# URL: https://www.digitalocean.com/community/tutorials/how-to-deploy-a-meteor-js-application-on-ubuntu-14-04-with-nginx
+# Author: Daniel Speichert
+# Accessed: March 29, 2017
 # ###
 # Nginx, for routing port 80 to our meteor application
-sudo apt-get install nginx
-cp Guess-A-Sketch/SketchNet/envs/nginx-sites-available /etc/nginx/sites-available/GuessASketch
-rm /etc/nginx/sites-enabled/default
-ln -s /etc/nginx/sites-available/GuessASketch /etc/nginx/sites-enabled/GuessASketch
-nginx -t
-nginx -s reload
+sudo apt-get install nginx &&
+cp Guess-A-Sketch/SketchNet/envs/nginx-sites-available /etc/nginx/sites-available/GuessASketch &&
+sudo rm /etc/nginx/sites-enabled/default &&
+sudo ln -s /etc/nginx/sites-available/GuessASketch /etc/nginx/sites-enabled/GuessASketch &&
+nginx -t &&
+nginx -s reload &&
 # MongoDB, as Meteor's database
-sudo apt-get install mongodb-server
-netstat -ln | grep -E '27017|28017'
+sudo apt-get install mongodb-server &&
+netstat -ln | grep -E '27017|28017' &&
 # Node, for running the built application
-sudo apt-get install nodejs
-sudo apt-get install npm
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-sudo apt-get install g++ make # for installing some npm packages
+sudo apt-get install nodejs &&
+sudo apt-get install npm &&
+sudo ln -s /usr/bin/nodejs /usr/bin/node &&
+sudo apt-get install g++ make && # for installing some npm packages
 # Build the meteor project into a node-runnable application
-pushd GuessASketch/app
-meteor build .
-tar -xvzf GuessASketch.tar.gz
-pushd bundle/programs/server
-npm install
+pushd Guess-A-Sketch/app &&
+meteor build . &&
+tar -xvzf GuessASketch.tar.gz &&
+pushd bundle/programs/server &&
+npm install &&
+popd &&
+popd &&
 
 # Reboot to get Cuda dependancies down 
 sudo reboot 
