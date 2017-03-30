@@ -19,8 +19,8 @@ echo '(See deploy.sh comments for instructions and troubleshooting)'
 # ###
 # 1. Untar the Meteor bundle and install Meteor/Node dependencies
 # tar -xvzf app.tar.gz && pushd bundle/programs/server && npm install && popd
-# 2. Install Python2 (SketchNet) dependencies
-# source activate tf27 && pip install -r Guess-A-Sketch/SketchNet/api/requirements.txt
+# 2. Update SketchNet's sources and install dependencies
+# cd Guess-A-Sketch && git pull && source activate tf27 && pip install -r SketchNet/api/requirements.txt
 # 3. Run SketchNet!
 # cd Guess-A-Sketch
 # python SketchNet/api/api.py
