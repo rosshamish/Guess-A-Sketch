@@ -19,7 +19,7 @@ from preprocessing.data_prep import get_classes
 
 IMAGE_DIR = 'png'
 # print(os.path.join(os.path.dirname(__file__)))
-META_FILE = './experiments/2/mnist_basic.meta'
+META_FILE = 'SketchNet/experiments/2/mnist_basic.meta'
 
 
 def eval_img(img):
