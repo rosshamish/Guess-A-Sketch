@@ -50,7 +50,7 @@ echo "source activate tf27" >> ~/.bashrc &&
 wget http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/sketches_png.zip &&
 unzip sketches_png.zip &&
 rm sketches_png.zip &&
- 
+
 # ###
 # Setup meteor deployment
 # Attribution: DigitalOcean Meteor deployment article, as a template for this setup script

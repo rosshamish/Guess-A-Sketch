@@ -169,7 +169,7 @@ export default class ParticipantGameScreen extends BaseComponent {
         }
       } else {
         // TODO bugfix: this case hits very briefly at the end of each round.
-        console.error('[Room ' + room._id + ']: Current round in illegal state');
+        console.error(`[Room ${room._id}]: Current round in illegal state ${round.status}`);
         return <ErrorMessage />;
       }
     } else {
