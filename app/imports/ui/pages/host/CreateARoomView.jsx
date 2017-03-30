@@ -90,9 +90,9 @@ export default class CreateARoom extends BaseComponent {
           </div>
           <div id='roomNameRandomize' style={{display: 'inline-block', width: '2%'}}>
             <Button icon onClick={(event) => {
-              event.preventDefault();
-              this.setState({roomName: randomMuseumName()});
-            }}>
+                event.preventDefault();
+                this.setState({roomName: randomMuseumName()});
+              }}>
               <Icon name='refresh' />
             </Button>
           </div>
