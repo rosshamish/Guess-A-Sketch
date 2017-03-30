@@ -35,24 +35,18 @@ export default class ParticipantRoundResults extends BaseComponent {
       loading = true;
       rating = 0;
       scores = [{
-        'label': `Your ${(sketch && sketch.prompt) || 'sketch'} is being scored.`,
-        'confidence': 0.75,
+        label: `Your ${(sketch && sketch.prompt) || 'sketch'} is being scored.`,
+        confidence: 0.75,
       }, {
-        'label': 'The neural network is working.',
-        'confidence': 0.5,
+        label: 'The neural network is working.',
+        confidence: 0.5,
       }, {
-        'label': 'Thanks for your patience!',
-        'confidence': 0.3,
+        label: 'Thanks for your patience!',
+        confidence: 0.3,
       }];
     } else {
       rating = getSketchScore(sketch);
-      // TODO remove: here, we hoist the correct label higher in the list
-      // for demo purposes.
       scores = sketch.scores;
-      scores.push({
-        label: sketch.prompt,
-        confidence: 1.00,
-      });
     }
 
     scores.sort((a, b) => b.confidence - a.confidence);
