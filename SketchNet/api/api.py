@@ -38,6 +38,11 @@ def submit():
         base64img = str(request.form['sketch']).split(',')[1]
         img = scipy.misc.imresize(np.array(Image.open(BytesIO(decode_base64(base64img)))), (225, 225))
 
+        # handle color channels
+        if len(img.shape) > 2:
+            img = img[:, :, 0] + img[:, :, 1] + img[:, :, 2]
+            img[img > 0] = 255
+
         # add batch_size dimension
         img = np.expand_dims(img, axis=0)
 
