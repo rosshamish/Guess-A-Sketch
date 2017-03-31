@@ -26,9 +26,10 @@ echo "${VERSION}" > VERSION &&
 git add VERSION &&
 git commit -m "Deploy version ${VERSION}" &&
 git tag ${VERSION} &&
+git push && git push --tags &&
 npm install --production &&
 meteor build . --architecture ${ARCH} &&
 scp -i ${SSH_KEY} app.tar.gz ${SSH_TARGET}: &&
 cat deploy_cybera.sh | ssh -i ${SSH_KEY} ${SSH_TARGET} &&
-echo '---\nSuccessfully built and deployed app.tar.gz to Cybera.\n---'
+echo "---\nSuccessfully built and deployed app.tar.gz to Cybera.\n---"
 
