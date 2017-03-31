@@ -47,12 +47,12 @@ def submit():
         img = np.expand_dims(img, axis=0)
 
         result = eval_img(img)
-        scores = jsonify([{
-                              'label': cls,
-                              'confidence': float(result[i])
-                          } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+        scores = [{
+                      'label': cls,
+                      'confidence': float(result[i])
+                  } for i, cls in enumerate(get_classes(IMAGE_DIR))]
         print(scores)
-        return scores
+        return jsonify(scores)
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 
