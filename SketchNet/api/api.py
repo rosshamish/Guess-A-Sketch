@@ -58,7 +58,7 @@ def decode_base64(data):
 if __name__ == "__main__":
     sess = tf.Session()
     new_saver = tf.train.import_meta_graph(META_FILE)
-    new_saver.restore(sess, tf.train.latest_checkpoint('./experiments/2/'))
+    new_saver.restore(sess, tf.train.latest_checkpoint('SketchNet/experiments/2/'))
 
     inps = tf.get_collection('inputs')
     image = inps[0]

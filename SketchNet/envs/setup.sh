@@ -30,6 +30,7 @@ echo "export CUDA_ROOT=/usr/local/cuda" >> ~/.bashrc &&
 export CUDA_ROOT=/usr/local/cuda &&
 echo "export PATH=$PATH:$CUDA_ROOT/bin" >> ~/.bashrc &&
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64" >> ~/.bashrc &&
+source /home/ubuntu/.bashrc &&
  
 # Set up Miniconda 
 wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh  &&
@@ -40,16 +41,18 @@ rm Miniconda2-latest-Linux-x86_64.sh &&
 
 # Clone Guess-A-Sketch into home and create conda environment 
 git clone https://github.com/anjueappen/Guess-A-Sketch.git &&
-ls &&
+ls && ls Guess-A-Sketch &&
 conda env create -f Guess-A-Sketch/SketchNet/envs/tf_env_linux.yaml &&
 source activate tf27 &&
 pip install tensorflow-gpu &&
 echo "source activate tf27" >> ~/.bashrc &&
  
 # Get the images 
+pushd Guess-A-Sketch && 
 wget http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/sketches_png.zip &&
 unzip sketches_png.zip &&
 rm sketches_png.zip &&
+popd &&
 
 # ###
 # Setup meteor deployment
@@ -69,11 +72,11 @@ sudo nginx -s reload &&
 sudo apt-get --assume-yes install -y mongodb-server &&
 netstat -ln | grep -E '27017|28017' &&
 # Node, for running the app, and npm, for installing packages
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | bash &&
-source ~/.nvm/nvm.sh && echo 'source ~/.nvm/nvm.sh' >> ~/.bashrc
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | sh &&
+source ~/.nvm/nvm.sh && echo 'source ~/.nvm/nvm.sh' >> ~/.bashrc &&
+source /home/ubuntu/.bashrc &&
 nvm install 4.0 &&
-nvm use 4.0
-sudo apt-get --assume-yes install -y nodejs npm g++ make &&
+nvm use 4.0 &&
 
 # Reboot to get Cuda dependancies down 
 sudo reboot 
