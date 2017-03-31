@@ -12,6 +12,8 @@ import numpy as np
 import scipy.misc
 import base64
 
+from err import ClassificationFailure
+
 app = Flask(__name__)
 CORS(app)
 
@@ -19,7 +21,7 @@ from preprocessing.data_prep import get_classes
 
 IMAGE_DIR = 'png'
 # print(os.path.join(os.path.dirname(__file__)))
-META_FILE = './experiments/2/mnist_basic.meta'
+META_FILE = 'SketchNet/experiments/2/mnist_basic.meta'
 
 
 def eval_img(img):
@@ -32,16 +34,33 @@ def prompts():
 
 @app.route("/submit", methods=['POST'])
 def submit():
-    base64img = str(request.form['sketch']).split(',')[1]
-    img = scipy.misc.imresize(np.array(Image.open(BytesIO(decode_base64(base64img)))), (225, 225))
-    img = np.expand_dims(img, axis=0)
+    try:
+        base64img = str(request.form['sketch']).split(',')[1]
+        img = scipy.misc.imresize(np.array(Image.open(BytesIO(decode_base64(base64img)))), (225, 225))
 
-    result = eval_img(img)
-    return jsonify([{
-                        'label': cls,
-                        'confidence': float(result[i])
-                    } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+        # handle color channels
+        if len(img.shape) > 2:
+            img = img[:, :, 0] + img[:, :, 1] + img[:, :, 2]
+            img[img > 0] = 255
 
+        # add batch_size dimension
+        img = np.expand_dims(img, axis=0)
+
+        result = eval_img(img)
+        result = result/np.linalg.norm(result)
+        return jsonify([{
+                            'label': cls,
+                            'confidence': float(result[i])
+                        } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+    except Exception as e:
+        raise ClassificationFailure(message=str(e))
+
+
+@app.errorhandler(ClassificationFailure)
+def handle_classification_failure(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 def decode_base64(data):
     """Decode base64, padding being optional.
@@ -58,7 +77,7 @@ def decode_base64(data):
 if __name__ == "__main__":
     sess = tf.Session()
     new_saver = tf.train.import_meta_graph(META_FILE)
-    new_saver.restore(sess, tf.train.latest_checkpoint('./experiments/2/'))
+    new_saver.restore(sess, tf.train.latest_checkpoint('SketchNet/experiments/2/'))
 
     inps = tf.get_collection('inputs')
     image = inps[0]

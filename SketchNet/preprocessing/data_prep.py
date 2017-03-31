@@ -42,8 +42,8 @@ def preprocess(directory):
     return imgs
 
 #TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/home/ubuntu/png')
-#TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
-TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
+TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
+#TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
 
 def getExample(args):
     dims, train = args
