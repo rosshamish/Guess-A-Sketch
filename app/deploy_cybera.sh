@@ -35,7 +35,7 @@ popd &&
 
 # 3. Run SketchNet!
 pushd Guess-A-Sketch &&
-	python SketchNet/api/api.py &
+	nohup python SketchNet/api/api.py &
 	echo "SketchNet API running as pid $!" &&
 popd &&
 
