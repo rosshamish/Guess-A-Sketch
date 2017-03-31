@@ -47,6 +47,7 @@ def submit():
         img = np.expand_dims(img, axis=0)
 
         result = eval_img(img)
+        result = result/np.linalg.norm(result)
         return jsonify([{
                             'label': cls,
                             'confidence': float(result[i])
