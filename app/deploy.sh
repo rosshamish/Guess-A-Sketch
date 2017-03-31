@@ -1,9 +1,8 @@
 #!/usr/bin/env bash 
 
 # ###
-# Deploys the Meteor app to our Cybera instance.
-# - builds an application bundle, and send it to the Cybera instance.
-# - runs deploy_cybera.sh on the instance via ssh, which installs and runs it.
+# Builds an application bundle and sends it to the Cybera instance.
+# After running this, you'll want to ssh in and run deploy_cybera.sh
 # Usage:
 # 	./deploy.sh [version] [ssh key]
 # ###
@@ -30,6 +29,5 @@ git push && git push --tags &&
 npm install --production &&
 meteor build . --architecture ${ARCH} &&
 scp -i ${SSH_KEY} app.tar.gz ${SSH_TARGET}: &&
-cat deploy_cybera.sh | ssh -i ${SSH_KEY} ${SSH_TARGET} &&
 echo "---\nSuccessfully built and deployed app.tar.gz to Cybera.\n---"
 

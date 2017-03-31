@@ -1,8 +1,8 @@
 #!/usr/bin/env bash 
 
 # ###
-# To be run on the Cybera instance.
 # Unpacks the built application bundle, installs it, and runs it.
+# Before running this, you'll want to run deploy.sh locally.
 # Usage:
 # 	$ ssh into cybera instance
 #   $ ./deploy_cybera.sh
@@ -33,13 +33,10 @@ pushd Guess-A-Sketch &&
 	pip install -r SketchNet/api/requirements.txt &&
 popd &&
 
-# 3. Run SketchNet!
-pushd Guess-A-Sketch &&
-	python SketchNet/api/api.py &
-	echo "SketchNet API running as pid $!" &&
-popd &&
+echo "Dependencies installed successfully."
+echo "Now, run both processes:"
+echo "1. SketchNet API:"
+echo "cd Guess-A-Sketch && python SketchNet/api/api.py"
+echo "2. Guess-A-Sketch Meteor App:"
+echo "nvm use 4.0 && PORT=8080 MONGO_URL="${MONGO_URL}" ROOT_URL="${APP_URL}" node bundle/main.js"
 
-# 4. Run Guess-a-Sketch!
-nvm use 4.0 &&
-PORT=${METEOR_PORT} MONGO_URL=${MONGO_URL} ROOT_URL=${APP_URL} node bundle/main.js &
-echo "Guess-a-Sketch Meteor App running as pid $!"
