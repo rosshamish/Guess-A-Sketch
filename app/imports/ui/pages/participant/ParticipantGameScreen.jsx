@@ -124,13 +124,13 @@ export default class ParticipantGameScreen extends BaseComponent {
         />
       );
     } else if (isInGame(room)) {
-      let round = currentRound(room);
+      const round = currentRound(room);
       if (!round) {
         console.error('Theres no current round. What the heck! Something is wrong.');
         return <ErrorMessage />;
       }
 
-      if (round.status === 'PRE') {
+      if (round.status === 'PRE' || round.status === 'CREATED') {
         return (
           <ParticipantPreRound
             room={room}
