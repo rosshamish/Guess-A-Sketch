@@ -1,28 +1,34 @@
-# ###
-# Build and deploy the application to Cybera
-# ###
-git pull &&
-git checkout master &&
-npm install --production &&
-meteor build . --architecture os.linux.x86_64 &&
-scp -i ../../cloud.key app.tar.gz ubuntu@162.246.157.134:
-echo '\n\nSuccessfully built and deployed app.tar.gz to Cybera.'
-echo 'Now, ssh in and do the rest!'
-echo '(See deploy.sh comments for instructions and troubleshooting)'
+#!/usr/bin/env bash 
 
 # ###
-# Then, on the Cybera instance, do the following
-# (Troubleshooting:)
-# - make sure the Cybera instance has HTTP access allowed in Access & Security
-# - make sure the conda environment is created correctly (search "conda env create" in setup.sh)
-# - make sure the "png" directory is inside ~/Guess-a-Sketch
+# Deploys the Meteor app to our Cybera instance.
+# - builds an application bundle, and send it to the Cybera instance.
+# - runs deploy_cybera.sh on the instance via ssh, which installs and runs it.
+# Usage:
+# 	./deploy.sh [version] [ssh key]
 # ###
-# 1. Untar the Meteor bundle and install Meteor/Node dependencies
-# tar -xvzf app.tar.gz && pushd bundle/programs/server && npm install && popd
-# 2. Update SketchNet's sources and install dependencies
-# cd Guess-A-Sketch && git pull && source activate tf27 && pip install -r SketchNet/api/requirements.txt
-# 3. Run SketchNet!
-# cd Guess-A-Sketch
-# python SketchNet/api/api.py
-# 4. Run Guess-a-Sketch!
-# nvm use 4.0 && PORT=8080 MONGO_URL='mongodb://localhost:27017/GuessASketch' ROOT_URL='http://guessasketch.net' node bundle/main.js
+
+# Command-line parameters
+VERSION=$1
+SSH_KEY=$2
+
+# Constants
+SSH_USER=ubuntu
+SSH_ADDR=162.246.157.134
+ARCH=os.linux.x86_64
+DEPLOY_BRANCH=master
+
+# Composites
+SSH_TARGET="${SSH_USER}@${SSH_ADDR}"
+
+git checkout ${DEPLOY_BRANCH} &&
+echo "${VERSION}" > VERSION &&
+git add VERSION &&
+git commit -m "Deploy version ${VERSION}" &&
+git tag ${VERSION} &&
+npm install --production &&
+meteor build . --architecture ${ARCH} &&
+scp -i ${SSH_KEY} app.tar.gz ${SSH_TARGET}: &&
+cat deploy_cybera.sh | ssh -i ${SSH_KEY} ${SSH_TARGET} &&
+echo '---\nSuccessfully built and deployed app.tar.gz to Cybera.\n---'
+
