@@ -12,6 +12,8 @@ import numpy as np
 import scipy.misc
 import base64
 
+from err import ClassificationFailure
+
 app = Flask(__name__)
 CORS(app)
 
@@ -32,16 +34,27 @@ def prompts():
 
 @app.route("/submit", methods=['POST'])
 def submit():
-    base64img = str(request.form['sketch']).split(',')[1]
-    img = scipy.misc.imresize(np.array(Image.open(BytesIO(decode_base64(base64img)))), (225, 225))
-    img = np.expand_dims(img, axis=0)
+    try:
+        base64img = str(request.form['sketch']).split(',')[1]
+        img = scipy.misc.imresize(np.array(Image.open(BytesIO(decode_base64(base64img)))), (225, 225))
 
-    result = eval_img(img)
-    return jsonify([{
-                        'label': cls,
-                        'confidence': float(result[i])
-                    } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+        # add batch_size dimension
+        img = np.expand_dims(img, axis=0)
 
+        result = eval_img(img)
+        return jsonify([{
+                            'label': cls,
+                            'confidence': float(result[i])
+                        } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+    except Exception as e:
+        raise ClassificationFailure(message=str(e))
+
+
+@app.errorhandler(ClassificationFailure)
+def handle_classification_failure(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 def decode_base64(data):
     """Decode base64, padding being optional.
