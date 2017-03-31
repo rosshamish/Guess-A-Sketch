@@ -26,6 +26,7 @@ echo "${VERSION}" > VERSION &&
 git add VERSION &&
 git commit -m "Deploy version ${VERSION}" &&
 git tag ${VERSION} &&
+git push --tags &&
 npm install --production &&
 meteor build . --architecture ${ARCH} &&
 scp -i ${SSH_KEY} app.tar.gz ${SSH_TARGET}: &&

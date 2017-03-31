@@ -23,20 +23,21 @@ tar -xvzf app.tar.gz &&
 rm app.tar.gz &&
 pushd bundle/programs/server &&
 	npm install &&
-popd
+popd &&
 
 # 2. Update SketchNet's sources, activate the conda environment, and install python dependencies
-pushd Guess-A-Sketch && 
+pushd Guess-A-Sketch &&
+	git checkout master &&
 	git pull && 
 	source activate tf27 &&
 	pip install -r SketchNet/api/requirements.txt &&
-popd
+popd &&
 
 # 3. Run SketchNet!
 pushd Guess-A-Sketch &&
 	python SketchNet/api/api.py &
 	echo "SketchNet API running as pid $!" &&
-popd
+popd &&
 
 # 4. Run Guess-a-Sketch!
 nvm use 4.0 &&
