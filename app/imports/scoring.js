@@ -113,5 +113,5 @@ export function getGameScore(room, player) {
   const roundScores = _.map(room.rounds, (round) => {
     return getRoundScore(round, player);
   });
-  return avg(roundScores);
+  return Math.ceil(avg(roundScores));
 }
