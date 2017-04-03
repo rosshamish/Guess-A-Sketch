@@ -1,0 +1,91 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "Numpy Implementation of Moving Least Sqaures \n",
+    "Link: http://faculty.cs.tamu.edu/schaefer/research/mls.pdf\n",
+    "\n",
+    "Notations: \n",
+    "\n",
+    "v - > f(v) as p -> q (2 different ways of describing points \n",
+    "                      before and after transformation adopted by paper)\n",
+    "\n",
+    "\"\"\"\n",
+    "ALPHA = 0.5\n",
+    "import numpy as np \n",
+    "\n",
+    "def weights(p, q, alpha):\n",
+    "    \"\"\"\n",
+    "    control points are mapped: p -> q \n",
+    "    Return the weights matrix for that mapping\n",
+    "    \"\"\"\n",
+    "    # Ensure arguments are numpy arrays\n",
+    "    if type(p) != np.ndarray: p = np.array(p, dtype=np.float32)\n",
+    "    if type(q) != np.ndarray: q = np.array(q, dtype=np.float32)\n",
+    "        \n",
+    "    return 1/np.power(np.absolute(p-q), 2*alpha)\n",
+    "    \n",
+    "\n",
+    "def weighted_centroid(x, w):\n",
+    "    \"\"\"\n",
+    "    x --> points\n",
+    "    w --> weight vector\n",
+    "    re\n",
+    "    \"\"\"\n",
+    "    if type(w) != np.ndarray: w = np.array(w, dtype=np.float32)\n",
+    "    if type(x) != np.ndarray: x = np.array(x, dtype=np.float32)\n",
+    "    return np.sum(x*w)/np.sum(w)\n",
+    "\n",
+    "def A(p, weights):\n",
+    "    \"\"\"\n",
+    "    Precomputed portion of equation 5. \n",
+    "    \"\"\"\n",
+    "    if type(p) != np.ndarray: p = np.array(p, dtype=np.float32)\n",
+    "    factor = np.matmul(p, weights)\n",
+    "    p_hat = p - weighted_centroid(p, weights)\n",
+    "    \n",
+    "    \n",
+    "    (1/np.sum(p_hat * factor)) * \n",
+    "\n",
+    "def deformation_fucntion(p, q):\n",
+    "    \"\"\"\n",
+    "    Implementation of equation 5 from paper \n",
+    "    \"\"\"\n",
+    "    \n",
+    "    weight_vector = weights(p, q, ALPHA)\n",
+    "    p_hat = p - weighted_centroid(p, weight_vector)\n",
+    "    q_hat = q - weighted_centroid(q, weight_vector)\n",
+    "    \n",
+    "    \n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 2",
+   "language": "python",
+   "name": "python2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
