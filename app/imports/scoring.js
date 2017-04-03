@@ -94,7 +94,7 @@ export function getRoundScore(round, player) {
   // TODO refactor to remove dependency on Sketches collection
   const sketches = _.map(round.sketches, (sketchID) => Sketches.findOne(sketchID));
   const byPlayer = _.filter(sketches, (sketch) => 
-      sketch.player.name === player.name
+      sketch.player.name === player.name,
   );
   const scores = _.map(byPlayer, getSketchScore);
 

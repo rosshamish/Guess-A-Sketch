@@ -25,7 +25,7 @@ class CanvasImpl extends BaseComponent {
     this.initCanvas = this.initCanvas.bind(this);
 
     // Prop methods
-    this.onChange = 
+    this.onChange = this.props.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +33,7 @@ class CanvasImpl extends BaseComponent {
     // 1. init, a blank sketch
     // 2. each stroke
     // 3. undo
-    const canvas = this.initCanvas('canvas')
+    const canvas = this.initCanvas('canvas');
 
     this.onChange(canvas);
     const that = this;

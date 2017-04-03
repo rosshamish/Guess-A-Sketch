@@ -4,7 +4,7 @@ import BaseComponent from '../../components/BaseComponent.jsx';
 import NoRooms from '../../components/NoRooms.jsx';
 import RoomItem from '../../components/RoomItem.jsx';
 import PlayerHeader from '../../components/PlayerHeader.jsx';
-import ErrorMessage from '../../components/ErrorMessage.jsx';
+import ErrorMessage, { errorCodes } from '../../components/ErrorMessage.jsx';
 import {
   Container,
   Header,
@@ -21,17 +21,23 @@ export default class RoomListPageView extends BaseComponent {
 
   render() {
     let {
-      loading,
       rooms,
+    } = this.props;
+
+    const {
+      loading,
       player,
       onRoomClickHandler,
     } = this.props;
 
-    if (!loading && (!rooms || !player)) {
-      console.error('Your session is corrupt. Reload the homepage.');
-      return <ErrorMessage />;
-    } else if (!loading && rooms.length === 0) {
-      return <NoRooms player={player} />;
+    if (!loading) {
+      if (!rooms) {
+        return <ErrorMessage code={errorCodes.roomList.undefinedRooms} />;
+      } else if (!player) {
+        return <ErrorMessage code={errorCodes.roomList.noPlayer} />;
+      } else if (rooms.length === 0) {
+        return <NoRooms player={player} />;
+      }
     }
 
     if (loading) {
@@ -50,19 +56,14 @@ export default class RoomListPageView extends BaseComponent {
         color: 'green',
       }];
       rooms = [{
-        name: 'Looking for rooms',
+        name: 'Searching for rooms',
         rounds: [round],
         players: players,
         status: 'JOINABLE',
       }, {
-        name: 'Hopefully someone is hosting one!',
+        name: '...',
         rounds: [round],
         players: players.slice(0, 3),
-        status: 'JOINABLE',
-      }, {
-        name: 'Thanks for your patience.',
-        rounds: [round],
-        players: players.slice(0, 2),
         status: 'JOINABLE',
       }];
     }

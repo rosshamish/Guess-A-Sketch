@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BaseComponent from './BaseComponent.jsx';
-import ErrorMessage from './ErrorMessage.jsx';
+import ErrorMessage, { errorCodes } from './ErrorMessage.jsx';
 import Prompt from './Prompt.jsx';
 import Timer from './Timer.jsx';
 import PlayerHeader from './PlayerHeader.jsx';
@@ -24,12 +24,12 @@ export default class ParticipantPreRound extends BaseComponent {
       player,
     } = this.props;
 
-    if (!room || !round) {
-      console.error('Received illegal round or room');
-      return <ErrorMessage />;
+    if (!room) {
+      return <ErrorMessage code={errorCodes.participant.noRoom} />;
     }
-
-    const circle = { width: 175, height: 175 }
+    if (!round) {
+      return <ErrorMessage code={errorCodes.participant.noRound} />;
+    }
 
     return (
       <Segment.Group>

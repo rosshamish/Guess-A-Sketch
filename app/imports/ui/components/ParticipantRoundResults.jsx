@@ -1,15 +1,11 @@
 import React from 'react';
-import { _ } from 'underscore';
 
 import BaseComponent from './BaseComponent.jsx';
-import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
-import PlayerHeader from './PlayerHeader.jsx';
 import SketchRating from './SketchRating.jsx';
 import {
   Header,
   Segment,
-  Rating,
   Progress,
 } from 'semantic-ui-react';
 
