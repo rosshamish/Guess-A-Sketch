@@ -20,16 +20,41 @@ class CanvasImpl extends BaseComponent {
       width: 5,
     };
     this.canvas = null;
+
     this.onUndo = this.onUndo.bind(this);
+    this.initCanvas = this.initCanvas.bind(this);
+
+    // Prop methods
+    this.onChange = 
   }
 
   componentDidMount() {
-    this.canvas = new fabric.Canvas('canvas');
+    // Send a canvas update on:
+    // 1. init, a blank sketch
+    // 2. each stroke
+    // 3. undo
+    const canvas = this.initCanvas('canvas')
+
+    this.onChange(canvas);
+    const that = this;
+    canvas.on('path:created', (event) => {
+      that.setState({
+        pathStack: that.state.pathStack.concat([event.path]),
+      });
+      if (onChange) {
+        onChange(canvas, event);
+      }
+    });
+  }
+
+  initCanvas(canvasID) {
+    this.canvas = new fabric.Canvas(canvasID);
     this.canvas.isDrawingMode = true;
     this.canvas.freeDrawingBrush.width = this.state.width;
     this.canvas.freeDrawingBrush.color = this.state.color;
     this.resizeCanvas(this.props);
 
+    // Grow/shrink the canvas container to fit the viewport
     const containers = document.getElementsByClassName('canvas-container');
     if (!containers || containers.length != 1) {
       console.error('Failed to find a single canvas-container');
@@ -39,24 +64,6 @@ class CanvasImpl extends BaseComponent {
       container.style['flex-direction'] = 'column';
       container.style['flex-grow'] = 1;
     }
-
-    // Send a canvas update on:
-    // 1. startup, the blank canvas, and
-    // 2. each mouse-up, the latest canvas
-    const onChange = this.props.onChange;
-    if (onChange) {
-      onChange(this.canvas);
-    }
-    const that = this;
-    this.canvas.on('path:created', (event) => {
-
-      that.setState({
-        pathStack: this.state.pathStack.concat([event.path]),
-      });
-      if (onChange) {
-        onChange(that.canvas, event);
-      }
-    });
   }
 
   componentWillUnmount() {
@@ -69,6 +76,7 @@ class CanvasImpl extends BaseComponent {
     this.setState({
       pathStack: _.initial(this.state.pathStack),
     });
+    this.onChange(this.canvas, event);
   }
 
   componentWillReceiveProps(nextProps) {
