@@ -1,8 +1,6 @@
 import React from 'react';
 import { _ } from 'underscore';
 
-import { Sketches } from '/imports/api/collections/sketches';
-
 import {
   startRound,
   playRound,
@@ -24,7 +22,7 @@ import {
 } from '/imports/game-status';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
-import ErrorMessage from '../../components/ErrorMessage.jsx';
+import ErrorMessage, { errorCodes } from '../../components/ErrorMessage.jsx';
 
 import HostPreGameScreen from '../../components/HostPreGameScreen.jsx';
 import HostPreRound from '../../components/HostPreRound.jsx';
@@ -173,16 +171,17 @@ export default class HostGameScreen extends BaseComponent {
       roomSketches,
     } = this.props;
 
+    // Render components for loading and input validation.
     if (loading) {
       return (
         <p>Loading...</p>
       );
-    } else if (!loading && !room) {
-      console.error('Go back to the homepage. Your session is broken.');
-      return <ErrorMessage />;
+    }
+    if (!room) {
+      return <ErrorMessage code={errorCodes.host.noRoom} />;
     }
 
-    // Page Rendering
+    // Pick a component to render based on the state of the game.
     if (isPreGame(room)) {
       return (
         <HostPreGameScreen 
@@ -200,46 +199,43 @@ export default class HostGameScreen extends BaseComponent {
     } else if (isInGame(room)) {
       const round = currentRound(room);
       if (!round) {
-        console.error('Theres no current round. What the heck! Something is wrong.');
-        return <ErrorMessage />
+        return <ErrorMessage code={errorCodes.host.noRound} />;
       }
-
-      if (round.status === 'PRE') {
-        return (
-          <HostPreRound
-            room={room}
-            round={currentRound(room)}
-            onPlayRound={this.onPlayRound}
-          />
-        );
-      } else if (round.status === 'PLAY') {
-        return (
-          <HostPlayRound
-            round={round}
-            room={room}
-            onRoundTimerOver={this.onRoundTimerOver}
-          />
-        );
-      } else if (round.status === 'RESULTS') {
-        const sketches = _.map(round.sketches, (sketchID) => {
-          return _.find(roomSketches, (sketch) => sketch._id === sketchID);
-        });
-        return (
-          <HostRoundResults
-            room={room}
-            round={currentRound(room)}
-            sketches={sketches}
-            isLastRound={isLastRound}
-            onNextRound={this.onNextRound}
-          />
-        );
-      } else {
-        console.error('[Room ' + room._id + ']: Current round in illegal state');
-        return <ErrorMessage />;
+      switch (round.status) {
+        case 'PRE':
+          return (
+            <HostPreRound
+              room={room}
+              round={currentRound(room)}
+              onPlayRound={this.onPlayRound}
+            />
+          );
+        case 'PLAY':
+          return (
+            <HostPlayRound
+              round={round}
+              room={room}
+              onRoundTimerOver={this.onRoundTimerOver}
+            />
+          );
+        case 'RESULTS':
+          const sketches = _.map(round.sketches, (sketchID) => {
+            return _.find(roomSketches, (sketch) => sketch._id === sketchID);
+          });
+          return (
+            <HostRoundResults
+              room={room}
+              round={currentRound(room)}
+              sketches={sketches}
+              isLastRound={isLastRound}
+              onNextRound={this.onNextRound}
+            />
+          );
+        default :
+          return <ErrorMessage code={errorCodes.host.illegalRoundState} />;
       }
     } else {
-      console.error('[Room ' + room._id + ']: in illegal state');
-      return <ErrorMessage />;
+      return <ErrorMessage code={errorCodes.host.illegalRoomState} />;
     }
   }
 }

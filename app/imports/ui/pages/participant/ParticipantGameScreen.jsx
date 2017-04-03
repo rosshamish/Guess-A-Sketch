@@ -16,7 +16,7 @@ import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
 import ParticipantJoiningBetweenRounds from '../../components/ParticipantJoiningBetweenRounds.jsx';
 import ParticipantRoundResults from '../../components/ParticipantRoundResults.jsx';
 import ParticipantEndGameScreen from '../../components/ParticipantEndGameScreen.jsx';
-import ErrorMessage from '../../components/ErrorMessage.jsx';
+import ErrorMessage, { errorCodes } from '../../components/ErrorMessage.jsx';
 
 
 export default class ParticipantGameScreen extends BaseComponent {
@@ -102,9 +102,11 @@ export default class ParticipantGameScreen extends BaseComponent {
       return (
         <p>Loading...</p>
       );
-    } else if (!loading && (!room || !player)) {
-      console.error('Go back to the homepage. Your session is broken.');
-      return <ErrorMessage />;
+    }
+    if (!room) {
+      return <ErrorMessage code={errorCodes.participant.noRoom} />;
+    } else if (!player) {
+      return <ErrorMessage code={errorCodes.participant.noPlayer} />;
     }
 
     if (isPreGame(room)) {
@@ -124,57 +126,54 @@ export default class ParticipantGameScreen extends BaseComponent {
         />
       );
     } else if (isInGame(room)) {
-      let round = currentRound(room);
+      const round = currentRound(room);
       if (!round) {
-        console.error('Theres no current round. What the heck! Something is wrong.');
-        return <ErrorMessage />;
+        return <ErrorMessage code={errorCodes.participant.noRound} />;
       }
-
-      if (round.status === 'PRE') {
-        return (
-          <ParticipantPreRound
-            room={room}
-            round={currentRound(room)}
-            player={player}
-          />
-        );
-      } else if (round.status === 'PLAY') {
-        return (
-          <ParticipantPlayRound
-            round={round}
-            player={player}
-            onRoundOver={this.onRoundOver}
-            onCanvasChange={this.onCanvasChange}
-          />
-        );
-      } else if (round.status === 'RESULTS') {
-        if (isWaiting) {
+      switch (round.status) {
+        case 'CREATED':
+        case 'PRE':
           return (
-            <ParticipantJoiningBetweenRounds
+            <ParticipantPreRound
               room={room}
               round={currentRound(room)}
               player={player}
             />
           );
-        } else {
-          const sketch = _.find(sketches, s => _.contains(round.sketches, s._id));
+        case 'PLAY':
           return (
-            <ParticipantRoundResults
-              round={currentRound(room)}
+            <ParticipantPlayRound
+              round={round}
               player={player}
-              sketch={sketch}
-              getSketchScore={getSketchScore}
+              onRoundOver={this.onRoundOver}
+              onCanvasChange={this.onCanvasChange}
             />
           );
-        }
-      } else {
-        // TODO bugfix: this case hits very briefly at the end of each round.
-        console.error(`[Room ${room._id}]: Current round in illegal state ${round.status}`);
-        return <ErrorMessage />;
+        case 'RESULTS':
+          if (isWaiting) {
+            return (
+              <ParticipantJoiningBetweenRounds
+                room={room}
+                round={currentRound(room)}
+                player={player}
+              />
+            );
+          } else {
+            const sketch = _.find(sketches, s => _.contains(round.sketches, s._id));
+            return (
+              <ParticipantRoundResults
+                round={currentRound(room)}
+                player={player}
+                sketch={sketch}
+                getSketchScore={getSketchScore}
+              />
+            );
+          }
+        default:
+          return <ErrorMessage code={errorCodes.participant.illegalRoundState} />;
       }
     } else {
-      console.error('[Room ' + room._id + ']: in illegal state');
-      return <ErrorMessage />;
+      return <ErrorMessage code={errorCodes.participant.illegalRoomState} />;
     }
   }
 }

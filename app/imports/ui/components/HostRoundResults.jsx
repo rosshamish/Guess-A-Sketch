@@ -1,10 +1,9 @@
 import React from 'react';
 import { _ } from 'underscore';
 
+import ErrorMessage, { errorCodes } from './ErrorMessage.jsx';
 import BaseComponent from './BaseComponent.jsx';
-import ErrorMessage from './ErrorMessage.jsx';
 import SketchImage from './SketchImage.jsx';
-import Timer from './Timer.jsx';
 import StackGrid from "react-stack-grid";
 import { easings } from "react-stack-grid";
 import {
@@ -31,8 +30,7 @@ export default class HostRoundResults extends BaseComponent {
     } = this.props;
 
     if (!round) {
-      console.error('Round is undefined, cannot render.');
-      return <ErrorMessage />;
+      return <ErrorMessage code={errorCodes.host.noRound} />;
     }
 
     const SketchComponents = _.map(sketches, (sketch) => {
