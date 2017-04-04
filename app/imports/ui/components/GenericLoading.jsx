@@ -8,7 +8,7 @@ import {
 export default class GenericLoading extends BaseComponent {
   render() {
     return (
-      <Segment loading>
+      <Segment loading style={{height: '100vh'}}>
         <Header as="h1">Loading...</Header>
       </Segment>
     );
