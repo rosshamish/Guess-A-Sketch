@@ -72,7 +72,7 @@ class Experiment(object):
         with tf.Session(config=config) as sess:
             self._restore(sess,
                 chkpt_directory=os.path.join(__file__),
-                meta_file='{}.meta'.format(self.save_path(timestamp)))
+                meta_file='{}.meta'.format(self._save_path(timestamp)))
             self._test(sess)
 
     def _restore(self, sess, chkpt_directory, meta_file):
@@ -82,11 +82,11 @@ class Experiment(object):
         self.label = tf.get_collection('inputs')[1]
         self.keep_prob = tf.get_collection('inputs')[2]
 
-    def save_path(self, timestamp=None):
+    def _save_path(self, timestamp=None):
         if not timestamp:
             timestamp = self._timestamp()
         this_dir = os.path.dirname(os.path.realpath(__file__))
-        this_save_prefix = '{}-trained-{}'.format(__file__.split('.')[0], self._timestamp())
+        this_save_prefix = '{}-trained-{}'.format(__file__.split('.')[-2], self._timestamp())
         return os.path.join(this_dir, this_save_prefix)
 
     def _train(self, sess, save=True):
@@ -136,8 +136,8 @@ class Experiment(object):
         tf.add_to_collection('inputs', self.keep_prob)
         tf.add_to_collection('output', self.model.prediction)
         saver = tf.train.Saver()
-        save_path = saver.save(sess, self.save_path())
-        print("Model saved to {}".format(save_path))
+        path = saver.save(sess, self._save_path())
+        print("Model saved to {}".format(path))
 
 class EasySketchCNN(Model):
     """ Trying to get good results on an easy dataset.
