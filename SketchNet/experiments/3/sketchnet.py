@@ -17,11 +17,6 @@ max_pool = tf.nn.max_pool
 relu = tf.nn.relu
 slim = tf.contrib.slim
 
-def main():
-    experiment = Experiment()
-    experiment.train()
-    experiment.test()
-
 class Experiment(object):
     __NUM_LABELS = 250
     __SKETCH_WIDTH = 225
@@ -173,9 +168,14 @@ class EasySketchCNN(Model):
 
     @define_scope
     def accuracy(self):
-        correct_confidence = tf.equal(self.prediction, tf.cast(tf.argmax(self.label, 1), tf.float32))
-        return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))
+        correct_confidence = tf.equal(self.prediction, self.label)
+        return tf.reduce_mean(correct_confidence)
 
+
+def main():
+    experiment = Experiment()
+    experiment.train()
+    experiment.test()
 
 if __name__ == '__main__':
     main()
