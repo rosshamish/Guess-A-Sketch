@@ -114,6 +114,17 @@ class Experiment(object):
                 })
                 # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
+                test_batch = get_batch_by_label(
+                    batch_size=self.__BATCH_SIZE,
+                    dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
+                    num_labels=self.__NUM_LABELS,
+                    from_set=self.test_set)
+                during_training_test_accuracy = sess.run(self.model.accuracy, {
+                    self.image: test_batch[0],
+                    self.label: test_batch[1],
+                    self.keep_prob: 1.0
+                })
+                print("step %d, training accuracy %g" % (i, during_training_test_accuracy))
         if save:
             self._save(sess)
 
