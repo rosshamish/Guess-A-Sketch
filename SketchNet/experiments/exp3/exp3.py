@@ -67,6 +67,7 @@ class Experiment3(object):
             self._test(sess)
 
     def retest(self, timestamp):
+        """ Untested. Might work """
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
@@ -215,7 +216,7 @@ class EasySketchCNN(Model):
 
 def main():
     experiment3 = Experiment3()
-    experiment3.run()
+    experiment3.run(iterations=1500) # 1500 => 30 mins
 
 if __name__ == '__main__':
     main()
