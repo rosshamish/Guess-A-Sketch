@@ -72,9 +72,7 @@ class Experiment(object):
         with tf.Session(config=config) as sess:
             self._restore(sess,
                 chkpt_directory=os.path.join(__file__),
-                meta_file=os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)),
-                    '{}.meta'.format(self.save_path(timestamp))))
+                meta_file='{}.meta'.format(self.save_path(timestamp)))
             self._test(sess)
 
     def _restore(self, sess, chkpt_directory, meta_file):
@@ -87,7 +85,9 @@ class Experiment(object):
     def save_path(self, timestamp=None):
         if not timestamp:
             timestamp = self._timestamp()
-        return '{}-trained-{}'.format(__file__.split('.')[0], self._timestamp())
+        this_dir = os.path.dirname(os.path.realpath(__file__))
+        this_save_prefix = '{}-trained-{}'.format(__file__.split('.')[0], self._timestamp())
+        return os.path.join(this_dir, this_save_prefix)
 
     def _train(self, sess, save=True):
         ITERATIONS = int(15e3)
