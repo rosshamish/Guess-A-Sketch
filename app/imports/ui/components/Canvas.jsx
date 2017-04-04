@@ -25,7 +25,11 @@ class CanvasImpl extends BaseComponent {
     this.initCanvas = this.initCanvas.bind(this);
 
     // Prop methods
-    this.onChange = this.props.onChange.bind(this);
+    if (this.props.onChange) {
+      this.onChange = this.props.onChange.bind(this);
+    } else {
+      this.onChange = () => {};
+    }
   }
 
   componentDidMount() {
@@ -41,9 +45,7 @@ class CanvasImpl extends BaseComponent {
       that.setState({
         pathStack: that.state.pathStack.concat([event.path]),
       });
-      if (onChange) {
-        onChange(canvas, event);
-      }
+      this.onChange(canvas, event);
     });
   }
 
@@ -64,6 +66,8 @@ class CanvasImpl extends BaseComponent {
       container.style['flex-direction'] = 'column';
       container.style['flex-grow'] = 1;
     }
+
+    return this.canvas;
   }
 
   componentWillUnmount() {

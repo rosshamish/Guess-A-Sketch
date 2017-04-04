@@ -20,10 +20,6 @@ export default createContainer(() => {
   if (!room) {
     isWaiting = true;
     room = Rooms.findOne({ joiningPlayers: { $elemMatch: { name } } });
-    if (!room) {
-      // TODO handle this error case better. Offer to redirect.
-      throw new Error('Cannot play, player is not in any room');
-    }
   }
 
   return {
