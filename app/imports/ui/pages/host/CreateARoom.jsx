@@ -22,8 +22,8 @@ export default class CreateARoom extends BaseComponent {
       room_name: roomName,
       round_count: parseInt(roundCount, 10),
       round_time: parseInt(roundTime, 10),
-      // TODO control gametype with UI
-      gametypeName: 'standard',
+      // TODO add UI for this (e.g. a dropdown)
+      prompts: 'standard',
     }, (error, roomID) => {
       if (error) {
         switch (error.error) {
