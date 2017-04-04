@@ -17,7 +17,7 @@ max_pool = tf.nn.max_pool
 relu = tf.nn.relu
 slim = tf.contrib.slim
 
-class Experiment(object):
+class Experiment3(object):
     __NUM_LABELS = 250
     __SKETCH_WIDTH = 225
     __SKETCH_HEIGHT = 225
@@ -33,9 +33,9 @@ class Experiment(object):
 
         # TensorFlow placeholders (memory allocations)
         self.image = tf.placeholder(tf.float32,
-            [None, Experiment.__SKETCH_WIDTH, Experiment.__SKETCH_HEIGHT])
+            [None, Experiment3.__SKETCH_WIDTH, Experiment3.__SKETCH_HEIGHT])
         self.label = tf.placeholder(tf.float32,
-            [None, Experiment.__NUM_LABELS])
+            [None, Experiment3.__NUM_LABELS])
         self.keep_prob = tf.placeholder(tf.float32)
 
         self.model = EasySketchCNN(
@@ -59,11 +59,11 @@ class Experiment(object):
     def _timestamp(self):
         return time.strftime("%Y%m%d-%H%M%S")
 
-    def run(self, save=True):
+    def run(self, iterations=15000, save=True):
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
-            self._train(sess, save=save)
+            self._train(sess, iterations=iterations, save=save)
             self._test(sess)
 
     def retest(self, timestamp):
@@ -71,11 +71,11 @@ class Experiment(object):
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
             self._restore(sess,
-                chkpt_directory=os.path.join(__file__),
-                meta_file='{}.meta'.format(self._save_path(timestamp)))
+                meta_file='{}.meta'.format(self._save_path(timestamp)),
+                chkpt_directory=os.path.join(__file__))
             self._test(sess)
 
-    def _restore(self, sess, chkpt_directory, meta_file):
+    def _restore(self, sess, meta_file, chkpt_directory):
         saver = tf.train.import_meta_graph(meta_file)
         saver.restore(sess, tf.train.latest_checkpoint(chkpt_directory))
         self.image = tf.get_collection('inputs')[0]
@@ -85,16 +85,17 @@ class Experiment(object):
     def _save_path(self, timestamp=None):
         if not timestamp:
             timestamp = self._timestamp()
-        this_dir = os.path.dirname(os.path.realpath(__file__))
-        this_save_prefix = '{}-trained-{}'.format(__file__.split('.')[-2], self._timestamp())
+        this_path = os.path.realpath(__file__)
+        this_dir = os.path.dirname(this_path)
+        _, tail = os.path.split(this_dir)
+        this_save_prefix = '{}-trained-{}'.format(tail, self._timestamp())
         return os.path.join(this_dir, this_save_prefix)
 
-    def _train(self, sess, save=True):
-        ITERATIONS = int(15e3)
+    def _train(self, sess, iterations, save=True):
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        for i in tqdm(range(ITERATIONS)):
+        for i in tqdm(range(int(iterations))):
             training_batch = get_batch_by_label(
                 batch_size=self.__BATCH_SIZE,
                 dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
@@ -114,6 +115,17 @@ class Experiment(object):
                 })
                 # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
+                test_batch = get_batch_by_label(
+                    batch_size=self.__BATCH_SIZE,
+                    dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
+                    num_labels=self.__NUM_LABELS,
+                    from_set=self.test_set)
+                during_training_test_accuracy = sess.run(self.model.accuracy, {
+                    self.image: test_batch[0],
+                    self.label: test_batch[1],
+                    self.keep_prob: 1.0
+                })
+                print("step %d, test accuracy %g" % (i, during_training_test_accuracy))
         if save:
             self._save(sess)
 
@@ -140,10 +152,30 @@ class Experiment(object):
         print("Model saved to {}".format(path))
 
 class EasySketchCNN(Model):
-    """ Trying to get good results on an easy dataset.
+    """ 
+    Trying to get good results on an easy dataset.
+    - TODO filter incoming labels to the easy subset
     """
     labels = []
     EXPERIMENT_ID = 3;
+
+    @define_scope
+    def prediction(self):
+        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1])
+        flat_conv_pools = self.conv_pools(x_image)
+        y = self.fc_dropout(flat_conv_pools)
+        return y
+
+    @define_scope
+    def train(self):
+        # tf.summary.scalar('cross_entropy', cross_entropy)
+        return tf.train.AdamOptimizer(1e-4).minimize(self.loss())
+
+    def loss(self):
+        measure = tf.nn.softmax_cross_entropy_with_logits(
+            labels=self.label,
+            logits=self.prediction)
+        return tf.reduce_mean(measure)
 
     def conv_pools(self, input_tensor):
         filter_1 = 64
@@ -176,32 +208,14 @@ class EasySketchCNN(Model):
         return slim.fully_connected(h_fc2_drop, self.num_labels)
 
     @define_scope
-    def prediction(self):
-        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1])
-        flat_conv_pools = self.conv_pools(x_image)
-        y = self.fc_dropout(flat_conv_pools)
-        return y
-
-    @define_scope
-    def train(self):
-        # tf.summary.scalar('cross_entropy', cross_entropy)
-        return tf.train.AdamOptimizer(1e-4).minimize(self.loss())
-
-    def loss(self):
-        measure = tf.nn.softmax_cross_entropy_with_logits(
-            labels=self.label,
-            logits=self.prediction)
-        return tf.reduce_mean(measure)
-
-    @define_scope
     def accuracy(self):
         correct_confidence = tf.equal(self.prediction, self.label)
         return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))
 
 
 def main():
-    experiment = Experiment()
-    experiment.run()
+    experiment3 = Experiment3()
+    experiment3.run()
 
 if __name__ == '__main__':
     main()
