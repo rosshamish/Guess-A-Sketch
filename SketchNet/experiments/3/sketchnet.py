@@ -49,7 +49,6 @@ class Experiment(object):
         self.train_set, self.test_set = reload_K_splits(
             self.__INPUT_DIR,
             split_within_labels=True)
-        print(self.train_set[:3])
 
         # Initialize the FileWriter
         # tf.summary.scalar('accuracy', model.accuracy)
@@ -60,11 +59,35 @@ class Experiment(object):
     def _timestamp(self):
         return time.strftime("%Y%m%d-%H%M%S")
 
-    def train(self, save=True):
+    def run(self, save=True):
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
             self._train(sess, save=save)
+            self._test(sess)
+
+    def retest(self, timestamp):
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        with tf.Session(config=config) as sess:
+            self._restore(sess,
+                chkpt_directory=os.path.join(__file__),
+                meta_file=os.path.join(
+                    os.path.dirname(os.path.realpath(__file__)),
+                    '{}.meta'.format(self.save_path(timestamp))))
+            self._test(sess)
+
+    def _restore(self, sess, chkpt_directory, meta_file):
+        saver = tf.train.import_meta_graph(meta_file)
+        saver.restore(sess, tf.train.latest_checkpoint(chkpt_directory))
+        self.image = tf.get_collection('inputs')[0]
+        self.label = tf.get_collection('inputs')[1]
+        self.keep_prob = tf.get_collection('inputs')[2]
+
+    def save_path(self, timestamp=None):
+        if not timestamp:
+            timestamp = self._timestamp()
+        return '{}-trained-{}'.format(__file__.split('.')[0], self._timestamp())
 
     def _train(self, sess, save=True):
         ITERATIONS = int(15e3)
@@ -92,25 +115,29 @@ class Experiment(object):
                 # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
         if save:
-            tf.add_to_collection('inputs', self.image)
-            tf.add_to_collection('inputs', self.keep_prob)
-            tf.add_to_collection('output', self.model.prediction)
-            saver = tf.train.Saver()
-            save_path = saver.save(sess, '{}-trained-{}'.format(__file__.split('.')[0], self._timestamp()))
-            print("Model saved to {}".format(save_path))
+            self._save(sess)
 
-    def test(self):
+    def _test(self, sess):
         test_batch = get_batch_by_label(
             batch_size=self.__BATCH_SIZE,
             dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
             num_labels=self.__NUM_LABELS,
             from_set=self.test_set)
         accuracy = sess.run(self.model.accuracy, {
-            image: test_batch[0],
-            label: test_batch[1],
-            keep_prob: 1.0
+            self.image: test_batch[0],
+            self.label: test_batch[1],
+            self.keep_prob: 1.0
         })
         print("test accuracy %g" % accuracy)
+
+    def _save(self, sess):
+        tf.add_to_collection('inputs', self.image)
+        tf.add_to_collection('inputs', self.label)
+        tf.add_to_collection('inputs', self.keep_prob)
+        tf.add_to_collection('output', self.model.prediction)
+        saver = tf.train.Saver()
+        save_path = saver.save(sess, self.save_path())
+        print("Model saved to {}".format(save_path))
 
 class EasySketchCNN(Model):
     """ Trying to get good results on an easy dataset.
@@ -174,8 +201,7 @@ class EasySketchCNN(Model):
 
 def main():
     experiment = Experiment()
-    experiment.train()
-    experiment.test()
+    experiment.run()
 
 if __name__ == '__main__':
     main()
