@@ -168,7 +168,7 @@ class EasySketchCNN(Model):
 
     @define_scope
     def accuracy(self):
-        correct_confidence = tf.equal(self.prediction, self.label)
+        correct_confidence = tf.equal(tf.argmax(self.prediction, 1), tf.argmax(self.label, 1))
         return tf.reduce_mean(correct_confidence)
 
 
