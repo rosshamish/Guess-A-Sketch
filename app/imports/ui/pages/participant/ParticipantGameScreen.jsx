@@ -10,6 +10,7 @@ import { getSketchScore, getRoundScore, getGameScore } from '/imports/scoring';
 import trimCanvasToSketch from '/imports/trim-canvas';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
+import GenericLoading from '../../components/GenericLoading.jsx';
 import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
 import ParticipantPreRound from '../../components/ParticipantPreRound.jsx';
 import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
@@ -90,12 +91,9 @@ export default class ParticipantGameScreen extends BaseComponent {
 
     // ---
     // Loading and error handling
-    // TODO make these pages pretty.
     // ---
     if (loading) {
-      return (
-        <p>Loading...</p>
-      );
+      return <GenericLoading />;
     }
     if (!room) {
       return <ErrorMessage code={errorCodes.participant.noRoom} />;

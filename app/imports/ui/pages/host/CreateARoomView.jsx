@@ -1,9 +1,9 @@
 import React from 'react';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
+import GenericLoading from '../../components/GenericLoading.jsx';
 import {
   Form,
-  Container,
   Button,
   Header,
   Segment,
@@ -47,9 +47,7 @@ export default class CreateARoom extends BaseComponent {
     } = this.props;
 
     if (loading) {
-      return (
-        <p>Loading...</p>
-      )
+      return <GenericLoading />;
     }
 
     // TODO check browser compat
