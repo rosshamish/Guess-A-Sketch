@@ -2,7 +2,7 @@ import abc
 from abc import abstractmethod
 
 
-class Model(object):
+class Experiment(object):
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, image, width, height, num_labels, label, keep_prob):
@@ -28,5 +28,3 @@ class Model(object):
     @abstractmethod
     def accuracy(self):
         pass
-
-    
