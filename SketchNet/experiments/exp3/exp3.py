@@ -59,11 +59,11 @@ class Experiment3(object):
     def _timestamp(self):
         return time.strftime("%Y%m%d-%H%M%S")
 
-    def run(self, save=True):
+    def run(self, iterations=15000, save=True):
         config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
-            self._train(sess, save=save)
+            self._train(sess, iterations=iterations, save=save)
             self._test(sess)
 
     def retest(self, timestamp):
@@ -85,16 +85,17 @@ class Experiment3(object):
     def _save_path(self, timestamp=None):
         if not timestamp:
             timestamp = self._timestamp()
-        this_dir = os.path.dirname(os.path.realpath(__file__))
-        this_save_prefix = '{}-trained-{}'.format(__file__.split('.')[-2], self._timestamp())
+        this_path = os.path.realpath(__file__)
+        this_dir = os.path.dirname(this_path)
+        _, tail = os.path.split(this_dir)
+        this_save_prefix = '{}-trained-{}'.format(tail, self._timestamp())
         return os.path.join(this_dir, this_save_prefix)
 
-    def _train(self, sess, save=True):
-        ITERATIONS = int(15e3)
+    def _train(self, sess, iterations, save=True):
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        for i in tqdm(range(ITERATIONS)):
+        for i in tqdm(range(int(iterations))):
             training_batch = get_batch_by_label(
                 batch_size=self.__BATCH_SIZE,
                 dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
@@ -124,7 +125,7 @@ class Experiment3(object):
                     self.label: test_batch[1],
                     self.keep_prob: 1.0
                 })
-                print("step %d, training accuracy %g" % (i, during_training_test_accuracy))
+                print("step %d, test accuracy %g" % (i, during_training_test_accuracy))
         if save:
             self._save(sess)
 
@@ -158,6 +159,24 @@ class EasySketchCNN(Model):
     labels = []
     EXPERIMENT_ID = 3;
 
+    @define_scope
+    def prediction(self):
+        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1])
+        flat_conv_pools = self.conv_pools(x_image)
+        y = self.fc_dropout(flat_conv_pools)
+        return y
+
+    @define_scope
+    def train(self):
+        # tf.summary.scalar('cross_entropy', cross_entropy)
+        return tf.train.AdamOptimizer(1e-4).minimize(self.loss())
+
+    def loss(self):
+        measure = tf.nn.softmax_cross_entropy_with_logits(
+            labels=self.label,
+            logits=self.prediction)
+        return tf.reduce_mean(measure)
+
     def conv_pools(self, input_tensor):
         filter_1 = 64
         filter_2 = 128
@@ -187,24 +206,6 @@ class EasySketchCNN(Model):
         h_fc2 = slim.fully_connected(h_fc1_drop, filter_fc)
         h_fc2_drop = tf.nn.dropout(h_fc2, self.keep_prob)
         return slim.fully_connected(h_fc2_drop, self.num_labels)
-
-    @define_scope
-    def prediction(self):
-        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1])
-        flat_conv_pools = self.conv_pools(x_image)
-        y = self.fc_dropout(flat_conv_pools)
-        return y
-
-    @define_scope
-    def train(self):
-        # tf.summary.scalar('cross_entropy', cross_entropy)
-        return tf.train.AdamOptimizer(1e-4).minimize(self.loss())
-
-    def loss(self):
-        measure = tf.nn.softmax_cross_entropy_with_logits(
-            labels=self.label,
-            logits=self.prediction)
-        return tf.reduce_mean(measure)
 
     @define_scope
     def accuracy(self):

@@ -13,6 +13,8 @@ class Model(object):
         self.height = height
         self.num_labels = num_labels
 
+        # Magic statements.
+        # Initializes the methods somehow.
         self.prediction
         self.train
         self.accuracy

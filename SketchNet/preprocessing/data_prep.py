@@ -93,7 +93,7 @@ def getExampleByLabel(args):
 
 #TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('/Users/anjueappen/png')
 
-TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
+#TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
 def getExample(args):
     dims, train = args
     try:
