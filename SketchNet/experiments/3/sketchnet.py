@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.tf_graph_scope import define_scope
-from preprocessing.data_prep import get_batch
+from preprocessing.data_prep import get_batch, get_batch_by_label, reload_K_splits
 from utils.base_model import Model
 
 conv2d = tf.nn.conv2d
@@ -34,7 +34,6 @@ class Experiment(object):
         model: a utils.Model to train and test
         log_dir: an os.path for logs, optional
         """
-        self.model = model
         self.log_dir = log_dir or os.path.join('tmp', 'tensorflow')
 
         # TensorFlow placeholders (memory allocations)
@@ -45,16 +44,17 @@ class Experiment(object):
         self.keep_prob = tf.placeholder(tf.float32)
 
         self.model = EasySketchCNN(
-            self.image,
-            self.__SKETCH_WIDTH,
-            self.__SKETCH_HEIGHT,
-            self.__NUM_LABELS,
-            self.label,
-            KEEP_PROB)
+            image=self.image,
+            width=self.__SKETCH_WIDTH,
+            height=self.__SKETCH_HEIGHT,
+            num_labels=self.__NUM_LABELS,
+            label=self.label,
+            keep_prob=0.5)
 
         self.train_set, self.test_set = reload_K_splits(
             self.__INPUT_DIR,
             split_within_labels=True)
+        print(self.train_set[:3])
 
         # Initialize the FileWriter
         # tf.summary.scalar('accuracy', model.accuracy)
@@ -62,7 +62,6 @@ class Experiment(object):
         summary_dir = os.path.join(self.log_dir, self._timestamp())
         self.writer = tf.summary.FileWriter(summary_dir, graph=tf.get_default_graph())
 
-    @staticmethod
     def _timestamp(self):
         return time.strftime("%Y%m%d-%H%M%S")
 
@@ -73,28 +72,27 @@ class Experiment(object):
             self._train(sess, save=save)
 
     def _train(self, sess, save=True):
-        ITERATIONS = 15e3
-        KEEP_PROB = 0.5
+        ITERATIONS = int(15e3)
         init = tf.global_variables_initializer()
         sess.run(init)
 
         for i in tqdm(range(ITERATIONS)):
             training_batch = get_batch_by_label(
-                batch_size=batch_size,
-                dims=(width, height),
+                batch_size=self.__BATCH_SIZE,
+                dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
                 num_labels=self.__NUM_LABELS,
                 from_set=self.train_set)
             sess.run(self.model.train, {
-                image: training_batch[0],
-                label: training_batch[1],
-                keep_prob: KEEP_PROB
+                self.image: training_batch[0],
+                self.label: training_batch[1],
+                self.keep_prob: self.model.keep_prob,
             })
             if i % 100 == 0:
                 # summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
                 train_accuracy = sess.run(self.model.accuracy, {
-                    image: training_batch[0],
-                    label: training_batch[1],
-                    keep_prob: 1.0
+                    self.image: training_batch[0],
+                    self.label: training_batch[1],
+                    self.keep_prob: 1.0
                 })
                 # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
@@ -108,8 +106,8 @@ class Experiment(object):
 
     def test(self):
         test_batch = get_batch_by_label(
-            batch_size=batch_size,
-            dims=(width, height),
+            batch_size=self.__BATCH_SIZE,
+            dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
             num_labels=self.__NUM_LABELS,
             from_set=self.test_set)
         accuracy = sess.run(self.model.accuracy, {
@@ -175,7 +173,7 @@ class EasySketchCNN(Model):
 
     @define_scope
     def accuracy(self):
-        correct_confidence = tf.equal(self.prediction, tf.argmax(self.label, 1))
+        correct_confidence = tf.equal(self.prediction, tf.cast(tf.argmax(self.label, 1), tf.float32))
         return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))
 
 

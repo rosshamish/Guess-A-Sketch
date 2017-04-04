@@ -34,20 +34,26 @@ def reload_K_splits(dir, split_within_labels=False):
         when False,
             either all cats are training, or all cats are test. A label is in one or the other.
     """
+    KF = KFold(n_splits=10, shuffle=True)
+    train_set, test_set = [], []
     if split_within_labels:
         filenames_by_label = preprocess(dir, by_label=split_within_labels)
         assert len(filenames_by_label) == 250
-        assert len(filenames_by_label[0]) == 2
-        train_set, test_set = [], []
-        for label_i, filenames in enumerate(filenames_by_label):
-            training_filenames, test_filenames = KF.split(filenames).next()
-            train_set += [(f, label_i) for f in training_filenames]
-            test_set += [(f, label_i) for f in test_filenames]
+        assert len(filenames_by_label[0])
+        assert len(filenames_by_label[0][0]) == 2
+        for in_one_label in filenames_by_label:
+            train_idx, test_idx = KF.split(in_one_label).next()
+            train_set.extend(in_one_label[x] for x in train_idx)
+            test_set.extend(in_one_label[x] for x in test_idx)
         return train_set, test_set
     else:
-        imgs = preprocess(dir)
-        train_idx, test_idx = KF.split(imgs).next()
-        return [all_imgs[x] for x in train_idx], [all_imgs[x] for x in test_idx]
+        all_imgs = preprocess(dir)
+        train_idx, test_idx = KF.split(all_imgs).next()
+        train_set = [all_imgs[x] for x in train_idx]
+        test_set = [all_imgs[x] for x in test_idx]
+    assert len(train_set), len(test_set)
+    assert len(train_set[0]) == 2, len(test_set[0]) == 2
+    return train_set, test_set
 
 def preprocess(directory, by_label=False):
     """
@@ -56,24 +62,28 @@ def preprocess(directory, by_label=False):
     classes = get_classes(directory)
     num_classes = len(classes)
 
-    filenames = []
+    filenames_and_label_nums = []
     for i in range(num_classes):
-        class_filenames = read_and_flatten(os.path.join(directory, classes[i], i))
+        class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, classes[i]), i)
         if by_label:
-            filenames.append(class_filenames)
+            filenames_and_label_nums.append(class_filenames_and_label_nums)
         else:
-            filenames.extend(class_filenames)
+            filenames_and_label_nums.extend(class_filenames_and_label_nums)
     if by_label:
-        return filenames
+        assert len(filenames_and_label_nums)
+        assert len(filenames_and_label_nums[0])
+        assert len(filenames_and_label_nums[0][0]) == 2
     else:
-        return zip(filenames, ground_truths)
+        assert len(filenames_and_label_nums)
+        assert len(filenames_and_label_nums[0]) == 2
+    return filenames_and_label_nums
 
 def getExampleByLabel(args):
     dims, num_labels, from_set = args
     try:
-        imgPath, label_num = random.choice(from_set)
+        imgPath, index = random.choice(from_set)
         truth = np.zeros(num_labels)
-        truth[label_num] = 1
+        truth[index] = 1
         return scipy.misc.imresize(np.array(Image.open(imgPath)), dims), truth
     except Exception as e:
         log.error(e)
@@ -85,15 +95,15 @@ def getExampleByLabel(args):
 
 TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
 def getExample(args):
-    dims, train, labels = args
+    dims, train = args
     try:
         imgPath, index = random.choice(TRAIN_FILENAMES if train else TEST_FILENAMES)
         truth = np.zeros(250)
         truth[index] = 1
-        return 
+        return scipy.misc.imresize(np.array(Image.open(imgPath)), dims), truth
     except Exception as e:
-        print e
-        return getExample()
+        log.error(e)
+        raise
 
 def get_batch_by_label(batch_size, dims, num_labels, from_set):
     """
@@ -102,17 +112,19 @@ def get_batch_by_label(batch_size, dims, num_labels, from_set):
     """
     from multiprocessing.dummy import Pool as ThreadPool
     pool = ThreadPool()
-    results = pool.map(getExampleByLabel, [(dims, num_labels, from_set)] * batch_size)
+    args = [(dims, num_labels, from_set)] * batch_size
+    assert len(args) == batch_size
+    results = pool.map(getExampleByLabel, args)
     pool.close()
     pool.join()
     pool.terminate()
     imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
 
-def get_batch(batch_size, dims, train=True, by_label=False, num_labels, labels=None):
+def get_batch(batch_size, dims, train=True):
     from multiprocessing.dummy import Pool as ThreadPool
     pool = ThreadPool()
-    results = pool.map(getExample, [(dims, train, labels)] * batch_size)
+    results = pool.map(getExample, [(dims, train)] * batch_size)
     pool.close()
     pool.join()
     pool.terminate()
