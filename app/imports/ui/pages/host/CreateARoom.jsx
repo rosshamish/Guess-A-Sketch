@@ -49,7 +49,7 @@ export default class CreateARoom extends BaseComponent {
             alert(`Unknown createRoom error: ${error.error}`);
         }
       } else {
-        Session.set(HOST_ROOM, roomName);
+        Session.setPersistent(HOST_ROOM, roomName);
         browserHistory.push('/host/play');
       }
     });
