@@ -17,7 +17,7 @@ max_pool = tf.nn.max_pool
 relu = tf.nn.relu
 slim = tf.contrib.slim
 
-class Experiment(object):
+class Experiment3(object):
     __NUM_LABELS = 250
     __SKETCH_WIDTH = 225
     __SKETCH_HEIGHT = 225
@@ -33,9 +33,9 @@ class Experiment(object):
 
         # TensorFlow placeholders (memory allocations)
         self.image = tf.placeholder(tf.float32,
-            [None, Experiment.__SKETCH_WIDTH, Experiment.__SKETCH_HEIGHT])
+            [None, Experiment3.__SKETCH_WIDTH, Experiment3.__SKETCH_HEIGHT])
         self.label = tf.placeholder(tf.float32,
-            [None, Experiment.__NUM_LABELS])
+            [None, Experiment3.__NUM_LABELS])
         self.keep_prob = tf.placeholder(tf.float32)
 
         self.model = EasySketchCNN(
@@ -71,11 +71,11 @@ class Experiment(object):
         config.gpu_options.allow_growth = True
         with tf.Session(config=config) as sess:
             self._restore(sess,
-                chkpt_directory=os.path.join(__file__),
-                meta_file='{}.meta'.format(self._save_path(timestamp)))
+                meta_file='{}.meta'.format(self._save_path(timestamp)),
+                chkpt_directory=os.path.join(__file__))
             self._test(sess)
 
-    def _restore(self, sess, chkpt_directory, meta_file):
+    def _restore(self, sess, meta_file, chkpt_directory):
         saver = tf.train.import_meta_graph(meta_file)
         saver.restore(sess, tf.train.latest_checkpoint(chkpt_directory))
         self.image = tf.get_collection('inputs')[0]
@@ -151,7 +151,9 @@ class Experiment(object):
         print("Model saved to {}".format(path))
 
 class EasySketchCNN(Model):
-    """ Trying to get good results on an easy dataset.
+    """ 
+    Trying to get good results on an easy dataset.
+    - TODO filter incoming labels to the easy subset
     """
     labels = []
     EXPERIMENT_ID = 3;
@@ -211,8 +213,8 @@ class EasySketchCNN(Model):
 
 
 def main():
-    experiment = Experiment()
-    experiment.run()
+    experiment3 = Experiment3()
+    experiment3.run()
 
 if __name__ == '__main__':
     main()
