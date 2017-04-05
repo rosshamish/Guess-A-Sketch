@@ -19,7 +19,7 @@ export const prompts = {
   animals: [
     'ant', 'butterfly', 'camel', 'crab', 'crocodile', 'cat', 'cow', 'dog', 'dolphin',
     'dragon', 'duck', 'elephant', 'fish', 'flying bird', 'frog', 'giraffe', 'hedgehog',
-    'horse', 'kangaroo', 'lion', 'lobster', 'monkey', 'mosquito', 'mouse (animal)', 
+    'horse', 'kangaroo', 'lion', 'lobster', 'monkey', 'mosquito', 'mouse (animal)',
     'octopus', 'owl', 'panda', 'parrot', 'penguin', 'pig', 'pigeon', 'rabbit', 'rooster',
     'scorpion', 'sea turtle', 'seagull', 'shark', 'sheep', 'snail', 'snake', 'spider',
     'squirrel', 'standing bird', 'tiger', 'zebra'],
@@ -29,9 +29,6 @@ export const prompts = {
   food: [
     'apple', 'banana', 'brea', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
     'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'],
-
-  playtest1: [
-    'cannon', 'cactus', 'rooster', 'bicycle', 'pipe (for smoking)'],
 };
 
 export function getScoresForSketch(sketch, callback) {

@@ -454,12 +454,12 @@ export const createRoom = new ValidatedMethod({
     round_time: {
       type: Number,
     },
-    gametypeName: {
+    prompts: {
       type: String,
-      defaultValue: 'standard',
+      defaultValue: 'easy',
     },
   }).validator(),
-  run({ room_name, round_count, round_time, gametypeName }) {
+  run({ room_name, round_count, round_time, prompts }) {
     if (!room_name || !room_name.length) {
       throw new Meteor.Error(errors.createRoom.noName,
         'Room name must be non-null and non-empty',
@@ -479,8 +479,10 @@ export const createRoom = new ValidatedMethod({
     }
 
     let rounds = [];
+    console.log(round_count);
+    // TO DO: this does not pass the params properly
     try {
-      rounds = gametype(gametypeName, {
+      rounds = gametype(prompts, {
         _numRounds: round_count,
         _roundTime: round_time,
       }).rounds;

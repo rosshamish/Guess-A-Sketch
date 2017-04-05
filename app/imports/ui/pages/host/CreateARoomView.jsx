@@ -2,12 +2,14 @@ import React from 'react';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 import GenericLoading from '../../components/GenericLoading.jsx';
+//import gametype_names from '../../../gametypes';
 import {
   Form,
   Button,
   Header,
   Segment,
   Icon,
+  Dropdown,
 } from 'semantic-ui-react';
 
 import {
@@ -21,11 +23,13 @@ export default class CreateARoom extends BaseComponent {
       roomName: randomMuseumName(),
       roundCount: 5,
       roundTime: 25,
+      promptType: "easy"
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);
     this.onRoundCountChange = this.onRoundCountChange.bind(this);
     this.onRoundTimeChange = this.onRoundTimeChange.bind(this);
+    this.onPromptTypeChange = this.onPromptTypeChange.bind(this);
   }
 
   onRoomNameChange(event) {
@@ -38,6 +42,10 @@ export default class CreateARoom extends BaseComponent {
 
   onRoundTimeChange(event) {
     this.setState({roundTime: event.target.value});
+  }
+
+  onPromptTypeChange(event, obj) {
+    this.setState({promptType: obj.value});
   }
 
   render() {
@@ -56,6 +64,20 @@ export default class CreateARoom extends BaseComponent {
       justifyContent: 'center',
     };
 
+    // TO DO : import this from gametypes.js
+    const gametype_names = ["standard", "animals", "easy", "food"];
+
+    var promptTypeOptions = [];
+    for (var i = 0; i < gametype_names.length; i++) { 
+      promptTypeOptions.push(
+        { 
+          key: i,
+          text: gametype_names[i], 
+          value: gametype_names[i]
+        }
+      );
+    }
+
     return (
       <Segment.Group style={style}>
         <Segment>
@@ -72,7 +94,8 @@ export default class CreateARoom extends BaseComponent {
               event.preventDefault();
               onCreateRoom(this.state.roomName,
                            this.state.roundCount,
-                           this.state.roundTime);
+                           this.state.roundTime,
+                           this.state.promptType);
             }}
           >
           <div id='roomName' style={{display: 'inline-block', width: '98%'}}>
@@ -112,6 +135,16 @@ export default class CreateARoom extends BaseComponent {
             value={this.state.roundTime}
             placeholder="Time"
             onChange={this.onRoundTimeChange} />
+          <Form.Dropdown 
+            placeholder='Select A Game Type' 
+            inline
+            label='Game Type'
+            name="gameType"
+            fluid 
+            selection 
+            value={this.state.promptType}
+            options={promptTypeOptions}
+            onChange={this.onPromptTypeChange} />
           <center>
             <Button
               primary
