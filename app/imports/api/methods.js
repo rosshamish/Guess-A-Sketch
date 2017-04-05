@@ -456,7 +456,7 @@ export const createRoom = new ValidatedMethod({
     },
     prompts: {
       type: String,
-      defaultValue: 'standard',
+      defaultValue: 'easy',
     },
   }).validator(),
   run({ room_name, round_count, round_time, prompts }) {

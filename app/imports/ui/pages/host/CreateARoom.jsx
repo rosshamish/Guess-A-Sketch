@@ -23,7 +23,7 @@ export default class CreateARoom extends BaseComponent {
       round_count: parseInt(roundCount, 10),
       round_time: parseInt(roundTime, 10),
       // TODO add UI for this (e.g. a dropdown)
-      prompts: 'standard',
+      prompts: 'easy',
     }, (error, roomID) => {
       if (error) {
         switch (error.error) {
