@@ -23,7 +23,7 @@ export default class CreateARoom extends BaseComponent {
       roomName: randomMuseumName(),
       roundCount: 5,
       roundTime: 25,
-      promptType: "standard"
+      promptType: "easy"
     };
 
     this.onRoomNameChange = this.onRoomNameChange.bind(this);
@@ -44,8 +44,8 @@ export default class CreateARoom extends BaseComponent {
     this.setState({roundTime: event.target.value});
   }
 
-  onPromptTypeChange(event) {
-    this.setState({promptType: event.target.value});
+  onPromptTypeChange(event, obj) {
+    this.setState({promptType: obj.value});
   }
 
   render() {
@@ -139,6 +139,7 @@ export default class CreateARoom extends BaseComponent {
             placeholder='Select A Game Type' 
             inline
             label='Game Type'
+            name="gameType"
             fluid 
             selection 
             value={this.state.promptType}
