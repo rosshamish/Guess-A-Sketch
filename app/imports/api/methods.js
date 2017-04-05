@@ -479,6 +479,8 @@ export const createRoom = new ValidatedMethod({
     }
 
     let rounds = [];
+    console.log(round_count);
+    // TO DO: this does not pass the params properly
     try {
       rounds = gametype(prompts, {
         _numRounds: round_count,

@@ -60,6 +60,8 @@ export const gametypes = {
 
 export const gametype_names = ["standard", "animals", "easy", "food"];
 
+// TO DO: Refactor to use chosen numRounds / roundTime
+// Problem: params are undefined
 export default function gametype(name, params) {
   const gt = gametypes[name];
   if (!gt) {
@@ -68,6 +70,8 @@ export default function gametype(name, params) {
   const numRounds = params.numRounds || gt.defaults.numRounds;
   const roundTime = params.roundTime || gt.defaults.roundTime;
   const prompts = params.prompts || gt.defaults.prompts;
+  console.log(numRounds);
+  console.log(params.numRounds);
   const rounds = makeRounds(numRounds, roundTime, prompts);
   return { name, rounds };
 }
