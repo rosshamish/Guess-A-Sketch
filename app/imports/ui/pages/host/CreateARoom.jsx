@@ -17,13 +17,12 @@ export default class CreateARoom extends BaseComponent {
     this.onCreateRoom = this.onCreateRoom.bind(this);
   }
 
-  onCreateRoom(roomName, roundCount, roundTime) {
+  onCreateRoom(roomName, roundCount, roundTime, prompts) {
     createRoom.call({
       room_name: roomName,
       round_count: parseInt(roundCount, 10),
       round_time: parseInt(roundTime, 10),
-      // TODO add UI for this (e.g. a dropdown)
-      prompts: 'easy',
+      prompts: prompts,
     }, (error, roomID) => {
       if (error) {
         switch (error.error) {
