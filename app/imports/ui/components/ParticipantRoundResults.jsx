@@ -102,7 +102,7 @@ export default class ParticipantRoundResults extends BaseComponent {
           />
         </Segment>
         <Segment>
-          <Header as='h3'>SketchNet's best guesses</Header>
+          <Header as='h3'>SketchNet's Top {TOP_N} Guesses</Header>
           {topScoreComponents}
           <br />
         </Segment>
