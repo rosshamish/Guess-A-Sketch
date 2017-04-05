@@ -21,7 +21,8 @@ from preprocessing.data_prep import get_classes
 
 IMAGE_DIR = 'png'
 # print(os.path.join(os.path.dirname(__file__)))
-META_FILE = 'SketchNet/experiments/2/mnist_basic.meta'
+CHECKPOINT_DIR = os.path.join('SketchNet', 'experiments', '2')
+META_FILE = os.path.join(CHECKPOINT_DIR, 'mnist_basic.meta')
 
 
 def eval_img(img):
@@ -77,7 +78,7 @@ def decode_base64(data):
 if __name__ == "__main__":
     sess = tf.Session()
     new_saver = tf.train.import_meta_graph(META_FILE)
-    new_saver.restore(sess, tf.train.latest_checkpoint('SketchNet/experiments/2/'))
+    new_saver.restore(sess, tf.train.latest_checkpoint(CHECKPOINT_DIR))
 
     inps = tf.get_collection('inputs')
     image = inps[0]
