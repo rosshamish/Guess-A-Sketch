@@ -57,6 +57,9 @@ export const gametypes = {
   easy,
   food,
 };
+
+export const gametype_names = ["standard", "animals", "easy", "food"];
+
 export default function gametype(name, params) {
   const gt = gametypes[name];
   if (!gt) {
