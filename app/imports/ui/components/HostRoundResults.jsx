@@ -74,6 +74,7 @@ export default class HostRoundResults extends BaseComponent {
 HostRoundResults.propTypes = {
   room: React.PropTypes.object,
   round: React.PropTypes.object,
+  sketches: React.PropTypes.array,
   isLastRound: React.PropTypes.func,
   onNextRound: React.PropTypes.func,
 };
