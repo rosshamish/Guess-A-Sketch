@@ -36,7 +36,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
           <Table.Cell>{index+1}</Table.Cell>
           <Table.Cell>
             <SketchRating
-              rating={getRoundScore(Sketches, round, player)}
+              rating={getRoundScore(round, player)}
             />
           </Table.Cell>
         </Table.Row>
@@ -46,7 +46,7 @@ export default class ParticipantEndGameScreen extends BaseComponent {
     renderScores.push(
       <Table.Row key={room.rounds.length}>
         <Table.Cell>Total</Table.Cell>
-        <Table.Cell>{getGameScore(Sketches, room, player)}</Table.Cell>
+        <Table.Cell>{getGameScore(room, player)}</Table.Cell>
       </Table.Row>,
     );
 
