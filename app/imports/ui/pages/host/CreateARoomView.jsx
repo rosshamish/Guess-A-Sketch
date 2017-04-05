@@ -2,7 +2,7 @@ import React from 'react';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
 import GenericLoading from '../../components/GenericLoading.jsx';
-//import gametype_names from '../../../gametypes';
+import { gametypeNames } from '../../../gametypes';
 import {
   Form,
   Button,
@@ -64,17 +64,14 @@ export default class CreateARoom extends BaseComponent {
       justifyContent: 'center',
     };
 
-    // TO DO : import this from gametypes.js
-    const gametype_names = ["standard", "animals", "easy", "food"];
-
     var promptTypeOptions = [];
-    for (var i = 0; i < gametype_names.length; i++) { 
+    for (var i = 0; i < gametypeNames.length; i++) { 
       promptTypeOptions.push(
         { 
           key: i,
-          text: gametype_names[i], 
-          value: gametype_names[i]
-        }
+          text: gametypeNames[i], 
+          value: gametypeNames[i],
+        },
       );
     }
 

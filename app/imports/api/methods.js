@@ -479,12 +479,10 @@ export const createRoom = new ValidatedMethod({
     }
 
     let rounds = [];
-    console.log(round_count);
-    // TO DO: this does not pass the params properly
     try {
       rounds = gametype(prompts, {
-        _numRounds: round_count,
-        _roundTime: round_time,
+        numRounds: round_count,
+        roundTime: round_time,
       }).rounds;
     } catch (error) {
       throw new Meteor.Error(errors.createRoom.gametype,
