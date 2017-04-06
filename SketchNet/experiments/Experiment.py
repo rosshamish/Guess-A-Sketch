@@ -18,13 +18,13 @@ slim = tf.contrib.slim
 
 class Experiment(object):
     """ Do not create one of these directly. Subclass instead. """
-    __EXPERIMENT_ID = None
+    _EXPERIMENT_ID = None
 
-    __SKETCH_WIDTH = 225
-    __SKETCH_HEIGHT = 225
-    __BATCH_SIZE = 135
-    __INPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'png')
-    __MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'models')
+    _SKETCH_WIDTH = 225
+    _SKETCH_HEIGHT = 225
+    _BATCH_SIZE = 135
+    _INPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'png')
+    _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'trained_models')
 
     def __init__(self, log_dir=None):
         """
@@ -58,9 +58,9 @@ class Experiment(object):
         self.writer = tf.summary.FileWriter(summary_dir, graph=tf.get_default_graph())
 
     def id(self):
-        if not self.__EXPERIMENT_ID:
+        if not self._EXPERIMENT_ID:
             raise NotImplementedError('Subclass must declare an experiment id')
-        return self.__EXPERIMENT_ID
+        return self._EXPERIMENT_ID
 
     def _timestamp(self):
         return time.strftime("%Y%m%d-%H%M%S")
@@ -94,29 +94,29 @@ class Experiment(object):
     def _save_path(self, timestamp=None):
         if not timestamp:
             timestamp = self._timestamp()
-        trained_model_name = 'exp{}-trained-{}'.format(self.id(), timestamp)
-        return os.path.join(self.__MODEL_OUTPUT_DIR, trained_model_name)
+        trained_model_name = 'exp{}-trained-{}-{}'.format(self.id(), self.model._NAME, timestamp)
+        return os.path.join(self._MODEL_OUTPUT_DIR, trained_model_name)
 
     def _training_batch(self, batch_size=None):
         if not batch_size:
-            batch_size = self.__BATCH_SIZE
+            batch_size = self._BATCH_SIZE
         if not self.train_set:
             raise NotImplementedError('Subclass must populate test_set')
         training_batch = get_batch_by_label(
-            batch_size=self.__BATCH_SIZE,
-            dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
+            batch_size=self._BATCH_SIZE,
+            dims=(self._SKETCH_WIDTH, self._SKETCH_HEIGHT),
             num_labels=self.__NUM_LABELS,
             from_set=self.train_set)
         return training_batch
 
     def _test_batch(self, batch_size=None):
         if not batch_size:
-            batch_size = self.__BATCH_SIZE
+            batch_size = self._BATCH_SIZE
         if not self.test_set:
             raise NotImplementedError('Subclass must populate test_set')
         test_batch = get_batch_by_label(
-            batch_size=self.__BATCH_SIZE,
-            dims=(self.__SKETCH_WIDTH, self.__SKETCH_HEIGHT),
+            batch_size=self._BATCH_SIZE,
+            dims=(self._SKETCH_WIDTH, self._SKETCH_HEIGHT),
             num_labels=self.__NUM_LABELS,
             from_set=self.test_set)
         return test_batch
