@@ -14,6 +14,8 @@ import { Router, Route, browserHistory } from 'react-router';
 
 import WelcomePage from '../../ui/pages/WelcomePage.jsx';
 
+import SketchnetTuning from '../../ui/components/SketchnetTuning';
+
 import RoomListContainer from '../../ui/containers/RoomListContainer.jsx';
 import LoginPageContainer from '../../ui/containers/LoginPageContainer.jsx';
 import ParticipantGameScreenContainer from '../../ui/containers/ParticipantGameScreenContainer.jsx';
@@ -28,6 +30,8 @@ export const renderRoutes = () => (
   <Router history={browserHistory}>
 
     <Route path="/" component={WelcomePage} />
+
+    <Route path="doodle" component={SketchnetTuning} />
 
     <Route path="login" component={LoginPageContainer} />
     <Route path="join" component={RoomListContainer} />
