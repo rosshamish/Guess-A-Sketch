@@ -16,7 +16,7 @@ from preprocessing.data_prep import reload_K_splits
 class Experiment4(Experiment):
     """
     Variables changed:
-    - TODO Train on a particular subset of labels, passed as a constructor parameter. The idea
+    - Train on a particular subset of labels, passed as a constructor parameter. The idea
       is to learn a specific category, e.g. animals, food, vehicles, ...
     - TODO Measure accuracy using a variant of the UI star-rating function, which is a log-softened
       function of two parameters:
@@ -99,8 +99,10 @@ def main():
         'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
         'fork', 'key', 'spider'
     ]
-    experiment = Experiment4(labels=food, name='food')
-    experiment.run(iterations=1500, save=True) # 1500 => 30 mins
+    experiment = Experiment4(labels=easy, name='easy')
+    # 1500 => 30 mins, 15000 => 5 hours
+    few, lots = 1500, 15000
+    experiment.run(iterations=lots, save=True)
 
 if __name__ == '__main__':
     main()
