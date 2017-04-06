@@ -21,7 +21,7 @@ def read_and_flatten(class_dir, ground_truth):
     return fnames
 
 
-def reload_K_splits(dir, split_within_labels=False):
+def reload_K_splits(dir, split_within_labels=False, labels=None):
     """ 
     Return two lists: a training set, and a test set.
 
@@ -37,8 +37,8 @@ def reload_K_splits(dir, split_within_labels=False):
     KF = KFold(n_splits=10, shuffle=True)
     train_set, test_set = [], []
     if split_within_labels:
-        filenames_by_label = preprocess(dir, by_label=split_within_labels)
-        assert len(filenames_by_label) == 250
+        filenames_by_label = preprocess(dir, by_label=split_within_labels, labels=labels)
+        assert len(filenames_by_label) == len(labels)
         assert len(filenames_by_label[0])
         assert len(filenames_by_label[0][0]) == 2
         for in_one_label in filenames_by_label:
@@ -55,15 +55,18 @@ def reload_K_splits(dir, split_within_labels=False):
     assert len(train_set[0]) == 2, len(test_set[0]) == 2
     return train_set, test_set
 
-def preprocess(directory, by_label=False):
+def preprocess(directory, by_label=False, labels=None):
     """
     Returns: list of tuples: (filename, ground truth)
     """
-    classes = get_classes(directory)
-    num_classes = len(classes)
+    if labels is not None and not by_label:
+        raise ValueError('You cant do that')
 
+    class_names = get_classes(directory)
     filenames_and_label_nums = []
-    for i in range(num_classes):
+    for i, class_name in enumerate(class_names):
+        if labels is not None and class_name not in labels:
+            continue
         class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, classes[i]), i)
         if by_label:
             filenames_and_label_nums.append(class_filenames_and_label_nums)
