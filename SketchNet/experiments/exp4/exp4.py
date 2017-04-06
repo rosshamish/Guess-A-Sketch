@@ -1,8 +1,5 @@
 import sys, os
-import time
 import tensorflow as tf
-from tqdm import tqdm
-import numpy as np
 import logging
 log = logging.getLogger(__name__)
 
@@ -10,7 +7,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from experiments.experiment import Experiment
 from models.SketchCNN import SketchCNN # TODO use StarCNN
-from utils.tf_graph_scope import define_scope
 from preprocessing.data_prep import reload_K_splits
 
 class Experiment4(Experiment):

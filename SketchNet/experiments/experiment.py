@@ -2,7 +2,6 @@ import sys, os
 import time
 import tensorflow as tf
 from tqdm import tqdm
-import numpy as np
 import logging
 log = logging.getLogger(__name__)
 
