@@ -4,6 +4,7 @@ import { _ } from 'underscore';
 import ErrorMessage, { errorCodes } from './ErrorMessage.jsx';
 import BaseComponent from './BaseComponent.jsx';
 import SketchImage from './SketchImage.jsx';
+import SketchRating from './SketchRating.jsx';
 import StackGrid from "react-stack-grid";
 import { easings } from "react-stack-grid";
 import {
@@ -27,6 +28,7 @@ export default class HostRoundResults extends BaseComponent {
       sketches,
       isLastRound,
       onNextRound,
+      getSketchScore,
     } = this.props;
 
     if (!round) {
@@ -34,7 +36,9 @@ export default class HostRoundResults extends BaseComponent {
     }
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      return <SketchImage key={sketch._id} sketch={sketch} useFrame={false} />;
+      return <div key={sketch._id}>
+        <SketchImage sketch={sketch} useFrame={false} />
+        <SketchRating rating={getSketchScore(sketch)}/></div>;
     });
 
     // TODO check browser compat
@@ -77,4 +81,5 @@ HostRoundResults.propTypes = {
   sketches: React.PropTypes.array,
   isLastRound: React.PropTypes.func,
   onNextRound: React.PropTypes.func,
+  getSketchScore: React.PropTypes.func,
 };
