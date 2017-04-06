@@ -58,9 +58,14 @@ class Experiment(object):
         self.writer = tf.summary.FileWriter(summary_dir, graph=tf.get_default_graph())
 
     def id(self):
+        """ An integer is best. Or a string. Will be included in the saved model's filename """
         if not self._EXPERIMENT_ID:
             raise NotImplementedError('Subclass must declare an experiment id')
         return self._EXPERIMENT_ID
+
+    def extra_info(self):
+        """ Subclasses can implement. Will be included in the saved model's filename """
+        return ''
 
     def _timestamp(self):
         return time.strftime("%Y%m%d-%H%M%S")
@@ -71,7 +76,7 @@ class Experiment(object):
         with tf.Session(config=config) as sess:
             self._train(sess, iterations=iterations)
             accuracy = self._test(sess)
-            self._save(sess, accuracy=accuracy)
+            self._save(sess, accuracy=accuracy, iterations=iterations)
 
     def retest(self, timestamp):
         """ Untested. Might work """
@@ -91,10 +96,13 @@ class Experiment(object):
         self.label = tf.get_collection('inputs')[1]
         self.keep_prob = tf.get_collection('inputs')[2]
 
-    def _save_path(self, timestamp=None):
+    def _save_path(self, timestamp=None, iterations=None):
         if not timestamp:
             timestamp = self._timestamp()
-        trained_model_name = 'exp{}-trained-{}-{}'.format(self.id(), self.model._NAME, timestamp)
+        if not iterations:
+            iterations = 0
+        experiment_part = 'exp{}{}'.format(self.id(), self.extra_info())
+        trained_model_name = '{}_{}_{}-trained-{}'.format(timestamp, experiment_part, self.model._NAME, iterations)
         return os.path.join(self._MODEL_OUTPUT_DIR, trained_model_name)
 
     def _training_batch(self, batch_size=None):
@@ -159,15 +167,15 @@ class Experiment(object):
         log.info("test accuracy %g" % accuracy)
         return accuracy
 
-    def _save(self, sess, accuracy='?'):
+    def _save(self, sess, accuracy='?', iterations=None):
         tf.add_to_collection('inputs', self.image)
         tf.add_to_collection('inputs', self.label)
         tf.add_to_collection('inputs', self.keep_prob)
         tf.add_to_collection('output', self.model.prediction)
         saver = tf.train.Saver()
         t = self._timestamp()
-        p = self._save_path(timestamp=t)
+        p = self._save_path(timestamp=t, iterations=iterations)
         os.makedirs(os.path.dirname(p))
         path = saver.save(sess, p)
-        log.info("Experiment {} @ {}: Accuracy {}. Trained model saved to {}".format(
-            self.id(), t, accuracy, path))
+        log.info("Experiment [{}/{}] on {} iterations: Accuracy {}. Trained model saved to {}".format(
+            self.id(), self.extra_info(), iterations, accuracy, path))
