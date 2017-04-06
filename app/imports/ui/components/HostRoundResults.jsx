@@ -12,6 +12,7 @@ import {
   Header,
   Segment,
   Form,
+  Container,
 } from 'semantic-ui-react';
 
 
@@ -36,10 +37,22 @@ export default class HostRoundResults extends BaseComponent {
     }
 
     const SketchComponents = _.map(sketches, (sketch) => {
-      return <div key={sketch._id}>
+      return (
+        <Container
+          key={sketch._id}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
         <SketchImage sketch={sketch} useFrame={false} />
-        <SketchRating rating={getSketchScore(sketch)}/></div>;
+        <SketchRating rating={getSketchScore(sketch)}/>
+        </Container>
+      );
     });
+
+    console.log(SketchComponents);
 
     // TODO check browser compat
     const style = {
