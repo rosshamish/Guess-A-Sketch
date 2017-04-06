@@ -18,6 +18,13 @@ relu = tf.nn.relu
 slim = tf.contrib.slim
 
 class Experiment3(object):
+    """ 
+    Variables changed:
+    - Split train/test within labels, instead of globally. The idea is to learn to recognize
+      *each label*, not sketches in general.
+    - Measure accuracy by the [0..1] confidence of the correct label, instead of {0,1} for argmax
+      aka top guess.
+    """
     __NUM_LABELS = 250
     __SKETCH_WIDTH = 225
     __SKETCH_HEIGHT = 225

@@ -12,6 +12,7 @@ import {
 import { 
   getRoundScore,
   getGameScore,
+  getSketchScore,
 } from '/imports/scoring';
 import {
   isPreGame,
@@ -228,6 +229,7 @@ export default class HostGameScreen extends BaseComponent {
               sketches={sketches}
               isLastRound={isLastRound}
               onNextRound={this.onNextRound}
+              getSketchScore={getSketchScore}
             />
           );
         default :

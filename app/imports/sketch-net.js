@@ -27,7 +27,7 @@ export const prompts = {
     'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
     'fork', 'key', 'spider'],
   food: [
-    'apple', 'banana', 'brea', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
+    'apple', 'banana', 'bread', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
     'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'],
 };
 

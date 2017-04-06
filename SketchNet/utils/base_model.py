@@ -5,6 +5,9 @@ from abc import abstractmethod
 class Model(object):
     __metaclass__ = abc.ABCMeta
 
+    # Subclasses should use this.
+    _NAME = 'Model'
+
     def __init__(self, image, width, height, num_labels, label, keep_prob):
         self.image = image
         self.label = label
