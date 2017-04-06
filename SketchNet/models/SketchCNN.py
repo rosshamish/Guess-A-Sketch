@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.base_model import Model
+from utils.tf_graph_scope import define_scope
 import tensorflow as tf
 
 conv2d = tf.nn.conv2d
@@ -10,7 +11,7 @@ relu = tf.nn.relu
 slim = tf.contrib.slim
 
 class SketchCNN(Model):
-    _NAME = 'StarCNN'
+    _NAME = 'SketchCNN'
 
     """ 
     Three convolutional max pooling layers, then two fully-connected dropout layers.
@@ -32,7 +33,7 @@ class SketchCNN(Model):
         return tf.train.AdamOptimizer(1e-4).minimize(self.loss())
 
     def loss(self):
-        measure = tf.nn.sparse_softmax_cross_entropy_with_logits(
+        measure = tf.nn.softmax_cross_entropy_with_logits(
             labels=self.label,
             logits=self.prediction)
         return tf.reduce_mean(measure)

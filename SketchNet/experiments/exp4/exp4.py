@@ -8,12 +8,12 @@ log = logging.getLogger(__name__)
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
-import experiments
-import models
+from experiments.experiment import Experiment
+from models.SketchCNN import SketchCNN # TODO use StarCNN
 from utils.tf_graph_scope import define_scope
 from preprocessing.data_prep import reload_K_splits
 
-class Experiment4(experiments.Experiment):
+class Experiment4(Experiment):
     """
     Variables changed:
     - TODO Train on a particular subset of labels, passed as a constructor parameter. The idea
@@ -34,20 +34,21 @@ class Experiment4(experiments.Experiment):
         if not name:
             raise ValueError('You should give the experiment a name. If in doubt, use the name of the labels.')
 
-        super(experiments.Experiment, self).__init__(log_dir=log_dir)
+        super(Experiment4, self).__init__(log_dir=log_dir)
+        self.name = name
 
         # TensorFlow placeholders (memory allocations)
         self.image = tf.placeholder(tf.float32,
             [None, self._SKETCH_WIDTH, self._SKETCH_HEIGHT])
         self.label = tf.placeholder(tf.float32,
-            [None, self.__NUM_LABELS])
+            [None, self._NUM_LABELS])
         self.keep_prob = tf.placeholder(tf.float32)
 
-        self.model = models.SketchCNN(
+        self.model = SketchCNN(
             image=self.image,
             width=self._SKETCH_WIDTH,
             height=self._SKETCH_HEIGHT,
-            num_labels=self.__NUM_LABELS,
+            num_labels=self._NUM_LABELS,
             label=self.label,
             keep_prob=0.5)
 
@@ -57,7 +58,7 @@ class Experiment4(experiments.Experiment):
             labels=labels)
 
     def extra_info(self):
-        return 
+        return self.name
 
 def main():
     standard = [

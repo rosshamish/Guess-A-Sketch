@@ -67,7 +67,7 @@ def preprocess(directory, by_label=False, labels=None):
     for i, class_name in enumerate(class_names):
         if labels is not None and class_name not in labels:
             continue
-        class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, classes[i]), i)
+        class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, class_name), i)
         if by_label:
             filenames_and_label_nums.append(class_filenames_and_label_nums)
         else:

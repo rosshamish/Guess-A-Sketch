@@ -8,13 +8,7 @@ log = logging.getLogger(__name__)
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from utils.tf_graph_scope import define_scope
 from preprocessing.data_prep import get_batch_by_label, reload_K_splits
-
-conv2d = tf.nn.conv2d
-max_pool = tf.nn.max_pool
-relu = tf.nn.relu
-slim = tf.contrib.slim
 
 class Experiment(object):
     """ Do not create one of these directly. Subclass instead. """
@@ -23,6 +17,7 @@ class Experiment(object):
     _SKETCH_WIDTH = 225
     _SKETCH_HEIGHT = 225
     _BATCH_SIZE = 135
+    _NUM_LABELS = 250
     _INPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'png')
     _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'trained_models')
 
@@ -76,7 +71,8 @@ class Experiment(object):
         with tf.Session(config=config) as sess:
             self._train(sess, iterations=iterations)
             accuracy = self._test(sess)
-            self._save(sess, accuracy=accuracy, iterations=iterations)
+            if save:
+                self._save(sess, accuracy=accuracy, iterations=iterations)
 
     def retest(self, timestamp):
         """ Untested. Might work """
@@ -113,7 +109,7 @@ class Experiment(object):
         training_batch = get_batch_by_label(
             batch_size=self._BATCH_SIZE,
             dims=(self._SKETCH_WIDTH, self._SKETCH_HEIGHT),
-            num_labels=self.__NUM_LABELS,
+            num_labels=self._NUM_LABELS,
             from_set=self.train_set)
         return training_batch
 
@@ -125,7 +121,7 @@ class Experiment(object):
         test_batch = get_batch_by_label(
             batch_size=self._BATCH_SIZE,
             dims=(self._SKETCH_WIDTH, self._SKETCH_HEIGHT),
-            num_labels=self.__NUM_LABELS,
+            num_labels=self._NUM_LABELS,
             from_set=self.test_set)
         return test_batch
 
@@ -148,14 +144,14 @@ class Experiment(object):
                     self.keep_prob: 1.0
                 })
                 # writer.add_summary(summary, i)
-                log.debug("step %d, training accuracy %g" % (i, train_accuracy))
+                print("step %d, training accuracy %g" % (i, train_accuracy))
                 test_batch = self._test_batch()
                 during_training_test_accuracy = sess.run(self.model.accuracy, {
                     self.image: test_batch[0],
                     self.label: test_batch[1],
                     self.keep_prob: 1.0
                 })
-                log.debug("step %d, test accuracy %g" % (i, during_training_test_accuracy))
+                print("step %d, test accuracy %g" % (i, during_training_test_accuracy))
 
     def _test(self, sess):
         test_batch = self._test_batch()
@@ -164,7 +160,7 @@ class Experiment(object):
             self.label: test_batch[1],
             self.keep_prob: 1.0
         })
-        log.info("test accuracy %g" % accuracy)
+        print("test accuracy %g" % accuracy)
         return accuracy
 
     def _save(self, sess, accuracy='?', iterations=None):
@@ -174,8 +170,22 @@ class Experiment(object):
         tf.add_to_collection('output', self.model.prediction)
         saver = tf.train.Saver()
         t = self._timestamp()
-        p = self._save_path(timestamp=t, iterations=iterations)
-        os.makedirs(os.path.dirname(p))
-        path = saver.save(sess, p)
-        log.info("Experiment [{}/{}] on {} iterations: Accuracy {}. Trained model saved to {}".format(
-            self.id(), self.extra_info(), iterations, accuracy, path))
+        save_path = self._save_path(timestamp=t, iterations=iterations)
+        self._mkdir_p(save_path)
+        save_path = saver.save(sess, save_path)
+        print("Saving experiment {}{} with accuracy {:.3f} after {} iterations. Trained model saved to {}".format(
+            self.id(), self.extra_info(), accuracy, iterations, save_path))
+
+    def _mkdir_p(self, filepath):
+        """ Makes all directories that filepath will be in, like mkdir -p
+        Attribution: Krumelur
+        Source: StackOverflow
+        URL: http://stackoverflow.com/a/12517490
+        Accessed: April 6, 2017
+        """
+        if not os.path.exists(os.path.dirname(filepath)):
+            try:
+                os.makedirs(os.path.dirname(filepath))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
