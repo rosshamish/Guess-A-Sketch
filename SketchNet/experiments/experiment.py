@@ -19,7 +19,8 @@ class Experiment(object):
     _BATCH_SIZE = 135
     _NUM_LABELS = 250
     _INPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'png')
-    _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'trained_models')
+    # Keep in sync with SketchNet/api/api.py, TODO refactor
+    _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'trained_models')
 
     def __init__(self, log_dir=None):
         """
@@ -97,9 +98,11 @@ class Experiment(object):
             timestamp = self._timestamp()
         if not iterations:
             iterations = 0
-        experiment_part = 'exp{}{}'.format(self.id(), self.extra_info())
         trained_model_name = '{}_{}_{}-trained-{}'.format(timestamp, experiment_part, self.model._NAME, iterations)
-        return os.path.join(self._MODEL_OUTPUT_DIR, trained_model_name)
+        return os.path.join(self._save_dir(), trained_model_name)
+
+    def _save_dir(self):
+        return os.path.join(self._MODEL_OUTPUT_DIR, 'exp{}{}'.format(self.id(), self.extra_info()))
 
     def _training_batch(self, batch_size=None):
         if not batch_size:
