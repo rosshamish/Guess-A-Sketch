@@ -36,6 +36,14 @@ export default class HostRoundResults extends BaseComponent {
       return <ErrorMessage code={errorCodes.host.noRound} />;
     }
 
+    sketches.sort(
+      function (a, b) {
+        if (getSketchScore(a) < getSketchScore(b)) return 1;
+        if (getSketchScore(b) < getSketchScore(a)) return -1;
+        return 0;
+      }
+    );
+
     const SketchComponents = _.map(sketches, (sketch) => {
       return (
         <Container
@@ -51,8 +59,6 @@ export default class HostRoundResults extends BaseComponent {
         </Container>
       );
     });
-
-    console.log(SketchComponents);
 
     // TODO check browser compat
     const style = {
