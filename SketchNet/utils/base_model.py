@@ -40,9 +40,9 @@ class Model(object):
     def accuracy(self):
         pass
 
-    # @abstractmethod
-    # def loss(self):
-    #     pass
+    @abstractmethod
+    def loss(self):
+        pass
 
     @abstractmethod
     def define_summary_scalars(self):
