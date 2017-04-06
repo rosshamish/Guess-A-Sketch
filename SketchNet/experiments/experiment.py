@@ -21,10 +21,13 @@ class Experiment(object):
     _INPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'png')
     _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'trained_models')
 
-    def __init__(self, log_dir=None):
+    def __init__(self, log_dir=None, summary_setup=None):
         """
         log_dir: an os.path for logs, optional
         """
+        # if summary_setup is None or not callable(summary_setup):
+        #     raise NotImplementedError('Subclass must implement a summary setup method')
+
         self.log_dir = log_dir or os.path.join('tmp', 'tensorflow')
 
         # Subclasses must provide these, both lists should look like:
@@ -47,8 +50,6 @@ class Experiment(object):
         self.model = None
 
         # Initialize the FileWriter
-        # tf.summary.scalar('accuracy', model.accuracy)
-        self.summary = tf.summary.merge_all()
         summary_dir = os.path.join(self.log_dir, self._timestamp())
         self.writer = tf.summary.FileWriter(summary_dir, graph=tf.get_default_graph())
 
@@ -136,14 +137,19 @@ class Experiment(object):
                 self.label: training_batch[1],
                 self.keep_prob: self.model.keep_prob,
             })
-            if i % 100 == 0:
-                # summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
-                train_accuracy = sess.run(self.model.accuracy, {
+            if i % 10 == 0:
+                train_accuracy,  summ = sess.run([self.model.accuracy, self.model.summary], {
                     self.image: training_batch[0],
                     self.label: training_batch[1],
                     self.keep_prob: 1.0
                 })
-                # writer.add_summary(summary, i)
+                #  train_accuracy = sess.run(self.model.accuracy, {
+                #     self.image: training_batch[0],
+                #     self.label: training_batch[1],
+                #     self.keep_prob: 1.0
+                # })
+                self.writer.add_summary(summ, i)
+
                 print("step %d, training accuracy %g" % (i, train_accuracy))
                 test_batch = self._test_batch()
                 during_training_test_accuracy = sess.run(self.model.accuracy, {

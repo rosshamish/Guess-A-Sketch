@@ -42,5 +42,3 @@ def define_scope(function, scope=None, *args, **kwargs):
         return getattr(self, attribute)
 
     return decorator
-
-    # Helper Functions
