@@ -94,16 +94,15 @@ def main():
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        for i in tqdm(range(1000)):
+        for i in tqdm(range(10)):
             # print(i)
             batch = get_batch(batch_size, (height, width))
             sess.run(model.train, {image: batch[0], label: batch[1], keep_prob: 0.5})
 
             if i % 100 == 0:
-                # summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
-                train_accuracy = sess.run(model.accuracy,
-                                                   {image: batch[0], label: batch[1], keep_prob: 1.0})
-                # writer.add_summary(summary, i)
+                summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
+                # train_accuracy = sess.run(model.accuracy, {image: batch[0], label: batch[1], keep_prob: 1.0})
+                writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
 
         batch = get_batch(batch_size, (height, width), train=False)
