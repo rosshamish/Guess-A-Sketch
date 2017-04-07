@@ -41,15 +41,15 @@ class Experiment4(Experiment):
         self.image = tf.placeholder(tf.float32,
             [None, self._SKETCH_WIDTH, self._SKETCH_HEIGHT])
         self.label = tf.placeholder(tf.float32,
-            [None, self._NUM_LABELS])
+            [None, len(labels)])
         self.keep_prob = tf.placeholder(tf.float32)
 
         self.model = SketchCNN(
             image=self.image,
             width=self._SKETCH_WIDTH,
             height=self._SKETCH_HEIGHT,
-            num_labels=self._NUM_LABELS,
             label=self.label,
+            num_labels=len(labels),
             keep_prob=0.5)
 
         self.train_set, self.test_set = reload_K_splits(

@@ -11,9 +11,9 @@ relu = tf.nn.relu
 slim = tf.contrib.slim
 
 class SketchCNN(Model):
-    """ 
+    """
     Three convolutional max pooling layers, then two fully-connected dropout layers.
-    Confidences are finalized with a fully-connected layer with NUM_LABELS outputs.
+    Confidences are finalized with a fully-connected layer with self.num_labels outputs.
     """
     _NAME = 'SketchCNN'
 
@@ -67,5 +67,5 @@ class SketchCNN(Model):
 
     @define_scope
     def accuracy(self):
-        correct_confidence = tf.equal(self.prediction, self.label)
+        correct_confidence = tf.multiply(self.prediction, self.label)
         return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))

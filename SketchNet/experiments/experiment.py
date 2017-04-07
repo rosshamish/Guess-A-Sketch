@@ -17,7 +17,6 @@ class Experiment(object):
     _SKETCH_WIDTH = 225
     _SKETCH_HEIGHT = 225
     _BATCH_SIZE = 135
-    _NUM_LABELS = 250
     _INPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'png')
     # Keep in sync with SketchNet/api/api.py, TODO refactor
     _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'trained_models')
@@ -116,7 +115,7 @@ class Experiment(object):
         training_batch = get_batch_by_label(
             batch_size=self._BATCH_SIZE,
             dims=(self._SKETCH_WIDTH, self._SKETCH_HEIGHT),
-            num_labels=self._NUM_LABELS,
+            num_labels=self.model.num_labels,
             from_set=self.train_set)
         return training_batch
 
@@ -128,7 +127,7 @@ class Experiment(object):
         test_batch = get_batch_by_label(
             batch_size=self._BATCH_SIZE,
             dims=(self._SKETCH_WIDTH, self._SKETCH_HEIGHT),
-            num_labels=self._NUM_LABELS,
+            num_labels=self.model.num_labels,
             from_set=self.test_set)
         return test_batch
 

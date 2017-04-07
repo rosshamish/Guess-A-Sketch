@@ -52,6 +52,8 @@ def reload_K_splits(dir, split_within_labels=False, labels=None):
         test_set = [all_imgs[x] for x in test_idx]
     assert len(train_set), len(test_set)
     assert len(train_set[0]) == 2, len(test_set[0]) == 2
+    print('train set', train_set)
+    print('test set', test_set)
     return train_set, test_set
 
 def preprocess(directory, by_label=False, labels=None):
@@ -63,10 +65,10 @@ def preprocess(directory, by_label=False, labels=None):
 
     class_names = get_classes(directory)
     filenames_and_label_nums = []
-    for i, class_name in enumerate(class_names):
+    for class_name in class_names:
         if labels is not None and class_name not in labels:
             continue
-        class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, class_name), i)
+        class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, class_name), labels.index(class_name))
         if by_label:
             filenames_and_label_nums.append(class_filenames_and_label_nums)
         else:
@@ -121,6 +123,7 @@ def get_batch_by_label(batch_size, dims, num_labels, from_set):
     pool.join()
     pool.terminate()
     imgs, truths = zip(*results)
+    print('Batch:', imgs, truths)
     return np.array(imgs), np.array(truths)
 
 def get_batch(batch_size, dims, train=True):
