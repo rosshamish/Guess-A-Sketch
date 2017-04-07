@@ -30,8 +30,8 @@ __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models'
 # - META is which meta file to use.
 # - We will use the latest available model in the MODEL folder, specified by the checkpoint file.
 # ###
-MODEL = 'exp4easy'
-META = '20170406-141709_exp4easy_SketchCNN-trained-15000.meta'
+MODEL = 'exp3'
+META = 'exp3-trained-20170405-002502.meta'
 # Use the input, build full paths.
 __CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, MODEL)
 __META_FILE = os.path.join(__CHECKPOINT_DIR, META)
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         # the keep_prob Tensor with shape None, because Ross is a donut.
         # This is a cheesy fix which makes the API work even with trained models from that dark era.
         # The end.
-        if keep_prob.shape is not None:
+        if keep_prob.shape is not None and len(inps) > 2:
             keep_prob = inps[2]
 
         output = tf.get_collection('output')[0]
