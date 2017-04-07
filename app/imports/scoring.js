@@ -10,7 +10,7 @@ export function getSketchRank(sketch) {
   const byConfidence = _.sortBy(sketch.scores, s => -1 * s.confidence);
   const labels = _.pluck(byConfidence, 'label');
   const rank = _.indexOf(labels, sketch.prompt);
-  if (!rank || rank === -1) {
+  if (rank === -1) {
     return sketch.scores.length;
   }
   return rank;
