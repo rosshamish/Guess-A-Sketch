@@ -68,4 +68,6 @@ class SketchCNN(Model):
     @define_scope
     def accuracy(self):
         correct_confidence = tf.multiply(self.prediction, self.label)
-        return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))
+        max_confidence = tf.reduce_max(self.prediction)
+        normalized_correct_confidence = tf.divide(self.prediction, max_confidence)
+        return tf.reduce_mean(tf.cast(normalized_correct_confidence, tf.float32))
