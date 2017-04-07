@@ -27,7 +27,7 @@ __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models'
 # ###
 # Choose which trained model to use.
 # - MODEL is a folder inside trained_models
-# - ARCHITECTURE_META_FILE is which meta file to use.
+# - META is which meta file to use.
 # - We will use the latest available model in the MODEL folder, specified by the checkpoint file.
 # ###
 MODEL = 'exp4easy'

@@ -6,10 +6,12 @@ import Canvas from './Canvas.jsx';
 import {
   Segment,
   Button,
+  Input,
 } from 'semantic-ui-react';
 
 import trimCanvasToSketch from '/imports/trim-canvas';
 import { scoreSketch } from '/imports/api/methods';
+import { getFallbackPrompts } from '/imports/sketch-net';
 import { getSketchScore, getSketchRank, getSketchCorrectLabelConfidence } from '/imports/scoring';
 
 
@@ -21,7 +23,10 @@ export default class SketchnetTuning extends BaseComponent {
       sketch: null,
     };
 
+    this.allPrompts = getFallbackPrompts();
+
     this.onCanvasChange = this.onCanvasChange.bind(this);
+    this.onPromptChange = this.onPromptChange.bind(this);
     this.onScoreSketch = this.onScoreSketch.bind(this);
   }
 
@@ -31,10 +36,12 @@ export default class SketchnetTuning extends BaseComponent {
         height: '70vh',
       }}>
         <Segment>
-          <p>
-            Use this canvas to tune Sketchnet. The prompt is hard-coded in this file. You'll
-            want to change it to what you're trying to draw, so that the star-scoring works properly.
-          </p>
+          Doodling a &nbsp;
+          <Input
+            value={this.state.prompt}
+            error={!_.contains(this.allPrompts, this.state.prompt)}
+            onChange={this.onPromptChange}
+          />
           <Button onClick={this.onScoreSketch}>Score it!</Button>
         </Segment>
         <Canvas onChange={this.onCanvasChange} />
@@ -49,6 +56,10 @@ export default class SketchnetTuning extends BaseComponent {
         sketch: png,
       });
     });
+  }
+
+  onPromptChange(event) {
+    this.setState({ prompt: event.target.value });
   }
 
   onScoreSketch() {

@@ -33,7 +33,7 @@ export default class CreateARoom extends BaseComponent {
   }
 
   onRoomNameChange(event) {
-    this.setState({roomName: event.target.value});
+    this.setState({ roomName: event.target.value });
   }
 
   onRoundCountChange(event) {
