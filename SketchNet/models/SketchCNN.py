@@ -11,14 +11,11 @@ relu = tf.nn.relu
 slim = tf.contrib.slim
 
 class SketchCNN(Model):
-    _NAME = 'SketchCNN'
-
     """ 
     Three convolutional max pooling layers, then two fully-connected dropout layers.
     Confidences are finalized with a fully-connected layer with NUM_LABELS outputs.
     """
-    labels = []
-    EXPERIMENT_ID = 3;
+    _NAME = 'SketchCNN'
 
     @define_scope
     def prediction(self):

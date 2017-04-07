@@ -79,8 +79,7 @@ export default class SketchnetTuning extends BaseComponent {
           prompt: this.state.prompt,
         };
         console.log(`Sketch rating (prompt=${this.state.prompt})`, getSketchScore(sketchObj));
-        console.log('Rank:', getSketchRank(sketchObj));
-        console.log('Confidence:', getSketchCorrectLabelConfidence(sketchObj));
+        console.log('Rank:', getSketchRank(sketchObj), 'Confidence:', getSketchCorrectLabelConfidence(sketchObj));
         scores.sort((a, b) => b.confidence - a.confidence);
         const strScores = _.map(scores, (score) => `${score.label}: ${score.confidence}`);
         console.log('Confidences, sorted:', strScores);

@@ -45,7 +45,6 @@ def reload_K_splits(dir, split_within_labels=False, labels=None):
             train_idx, test_idx = KF.split(in_one_label).next()
             train_set.extend(in_one_label[x] for x in train_idx)
             test_set.extend(in_one_label[x] for x in test_idx)
-        return train_set, test_set
     else:
         all_imgs = preprocess(dir)
         train_idx, test_idx = KF.split(all_imgs).next()
