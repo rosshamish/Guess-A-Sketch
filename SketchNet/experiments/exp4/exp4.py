@@ -8,6 +8,7 @@ log = logging.getLogger(__name__)
 
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
+import labels
 from experiments.experiment import Experiment
 from models.SketchCNN import SketchCNN # TODO use StarCNN
 from utils.tf_graph_scope import define_scope
@@ -61,45 +62,7 @@ class Experiment4(Experiment):
         return self.name
 
 def main():
-    standard = [
-        'airplane', 'alarm clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana', 'barn', 'baseball bat',
-        'basket', 'bathtub', 'bear (animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench', 'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf',
-        'boomerang', 'bottle opener', 'bowl', 'brain', 'bread', 'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake',
-        'calculator', 'camel', 'camera', 'candle', 'cannon', 'canoe', 'car (sedan)', 'carrot', 'castle', 'cat', 'cell phone', 'chair', 'chandelier',
-        'church', 'cigarette', 'cloud', 'comb', 'computer monitor', 'computer-mouse', 'couch', 'cow', 'crab', 'crane (machine)', 'crocodile',
-        'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door', 'door handle', 'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye',
-        'eyeglasses', 'face', 'fan', 'feather', 'fire hydrant', 'fish', 'flashlight', 'floor lamp', 'flower with stem', 'flying bird',
-        'flying saucer', 'foot', 'fork', 'frog', 'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp',
-        'hat', 'head', 'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot air balloon', 'hot-dog', 'hourglass', 'house', 'human-skeleton',
-        'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop', 'leaf', 'lightbulb', 'lighter', 'lion', 'lobster',
-        'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone', 'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse (animal)',
-        'mouth', 'mug', 'mushroom', 'nose', 'octopus', 'owl', 'palm tree', 'panda', 'paper clip', 'parachute', 'parking meter', 'parrot', 'pear', 'pen',
-        'penguin', 'person sitting', 'person walking', 'piano', 'pickup truck', 'pig', 'pigeon', 'pineapple', 'pipe (for smoking)', 'pizza', 'potted plant',
-        'power outlet', 'present', 'pretzel', 'pumpkin', 'purse', 'rabbit', 'race car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster',
-        'sailboat', 'santa claus', 'satellite', 'satellite dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea turtle', 'seagull', 'shark',
-        'sheep', 'ship', 'shoe', 'shovel', 'skateboard', 'skull', 'skyscraper', 'snail', 'snake', 'snowboard', 'snowman', 'socks', 'space shuttle',
-        'speed-boat', 'spider', 'sponge bob', 'spoon', 'squirrel', 'standing bird', 'stapler', 'strawberry', 'streetlight', 'submarine', 'suitcase',
-        'sun', 'suv', 'swan', 'sword', 'syringe', 't-shirt', 'table', 'tablelamp', 'teacup', 'teapot', 'teddy-bear', 'telephone', 'tennis-racket', 'tent',
-        'tiger', 'tire', 'toilet', 'tomato', 'tooth', 'toothbrush', 'tractor', 'traffic light', 'train', 'tree', 'trombone', 'trousers', 'truck', 'trumpet',
-        'tv', 'umbrella', 'van', 'vase', 'violin', 'walkie talkie', 'wheel', 'wheelbarrow', 'windmill', 'wine-bottle', 'wineglass', 'wrist-watch', 'zebra'
-    ]
-    food = [
-        'apple', 'banana', 'bread', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
-        'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'
-    ]
-    animals = [
-        'ant', 'butterfly', 'camel', 'crab', 'crocodile', 'cat', 'cow', 'dog', 'dolphin',
-        'dragon', 'duck', 'elephant', 'fish', 'flying bird', 'frog', 'giraffe', 'hedgehog',
-        'horse', 'kangaroo', 'lion', 'lobster', 'monkey', 'mosquito', 'mouse (animal)',
-        'octopus', 'owl', 'panda', 'parrot', 'penguin', 'pig', 'pigeon', 'rabbit', 'rooster',
-        'scorpion', 'sea turtle', 'seagull', 'shark', 'sheep', 'snail', 'snake', 'spider',
-        'squirrel', 'standing bird', 'tiger', 'zebra'
-    ]
-    easy = [
-        'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
-        'fork', 'key', 'spider'
-    ]
-    experiment = Experiment4(labels=easy, name='easy')
+    experiment = Experiment4(labels=labels.easy, name='easy')
     # 1500 => 30 mins, 15000 => 5 hours
     few, lots = 1500, 15000
     experiment.run(iterations=lots, save=True)

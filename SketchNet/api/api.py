@@ -2,6 +2,7 @@ import sys, os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+import labels
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import tensorflow as tf
@@ -30,8 +31,9 @@ __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models'
 # - META is which meta file to use.
 # - We will use the latest available model in the MODEL folder, specified by the checkpoint file.
 # ###
-MODEL = 'exp3'
-META = 'exp3-trained-20170405-002502.meta'
+MODEL = 'exp4easy'
+META = '20170407-151424_exp4easy_SketchCNN-trained-1.meta'
+LABELS = labels.easy
 # Use the input, build full paths.
 __CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, MODEL)
 __META_FILE = os.path.join(__CHECKPOINT_DIR, META)
@@ -64,7 +66,7 @@ def submit():
         return jsonify([{
                             'label': label,
                             'confidence': float(result[i])
-                        } for i, label in enumerate(get_classes(__IMAGE_DIR))])
+                        } for i, label in enumerate(LABELS)])
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 

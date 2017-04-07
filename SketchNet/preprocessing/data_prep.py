@@ -52,8 +52,6 @@ def reload_K_splits(dir, split_within_labels=False, labels=None):
         test_set = [all_imgs[x] for x in test_idx]
     assert len(train_set), len(test_set)
     assert len(train_set[0]) == 2, len(test_set[0]) == 2
-    print('train set', train_set)
-    print('test set', test_set)
     return train_set, test_set
 
 def preprocess(directory, by_label=False, labels=None):
@@ -123,7 +121,6 @@ def get_batch_by_label(batch_size, dims, num_labels, from_set):
     pool.join()
     pool.terminate()
     imgs, truths = zip(*results)
-    print('Batch:', imgs, truths)
     return np.array(imgs), np.array(truths)
 
 def get_batch(batch_size, dims, train=True):
