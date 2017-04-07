@@ -49,6 +49,9 @@ export const errors = {
     insertFailure: 'submitSketch.insertFailure',
     scoreUpdateFailure: 'submitSketch.scoreUpdateFailure',
   },
+  scoreSketch: {
+    noAPI: 'scoreSketch.noAPI',
+  },
   leaveRoom: {
     noRoom: 'leaveRoom.noRoom',
     playerNotInRoom: 'leaveRoom.playerNotInRoom',
@@ -163,6 +166,37 @@ export const submitSketch = new ValidatedMethod({
         });
       }
     });
+  },
+});
+
+// Used only for tuning Sketchnet, see React component SketchnetTuning.jsx
+// Do not use for any other purpose!!
+export const scoreSketch = new ValidatedMethod({
+  name: 'scoreSketch',
+  validate: new SimpleSchema({
+    sketch: {
+      type: String,
+    },
+  }).validator(),
+  run({ sketch }) {
+    // Get the score from SketchNet, update the DB.
+    // This should only run on the server, since the client shouldn't
+    // hit the network.
+    if (Meteor.isServer) {
+      let scores = [];
+      try {
+        const result = Meteor.wrapAsync(getScoresForSketch)(sketch);
+        if (result) {
+          scores = result.data;
+        }
+      } catch (error) {
+        throw new Meteor.Error(errors.scoreSketch.noAPI);
+      }
+      return scores;
+    }
+
+    // Always return null when simulating.
+    return null;
   },
 });
 

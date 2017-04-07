@@ -41,9 +41,8 @@ export function getScoresForSketch(sketch, callback) {
 }
 
 export function getFallbackScores() {
-  const prompts = getFallbackPrompts();
-  return prompts.map(prompt => ({
+  return getFallbackPrompts().map(prompt => ({
     label: prompt,
-    confidence: Math.random()
+    confidence: Math.random(),
   }));
 }
