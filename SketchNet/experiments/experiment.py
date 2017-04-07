@@ -168,7 +168,6 @@ class Experiment(object):
 
     def _save(self, sess, accuracy='?', iterations=None):
         tf.add_to_collection('inputs', self.image)
-        tf.add_to_collection('inputs', self.label)
         tf.add_to_collection('inputs', self.keep_prob)
         tf.add_to_collection('output', self.model.prediction)
         saver = tf.train.Saver()

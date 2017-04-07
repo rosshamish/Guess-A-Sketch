@@ -43,7 +43,7 @@ def eval_img(img):
 
 @app.route("/prompts", methods=['GET'])
 def prompts():
-    return jsonify(get_classes(IMAGE_DIR))
+    return jsonify(get_classes(__IMAGE_DIR))
 
 @app.route("/submit", methods=['POST'])
 def submit():
@@ -62,9 +62,9 @@ def submit():
         result = eval_img(img)
         result = result/max(result)
         return jsonify([{
-                            'label': cls,
+                            'label': label,
                             'confidence': float(result[i])
-                        } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+                        } for i, label in enumerate(get_classes(__IMAGE_DIR))])
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 
@@ -96,6 +96,14 @@ if __name__ == "__main__":
         inps = tf.get_collection('inputs')
         image = inps[0]
         keep_prob = inps[1]
+        # Legacy experiment support.
+        # The keep_prob Tensor should have shape None, cause it's a scalar.
+        # However, once upon a time, inps[1] was the labels Tensor with shape (None,250), instead of
+        # the keep_prob Tensor with shape None, because Ross is a donut.
+        # This is a cheesy fix which makes the API work even with trained models from that dark era.
+        # The end.
+        if keep_prob.shape is not None:
+            keep_prob = inps[2]
 
         output = tf.get_collection('output')[0]
     except Exception as e:

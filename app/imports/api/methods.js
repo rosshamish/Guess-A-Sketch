@@ -170,7 +170,7 @@ export const submitSketch = new ValidatedMethod({
 });
 
 // Used only for tuning Sketchnet, see React component SketchnetTuning.jsx
-// Do not use for any other purpose.
+// Do not use for any other purpose!!
 export const scoreSketch = new ValidatedMethod({
   name: 'scoreSketch',
   validate: new SimpleSchema({

@@ -1,4 +1,5 @@
 import React from 'react';
+import { _ } from 'underscore';
 
 import BaseComponent from './BaseComponent.jsx';
 import Canvas from './Canvas.jsx';
@@ -7,10 +8,9 @@ import {
   Button,
 } from 'semantic-ui-react';
 
-import { SKETCH_PNG } from '/imports/api/session';
 import trimCanvasToSketch from '/imports/trim-canvas';
 import { scoreSketch } from '/imports/api/methods';
-import { getSketchScore } from '/imports/scoring';
+import { getSketchScore, getSketchRank, getSketchCorrectLabelConfidence } from '/imports/scoring';
 
 
 export default class SketchnetTuning extends BaseComponent {
@@ -18,7 +18,7 @@ export default class SketchnetTuning extends BaseComponent {
     super(props);
     this.state = {
       prompt: 'donut',
-      sketch: '',
+      sketch: null,
     };
 
     this.onCanvasChange = this.onCanvasChange.bind(this);
@@ -37,12 +37,12 @@ export default class SketchnetTuning extends BaseComponent {
           </p>
           <Button onClick={this.onScoreSketch}>Score it!</Button>
         </Segment>
-        <Canvas color={null} onChange={this.onCanvasChange} />
+        <Canvas onChange={this.onCanvasChange} />
       </Segment.Group>
     );
   }
 
-  onCanvasChange(canvas) {
+  onCanvasChange(canvas, event) {
     trimCanvasToSketch(canvas, (trimmed, x, y, width, height) => {
       const png = trimmed.toDataURL();
       this.setState({
@@ -61,17 +61,18 @@ export default class SketchnetTuning extends BaseComponent {
       }
 
       if (scores) {
-        const sketch = {
+        const sketchObj = {
           player: {},
           sketch: sketch,
           scores: scores,
           prompt: this.state.prompt,
         };
-        console.log('Sketch rating', getSketchScore(sketch));
+        console.log(`Sketch rating (prompt=${this.state.prompt})`, getSketchScore(sketchObj));
+        console.log('Rank:', getSketchRank(sketchObj));
+        console.log('Confidence:', getSketchCorrectLabelConfidence(sketchObj));
         scores.sort((a, b) => b.confidence - a.confidence);
-        console.log('Raw confidences, sorted', scores);
-      } else {
-        console.log('null scores');
+        const strScores = _.map(scores, (score) => `${score.label}: ${score.confidence}`);
+        console.log('Confidences, sorted:', strScores);
       }
     });
   }
