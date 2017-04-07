@@ -51,11 +51,20 @@ const animals = {
   },
 };
 
+const medium = {
+  defaults: {
+    numRounds: standard.defaults.numRounds,
+    roundTime: 40,
+    prompts: sPrompts.medium,
+  },
+};
+
 export const gametypes = {
   standard,
   animals,
   easy,
   food,
+  medium,
 };
 
 export const gametypeNames = ["standard", "animals", "easy", "food"];

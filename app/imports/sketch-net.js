@@ -29,6 +29,9 @@ export const prompts = {
   food: [
     'apple', 'banana', 'bread', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
     'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'],
+  medium: [
+    'apple', 'wineglass', 'tv', 'scissors', 'pizza', 'hot dog', 'eye', 'bread'
+  ], // call this prompt group "medium", but it's actually the hand picked one. 
 };
 
 export function getScoresForSketch(sketch, callback) {
