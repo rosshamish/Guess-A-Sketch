@@ -98,11 +98,15 @@ class Experiment(object):
             timestamp = self._timestamp()
         if not iterations:
             iterations = 0
-        trained_model_name = '{}_{}_{}-trained-{}'.format(timestamp, experiment_part, self.model._NAME, iterations)
+        trained_model_name = '{}_{}_{}-trained-{}'.format(
+            timestamp, self._experiment_id_and_extra_info(), self.model._NAME, iterations)
         return os.path.join(self._save_dir(), trained_model_name)
 
     def _save_dir(self):
-        return os.path.join(self._MODEL_OUTPUT_DIR, 'exp{}{}'.format(self.id(), self.extra_info()))
+        return os.path.join(self._MODEL_OUTPUT_DIR, self._experiment_id_and_extra_info())
+
+    def _experiment_id_and_extra_info(self):
+        return 'exp{}{}'.format(self.id(), self.extra_info())
 
     def _training_batch(self, batch_size=None):
         if not batch_size:
