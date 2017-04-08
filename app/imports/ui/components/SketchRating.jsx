@@ -5,6 +5,11 @@ import { Rating } from 'semantic-ui-react';
 
 export default class SketchRating extends BaseComponent {
   render() {
+    let rating = this.props.rating;
+    if (rating === 0) {
+      rating = 1;
+    }
+
     return (
       <Rating
         icon="star"

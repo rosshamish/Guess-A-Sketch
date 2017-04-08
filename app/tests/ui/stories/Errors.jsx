@@ -11,11 +11,12 @@ storiesOf('Error Messages', module)
 
   .add('errorCodes.participant.room', () => <ErrorMessage code={errorCodes.participant.noRoom} />)
   .add('errorCodes.participant.noRound', () => <ErrorMessage code={errorCodes.participant.noRound} />)
+  .add('errorCodes.participant.noPlayer', () => <ErrorMessage code={errorCodes.participant.noPlayer} />)
   .add('errorCodes.participant.illegalRoomState', () => <ErrorMessage code={errorCodes.participant.illegalRoomState} />)
   .add('errorCodes.participant.illegalRoundState', () => <ErrorMessage code={errorCodes.participant.illegalRoundState} />)
 
-  .add('errorCodes.roomList.undefinedRooms', () => <ErrorMessage code={errorCodes.participant.undefinedRooms} />)
-  .add('errorCodes.roomList.noPlayer', () => <ErrorMessage code={errorCodes.participant.noPlayer} />)
+  .add('errorCodes.roomList.undefinedRooms', () => <ErrorMessage code={errorCodes.roomList.undefinedRooms} />)
+  .add('errorCodes.roomList.noPlayer', () => <ErrorMessage code={errorCodes.roomList.noPlayer} />)
 
   // TODO trigger errormessages in UI components and compare them to the expected ErrorMessage
 ;

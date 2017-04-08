@@ -34,6 +34,11 @@ export default class WelcomePage extends React.Component {
     browserHistory.push('/host/create');
   }
 
+  onClickDoodle(event) {
+    event.preventDefault();
+    browserHistory.push('/doodle');
+  }
+
   handleAboutOpen(event) {
     this.setState({ aboutModalOpen: true });
   }
@@ -71,6 +76,8 @@ export default class WelcomePage extends React.Component {
             <Button primary onClick={this.onClickPlay}>Play</Button>
             <Button.Or />
             <Button onClick={this.onClickHost}>Host</Button>
+            <Button.Or />
+            <Button onClick={this.onClickDoodle}>Doodle</Button>
           </Button.Group>
           <br />
           <br />

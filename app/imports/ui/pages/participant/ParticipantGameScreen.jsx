@@ -2,7 +2,7 @@ import React from 'react';
 import { _ } from 'underscore';
 
 import { Session } from 'meteor/session';
-import { PLAYER, SKETCH_PNG, SKETCH_SVG } from '/imports/api/session';
+import { PLAYER, SKETCH_PNG } from '/imports/api/session';
 
 import { leaveRoom, submitSketch, errors } from '/imports/api/methods';
 import { isPreGame, isPostGame, isInGame, currentRound } from '/imports/game-status';
@@ -10,6 +10,7 @@ import { getSketchScore, getRoundScore, getGameScore } from '/imports/scoring';
 import trimCanvasToSketch from '/imports/trim-canvas';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
+import GenericLoading from '../../components/GenericLoading.jsx';
 import ParticipantPreGameScreen from '../../components/ParticipantPreGameScreen.jsx';
 import ParticipantPreRound from '../../components/ParticipantPreRound.jsx';
 import ParticipantPlayRound from '../../components/ParticipantPlayRound.jsx';
@@ -54,12 +55,6 @@ export default class ParticipantGameScreen extends BaseComponent {
     trimCanvasToSketch(canvas, (trimmed, x, y, width, height) => {
       const png = trimmed.toDataURL();
       Session.set(SKETCH_PNG, png);
-      canvas.clone((cloned) => {
-        const svg = cloned.toSVG({
-          suppressPreamble: true,
-        });
-        Session.set(SKETCH_SVG, svg);
-      });
     });
   }
 
@@ -96,12 +91,9 @@ export default class ParticipantGameScreen extends BaseComponent {
 
     // ---
     // Loading and error handling
-    // TODO make these pages pretty.
     // ---
     if (loading) {
-      return (
-        <p>Loading...</p>
-      );
+      return <GenericLoading />;
     }
     if (!room) {
       return <ErrorMessage code={errorCodes.participant.noRoom} />;

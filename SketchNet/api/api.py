@@ -1,6 +1,6 @@
 import sys, os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -8,20 +8,33 @@ import tensorflow as tf
 from PIL import Image
 from io import BytesIO
 import numpy as np
-
 import scipy.misc
 import base64
-
 from err import ClassificationFailure
+from preprocessing.data_prep import get_classes
 
 app = Flask(__name__)
 CORS(app)
 
-from preprocessing.data_prep import get_classes
+# ###
+# Constants, don't change these
+# ###
+__PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
+__IMAGE_DIR = os.path.join(__PROJECT_ROOT, 'png')
+# Keep in sync with experiments.experiment.Experiment, TODO refactor
+__TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models')
 
-IMAGE_DIR = 'png'
-# print(os.path.join(os.path.dirname(__file__)))
-META_FILE = 'SketchNet/experiments/2/mnist_basic.meta'
+# ###
+# Choose which trained model to use.
+# - MODEL is a folder inside trained_models
+# - META is which meta file to use.
+# - We will use the latest available model in the MODEL folder, specified by the checkpoint file.
+# ###
+MODEL = 'exp3'
+META = 'exp3-trained-20170405-002502.meta'
+# Use the input, build full paths.
+__CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, MODEL)
+__META_FILE = os.path.join(__CHECKPOINT_DIR, META)
 
 
 def eval_img(img):
@@ -30,7 +43,7 @@ def eval_img(img):
 
 @app.route("/prompts", methods=['GET'])
 def prompts():
-    return jsonify(get_classes(IMAGE_DIR))
+    return jsonify(get_classes(__IMAGE_DIR))
 
 @app.route("/submit", methods=['POST'])
 def submit():
@@ -47,11 +60,11 @@ def submit():
         img = np.expand_dims(img, axis=0)
 
         result = eval_img(img)
-        result = result/np.linalg.norm(result)
+        result = result/max(result)
         return jsonify([{
-                            'label': cls,
+                            'label': label,
                             'confidence': float(result[i])
-                        } for i, cls in enumerate(get_classes(IMAGE_DIR))])
+                        } for i, label in enumerate(get_classes(__IMAGE_DIR))])
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 
@@ -76,14 +89,24 @@ def decode_base64(data):
 
 if __name__ == "__main__":
     sess = tf.Session()
-    new_saver = tf.train.import_meta_graph(META_FILE)
-    new_saver.restore(sess, tf.train.latest_checkpoint('SketchNet/experiments/2/'))
+    try:
+        new_saver = tf.train.import_meta_graph(__META_FILE)
+        new_saver.restore(sess, tf.train.latest_checkpoint(__CHECKPOINT_DIR))
 
-    inps = tf.get_collection('inputs')
-    image = inps[0]
-    keep_prob = inps[1]
+        inps = tf.get_collection('inputs')
+        image = inps[0]
+        keep_prob = inps[1]
+        # Legacy experiment support.
+        # The keep_prob Tensor should have shape None, cause it's a scalar.
+        # However, once upon a time, inps[1] was the labels Tensor with shape (None,250), instead of
+        # the keep_prob Tensor with shape None, because Ross is a donut.
+        # This is a cheesy fix which makes the API work even with trained models from that dark era.
+        # The end.
+        if keep_prob.shape is not None and len(inps) > 2:
+            keep_prob = inps[2]
 
-    output = tf.get_collection('output')[0]
+        output = tf.get_collection('output')[0]
+    except Exception as e:
+        print(e)
+        raise
     app.run()
-
-

@@ -17,7 +17,7 @@ export default class LoginPage extends BaseComponent {
 
   onSubmit(name, color) {
     // Name uniqueness is handled by LoginPageView.
-    Session.set(PLAYER, { name, color });
+    Session.setPersistent(PLAYER, { name, color });
     browserHistory.push('/join');
   }
 

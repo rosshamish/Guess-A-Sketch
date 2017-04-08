@@ -19,7 +19,7 @@ export const prompts = {
   animals: [
     'ant', 'butterfly', 'camel', 'crab', 'crocodile', 'cat', 'cow', 'dog', 'dolphin',
     'dragon', 'duck', 'elephant', 'fish', 'flying bird', 'frog', 'giraffe', 'hedgehog',
-    'horse', 'kangaroo', 'lion', 'lobster', 'monkey', 'mosquito', 'mouse (animal)', 
+    'horse', 'kangaroo', 'lion', 'lobster', 'monkey', 'mosquito', 'mouse (animal)',
     'octopus', 'owl', 'panda', 'parrot', 'penguin', 'pig', 'pigeon', 'rabbit', 'rooster',
     'scorpion', 'sea turtle', 'seagull', 'shark', 'sheep', 'snail', 'snake', 'spider',
     'squirrel', 'standing bird', 'tiger', 'zebra'],
@@ -27,11 +27,11 @@ export const prompts = {
     'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
     'fork', 'key', 'spider'],
   food: [
-    'apple', 'banana', 'brea', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
+    'apple', 'banana', 'bread', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
     'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'],
-
-  playtest1: [
-    'cannon', 'cactus', 'rooster', 'bicycle', 'pipe (for smoking)'],
+  medium: [
+    'apple', 'wineglass', 'tv', 'scissors', 'pizza', 'hot dog', 'eye', 'bread'
+  ], // call this prompt group "medium", but it's actually the hand picked one. 
 };
 
 export function getScoresForSketch(sketch, callback) {
@@ -44,9 +44,8 @@ export function getScoresForSketch(sketch, callback) {
 }
 
 export function getFallbackScores() {
-  const prompts = getFallbackPrompts();
-  return prompts.map(prompt => ({
+  return getFallbackPrompts().map(prompt => ({
     label: prompt,
-    confidence: Math.random()
+    confidence: Math.random(),
   }));
 }

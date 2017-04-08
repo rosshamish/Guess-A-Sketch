@@ -49,6 +49,9 @@ export const errors = {
     insertFailure: 'submitSketch.insertFailure',
     scoreUpdateFailure: 'submitSketch.scoreUpdateFailure',
   },
+  scoreSketch: {
+    noAPI: 'scoreSketch.noAPI',
+  },
   leaveRoom: {
     noRoom: 'leaveRoom.noRoom',
     playerNotInRoom: 'leaveRoom.playerNotInRoom',
@@ -163,6 +166,37 @@ export const submitSketch = new ValidatedMethod({
         });
       }
     });
+  },
+});
+
+// Used only for tuning Sketchnet, see React component SketchnetTuning.jsx
+// Do not use for any other purpose!!
+export const scoreSketch = new ValidatedMethod({
+  name: 'scoreSketch',
+  validate: new SimpleSchema({
+    sketch: {
+      type: String,
+    },
+  }).validator(),
+  run({ sketch }) {
+    // Get the score from SketchNet, update the DB.
+    // This should only run on the server, since the client shouldn't
+    // hit the network.
+    if (Meteor.isServer) {
+      let scores = [];
+      try {
+        const result = Meteor.wrapAsync(getScoresForSketch)(sketch);
+        if (result) {
+          scores = result.data;
+        }
+      } catch (error) {
+        throw new Meteor.Error(errors.scoreSketch.noAPI);
+      }
+      return scores;
+    }
+
+    // Always return null when simulating.
+    return null;
   },
 });
 
@@ -436,8 +470,10 @@ export const endGame = new ValidatedMethod({
     // TO DO: Figure out why this is erroring out, even though it still 
     // successfully changes to room status from Joinable -> Complete
     changeRoomStatus(room, 'COMPLETE', (error, result) => {
-      throw new Meteor.Error(errors.endGame.roomStatus, '',
-        `${error}`);
+      if (error) {
+        throw new Meteor.Error(errors.endGame.roomStatus, '',
+          `${error}`);
+      }
     });
   },
 });
@@ -454,12 +490,12 @@ export const createRoom = new ValidatedMethod({
     round_time: {
       type: Number,
     },
-    gametypeName: {
+    prompts: {
       type: String,
-      defaultValue: 'standard',
+      defaultValue: 'easy',
     },
   }).validator(),
-  run({ room_name, round_count, round_time, gametypeName }) {
+  run({ room_name, round_count, round_time, prompts }) {
     if (!room_name || !room_name.length) {
       throw new Meteor.Error(errors.createRoom.noName,
         'Room name must be non-null and non-empty',
@@ -480,9 +516,9 @@ export const createRoom = new ValidatedMethod({
 
     let rounds = [];
     try {
-      rounds = gametype(gametypeName, {
-        _numRounds: round_count,
-        _roundTime: round_time,
+      rounds = gametype(prompts, {
+        numRounds: round_count,
+        roundTime: round_time,
       }).rounds;
     } catch (error) {
       throw new Meteor.Error(errors.createRoom.gametype,

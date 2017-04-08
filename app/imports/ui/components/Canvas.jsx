@@ -16,7 +16,7 @@ class CanvasImpl extends BaseComponent {
     super(props);
     this.state = {
       pathStack: [],
-      color: props.color,
+      color: props.color || 'black',
       width: 5,
     };
     this.canvas = null;
@@ -25,7 +25,11 @@ class CanvasImpl extends BaseComponent {
     this.initCanvas = this.initCanvas.bind(this);
 
     // Prop methods
-    this.onChange = this.props.onChange.bind(this);
+    if (this.props.onChange) {
+      this.onChange = this.props.onChange.bind(this);
+    } else {
+      this.onChange = () => {};
+    }
   }
 
   componentDidMount() {
@@ -41,9 +45,7 @@ class CanvasImpl extends BaseComponent {
       that.setState({
         pathStack: that.state.pathStack.concat([event.path]),
       });
-      if (onChange) {
-        onChange(canvas, event);
-      }
+      that.onChange(canvas, event);
     });
   }
 
@@ -64,6 +66,8 @@ class CanvasImpl extends BaseComponent {
       container.style['flex-direction'] = 'column';
       container.style['flex-grow'] = 1;
     }
+
+    return this.canvas;
   }
 
   componentWillUnmount() {
@@ -89,10 +93,6 @@ class CanvasImpl extends BaseComponent {
   }
 
   render() {
-    const {
-      color,
-    } = this.props;
-
     return (
       <Segment.Group style={{
         display: 'flex',
@@ -106,7 +106,7 @@ class CanvasImpl extends BaseComponent {
               flexGrow: 1,
             }}
             raised
-            color={color || 'black'} >
+            color={this.state.color || 'black'} >
           <canvas id="canvas" />
         </Segment>
         <Segment

@@ -12,6 +12,7 @@ import {
 import { 
   getRoundScore,
   getGameScore,
+  getSketchScore,
 } from '/imports/scoring';
 import {
   isPreGame,
@@ -22,6 +23,7 @@ import {
 } from '/imports/game-status';
 
 import BaseComponent from '../../components/BaseComponent.jsx';
+import GenericLoading from '../../components/GenericLoading.jsx';
 import ErrorMessage, { errorCodes } from '../../components/ErrorMessage.jsx';
 
 import HostPreGameScreen from '../../components/HostPreGameScreen.jsx';
@@ -173,9 +175,7 @@ export default class HostGameScreen extends BaseComponent {
 
     // Render components for loading and input validation.
     if (loading) {
-      return (
-        <p>Loading...</p>
-      );
+      return <GenericLoading />;
     }
     if (!room) {
       return <ErrorMessage code={errorCodes.host.noRoom} />;
@@ -229,6 +229,7 @@ export default class HostGameScreen extends BaseComponent {
               sketches={sketches}
               isLastRound={isLastRound}
               onNextRound={this.onNextRound}
+              getSketchScore={getSketchScore}
             />
           );
         default :

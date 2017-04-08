@@ -17,13 +17,12 @@ export default class CreateARoom extends BaseComponent {
     this.onCreateRoom = this.onCreateRoom.bind(this);
   }
 
-  onCreateRoom(roomName, roundCount, roundTime) {
+  onCreateRoom(roomName, roundCount, roundTime, prompts) {
     createRoom.call({
       room_name: roomName,
       round_count: parseInt(roundCount, 10),
       round_time: parseInt(roundTime, 10),
-      // TODO control gametype with UI
-      gametypeName: 'standard',
+      prompts: prompts,
     }, (error, roomID) => {
       if (error) {
         switch (error.error) {
@@ -49,7 +48,7 @@ export default class CreateARoom extends BaseComponent {
             alert(`Unknown createRoom error: ${error.error}`);
         }
       } else {
-        Session.set(HOST_ROOM, roomName);
+        Session.setPersistent(HOST_ROOM, roomName);
         browserHistory.push('/host/play');
       }
     });

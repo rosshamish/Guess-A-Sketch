@@ -31,7 +31,7 @@ export default class HostEndGameScreen extends BaseComponent {
     for (var i in players) {
       scores[scores.length] = {
         name: players[i].name,
-        score: this.state.getGameScore(Sketches, this.state.room, players[i])
+        score: this.state.getGameScore(this.state.room, players[i]),
       };
     }
     scores = _.sortBy(scores, 'score').reverse();
