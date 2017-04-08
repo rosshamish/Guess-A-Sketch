@@ -28,7 +28,7 @@ class Experiment(object):
         # if summary_setup is None or not callable(summary_setup):
         #     raise NotImplementedError('Subclass must implement a summary setup method')
 
-        self.log_dir = log_dir or os.path.join('/tmp', 'tensorflow')
+        self.log_dir = log_dir or os.path.join('summaries', str(self.id()))
         print('Tensorboard summaries saved to {}'.format(self.log_dir))
 
         # Subclasses must provide these, both lists should look like:
