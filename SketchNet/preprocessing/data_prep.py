@@ -57,28 +57,34 @@ def reload_K_splits(dir, split_within_labels=False, labels=None):
 def preprocess(directory, by_label=False, labels=None):
     """
     Returns: list of tuples: (filename, ground truth)
-    """
-    if labels is not None and not by_label:
-        raise ValueError('You cant do that')
 
-    class_names = get_classes(directory)
-    filenames_and_label_nums = []
-    for class_name in class_names:
-        if labels is not None and class_name not in labels:
-            continue
-        class_filenames_and_label_nums = read_and_flatten(os.path.join(directory, class_name), labels.index(class_name))
-        if by_label:
-            filenames_and_label_nums.append(class_filenames_and_label_nums)
-        else:
-            filenames_and_label_nums.extend(class_filenames_and_label_nums)
+    by_label: boolean
+        - when True, returns a 2-tier list that looks like:
+            example_definitions = preprocess(...)
+            example_definitions[label_index][0] === ('../relative/path/to/cat/0001.png', 42)
+          where 42 is the label index, either from `labels` or from all labels in the directory
+        - when False, returns the same, but flattened.
+    labels: list of strings
+        - filter the dataset to a subset of labels
+    """
+    if labels is None:
+        labels = get_classes(directory)
+
+    filenames_and_label_indexes = [
+        read_and_flatten(os.path.join(directory, label), label_index)
+        for label_index, label in enumerate(labels)
+    ]
+    assert len(filenames_and_label_indexes)
+    assert len(filenames_and_label_indexes[0])
+    assert len(filenames_and_label_indexes[0][0]) == 2
     if by_label:
-        assert len(filenames_and_label_nums)
-        assert len(filenames_and_label_nums[0])
-        assert len(filenames_and_label_nums[0][0]) == 2
+        return filenames_and_label_indexes
     else:
-        assert len(filenames_and_label_nums)
-        assert len(filenames_and_label_nums[0]) == 2
-    return filenames_and_label_nums
+        # Attribution: flatten a numpy array, except the last dimension
+        # URL: http://stackoverflow.com/a/18758049
+        # Accessed: April 7, 2017
+        nparr = np.array(filenames_and_label_indexes)
+        return nparr.reshape(-1, nparr.shape[-1]).tolist()
 
 def getExampleByLabel(args):
     dims, num_labels, from_set = args
@@ -97,10 +103,11 @@ def getExampleByLabel(args):
 
 #TRAIN_FILENAMES, TEST_FILENAMES = reload_K_splits('./png')
 def getExample(args):
-    dims, train = args
+    dims, train, num_labels = args
     try:
         imgPath, index = random.choice(TRAIN_FILENAMES if train else TEST_FILENAMES)
-        truth = np.zeros(250)
+        index = int(index)
+        truth = np.zeros(num_labels)
         truth[index] = 1
         return scipy.misc.imresize(np.array(Image.open(imgPath)), dims), truth
     except Exception as e:
@@ -123,10 +130,12 @@ def get_batch_by_label(batch_size, dims, num_labels, from_set):
     imgs, truths = zip(*results)
     return np.array(imgs), np.array(truths)
 
-def get_batch(batch_size, dims, train=True):
+def get_batch(batch_size, dims, train=True, num_labels=None):
+    if num_labels is None:
+        raise ValueError('you need that')
     from multiprocessing.dummy import Pool as ThreadPool
     pool = ThreadPool()
-    results = pool.map(getExample, [(dims, train)] * batch_size)
+    results = pool.map(getExample, [(dims, train, num_labels)] * batch_size)
     pool.close()
     pool.join()
     pool.terminate()

@@ -21,7 +21,7 @@ class Experiment(object):
     # Keep in sync with SketchNet/api/api.py, TODO refactor
     _MODEL_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'trained_models')
 
-    def __init__(self, log_dir=None):
+    def __init__(self, log_dir=None, labels=None):
         """
         log_dir: an os.path for logs, optional
         """
@@ -45,6 +45,18 @@ class Experiment(object):
 
         # Subclasses must provide a utils.Model
         self.model = None
+
+        # TensorFlow placeholders (memory allocations)
+        # Legacy support:
+        # - support old experiments which don't pass the `labels` parameter, and expect
+        #   the whole original dataset of 250 labels.
+        # - support old experiments which use the old names of these tensors
+        self.images_tensor = tf.placeholder(tf.float32, [None, self._SKETCH_WIDTH, self._SKETCH_HEIGHT])
+        self.labels_tensor = tf.placeholder(tf.float32, [None, len(labels) if labels else 250])
+        self.keep_prob_tensor = tf.placeholder(tf.float32)
+        self.image = self.images_tensor
+        self.label = self.labels_tensor
+        self.keep_prob = self.keep_prob_tensor
 
         # Initialize the FileWriter
         # tf.summary.scalar('accuracy', model.accuracy)
@@ -88,17 +100,24 @@ class Experiment(object):
         saver = tf.train.import_meta_graph(meta_file)
         saver.restore(sess, tf.train.latest_checkpoint(chkpt_directory))
         # TODO abstract the below if we need to
-        self.image = tf.get_collection('inputs')[0]
-        self.label = tf.get_collection('inputs')[1]
-        self.keep_prob = tf.get_collection('inputs')[2]
+        self.images_tensor = tf.get_collection('inputs')[0]
+        self.keep_prob_tensor = tf.get_collection('inputs')[1]
 
-    def _save_path(self, timestamp=None, iterations=None):
+    def _save_path(self, timestamp=None, iterations=None, accuracy=None):
         if not timestamp:
             timestamp = self._timestamp()
         if not iterations:
-            iterations = 0
-        trained_model_name = '{}_{}_{}-trained-{}'.format(
-            timestamp, self._experiment_id_and_extra_info(), self.model._NAME, iterations)
+            iterations = '?'
+        if not accuracy:
+            accuracy = '?'
+        else:
+            accuracy = '{:.2f}'.format(accuracy)[2:] # 0.20423102 -> 20
+        trained_model_name = '{timestamp}_{experiment}_{model}-{iterations}iters-{accuracy}p'.format(
+            timestamp=timestamp,
+            experiment=self._experiment_id_and_extra_info(),
+            model=self.model._NAME,
+            iterations=iterations,
+            accuracy=accuracy)
         return os.path.join(self._save_dir(), trained_model_name)
 
     def _save_dir(self):
@@ -138,48 +157,48 @@ class Experiment(object):
         for i in tqdm(range(int(iterations))):
             training_batch = self._training_batch()
             sess.run(self.model.train, {
-                self.image: training_batch[0],
-                self.label: training_batch[1],
-                self.keep_prob: self.model.keep_prob,
+                self.images_tensor: training_batch[0],
+                self.labels_tensor: training_batch[1],
+                self.keep_prob_tensor: 0.5,
             })
             if i % 100 == 0:
                 # summary, train_accuracy = sess.run([summary, model.accuracy], {image: batch[0], label: batch[1], keep_prob: 1.0})
                 train_accuracy = sess.run(self.model.accuracy, {
-                    self.image: training_batch[0],
-                    self.label: training_batch[1],
-                    self.keep_prob: 1.0
+                    self.images_tensor: training_batch[0],
+                    self.labels_tensor: training_batch[1],
+                    self.keep_prob_tensor: 1.0
                 })
                 # writer.add_summary(summary, i)
                 print("step %d, training accuracy %g" % (i, train_accuracy))
                 test_batch = self._test_batch()
                 during_training_test_accuracy = sess.run(self.model.accuracy, {
-                    self.image: test_batch[0],
-                    self.label: test_batch[1],
-                    self.keep_prob: 1.0
+                    self.images_tensor: test_batch[0],
+                    self.labels_tensor: test_batch[1],
+                    self.keep_prob_tensor: 1.0
                 })
                 print("step %d, test accuracy %g" % (i, during_training_test_accuracy))
 
     def _test(self, sess):
         test_batch = self._test_batch()
         accuracy = sess.run(self.model.accuracy, {
-            self.image: test_batch[0],
-            self.label: test_batch[1],
-            self.keep_prob: 1.0
+            self.images_tensor: test_batch[0],
+            self.labels_tensor: test_batch[1],
+            self.keep_prob_tensor: 1.0,
         })
         print("test accuracy %g" % accuracy)
         return accuracy
 
     def _save(self, sess, accuracy='?', iterations=None):
-        tf.add_to_collection('inputs', self.image)
-        tf.add_to_collection('inputs', self.keep_prob)
+        tf.add_to_collection('inputs', self.images_tensor)
+        tf.add_to_collection('inputs', self.keep_prob_tensor)
         tf.add_to_collection('output', self.model.prediction)
         saver = tf.train.Saver()
         t = self._timestamp()
         save_path = self._save_path(timestamp=t, iterations=iterations)
         self._mkdir_p(save_path)
         save_path = saver.save(sess, save_path)
-        print("Saving experiment {}{} with accuracy {:.3f} after {} iterations. Trained model saved to {}".format(
-            self.id(), self.extra_info(), accuracy, iterations, save_path))
+        print("Saving experiment {} with accuracy {:.3f} after {} iterations. Trained model saved to {}".format(
+            self._experiment_id_and_extra_info(), accuracy, iterations, save_path))
 
     def _mkdir_p(self, filepath):
         """ Makes all directories that filepath will be in, like mkdir -p
