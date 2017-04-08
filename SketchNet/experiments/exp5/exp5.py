@@ -54,9 +54,8 @@ class Experiment5(Experiment):
 
 def main():
     experiment = Experiment5(labels=labels.easy, name='easy')
-    # 1500 => 30 mins, 15000 => 5 hours
-    few, lots = 1500, 15000
-    experiment.run(iterations=few, save=True)
+    smoke_test, ten_mins, half_hour, five_hours = 1, 500, 1500, 15000
+    experiment.run(iterations=half_hour, save=True)
 
 if __name__ == '__main__':
     main()
