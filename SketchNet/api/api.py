@@ -75,6 +75,7 @@ def handle_classification_failure(error):
     response.status_code = error.status_code
     return response
 
+
 def decode_base64(data):
     """Decode base64, padding being optional.
 
@@ -86,6 +87,14 @@ def decode_base64(data):
     if missing_padding != 0:
         data += b'='* (4 - missing_padding)
     return base64.decodestring(data)
+
+
+class ImageEmbedder():
+
+    def __init__(self, embedding, ouput):
+        self.emedding = embedding
+        self.output = output
+
 
 if __name__ == "__main__":
     sess = tf.Session()

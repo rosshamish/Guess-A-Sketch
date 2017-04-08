@@ -29,6 +29,10 @@ class Model(object):
         self.summary
 
     @abstractmethod
+    def input_images(self):
+        pass
+
+    @abstractmethod
     def prediction(self):
         pass
 

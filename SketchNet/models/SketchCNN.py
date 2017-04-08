@@ -19,16 +19,22 @@ class SketchCNN(Model):
     EXPERIMENT_ID = 3
     _NAME = 'SketchCNN'
 
+
+    @define_scope
+    def img_embedding(self):
+        return tf.Variable(tf.zeros([-1, 7*7*256]), name="test_embedding")
+    @define_scope
+    def input_images(self):
+        return tf.reshape(self.image, [-1, self.width, self.height, 1])
+
     @define_scope
     def prediction(self):
-        x_image = tf.reshape(self.image, [-1, self.width, self.height, 1])
-        flat_conv_pools = self.conv_pools(x_image)
+        flat_conv_pools = self.conv_pools(self.input_images)
         y = self.fc_dropout(flat_conv_pools)
         return y
 
     @define_scope
     def train(self):
-        # tf.summary.scalar('cross_entropy', cross_entropy)
         return tf.train.AdamOptimizer(1e-4).minimize(self.loss)
 
     @define_scope
@@ -74,5 +80,20 @@ class SketchCNN(Model):
         return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))
 
     def define_summary_scalars(self):
+        config = tf.contrib.tensorboard.plugins.projector.ProjectorConfig()
+        embedding_config = config.embeddings.add()
+        # embedding_config.tensor_name = embedding.name
+        # embedding_config.sprite.image_path = self.LOGDIR + 'sprite_1024.png'
+        # embedding_config.metadata_path = LOGDIR + 'labels_1024.tsv'
+        # # Specify the width and height of a single thumbnail.
+        # embedding_config.sprite.single_image_dim.extend([28, 28])
+
+        # tf.contrib.tensorboard.plugins.projector.visualize_embeddings(writer, config)
+        tf.summary.image('input_imgs', self.input_images, 3)
         tf.summary.scalar('cross_entropy', self.loss)
         tf.summary.scalar('accuracy', self.accuracy)
+
+#TODO: list of input imgs and result from eval()
+#
+#TODO: create sorite image
+# TODO: add op to re-render the image
