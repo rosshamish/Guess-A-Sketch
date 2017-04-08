@@ -80,6 +80,7 @@ class SketchCNN(Model):
         return tf.reduce_mean(tf.cast(correct_confidence, tf.float32))
 
     def define_summary_scalars(self):
+        print "INF: Defining Summary"
         config = tf.contrib.tensorboard.plugins.projector.ProjectorConfig()
         embedding_config = config.embeddings.add()
         # embedding_config.tensor_name = embedding.name

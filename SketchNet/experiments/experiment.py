@@ -53,6 +53,7 @@ class Experiment(object):
 
         # Initialize the FileWriter
         summary_dir = os.path.join(self.log_dir, self._timestamp())
+        print "INF: Initializing Writer"
         self.writer = tf.summary.FileWriter(summary_dir, graph=tf.get_default_graph())
 
     def id(self):
