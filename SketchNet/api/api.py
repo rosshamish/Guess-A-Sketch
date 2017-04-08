@@ -43,7 +43,7 @@ __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models'
 # - If the model is incompatible with the current API, it might run, then break on POST /submit.
 # ###
 MODEL = 'exp5easy'
-META = '20170407-220659_exp5easy_SketchCNN-trained-1500.meta'
+META = '20170408-063406_exp5easy_SketchCNN-1500iters-06p.meta'
 LABELS = labels.easy
 # Use the input, build full paths.
 __CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, MODEL)

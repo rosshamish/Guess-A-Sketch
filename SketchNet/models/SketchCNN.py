@@ -4,10 +4,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 from utils.base_model import Model
 from utils.tf_graph_scope import define_scope
 import tensorflow as tf
-
-conv2d = tf.nn.conv2d
-max_pool = tf.nn.max_pool
-relu = tf.nn.relu
 slim = tf.contrib.slim
 
 class SketchCNN(Model):
