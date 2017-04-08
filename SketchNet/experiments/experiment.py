@@ -26,7 +26,7 @@ class Experiment(object):
         """
         log_dir: an os.path for logs, optional
         """
-        self.log_dir = log_dir or os.path.join('tmp', 'tensorflow')
+        self.log_dir = log_dir or os.path.join('summaries', str(self.id()))
 
         # Subclasses must provide these, both lists should look like:
         # - [
