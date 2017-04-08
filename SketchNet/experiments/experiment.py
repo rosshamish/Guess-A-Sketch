@@ -194,7 +194,7 @@ class Experiment(object):
         tf.add_to_collection('output', self.model.prediction)
         saver = tf.train.Saver()
         t = self._timestamp()
-        save_path = self._save_path(timestamp=t, iterations=iterations)
+        save_path = self._save_path(timestamp=t, accuracy=accuracy, iterations=iterations)
         self._mkdir_p(save_path)
         save_path = saver.save(sess, save_path)
         print("Saving experiment {} with accuracy {:.3f} after {} iterations. Trained model saved to {}".format(
