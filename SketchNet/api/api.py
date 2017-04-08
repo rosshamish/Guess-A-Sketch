@@ -10,6 +10,8 @@ from io import BytesIO
 import numpy as np
 import scipy.misc
 import base64
+from tensorflow.contrib.tensorboard.plugins.projector import ProjectorConfig
+
 from err import ClassificationFailure
 from preprocessing.data_prep import get_classes
 
@@ -41,9 +43,11 @@ def eval_img(img):
     v = sess.run(output, feed_dict={image: img, keep_prob: 1.0})
     return v[0]
 
+
 @app.route("/prompts", methods=['GET'])
 def prompts():
     return jsonify(get_classes(__IMAGE_DIR))
+
 
 @app.route("/submit", methods=['POST'])
 def submit():
@@ -60,7 +64,7 @@ def submit():
         img = np.expand_dims(img, axis=0)
 
         result = eval_img(img)
-        result = result/max(result)
+        result = result / max(result)
         return jsonify([{
                             'label': label,
                             'confidence': float(result[i])
@@ -85,15 +89,31 @@ def decode_base64(data):
     """
     missing_padding = len(data) % 4
     if missing_padding != 0:
-        data += b'='* (4 - missing_padding)
+        data += b'=' * (4 - missing_padding)
     return base64.decodestring(data)
 
 
 class ImageEmbedder():
 
+    _SPRITEPATH = ''
     def __init__(self, embedding, ouput):
         self.emedding = embedding
         self.output = output
+
+        # Setup Projector
+        self.config = ProjectorConfig()
+        self.embedding_config = self.config.embeddings.add()
+        self.embedding_config.tensor_name = self.embedding.name
+
+
+    def create_sprite(self):
+        pass
+
+    def add_img_to_embedding(self):
+        pass
+
+    def visualize_embeddings(self):
+        pass
 
 
 if __name__ == "__main__":

@@ -98,7 +98,7 @@ def main():
     experiment = Experiment4(labels=easy, name='easy')
     # 1500 => 30 mins, 15000 => 5 hours
     few, lots = 1500, 15000
-    experiment.run(iterations=few, save=True)
+    experiment.run(iterations=lots, save=True)
 
 if __name__ == '__main__':
     main()

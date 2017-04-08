@@ -93,7 +93,3 @@ class SketchCNN(Model):
         tf.summary.scalar('cross_entropy', self.loss)
         tf.summary.scalar('accuracy', self.accuracy)
 
-#TODO: list of input imgs and result from eval()
-#
-#TODO: create sorite image
-# TODO: add op to re-render the image

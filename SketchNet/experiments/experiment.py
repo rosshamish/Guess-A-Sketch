@@ -144,7 +144,7 @@ class Experiment(object):
                 self.label: training_batch[1],
                 self.keep_prob: self.model.keep_prob,
             })
-            if i % 100 == 0:
+            if i % 1 == 0:
                 train_accuracy,  summ = sess.run([self.model.accuracy, self.model.summary], {
                     self.image: training_batch[0],
                     self.label: training_batch[1],
