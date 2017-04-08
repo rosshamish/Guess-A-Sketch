@@ -1,3 +1,4 @@
 *.sublime-*
 png
 app.tar.gz
+SketchNet/notebooks/*

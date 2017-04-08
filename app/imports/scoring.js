@@ -6,17 +6,17 @@ function clamp(val, low, high) {
   return Math.max( low, Math.min( val, high) );
 }
 
-function getRank(sketch) {
+export function getSketchRank(sketch) {
   const byConfidence = _.sortBy(sketch.scores, s => -1 * s.confidence);
   const labels = _.pluck(byConfidence, 'label');
   const rank = _.indexOf(labels, sketch.prompt);
-  if (!rank || rank === -1) {
+  if (rank === -1) {
     return sketch.scores.length;
   }
   return rank;
 }
 
-function getCorrectLabelConfidence(sketch) {
+export function getSketchCorrectLabelConfidence(sketch) {
   const score = _.find(sketch.scores, s => s.label === sketch.prompt);
   if (!score) {
     return 0;
@@ -68,7 +68,7 @@ export function getStarRating(rank, confidence) {
 }
 
 function getStarRatingForSketch(sketch) {
-  return getStarRating(getRank(sketch), getCorrectLabelConfidence(sketch));
+  return getStarRating(getSketchRank(sketch), getSketchCorrectLabelConfidence(sketch));
 }
 
 export function getSketchScore(sketch) {
