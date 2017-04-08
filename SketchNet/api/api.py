@@ -51,7 +51,6 @@ __META_FILE = os.path.join(__CHECKPOINT_DIR, META)
 
 
 def eval_img(img):
-    import pdb; pdb.set_trace()
     v = sess.run(prediction_tensor, {
         image_tensor: img,
         keep_prob_tensor: 1.0
