@@ -26,6 +26,7 @@ export default class ParticipantRoundResults extends BaseComponent {
     let rating;
     let scores;
     let loading = false;
+    const TOP_N = 3;
 
     if (!sketch || !sketch.scores || !sketch.scores.length) {
       loading = true;
@@ -46,8 +47,8 @@ export default class ParticipantRoundResults extends BaseComponent {
     }
 
     scores.sort((a, b) => b.confidence - a.confidence);
-    const TOP_N = 3;
     const topScores = scores.slice(0, TOP_N);
+
     const topScoreComponents = topScores.map((score) => {
       const percent = score.confidence * 100;
       let color = 'grey';
@@ -61,11 +62,47 @@ export default class ParticipantRoundResults extends BaseComponent {
           key={score.label}
           percent={percent}
           color={color}
-          label={score.label}
-        />
+          label={score.label}/>
       );
     });
 
+    function getFourthLabel(round, scores, loading){
+  		
+  		function topScoresContainsPrompt() {
+  			const topScores = scores.slice(0, TOP_N);
+  			for (var i in topScores) {
+  				if (topScores[i] == round.prompt)
+				  	return true;
+				}
+		  	return false;
+			}
+
+			console.log(topScoresContainsPrompt());
+
+		 	if (!loading && !topScoresContainsPrompt()){
+			 	function getCorrectPromptScore(score) {
+			  	return score.label == round.prompt;
+				}
+
+		    const correctPromptScore = scores.find(getCorrectPromptScore).confidence;
+		    const correctPromptPercent = correctPromptScore * 100;
+		    let correctPromptcolor = 'green';
+
+		  	return(
+		  		<div>
+		  		<Header as='h3'>SketchNet's Confidence in Correct Prompt</Header>
+			    <Progress
+			      indicating={loading}
+			      key={correctPromptScore}
+			      percent={correctPromptPercent}
+			      color={correctPromptcolor}
+			      label={round.prompt}/>
+			     </div>
+		  	);
+	  	}
+	  }
+
+    const fourthLabel = getFourthLabel(round, scores, loading);
     // Attribution: Greg Dean
     // Title: Convert string to title case with JavaScript
     // Url: http://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript/196991#196991
@@ -95,7 +132,7 @@ export default class ParticipantRoundResults extends BaseComponent {
         <Segment>
           <Header as='h3'>SketchNet's Top {TOP_N} Guesses</Header>
           {topScoreComponents}
-          <br />
+          {fourthLabel}
         </Segment>
       </Segment.Group>
     );
