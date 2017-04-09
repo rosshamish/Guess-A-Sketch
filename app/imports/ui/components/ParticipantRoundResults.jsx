@@ -46,7 +46,6 @@ export default class ParticipantRoundResults extends BaseComponent {
     }
 
     scores.sort((a, b) => b.confidence - a.confidence);
-    // TODO refactor TOP_N constant
     const TOP_N = 3;
     const topScores = scores.slice(0, TOP_N);
     const topScoreComponents = topScores.map((score) => {
@@ -54,14 +53,6 @@ export default class ParticipantRoundResults extends BaseComponent {
       let color = 'grey';
       if (score.label === round.prompt) {
         color = 'green';
-        // TODO use colors based on confidence
-        // if (percent > 65) {
-        //   color = 'green';
-        // } else if (percent > 35) {
-        //   color = 'yellow';
-        // } else {
-        //   color = 'red';
-        // }
       }
 
       return (
