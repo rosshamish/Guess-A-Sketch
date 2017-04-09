@@ -17,11 +17,12 @@ function avg(arr) {
 }
 
 export function getSketchRank(sketch) {
-  const byConfidence = _.sortBy(sketch.scores, s => -1 * s.confidence);
-  const labels = _.pluck(byConfidence, 'label');
-  const rank = _.indexOf(labels, sketch.prompt);
+  const nonZero = _.filter(sketch.scores, s => s.confidence > 0);
+  const sorted = _.sortBy(nonZero, s => -1 * s.confidence);
+  const nonZeroLabels = _.pluck(sorted, 'label');
+  const rank = _.indexOf(nonZeroLabels, sketch.prompt);
   if (rank === -1) {
-    return sketch.scores.length;
+    return nonZeroLabels.length;
   }
   return rank;
 }
