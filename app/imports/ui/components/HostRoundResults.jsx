@@ -55,7 +55,7 @@ export default class HostRoundResults extends BaseComponent {
           }}
         >
         <SketchImage sketch={sketch} useFrame={false} />
-        <SketchRating rating={getSketchScore(sketch)}/>
+        <SketchRating rating={getSketchScore(sketch)} />
         </Container>
       );
     });
