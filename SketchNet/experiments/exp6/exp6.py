@@ -4,6 +4,8 @@ import tensorflow as tf
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 from models import SketchCNNSlim
 import labels
+from tf.contrib.learn.python.learn.datasets import Dataset, Datasets
+from datasets import sketches_dataset
 
 _SKETCH_WIDTH = 225
 _SKETCH_HEIGHT = 225
@@ -42,10 +44,10 @@ def main(unused_argv):
       logdir=FLAGS.train_dir,
       graph=g,
       global_step=model.global_step,
-      number_of_steps=training_config.number_of_steps,
-      save_summaries_secs=training_config.save_summaries_secs,
+      number_of_steps=FLAGS.iterations,
+      save_summaries_secs=600,
       saver=saver,
-      save_interval_secs=training_config.save_model_secs)
+      save_interval_secs=600)
 
 
 if __name__ == '__main__':
