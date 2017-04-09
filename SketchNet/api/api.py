@@ -1,4 +1,5 @@
 import sys, os
+import argparse
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -25,30 +26,6 @@ __PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 __IMAGE_DIR = os.path.join(__PROJECT_ROOT, 'png')
 # Keep in sync with experiments.experiment.Experiment, TODO refactor
 __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models')
-
-# ###
-# Choose which trained model to use.
-# - MODEL is the directory in trained_models. Usually indicates experiment number & dataset.
-# - META is which meta file (-> graph definition) to use inside that folder
-#   - version filenames look like "timestamp_experiment-name_model-name_trained_iterations"
-# - LABELS should be the same as the model was trained on, see labels.py
-#
-# The API will serve the model with
-# - the latest .index/.data training information, specified by the checkpoint file in MODEL
-# - the .meta graph definition, specified by MODEL
-# - the ordered list of labels they were trained on, specified by LABELS
-#
-# Warnings
-# - If the checkpoint, meta, index, or data files don't exist, it'll crash on startup.
-# - If the model is incompatible with the current API, it might run, then break on POST /submit.
-# ###
-MODEL = 'exp5easy'
-META = '20170408-063406_exp5easy_SketchCNN-1500iters-06p.meta'
-LABELS = labels.easy
-# Use the input, build full paths.
-__CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, MODEL)
-__META_FILE = os.path.join(__CHECKPOINT_DIR, META)
-
 
 def eval_img(img):
     v = sess.run(prediction_tensor, {
@@ -79,12 +56,12 @@ def submit():
             result = result/max(result)
         else:
             # Empty sketch should get 0 confidence for all labels
-            result = [0]*len(LABELS)
+            result = [0]*len(__LABELS)
 
         return jsonify([{
                             'label': label,
                             'confidence': float(result[i])
-                        } for i, label in enumerate(LABELS)])
+                        } for i, label in enumerate(__LABELS)])
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 
@@ -110,13 +87,26 @@ def decode_base64(data):
 
 
 class ImageEmbedder():
-
     def __init__(self, embedding, ouput):
         self.emedding = embedding
         self.output = output
 
 
-if __name__ == "__main__":
+def main(args):
+    # Globals: sess, image_tensor, keep_prob_tensor, prediction_tensor
+    # Easier to use globals here cause of the way Flask's app.run() method works.
+    global sess, image_tensor, keep_prob_tensor, prediction_tensor
+    global __CHECKPOINT_DIR, __META_FILE, __LABELS
+
+    __CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, args.modeldir)
+    __META_FILE = os.path.join(__CHECKPOINT_DIR, args.metafile)
+    __LABELS = {
+        'standard': labels.standard,
+        'easy': labels.easy,
+        'food': labels.food,
+        'animals': labels.animals
+    }[args.labels]
+
     sess = tf.Session()
     try:
         new_saver = tf.train.import_meta_graph(__META_FILE)
@@ -139,3 +129,26 @@ if __name__ == "__main__":
         print(e)
         raise
     app.run()
+
+# ###
+# Choose which trained model to use.
+# - modeldir is the directory in trained_models. Usually indicates experiment number & dataset.
+# - metafile is which meta file (-> graph definition) to use inside that folder
+#   - version filenames look like "timestamp_experiment-name_model-name_trained_iterations"
+# - labels should be the same as the model was trained on, see labels.py
+#
+# The API will serve the model with
+# - the latest .index/.data training information, specified by the checkpoint file in modeldir
+# - the .meta graph definition, specified by modeldir/metafile
+# - the ordered list of labels they were trained on, specified by labels
+#
+# Warnings
+# - If the checkpoint, meta, index, or data files don't exist, it'll crash on startup.
+# - If the model is incompatible with the current API, it might run, then break on POST /submit.
+# ###
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='run an API for evaluating a trained tensorflow model.')
+    parser.add_argument('modeldir', help='the path to the directory containing the model.')
+    parser.add_argument('metafile', help='the filename (including .meta) of the model to use')
+    parser.add_argument('labels', help='which set of labels to use', choices=set(['standard', 'easy', 'food', 'animals']))
+    main(parser.parse_args())
