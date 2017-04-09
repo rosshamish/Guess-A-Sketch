@@ -53,18 +53,23 @@ def submit():
 
         # handle color channels
         if len(img.shape) > 2:
-            img = img[:, :, 0] + img[:, :, 1] + img[:, :, 2]
+            img = img[:, :, 0] + img[:, :, 1] + img[:, :, 2] + img[:, :, 3]
             img[img > 0] = 255
 
-        # add batch_size dimension
-        img = np.expand_dims(img, axis=0)
+        classes = get_classes(__IMAGE_DIR)
+        if np.count_nonzero(img) > 0:
+            # add batch_size dimension
+            img = np.expand_dims(img, axis=0)
+            result = eval_img(img)
+            result = result/max(result)
+        else:
+            # Empty sketch should get 0 for all classes
+            result = [0]*len(classes)
 
-        result = eval_img(img)
-        result = result/max(result)
         return jsonify([{
                             'label': label,
                             'confidence': float(result[i])
-                        } for i, label in enumerate(get_classes(__IMAGE_DIR))])
+                        } for i, label in enumerate(classes)])
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 

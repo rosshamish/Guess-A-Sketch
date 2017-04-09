@@ -6,6 +6,16 @@ function clamp(val, low, high) {
   return Math.max( low, Math.min( val, high) );
 }
 
+function sum(arr) {
+  return _.reduce(arr, (memo, score) => {
+    return memo + score;
+  }, 0);
+}
+
+function avg(arr) {
+  return sum(arr) / arr.length;
+}
+
 export function getSketchRank(sketch) {
   const byConfidence = _.sortBy(sketch.scores, s => -1 * s.confidence);
   const labels = _.pluck(byConfidence, 'label');
@@ -27,7 +37,7 @@ export function getSketchCorrectLabelConfidence(sketch) {
 export function getStarRating(rank, confidence) {
   let rawRating;
   const maxRating = 5;
-  const minRating = 0;
+  const minRating = 1;
 
   // Give points for the rank of the correct label.
   // rank := position of label in the scores list when sorted by confidence.
@@ -68,6 +78,11 @@ export function getStarRating(rank, confidence) {
 }
 
 function getStarRatingForSketch(sketch) {
+  const sumOfConfidences = sum(_.pluck(sketch.scores, 'confidence'));
+  if (sumOfConfidences === 0) {
+    // 0 stars for an empty sketch.
+    return 0;
+  }
   return getStarRating(getSketchRank(sketch), getSketchCorrectLabelConfidence(sketch));
 }
 
@@ -78,16 +93,6 @@ export function getSketchScore(sketch) {
     return 0;
   }
   return getStarRatingForSketch(sketch);
-}
-
-function sum(arr) {
-  return _.reduce(arr, (sum, score) => {
-    return sum + score;
-  }, 0);
-}
-
-function avg(arr){
-	return sum(arr) / arr.length;
 }
 
 export function getRoundScore(round, player) {

@@ -32,7 +32,7 @@ export default class SketchImage extends BaseComponent {
           y: this.sketchY(),
         });
     }
-    if (this.props.useFrame){
+    if (this.props.useFrame) {
       frame
         .image(framePath, this.containerWidth(), this.containerHeight())
         .attr({
