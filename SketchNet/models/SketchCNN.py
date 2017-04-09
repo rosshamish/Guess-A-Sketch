@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 
 from utils.base_model import Model
+from utils import diy_slim
 from utils.tf_graph_scope import define_scope
 import tensorflow as tf
 
@@ -50,29 +51,29 @@ class SketchCNN(Model):
         filter_3 = 256
 
         # Layer 1, 64 features
-        h_conv1 = slim.conv2d(input_tensor, filter_1, kernel_size=15, stride=3, padding='VALID')
-        h_pool1 = slim.max_pool2d(h_conv1, stride=2, kernel_size=[3, 3])
+        h_conv1 = diy_slim.conv2d(input_tensor, filter_1, kernel_size=15, stride=3, padding='VALID')
+        h_pool1 = diy_slim.max_pool2d(h_conv1, stride=2, kernel_size=3)
 
         # Layer 2, 128 features
-        h_conv2 = slim.conv2d(h_pool1, filter_2, kernel_size=5, stride=1, padding='VALID')
-        h_pool2 = slim.max_pool2d(h_conv2, stride=2, kernel_size=[3, 3])
+        h_conv2 = diy_slim.conv2d(h_pool1, filter_2, kernel_size=5, stride=1, padding='VALID')
+        h_pool2 = diy_slim.max_pool2d(h_conv2, stride=2, kernel_size=3)
 
         # Layer 3, three convs with 256 features
-        h_conv3 = slim.conv2d(h_pool2, filter_3, kernel_size=3, stride=1)
-        h_conv4 = slim.conv2d(h_conv3, filter_3, kernel_size=3, stride=1)
-        h_conv5 = slim.conv2d(h_conv4, filter_3, kernel_size=3, stride=1)
-        h_pool5 = slim.max_pool2d(h_conv5, stride=2, kernel_size=3, padding='VALID')
+        h_conv3 = diy_slim.conv2d(h_pool2, filter_3, kernel_size=3, stride=1)
+        h_conv4 = diy_slim.conv2d(h_conv3, filter_3, kernel_size=3, stride=1)
+        h_conv5 = diy_slim.conv2d(h_conv4, filter_3, kernel_size=3, stride=1)
+        h_pool5 = diy_slim.max_pool2d(h_conv5, stride=2, kernel_size=3, padding='VALID')
 
         return tf.reshape(h_pool5, [-1, 7 * 7 * filter_3])
 
     def fc_dropout(self, input_tensor):
         filter_fc = 512
 
-        h_fc1 = slim.fully_connected(input_tensor, filter_fc)
+        h_fc1 = diy_slim.fully_connected(input_tensor, filter_fc)
         h_fc1_drop = tf.nn.dropout(h_fc1, self.keep_prob)
-        h_fc2 = slim.fully_connected(h_fc1_drop, filter_fc)
+        h_fc2 = diy_slim.fully_connected(h_fc1_drop, filter_fc)
         h_fc2_drop = tf.nn.dropout(h_fc2, self.keep_prob)
-        return slim.fully_connected(h_fc2_drop, self.num_labels)
+        return diy_slim.fully_connected(h_fc2_drop, self.num_labels)
 
     @define_scope
     def accuracy(self):
