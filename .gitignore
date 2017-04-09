@@ -2,3 +2,7 @@
 png
 app.tar.gz
 SketchNet/notebooks/*
+*.data-*
+*.index
+*.meta
+checkpoint

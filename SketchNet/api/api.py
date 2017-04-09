@@ -2,6 +2,8 @@ import sys, os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+import labels
+import hashlib
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import tensorflow as tf
@@ -26,19 +28,33 @@ __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models'
 
 # ###
 # Choose which trained model to use.
-# - MODEL is a folder inside trained_models
-# - META is which meta file to use.
-# - We will use the latest available model in the MODEL folder, specified by the checkpoint file.
+# - MODEL is the directory in trained_models. Usually indicates experiment number & dataset.
+# - META is which meta file (-> graph definition) to use inside that folder
+#   - version filenames look like "timestamp_experiment-name_model-name_trained_iterations"
+# - LABELS should be the same as the model was trained on, see labels.py
+#
+# The API will serve the model with
+# - the latest .index/.data training information, specified by the checkpoint file in MODEL
+# - the .meta graph definition, specified by MODEL
+# - the ordered list of labels they were trained on, specified by LABELS
+#
+# Warnings
+# - If the checkpoint, meta, index, or data files don't exist, it'll crash on startup.
+# - If the model is incompatible with the current API, it might run, then break on POST /submit.
 # ###
-MODEL = 'exp3'
-META = 'exp3-trained-20170405-002502.meta'
+MODEL = 'exp5easy'
+META = '20170408-063406_exp5easy_SketchCNN-1500iters-06p.meta'
+LABELS = labels.easy
 # Use the input, build full paths.
 __CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, MODEL)
 __META_FILE = os.path.join(__CHECKPOINT_DIR, META)
 
 
 def eval_img(img):
-    v = sess.run(output, feed_dict={image: img, keep_prob: 1.0})
+    v = sess.run(prediction_tensor, {
+        image_tensor: img,
+        keep_prob_tensor: 1.0
+    })
     return v[0]
 
 @app.route("/prompts", methods=['GET'])
@@ -56,20 +72,19 @@ def submit():
             img = img[:, :, 0] + img[:, :, 1] + img[:, :, 2] + img[:, :, 3]
             img[img > 0] = 255
 
-        classes = get_classes(__IMAGE_DIR)
         if np.count_nonzero(img) > 0:
             # add batch_size dimension
             img = np.expand_dims(img, axis=0)
             result = eval_img(img)
             result = result/max(result)
         else:
-            # Empty sketch should get 0 for all classes
-            result = [0]*len(classes)
+            # Empty sketch should get 0 confidence for all labels
+            result = [0]*len(LABELS)
 
         return jsonify([{
                             'label': label,
                             'confidence': float(result[i])
-                        } for i, label in enumerate(classes)])
+                        } for i, label in enumerate(LABELS)])
     except Exception as e:
         raise ClassificationFailure(message=str(e))
 
@@ -108,18 +123,18 @@ if __name__ == "__main__":
         new_saver.restore(sess, tf.train.latest_checkpoint(__CHECKPOINT_DIR))
 
         inps = tf.get_collection('inputs')
-        image = inps[0]
-        keep_prob = inps[1]
+        image_tensor = inps[0]
+        keep_prob_tensor = inps[1]
         # Legacy experiment support.
         # The keep_prob Tensor should have shape None, cause it's a scalar.
         # However, once upon a time, inps[1] was the labels Tensor with shape (None,250), instead of
         # the keep_prob Tensor with shape None, because Ross is a donut.
         # This is a cheesy fix which makes the API work even with trained models from that dark era.
         # The end.
-        if keep_prob.shape is not None and len(inps) > 2:
-            keep_prob = inps[2]
+        if keep_prob_tensor.shape is not None and len(inps) > 2:
+            keep_prob_tensor = inps[2]
 
-        output = tf.get_collection('output')[0]
+        prediction_tensor = tf.get_collection('output')[0]
     except Exception as e:
         print(e)
         raise
