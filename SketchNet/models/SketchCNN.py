@@ -48,7 +48,6 @@ class SketchCNN(Model):
         super(SketchCNN, self).__init__(*args, **kwargs)
 
         # Magic statement. Initialize this Tensor / subgraph, to cache for later.
-        self._loss
         self._conv_pools
         self._fc_dropout
 
@@ -69,10 +68,10 @@ class SketchCNN(Model):
     @define_scope
     def train(self):
         # tf.summary.scalar('cross_entropy', cross_entropy)
-        return tf.train.AdamOptimizer(1e-4).minimize(self._loss)
+        return tf.train.AdamOptimizer(1e-4).minimize(self.loss)
 
     @define_scope
-    def _loss(self):
+    def loss(self):
         measure = tf.nn.softmax_cross_entropy_with_logits(
             labels=self.labels_tensor,
             logits=self.prediction)

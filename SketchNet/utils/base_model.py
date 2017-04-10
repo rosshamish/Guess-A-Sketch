@@ -35,6 +35,7 @@ class Model(object):
         self.prediction
         self.train
         self.accuracy
+        self.loss
         self.summary
 
     @abstractmethod
