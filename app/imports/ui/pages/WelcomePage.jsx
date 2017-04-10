@@ -76,8 +76,6 @@ export default class WelcomePage extends React.Component {
             <Button primary onClick={this.onClickPlay}>Play</Button>
             <Button.Or />
             <Button onClick={this.onClickHost}>Host</Button>
-            <Button.Or />
-            <Button onClick={this.onClickDoodle}>Doodle</Button>
           </Button.Group>
           <br />
           <br />
