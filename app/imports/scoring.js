@@ -63,7 +63,7 @@ export function getStarRating(rank, confidence) {
   };
 
   // TODO tune this value
-  const makeItEasier = 0.7; // on [0.1,1.0], lower is easier
+  const makeItEasier = 1.1; // on [0.1,1.0], lower is easier
   const compositionFn = (_rankComponent, _confidenceComponent) => {
     const maxRankScore = rankFn(bestRank);
     const maxConfidenceScore = confidenceFn(bestConfidence);
