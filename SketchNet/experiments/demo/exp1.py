@@ -83,8 +83,8 @@ def train():
     tf.summary.scalar('Cross Entropy Loss vs Iterations', cross_entropy)
 
     merged = tf.summary.merge_all()
-    LD = '/tmp/demo/exp1'
-    print("INF: {}".format(LD))
+    LD = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'board', os.path.basename(__file__).split('.')[0])
+    print("TensorBoard Output: {}".format(LD))
     train_writer = tf.summary.FileWriter(LD + '/train', sess.graph)
     test_writer = tf.summary.FileWriter(LD + '/test')
     tf.global_variables_initializer().run()
@@ -104,7 +104,7 @@ def train():
         return {image: batch[0], label: batch[1], keep_prob: k}
 
     from tqdm import tqdm
-    for i in tqdm(range(1500)):
+    for i in tqdm(range(1)):
         if i % 10 == 0:  # Record summaries and test-set accuracy
             summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))
             test_writer.add_summary(summary, i)
@@ -123,6 +123,15 @@ def train():
             else:  # Record a summary
                 summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(True))
                 train_writer.add_summary(summary, i)
+
+    tf.add_to_collection('inputs', image)
+    tf.add_to_collection('inputs', keep_prob)
+    tf.add_to_collection('output', prediction)
+    # tf.add_to_collection('embedding', self.model.img_embedding)
+    saver = tf.train.Saver()
+    save_path = saver.save(sess, save_path)
+
+
 
     train_writer.close()
     test_writer.close()
