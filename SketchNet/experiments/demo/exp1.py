@@ -13,6 +13,25 @@ from preprocessing.data_prep import get_batch
 
 FLAGS = None
 
+LD = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.basename(__file__).split('.')[0], 'tfboard')
+SAVE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.basename(__file__).split('.')[0], 'trained_model/')
+
+
+def _mkdir_p(filepath):
+    """ Makes all directories that filepath will be in, like mkdir -p
+    Attribution: Krumelur
+    Source: StackOverflow
+    URL: http://stackoverflow.com/a/12517490
+    Accessed: April 6, 2017
+    """
+    if not os.path.exists(os.path.dirname(filepath)):
+        try:
+            os.makedirs(os.path.dirname(filepath))
+        except OSError as exc:  # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+
+_mkdir_p(SAVE_PATH)
 
 def train():
 
@@ -81,17 +100,13 @@ def train():
 
     tf.summary.scalar('Accuracy vs Iterations', accuracy)
     tf.summary.scalar('Cross Entropy Loss vs Iterations', cross_entropy)
+    tf.summary.image('Input Image', x_image, 9)
 
     merged = tf.summary.merge_all()
-    LD = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'board', os.path.basename(__file__).split('.')[0])
-    print("TensorBoard Output: {}".format(LD))
     train_writer = tf.summary.FileWriter(LD + '/train', sess.graph)
     test_writer = tf.summary.FileWriter(LD + '/test')
     tf.global_variables_initializer().run()
 
-    # Train the model, and also write summaries.
-    # Every 10th step, measure test-set accuracy, and write test summaries
-    # All other steps, run train_step on training data, & add training summaries
 
     def feed_dict(train):
         """Make a TensorFlow feed_dict: maps data onto Tensor placeholders."""
@@ -129,7 +144,9 @@ def train():
     tf.add_to_collection('output', prediction)
     # tf.add_to_collection('embedding', self.model.img_embedding)
     saver = tf.train.Saver()
-    save_path = saver.save(sess, save_path)
+    saver.save(sess, SAVE_PATH)
+    print("TensorBoard Output: {}".format(LD))
+    print("Trained Model Output: {}".format(SAVE_PATH))
 
 
 
