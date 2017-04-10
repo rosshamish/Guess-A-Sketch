@@ -95,10 +95,10 @@ def main():
         'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
         'fork', 'key', 'spider'
     ]
-    experiment = Experiment4(labels=easy, name='easy')
+    experiment = Experiment4(labels=standard, name='easy')
     # 1500 => 30 mins, 15000 => 5 hours
     few, lots = 1500, 15000
-    experiment.run(iterations=lots, save=True)
+    experiment.run(iterations=few, save=True)
 
 if __name__ == '__main__':
     main()
