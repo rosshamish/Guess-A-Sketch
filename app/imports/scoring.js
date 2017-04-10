@@ -88,6 +88,10 @@ function getStarRatingForSketch(sketch) {
 }
 
 export function getSketchScore(sketch) {
+  if (!sketch) {
+    console.error('Cant score null sketch.');
+    return 0;
+  }
   if (!sketch.scores || !sketch.scores.length) {
     console.error('Cant score sketch with no scores. Sketch was:');
     console.error(sketch);
