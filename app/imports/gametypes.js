@@ -77,7 +77,7 @@ export default function gametype(name, params) {
   const numRounds = params.numRounds || gt.defaults.numRounds;
   const roundTime = params.roundTime || gt.defaults.roundTime;
   const prompts = params.prompts || gt.defaults.prompts;
-  const rounds = makeRounds(numRounds, roundTime, prompts);
+  const rounds = makeRounds(numRounds, roundTime, prompts.slice());
   return { name, rounds };
 }
 

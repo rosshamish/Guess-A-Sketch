@@ -43,6 +43,7 @@ export default class CreateARoom extends BaseComponent {
             break;
           case errors.createRoom.insertRoom:
             alert('Failed to create the room, try again.');
+            console.error(error.reason);
             break;
           default:
             alert(`Unknown createRoom error: ${error.error}`);

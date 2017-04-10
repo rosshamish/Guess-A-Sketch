@@ -528,7 +528,7 @@ export const createRoom = new ValidatedMethod({
 
     const roomID = Rooms.insert({ name: room_name, rounds: rounds }, (error, result) => {
       if (error) {
-        throw new Meteor.Error(errors.createRoom.insertRoom);
+        throw new Meteor.Error(errors.createRoom.insertRoom, error);
       }
     });
     return roomID;
