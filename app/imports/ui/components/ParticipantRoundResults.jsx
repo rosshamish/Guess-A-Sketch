@@ -70,15 +70,12 @@ export default class ParticipantRoundResults extends BaseComponent {
   		
   		function topScoresContainsPrompt() {
   			const topScores = scores.slice(0, TOP_N);
-  			console.log(topScores);
   			for (var i in topScores) {
   				if (topScores[i].label == round.prompt)
 				  	return true;
 				}
 		  	return false;
 			}
-
-			console.log(topScoresContainsPrompt());
 
 		 	if (!loading && !topScoresContainsPrompt()){
 			 	function getCorrectPromptScore(score) {
@@ -91,7 +88,7 @@ export default class ParticipantRoundResults extends BaseComponent {
 
 		  	return(
 		  		<div>
-		  		<Header as='h3'>SketchNet's Confidence in Correct Prompt</Header>
+		  		<Header as='h3'>Correct Guess Was</Header>
 			    <Progress
 			      indicating={loading}
 			      key={correctPromptScore}
@@ -131,7 +128,7 @@ export default class ParticipantRoundResults extends BaseComponent {
           />
         </Segment>
         <Segment>
-          <Header as='h3'>SketchNet's Top {TOP_N} Guesses</Header>
+          <Header as='h3'>Top {TOP_N} Guesses</Header>
           {topScoreComponents}
           {fourthLabel}
         </Segment>
