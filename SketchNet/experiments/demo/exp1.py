@@ -119,7 +119,7 @@ def train():
         return {image: batch[0], label: batch[1], keep_prob: k}
 
     from tqdm import tqdm
-    for i in tqdm(range(1)):
+    for i in tqdm(range(9000)):
         if i % 10 == 0:  # Record summaries and test-set accuracy
             summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))
             test_writer.add_summary(summary, i)
