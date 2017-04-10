@@ -19,7 +19,6 @@ APP_URL="http://guessasketch.net"
 
 
 # 1. Unzip the app tarball, then delete it. Install Meteor+Node dependencies.
-nvm use 4.0 &&
 tar -xvzf app.tar.gz &&
 rm app.tar.gz &&
 pushd bundle/programs/server &&
