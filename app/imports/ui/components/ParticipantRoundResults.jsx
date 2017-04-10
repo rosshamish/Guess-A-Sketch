@@ -72,7 +72,7 @@ export default class ParticipantRoundResults extends BaseComponent {
   			const topScores = scores.slice(0, TOP_N);
   			console.log(topScores);
   			for (var i in topScores) {
-  				if (topScores[i].prompt == round.prompt)
+  				if (topScores[i].label == round.prompt)
 				  	return true;
 				}
 		  	return false;
