@@ -6,12 +6,23 @@ function clamp(val, low, high) {
   return Math.max( low, Math.min( val, high) );
 }
 
+function sum(arr) {
+  return _.reduce(arr, (memo, score) => {
+    return memo + score;
+  }, 0);
+}
+
+function avg(arr) {
+  return sum(arr) / arr.length;
+}
+
 export function getSketchRank(sketch) {
-  const byConfidence = _.sortBy(sketch.scores, s => -1 * s.confidence);
-  const labels = _.pluck(byConfidence, 'label');
-  const rank = _.indexOf(labels, sketch.prompt);
+  const nonZero = _.filter(sketch.scores, s => s.confidence > 0);
+  const sorted = _.sortBy(nonZero, s => -1 * s.confidence);
+  const nonZeroLabels = _.pluck(sorted, 'label');
+  const rank = _.indexOf(nonZeroLabels, sketch.prompt);
   if (rank === -1) {
-    return sketch.scores.length;
+    return nonZeroLabels.length;
   }
   return rank;
 }
@@ -27,7 +38,7 @@ export function getSketchCorrectLabelConfidence(sketch) {
 export function getStarRating(rank, confidence) {
   let rawRating;
   const maxRating = 5;
-  const minRating = 0;
+  const minRating = 1;
 
   // Give points for the rank of the correct label.
   // rank := position of label in the scores list when sorted by confidence.
@@ -52,7 +63,7 @@ export function getStarRating(rank, confidence) {
   };
 
   // TODO tune this value
-  const makeItEasier = 1.1; // on [0.1,1.0], lower is easier
+  const makeItEasier = 0.7; // on [0.1,1.0], lower is easier
   const compositionFn = (_rankComponent, _confidenceComponent) => {
     const maxRankScore = rankFn(bestRank);
     const maxConfidenceScore = confidenceFn(bestConfidence);
@@ -68,6 +79,11 @@ export function getStarRating(rank, confidence) {
 }
 
 function getStarRatingForSketch(sketch) {
+  const sumOfConfidences = sum(_.pluck(sketch.scores, 'confidence'));
+  if (sumOfConfidences === 0) {
+    // 0 stars for an empty sketch.
+    return 0;
+  }
   return getStarRating(getSketchRank(sketch), getSketchCorrectLabelConfidence(sketch));
 }
 
@@ -78,16 +94,6 @@ export function getSketchScore(sketch) {
     return 0;
   }
   return getStarRatingForSketch(sketch);
-}
-
-function sum(arr) {
-  return _.reduce(arr, (sum, score) => {
-    return sum + score;
-  }, 0);
-}
-
-function avg(arr){
-	return sum(arr) / arr.length;
 }
 
 export function getRoundScore(round, player) {

@@ -124,7 +124,7 @@ export default class ParticipantRoundResults extends BaseComponent {
           <Header as='h1'>"{capitalizedPrompt}" by {player.name}</Header>
           <SketchImage 
             sketch={sketch}
-            useFrame
+            useFrame={getSketchScore(sketch) >= 3}
           />
           <SketchRating
             rating={rating}
