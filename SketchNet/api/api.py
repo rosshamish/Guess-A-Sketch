@@ -1,10 +1,16 @@
+"""
+SRS 3.2.4.1 Image Score Endpoint
+
+This module accepts an image as a Base64 string,
+and returns an array
+"""
 import sys, os
 import argparse
+import mock
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import labels
-import hashlib
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import tensorflow as tf
@@ -19,6 +25,10 @@ from preprocessing.data_prep import get_classes
 app = Flask(__name__)
 CORS(app)
 
+def create_test_app(args):
+    main(args)
+    return app
+
 # ###
 # Constants, don't change these
 # ###
@@ -27,6 +37,7 @@ __IMAGE_DIR = os.path.join(__PROJECT_ROOT, 'png')
 # Keep in sync with experiments.experiment.Experiment, TODO refactor
 __TRAINED_MODEL_DIR = os.path.join(__PROJECT_ROOT, 'SketchNet', 'trained_models')
 
+
 def eval_img(img):
     v = sess.run(prediction_tensor, {
         image_tensor: img,
@@ -34,9 +45,11 @@ def eval_img(img):
     })
     return v[0]
 
+
 @app.route("/prompts", methods=['GET'])
 def prompts():
     return jsonify(get_classes(__IMAGE_DIR))
+
 
 @app.route("/submit", methods=['POST'])
 def submit():
@@ -86,12 +99,6 @@ def decode_base64(data):
     return base64.decodestring(data)
 
 
-class ImageEmbedder():
-    def __init__(self, embedding, ouput):
-        self.emedding = embedding
-        self.output = output
-
-
 def main(args):
     # Globals: sess, image_tensor, keep_prob_tensor, prediction_tensor
     # Easier to use globals here cause of the way Flask's app.run() method works.
@@ -109,7 +116,9 @@ def main(args):
 
     sess = tf.Session()
     try:
+        print("Restoring Saver: {}".format(__META_FILE))
         new_saver = tf.train.import_meta_graph(__META_FILE)
+        print("Restoring Checkpoint: {}".format(__CHECKPOINT_DIR))
         new_saver.restore(sess, tf.train.latest_checkpoint(__CHECKPOINT_DIR))
 
         inps = tf.get_collection('inputs')
@@ -128,7 +137,9 @@ def main(args):
     except Exception as e:
         print(e)
         raise
-    app.run()
+
+    if not args.t: #if test flag not set
+        app.run()
 
 # ###
 # Choose which trained model to use.
@@ -146,9 +157,15 @@ def main(args):
 # - If the checkpoint, meta, index, or data files don't exist, it'll crash on startup.
 # - If the model is incompatible with the current API, it might run, then break on POST /submit.
 # ###
-if __name__ == "__main__":
+
+def create_parser():
     parser = argparse.ArgumentParser(description='run an API for evaluating a trained tensorflow model.')
     parser.add_argument('modeldir', help='the path to the directory containing the model.')
     parser.add_argument('metafile', help='the filename (including .meta) of the model to use')
     parser.add_argument('labels', help='which set of labels to use', choices=set(['standard', 'easy', 'food', 'animals']))
+    parser.add_argument('-t', help='testing flag: Omit to start app on creation', action='store_true')
+    return parser
+
+if __name__ == "__main__":
+    parser = create_parser()
     main(parser.parse_args())

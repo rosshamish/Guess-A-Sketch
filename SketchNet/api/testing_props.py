@@ -1,0 +1,1 @@
+args = '-t --modeldir=exp5easy --metafile=20170408-063406_exp5easy_SketchCNN-1500iters-06p.meta --labels=easy'
