@@ -49,9 +49,15 @@ Examples:
         wget https://raw.githubusercontent.com/anjueappen/Guess-A-Sketch/master/SketchNet/envs/setup.sh
         bash setup.sh 
        
-5. Wait for the script to complete, and the instance to reboot, then ssh onto your instance.
+5. Wait for the script to complete, and the instance to reboot.
 
-6. To train a model, run one of the experiments in `SketchNet/experiments/`.
+6. You're done!
+
+# Training a model
+
+1. First, ssh into your Cybera GPU instance. You'll need it - training is *really* slow on a CPU.
+
+2. To train a model, run one of the experiments in `SketchNet/experiments/`.
 
 Example: `python SketchNet/experiments/exp5/exp5.py`
 
