@@ -1,3 +1,5 @@
+// SRS 3.2.1.2 : Log In Page
+
 import React from 'react';
 import { _ } from 'underscore';
 

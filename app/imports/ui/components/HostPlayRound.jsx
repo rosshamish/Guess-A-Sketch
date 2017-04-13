@@ -1,3 +1,5 @@
+// SRS 3.2.2.2 : Display Round Prompt and Image
+
 import React from 'react';
 
 import BaseComponent from './BaseComponent.jsx';

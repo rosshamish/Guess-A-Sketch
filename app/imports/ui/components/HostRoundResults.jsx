@@ -1,3 +1,5 @@
+// SRS 3.2.2.3 : Display Image Collage
+
 import React from 'react';
 import { _ } from 'underscore';
 
@@ -6,7 +8,7 @@ import BaseComponent from './BaseComponent.jsx';
 import SketchImage from './SketchImage.jsx';
 import SketchRating from './SketchRating.jsx';
 import StackGrid from "react-stack-grid";
-import { easings } from "react-stack-grid";
+
 import {
   Button,
   Header,

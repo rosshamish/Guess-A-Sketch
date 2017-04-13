@@ -1,7 +1,7 @@
 Guess-a-Sketch
 ===
 
-Half party game, half AI experiment.
+Half party game, half neural net.
 
 Each round, you get a prompt (eg "cat"). Draw it! 
 Well, as best you can, until the timer runs out. 
@@ -9,15 +9,16 @@ Get points based on the quality of your drawing.
 
 Points are awarded by a program which can recognize objects
 in napkin-quality sketches. The program learns how to do this
-using machine learning - specifically, neural networks.
-
----
+using a convolutional neural network.
 
 The App
 ---
-The party game is implemented as a Meteor web app, using React for the UI. Details can be found here: [app/README.md](app/README.md)
+The party game is implemented as a Meteor web app, using React for the UI. 
+
+See setup and user instructions at [app/README.md](app/README.md)
 
 The Net
 ---
-The Ai is implemented as a neural network, using Tensorflow. Details can be found here: [SketchNet/README.md](SketchNet/README.md)
+The neural network is implemented using Tensorflow.
 
+See setup instructions at [SketchNet/README.md](SketchNet/README.md)

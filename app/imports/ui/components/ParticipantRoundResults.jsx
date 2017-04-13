@@ -1,3 +1,5 @@
+// SRS 3.2.1.4 : Scoring of Drawing
+
 import React from 'react';
 
 import BaseComponent from './BaseComponent.jsx';

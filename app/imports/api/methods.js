@@ -95,6 +95,7 @@ export const errors = {
   },
 };
 
+// SRS 3.2.3.5 : Recieving Sketches from Individuals at End of Round
 
 export const submitSketch = new ValidatedMethod({
   name: 'submitSketch',
@@ -168,6 +169,9 @@ export const submitSketch = new ValidatedMethod({
     });
   },
 });
+
+// SRS 3.2.3.7 : Request for Round Results
+// SRS 3.2.3.8 : Creating Scoreboard Statistics
 
 // Used only for tuning Sketchnet, see React component SketchnetTuning.jsx
 // Do not use for any other purpose!!
@@ -245,6 +249,8 @@ export const leaveRoom = new ValidatedMethod({
     });
   },
 });
+
+// SRS 3.2.3.3 : Adding Participants to Room
 
 export const joinRoom = new ValidatedMethod({
   name: 'joinRoom',
@@ -390,6 +396,8 @@ export const playRound = new ValidatedMethod({
   },
 });
 
+// SRS 3.2.3.4 : Send Next Prompt to Host UI
+
 export const roundTimerOver = new ValidatedMethod({
   name: 'roundTimerOver',
   validate: new SimpleSchema({
@@ -477,6 +485,8 @@ export const endGame = new ValidatedMethod({
     });
   },
 });
+
+// SRS 3.2.3.2 : Creating a Room
 
 export const createRoom = new ValidatedMethod({
   name: 'createRoom',

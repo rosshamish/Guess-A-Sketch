@@ -1,3 +1,5 @@
+// SRS 3.2.1.5 : End of Game Result
+
 import React from 'react';
 import { browserHistory } from 'react-router';
 

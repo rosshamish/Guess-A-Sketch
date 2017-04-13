@@ -1,3 +1,5 @@
+// SRS 3.2.2.4 : Display Scoreboard
+
 import React from 'react';
 import { browserHistory } from 'react-router';
 
