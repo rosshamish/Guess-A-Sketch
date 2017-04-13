@@ -1,3 +1,6 @@
+// SRS 3.2.3.1 : Get list of game rooms 
+// SRS 3.2.3.9 : Access room information via Room ID 
+
 /**
  * Rooms collection. Insersion/update/deletion can only be allowed
  */
