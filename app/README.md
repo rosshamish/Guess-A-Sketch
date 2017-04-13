@@ -23,6 +23,8 @@ cd app && meteor run
 
 Then, go to http://localhost:3000
 
+If you'd like to access the app on a different device, e.g. your phone, first ensure that your phone and computer are on the same network. Then, find your computer's IP, e.g. with `ifconfig`. Then, navigate to http://your.ip.here:3000.
+
 ### Running UI Tests
 
 ```sh

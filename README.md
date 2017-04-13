@@ -11,8 +11,6 @@ Points are awarded by a program which can recognize objects
 in napkin-quality sketches. The program learns how to do this
 using a convolutional neural network.
 
----
-
 The App
 ---
 The party game is implemented as a Meteor web app, using React for the UI. 
