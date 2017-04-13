@@ -9,11 +9,11 @@ from testing_props import args
 class TestSketchNetAPI(unittest.TestCase):
 
     def setUp(self):
-        self.app_creation_args = argparse.Namespace(modeldir='exp5food',
+        self.app_creation_args = argparse.Namespace(modeldir='test',
                                                     metafile='exp3-trained-20170405-002502.meta',
-                                                    labels='food',
+                                                    labels='standard',
                                                     t=True)
-        print(self.app_creation_a)
+        print(self.app_creation_args)
         self.app = create_test_app(self.app_creation_args).test_client()
 
     def tearDown(self):
