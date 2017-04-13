@@ -8,7 +8,7 @@ import BaseComponent from './BaseComponent.jsx';
 import SketchImage from './SketchImage.jsx';
 import SketchRating from './SketchRating.jsx';
 import StackGrid from "react-stack-grid";
-import { easings } from "react-stack-grid";
+
 import {
   Button,
   Header,

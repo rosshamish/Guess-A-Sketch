@@ -50,6 +50,7 @@ storiesOf('Host', module)
       sketches={sketches}
       isLastRound={() => false}
       onNextRound={action('round-over')}
+      getSketchScore={()=> 5}
     />
   ))
   .add('round results (last round)', () => (
@@ -59,6 +60,7 @@ storiesOf('Host', module)
       sketches={sketches}
       isLastRound={() => true}
       onNextRound={action('game-over')}
+      getSketchScore={()=> 5}
     />
   ))
   .add('post game', () => (

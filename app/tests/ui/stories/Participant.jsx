@@ -56,7 +56,7 @@ storiesOf('Participant', module)
   ))
   .add('playing round', () => (
     <ParticipantPlayRound
-      round={rooms[0].rounds[1]}
+      round={rooms[0].rounds[0]}
       player={players[0]}
       onRoundOver={(args) => {
         action('round-over')(args);

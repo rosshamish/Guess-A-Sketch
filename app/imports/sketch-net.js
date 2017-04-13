@@ -1,4 +1,4 @@
-import { HTTP } from 'meteor/http';
+import { HTTP } from 'http';
 
 const sketchNetURL = 'http://localhost:5000';
 
