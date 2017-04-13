@@ -1,3 +1,5 @@
+// SRS 3.2.1.3 : Drawing w/ Timer
+
 import React from 'react';
 
 import BaseComponent from './BaseComponent.jsx';
