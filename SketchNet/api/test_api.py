@@ -10,7 +10,7 @@ class TestSketchNetAPI(unittest.TestCase):
 
     def setUp(self):
         self.app_creation_args = argparse.Namespace(modeldir='test',
-                                                    metafile='exp3-trained-20170405-002502.meta',
+                                                    metafile='20170412-214807_exp4easy_SketchCNN-trained-1.meta',
                                                     labels='standard',
                                                     t=True)
         print(self.app_creation_args)
@@ -33,7 +33,7 @@ class TestSketchNetAPI(unittest.TestCase):
         # req = request.Request()
         # req.form = {'sketch': B64_IMG}
         response = self.app.post("/submit", data={'sketch': B64_IMG}, headers={'content-md5': 'some hash'})
-
+        print response
 
 if __name__ == '__main__':
     unittest.main()
