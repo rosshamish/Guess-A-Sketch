@@ -56,11 +56,15 @@ Examples:
 
 1. First, ssh into your Cybera GPU instance. You'll need it - training is *really* slow on a CPU.
 
-2. To train a model, run one of the experiments in `SketchNet/experiments/`.
+2. Then, activate the conda environment with `source activate tf27`. This environment has the correct version of python installed, as well as all the dependencies you'll need.
+
+3. To train a model, run one of the experiments in `SketchNet/experiments/`. Once training is complete, the trained model will be saved to `SketchNet/trained_models/`. You can specify which subset to train it on, as well as how long to train it for, by modifying the parameters passed to `Experiment()`, e.g. in `exp5/exp5.py`.
 
 Example: `python SketchNet/experiments/exp5/exp5.py`
 
-##### Here are some outputs you should see - note how the CUDA libraries are opened when you import Tensorflow. 
+#### Troubleshooting
+
+Here are some outputs you should see - note how the CUDA libraries are opened when you import Tensorflow. 
 
 ```
 (tf27) ubuntu@tf-instance:~$ conda env list
