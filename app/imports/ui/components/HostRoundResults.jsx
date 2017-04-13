@@ -1,3 +1,5 @@
+// SRS 3.2.2.3 : Display Image Collage
+
 import React from 'react';
 import { _ } from 'underscore';
 
