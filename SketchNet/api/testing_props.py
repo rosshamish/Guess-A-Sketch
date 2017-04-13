@@ -1,1 +1,5 @@
-args = '-t --modeldir=exp5easy --metafile=20170408-063406_exp5easy_SketchCNN-1500iters-06p.meta --labels=easy'
+import argparse
+APP_CREATION_ARGS = argparse.Namespace(modeldir='test',
+                                       metafile='20170412-214807_exp4easy_SketchCNN-trained-1.meta',
+                                       labels='standard',
+                                       t=True)
