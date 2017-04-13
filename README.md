@@ -17,11 +17,10 @@ The App
 ---
 The party game is implemented as a Meteor web app, using React for the UI. 
 
-[app/README.md](app/README.md)
+See setup and user instructions at [app/README.md](app/README.md)
 
 The Net
 ---
 The neural network is implemented using Tensorflow.
 
-[SketchNet/README.md](SketchNet/README.md)
-
+See setup instructions at [SketchNet/README.md](SketchNet/README.md)

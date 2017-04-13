@@ -1,7 +1,6 @@
-SketchNet
-===
+# SketchNet
 
-# Setup
+### Setup
 
 First, put the training images in a directory named `png` at this repo's root directory.
 
@@ -12,7 +11,7 @@ Install dependencies
 pip2 install -r SketchNet/api/requirements.txt
 ```
 
-# Running the API
+### Running the API
 
 ```sh
 $ python2 SketchNet/api/api.py -h
@@ -36,7 +35,7 @@ Examples:
 - `python2 SketchNet/api/api.py exp5animals 20170410-034745_exp5animals_SketchCNN-1500iters-04p.meta animals`
 
 
-# How to Setup a Cybera GPU instance for Training 
+### How to Setup a Cybera GPU instance for Training 
 
 1. Create a Cybera RAC Account [here](https://rac-portal.cybera.ca)
 2. Create a GPU instance following the instructions listed [here](https://docs.google.com/document/d/12_iH7oFfP2MTBi7wCR92PiIalhsB8i2bcz2G89wUsmk/edit#heading=h.uvc95u5xadk8)
@@ -53,7 +52,7 @@ Examples:
 
 6. You're done!
 
-# Training a model
+### Training a model
 
 1. First, ssh into your Cybera GPU instance. You'll need it - training is *really* slow on a CPU.
 

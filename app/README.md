@@ -1,7 +1,6 @@
-Guess-a-Sketch Web Application
-===
+# Guess-a-Sketch Web Application
 
-# Setup instructions
+### Setup instructions
 
 Install meteor
 ```sh
@@ -15,7 +14,7 @@ Install npm packages
 cd app && npm install
 ```
 
-# Running the app
+### Running the app
 
 Run
 ```sh
@@ -24,18 +23,18 @@ cd app && meteor run
 
 Then, go to http://localhost:3000
 
-# Running UI Tests
+### Running UI Tests
 
 ```sh
 npm install -g storybook
 cd app && npm run storybook
 ```
 
-# User instructions
+### User instructions
 
 The UI is very straightforward, and was designed to be usable on the first try, with no instructions or prior training. However, for completeness, we include here a brief set of instructions for hosting a game, as well as playing in a game.
 
-### Hosting a game
+#### Hosting a game
 
 1. On the homepage, click Host
 
@@ -49,7 +48,7 @@ The UI is very straightforward, and was designed to be usable on the first try, 
 
 6. After each round, you'll need to click Next Round to start the next round. At the end of the game, you'll need to click End Game to go to the final scoreboard.
 
-### Playing in a game
+#### Playing in a game
 
 1. On the homepage, click Play
 
