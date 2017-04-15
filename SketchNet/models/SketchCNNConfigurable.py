@@ -9,25 +9,26 @@ from utils.tf_graph_scope import define_scope
 import tensorflow as tf
 slim = tf.contrib.slim
 
-config_default = {
-    'learning_rate': 1e-3,
-    'loss_fn': tf.nn.softmax_cross_entropy_with_logits,
-    'convs': [
-        { 'filter_size': 64, 'kernel_size': 15 },
-        { 'filter_size': 128, 'kernel_size': 5 },
-        { 'filter_size': 256, 'kernel_size': 3 },
-    ],
-    'fully_connected': [
-        { 'nodes': 512 },
-        { 'nodes': 512 },
-    ]
-}
 
 class SketchCNNConfigurable(Model):
     """
     SketchCNN architecture, but configurable via a host of args.
     """
-    _NAME = 'SketchCNN'
+    _NAME = 'SketchCNNConfigurable'
+
+    __CONFIG_DEFAULT = {
+        'learning_rate': 1e-3,
+        'loss_fn': tf.nn.softmax_cross_entropy_with_logits,
+        'convs': [
+            { 'filter_size': 64, 'kernel_size': 15 },
+            { 'filter_size': 128, 'kernel_size': 5 },
+            { 'filter_size': 256, 'kernel_size': 3 },
+        ],
+        'fully_connected': [
+            { 'nodes': 512 },
+            { 'nodes': 512 },
+        ]
+    }
 
     def __init__(self, *args, **kwargs):
         # For holding a reference to tensors to pass around
@@ -35,16 +36,17 @@ class SketchCNNConfigurable(Model):
         self._conv_pools_in = None
         self._fc_dropout_in = None
 
-        # Initialize prediction, train, accuracy, Tensors / subgraphs
-        # Also set some properties
-        super(SketchCNN, self).__init__(*args, **kwargs)
-
         # Default kwargs shown here, and overwritten by any custom ones passed
-        self.config = dict(config_default)
+        self.config = dict(self.__CONFIG_DEFAULT)
         if 'config' in kwargs and kwargs['config'] is not None:
             for key, val in kwargs['config'].iteritems():
                 if val is not None:
                     self.config[key] = val
+        kwargs.pop('config', None)
+
+        # Initialize prediction, train, accuracy, Tensors / subgraphs
+        # Also set some properties
+        super(SketchCNNConfigurable, self).__init__(*args, **kwargs)
 
         # Magic statement. Initialize this Tensor / subgraph, to cache for later.
         self._conv_pools
@@ -68,13 +70,17 @@ class SketchCNNConfigurable(Model):
     @define_scope
     def train(self):
         # tf.summary.scalar('cross_entropy', cross_entropy)
-        if 'learning_rate' not in self.config:
+        learning_rate_config = self.config.get('learning_rate', None)
+        if learning_rate_config is None:
             log.warn('Expected learning rate configuration')
         return tf.train.AdamOptimizer(self.config['learning_rate']).minimize(self.loss)
 
     @define_scope
     def loss(self):
-        measure = self.config.loss_fn(
+        loss_fn_config = self.config.get('loss_fn', None)
+        if loss_fn_config is None:
+            log.error('Expected loss function configuration')
+        measure = self.config['loss_fn'](
             labels=self.labels_tensor,
             logits=self.prediction)
         return tf.reduce_mean(measure)
@@ -130,7 +136,7 @@ class SketchCNNConfigurable(Model):
     def accuracy(self):
         correct_prediction = tf.equal(tf.argmax(self.labels_tensor, 1), tf.argmax(self.prediction, 1))
         return tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    
+
     #TODO: list of input imgs and result from eval()
     #
     #TODO: create sorite image

@@ -1,10 +1,3 @@
-labels = {
-    'standard': standard,
-    'easy': easy,
-    'food': food,
-    'animals': animals
-}
-
 standard = [
     'airplane', 'alarm clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana', 'barn', 'baseball bat',
     'basket', 'bathtub', 'bear (animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench', 'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf',
@@ -44,3 +37,11 @@ easy = [
     'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
     'fork', 'key', 'spider'
 ]
+
+# Map names to lists of labels. Good for CLI args.
+labels = {
+    'standard': standard,
+    'easy': easy,
+    'food': food,
+    'animals': animals
+}
