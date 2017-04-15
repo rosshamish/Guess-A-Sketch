@@ -1,3 +1,10 @@
+labels = {
+    'standard': standard,
+    'easy': easy,
+    'food': food,
+    'animals': animals
+}
+
 standard = [
     'airplane', 'alarm clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana', 'barn', 'baseball bat',
     'basket', 'bathtub', 'bear (animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench', 'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf',

@@ -37,6 +37,9 @@ class SketchCNN(Model):
     """
     _NAME = 'SketchCNN'
 
+    avail_kwargs = [
+        'filter_1', 'filter_2', 'filter_2',
+        'kernel_size_1', 'kernel_size_2', 'kernel_size_3']
     def __init__(self, *args, **kwargs):
         # For holding a reference to tensors to pass around
         # Used instead of passing an input tensor argument because of @define_scope behavior.
@@ -46,6 +49,10 @@ class SketchCNN(Model):
         # Initialize prediction, train, accuracy, Tensors / subgraphs
         # Also set some properties
         super(SketchCNN, self).__init__(*args, **kwargs)
+
+
+        for key, val in kwargs.iteritems():
+            setattr(self, key, val)
 
         # Magic statement. Initialize this Tensor / subgraph, to cache for later.
         self._conv_pools
@@ -68,7 +75,7 @@ class SketchCNN(Model):
     @define_scope
     def train(self):
         # tf.summary.scalar('cross_entropy', cross_entropy)
-        return tf.train.AdamOptimizer(1e-4).minimize(self.loss)
+        return tf.train.AdamOptimizer(self._learning_rate).minimize(self.loss)
 
     @define_scope
     def loss(self):
@@ -95,7 +102,7 @@ class SketchCNN(Model):
         h_conv3 = slim.conv2d(h_pool2, filter_3, kernel_size=3, stride=1)
         h_conv4 = slim.conv2d(h_conv3, filter_3, kernel_size=3, stride=1)
         h_conv5 = slim.conv2d(h_conv4, filter_3, kernel_size=3, stride=1)
-        h_pool5 = slim.max_pool2d(h_conv5, stride=2, kernel_size=3, padding='VALID')
+        h_pool5 = slim.max_pool2d(h_conv5, stride=2, kernel_size=[3, 3], padding='VALID')
 
         return tf.reshape(h_pool5, [-1, 7 * 7 * filter_3])
 

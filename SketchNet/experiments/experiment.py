@@ -194,7 +194,8 @@ class Experiment(object):
         tf.add_to_collection('inputs', self.images_tensor)
         tf.add_to_collection('inputs', self.keep_prob_tensor)
         tf.add_to_collection('output', self.model.prediction)
-        tf.add_to_collection('embedding', self.model.img_embedding)
+        # TODO enable once this doesnt crash
+        # tf.add_to_collection('embedding', self.model.img_embedding)
         saver = tf.train.Saver()
         t = self._timestamp()
         save_path = self._save_path(timestamp=t, accuracy=accuracy, iterations=iterations)
