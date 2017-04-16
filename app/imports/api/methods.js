@@ -194,6 +194,7 @@ export const scoreSketch = new ValidatedMethod({
           scores = result.data;
         }
       } catch (error) {
+        console.error(error);
         throw new Meteor.Error(errors.scoreSketch.noAPI);
       }
       return scores;

@@ -16,6 +16,7 @@ export function getFallbackPrompts() {
 
 export const prompts = {
   standard: getFallbackPrompts(),
+
   animals: [
     'ant', 'butterfly', 'camel', 'crab', 'crocodile', 'cat', 'cow', 'dog', 'dolphin',
     'dragon', 'duck', 'elephant', 'fish', 'flying bird', 'frog', 'giraffe', 'hedgehog',

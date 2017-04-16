@@ -76,6 +76,8 @@ def submit():
                             'confidence': float(result[i])
                         } for i, label in enumerate(__LABELS)])
     except Exception as e:
+        print('Failure on /submit')
+        print(e)
         raise ClassificationFailure(message=str(e))
 
 
@@ -107,12 +109,7 @@ def main(args):
 
     __CHECKPOINT_DIR = os.path.join(__TRAINED_MODEL_DIR, args.modeldir)
     __META_FILE = os.path.join(__CHECKPOINT_DIR, args.metafile)
-    __LABELS = {
-        'standard': labels.standard,
-        'easy': labels.easy,
-        'food': labels.food,
-        'animals': labels.animals
-    }[args.labels]
+    __LABELS = labels.labels[args.labels]
 
     sess = tf.Session()
     try:
@@ -162,7 +159,7 @@ def create_parser():
     parser = argparse.ArgumentParser(description='run an API for evaluating a trained tensorflow model.')
     parser.add_argument('modeldir', help='the path to the directory containing the model.')
     parser.add_argument('metafile', help='the filename (including .meta) of the model to use')
-    parser.add_argument('labels', help='which set of labels to use', choices=set(['standard', 'easy', 'food', 'animals']))
+    parser.add_argument('labels', help='which set of labels to use', choices=set(labels.labels.keys()))
     parser.add_argument('-t', help='testing flag: Omit to start app on creation', action='store_true')
     return parser
 

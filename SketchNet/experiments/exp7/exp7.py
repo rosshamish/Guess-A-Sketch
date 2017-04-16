@@ -83,7 +83,7 @@ def sanitize(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run an experiment using SketchCNN.')
     parser.add_argument('-l', '--labels', help='Labels to train on.',
-        choices=set(['standard', 'easy', 'food', 'animals']),
+        choices=set(labels.labels.keys()),
         default='standard')
     parser.add_argument('-n', '--name', help='Name of the run. The full name will be exp7name.',
         default=None)
