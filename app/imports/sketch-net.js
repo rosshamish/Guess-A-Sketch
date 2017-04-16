@@ -1,4 +1,4 @@
-import { HTTP } from 'http';
+import { HTTP } from 'meteor/http';
 
 const sketchNetURL = 'http://localhost:5000';
 
@@ -24,15 +24,30 @@ export const prompts = {
     'octopus', 'owl', 'panda', 'parrot', 'penguin', 'pig', 'pigeon', 'rabbit', 'rooster',
     'scorpion', 'sea turtle', 'seagull', 'shark', 'sheep', 'snail', 'snake', 'spider',
     'squirrel', 'standing bird', 'tiger', 'zebra'],
+
   easy: [
     'apple', 'axe', 'banana', 'baseball bat', 'book', 'candle', 'cloud', 'envelope', 'donut',
     'fork', 'key', 'spider'],
+
   food: [
     'apple', 'banana', 'bread', 'cake', 'carrot', 'donut', 'grapes', 'hamburger', 'mushroom',
     'pear', 'pineapple', 'pizza', 'pumpkin', 'strawberry', 'tomato'],
-  medium: [
-    'apple', 'wineglass', 'tv', 'scissors', 'pizza', 'hot dog', 'eye', 'bread'
-  ], // call this prompt group "medium", but it's actually the hand picked one. 
+
+  topnotch: [
+    'bicycle', 
+  ],
+
+  masterpieces: [
+    'airplane', 'castle', 'crown', 
+  ],
+
+  lookalike: [
+    'ant', 
+  ],
+
+  lookalikeB: [
+
+  ]
 };
 
 export function getScoresForSketch(sketch, callback) {
